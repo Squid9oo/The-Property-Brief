@@ -43,6 +43,11 @@ function renderSection(elementId, posts, limit, sectionType) {
     (hasMore ? `<button class="btnLoadMore" data-section="${sectionType}" data-shown="${limit}">Load More</button>` : '');
 }
 
+function cleanExcerpt(text, max = 180) {
+  const t = (text || "").replace(/\s+/g, " ").trim();
+  return t.length > max ? t.slice(0, max).trim() + "…" : t;
+}
+
 function renderCards(items, sectionType) {
   return items
     .map((p) => `
@@ -55,7 +60,7 @@ function renderCards(items, sectionType) {
           <span>${new Date(p.date).toLocaleDateString('en-US', {year: 'numeric', month: 'short', day: 'numeric'})}</span>
         </p>
 
-        ${p.summary ? `<p class="muted" style="margin-top:10px;">${p.summary}</p>` : ""}
+        ${p.summary ? `<p class="muted cardSummary">${cleanExcerpt(p.summary, 180)}</p>` : ""}
         ${p.id ? `<button class="btnGhost openBtn" data-id="${p.id}" type="button">Read more</button>` : ""}
       </article>
     `)
@@ -97,7 +102,7 @@ document.addEventListener("click", (e) => {
   if (!btn) return;
 
   const id = btn.getAttribute("data-id");
-  const post = allStrategies.find((x) => x.id === id);
+  const post = [...allNews, ...allStrategies].find((x) => x.id === id);
   if (!post) return;
 
   openModal(post.title, formatPostBody(post));
