@@ -6,6 +6,7 @@ summary: Is the classic 'Limited Units!' pitch still enough? Map booklets as
   experience vouchers, built-in area growth stories, and EdgeProp/StarProperty
   collaboration.
 pdf: /assets/uploads/the-fomo-factor.pdf
+pdfPreview: /assets/uploads/pdf-preview-limited-units.jpg
 ---
 Is the classic 'Limited Units!' pitch still enough?
 
