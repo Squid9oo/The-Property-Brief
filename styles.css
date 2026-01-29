@@ -123,6 +123,19 @@ h1,h2,h3{
   border-color: rgba(255,255,255,0.10);
   background: rgba(255,255,255,0.03);
 }
+.navSponsor{
+  text-decoration: none;
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(249,209,0,0.12);
+  border: 1px solid rgba(249,209,0,0.35);
+  color: var(--text);
+  font-weight: 800;
+}
+.navSponsor:hover{
+  background: rgba(249,209,0,0.18);
+}
 
 /* Header subscribe form */
 .headerSub{
