@@ -98,21 +98,33 @@ document.addEventListener("click", (e) => {
 });
 
 function formatPostBody(post) {
-  let html = post.body || '';
+  // Convert Markdown to HTML
+  let html = post.body ? marked.parse(post.body) : '';
   
-  // Add video thumbnail if videoId exists
+  // Replace placeholders with actual media
   if (post.videoId) {
-    html = `
+    const videoHtml = `
       <div class="videoThumb videoSmall" data-video="${post.videoId}">
         <img src="https://img.youtube.com/vi/${post.videoId}/hqdefault.jpg" alt="Video thumbnail" />
         <div class="playBadge">Play</div>
       </div>
-    ` + html;
+    `;
+    html = html.replace('{{VIDEO}}', videoHtml);
+    
+    // If no placeholder, add at top (default behavior)
+    if (!html.includes('data-video')) {
+      html = videoHtml + html;
+    }
   }
   
-  // Add image if exists
   if (post.image) {
-    html = `<img src="${post.image}" alt="Post image" class="postMediaImg" />` + html;
+    const imageHtml = `<img src="${post.image}" alt="Post image" class="postMediaImg" />`;
+    html = html.replace('{{IMAGE}}', imageHtml);
+    
+    // If no placeholder, add at top (default behavior)
+    if (!html.includes(post.image)) {
+      html = imageHtml + html;
+    }
   }
   
   return html;
