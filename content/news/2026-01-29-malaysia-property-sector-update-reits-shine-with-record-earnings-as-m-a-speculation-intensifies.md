@@ -2,7 +2,7 @@
 title: "Malaysia Property Sector Update: REITs Shine with Record Earnings as M&A
   Speculation Intensifies"
 date: 2026-01-29T21:00:00.000+08:00
-tag: IGBREIT CapitaLandMalaysia KLCCP AxisREIT SunwayBerhad SPSetia
+tag: IGBREIT • CapitaLandMalaysia • KLCCP • AxisREIT • SunwayBerhad • SPSetia •
   SimeDarbyProperty
 summary: >-
   Malaysia's property sector saw mixed developments this week, with REITs
