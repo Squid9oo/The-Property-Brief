@@ -1,0 +1,10 @@
+{
+  "name": "the-property-brief",
+  "version": "1.0.0",
+  "scripts": {
+    "generate": "node generate-posts.js"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3"
+  }
+}

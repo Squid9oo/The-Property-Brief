@@ -386,3 +386,19 @@ body {
     grid-column: span 1;
   }
 }
+/* Load More button */
+.btnLoadMore {
+  grid-column: 1 / -1;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btnLoadMore:hover {
+  border-color: rgba(249, 209, 0, 0.35);
+}
