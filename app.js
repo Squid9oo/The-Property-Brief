@@ -1,120 +1,188 @@
-const app = document.querySelector("#app");
-document.querySelector("#year").textContent = new Date().getFullYear();
+// ========================================
+// FOOTER YEAR
+// ========================================
+const yearEl = document.querySelector("#year");
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-const posts = [
+// ========================================
+// CONTENT DATABASE (v1)
+// ========================================
+
+// Latest news (simple cards, no modal)
+const latestNews = [
+  { title: "Malaysia: Key signals to watch this week", date: "2026-01-27", tag: "Malaysia • News" },
+  { title: "Singapore: What developers are doing differently in 2026", date: "2026-01-26", tag: "Singapore • News" },
+  { title: "Thailand: Demand pockets that are still moving", date: "2026-01-25", tag: "Thailand • News" }
+];
+
+// Strategies (full posts with modals)
+const strategies = [
   {
-    id: "malaysia-rates-outlook",
-    title: "Malaysia: What to watch in 2026 (rates, launches, sentiment)",
-    category: "News",
-    market: "Malaysia",
-    date: "2026-01-24",
-    summary: "A quick checklist of signals to track this quarter: financing, launch pipeline, take-up rates, and buyer sentiment."
+    id: "redevelop-content-with-ai",
+    title: "Don't just consume content—redevelop it with AI",
+    date: "2026-01-27",
+    tag: "Strategy • Workflow",
+    summary: "A simple workflow: take a useful video, feed it into AI with your intention, and extract structured insights for your team.",
+    contentHtml: `
+      <p>In our field, we come across useful videos, ideas, and insights almost every day.</p>
+      <p>Most people watch, nod, and move on. That's where the opportunity dies. When I find content relevant to sales, marketing, consumer psychology, or team development, I treat it as raw material—something I can reshape into practical value. And with AI, this process has never been easier or faster.</p>
+
+      <h3>The input</h3>
+      <p>I watched a solid video and instead of just saving it, I fed it into AI along with my intentions.</p>
+      <div class="videoThumb videoSmall" data-video="K7TPA6GdBqI">
+        <img src="https://img.youtube.com/vi/K7TPA6GdBqI/hqdefault.jpg" alt="Video thumbnail" />
+        <div class="playBadge">Play</div>
+      </div>
+       
+      <h3>The workflow (real example)</h3>
+      <p>I'm sharing my prompt screenshot (not because it's perfect) but to show how simple the workflow can be.</p>
+      <p><img src="assets/prompting.jpg" alt="Prompting workflow screenshot" class="postMediaImg" /></p>
+
+      <h3>The result</h3>
+      <p>Within minutes, AI turned that video into structured insights I can use for my team.</p>
+
+      <h3>My takeaway</h3>
+      <p>This isn't about replacing thinking. It's about training ourselves to think better and letting technology amplify that thinking.</p>
+      <p>Don't just consume content. Redevelop it. Adapt it. Extract value from it. The real skill today is turning information into output quickly.</p>
+    `
   },
   {
-    id: "developer-marketing-playbook",
-    title: "Developer marketing: 7 simple ideas to increase leads without discounts",
-    category: "Strategy",
-    market: "SEA",
-    date: "2026-01-24",
-    summary: "Practical tactics from real sales floors: positioning, campaign structure, agent enablement, and content that converts."
+    id: "unlocking-location-value",
+    title: "Unlocking Location Value in Property Marketing",
+    date: "2026-01-29",
+    tag: "Strategy • Marketing",
+    summary: "How to leverage neighbourhood strengths when internal amenities aren't your strongest selling point.",
+    contentHtml: `
+      <p>Property marketers don't always have internal amenities that stand out as their strongest selling point. But what if we could "borrow" the strengths from the neighbourhood instead?</p>
+
+      <h3>The Sunway Lagoon example</h3>
+      <p>Consider properties near Sunway Lagoon. Instead of just highlighting proximity, why not run a digital campaign offering a free theme park day pass for lead generation? For actual buyers, give a truly unique reward: a 5-year annual pass to Sunway Lagoon, which means up to 1,825 days of free family fun, making lifestyle and experience part of the value proposition.</p>
+
+      <h3>Why limit the campaign to 3 months?</h3>
+      <p>To create urgency, this campaign would run for only 3 months. Why? Because effective marketing is about storytelling and stories need momentum and fresh twists to stay compelling. Extending a campaign indefinitely leads to audience fatigue, switching strategies every quarter keeps the message vibrant and prospects engaged.</p>
+
+      <h3>The template for other locations</h3>
+      <p>For those marketing properties outside Sunway, this strategy is just a template. Audit your local area for interesting lifestyle spots—whether it's a theme park, retail hub, cultural centre, or nature retreat—and craft an irresistible campaign that leverages those neighbourhood strengths.</p>
+
+      <h3>Bottom line</h3>
+      <p>Don't just sell units, sell gateways to experiences people desire.</p>
+    `
   }
 ];
 
-function route() {
-  const hash = (location.hash || "#home").replace("#", "");
-  if (hash.startsWith("post/")) {
-    const postId = hash.split("/")[1];
-    renderPost(postId);
+// ========================================
+// RENDER FUNCTIONS
+// ========================================
+
+function renderCards(items) {
+  return items
+    .map((p) => `
+      <article class="postCard">
+        <h3>${p.title}</h3>
+        <p class="postMeta">${p.tag} • ${p.date}</p>
+        ${p.summary ? `<p class="muted" style="margin-top:10px;">${p.summary}</p>` : ""}
+        ${p.id ? `<button class="btnGhost openBtn" data-id="${p.id}" type="button">Open</button>` : ""}
+      </article>
+    `)
+    .join("");
+}
+
+// ========================================
+// RENDER CONTENT ON PAGE LOAD
+// ========================================
+
+// Render latest news
+const latestList = document.querySelector("#latestList");
+if (latestList) {
+  latestList.innerHTML = renderCards(latestNews);
+}
+
+// Render strategies
+const strategiesEl = document.querySelector("#strategiesList");
+if (strategiesEl) {
+  strategiesEl.innerHTML = renderCards(strategies);
+}
+
+// ========================================
+// MODAL & VIDEO INTERACTION
+// ========================================
+
+document.addEventListener("click", (e) => {
+  // Handle video thumbnail clicks
+  const thumb = e.target.closest(".videoThumb");
+  if (thumb) {
+    const videoId = thumb.getAttribute("data-video");
+    openVideoModal(videoId);
     return;
   }
 
-  switch (hash) {
-    case "home": renderHome(); break;
-    case "news": renderList("News"); break;
-    case "strategy": renderList("Strategy"); break;
-    case "markets": renderMarkets(); break;
-    case "about": renderAbout(); break;
-    default: renderHome();
-  }
-}
+  // Handle "Open" button clicks
+  const btn = e.target.closest(".openBtn");
+  if (!btn) return;
 
-function renderHome() {
-  app.innerHTML = `
-    <section class="hero">
-      <h1>Daily insights on Southeast Asia’s property markets</h1>
-      <p>Covering Malaysia, Singapore, Thailand, Vietnam & Indonesia — plus practical property marketing strategies from the field.</p>
-      <a class="btn" href="#news">Read latest</a>
-    </section>
+  const id = btn.getAttribute("data-id");
+  const post = strategies.find((x) => x.id === id);
+  if (!post) return;
 
-    <section class="grid">
-      ${posts.slice(0, 4).map(cardHTML).join("")}
-    </section>
-  `;
-}
+  openModal(post.title, post.contentHtml);
+});
 
-function renderList(category) {
-  const filtered = posts.filter(p => p.category === category);
-  app.innerHTML = `
-    <section class="hero">
-      <h1>${category}</h1>
-      <p>${category === "News" ? "Market updates and notable moves." : "Straightforward strategies you can apply."}</p>
-    </section>
-
-    <section class="grid">
-      ${filtered.map(cardHTML).join("")}
-    </section>
-  `;
-}
-
-function renderPost(id) {
-  const p = posts.find(x => x.id === id);
-  if (!p) {
-    app.innerHTML = `<section class="hero"><h1>Post not found</h1><p>Try going back to Home.</p><a class="btn" href="#home">Home</a></section>`;
-    return;
-  }
-
-  app.innerHTML = `
-    <section class="hero">
-      <span class="tag">${p.category} • ${p.market} • ${p.date}</span>
-      <h1>${p.title}</h1>
-      <p>${p.summary}</p>
-      <a class="btn" href="#${p.category.toLowerCase()}">Back</a>
-    </section>
-  `;
-}
-
-function renderMarkets() {
-  app.innerHTML = `
-    <section class="hero">
-      <h1>Markets</h1>
-      <p>Pick a market (v1 is placeholder; we’ll expand to real pages next).</p>
-      <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-        ${["Malaysia","Singapore","Thailand","Vietnam","Indonesia"].map(m => `<span class="tag">${m}</span>`).join("")}
+// Open a text/content modal
+function openModal(title, html) {
+  const modal = document.createElement("div");
+  modal.className = "modalOverlay";
+  modal.innerHTML = `
+    <div class="modal">
+      <div class="modalTop">
+        <h3 style="margin:0;">${title}</h3>
+        <button class="modalX" id="closeModal" type="button" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    </section>
+      <div class="modalBody">${html}</div>
+    </div>
   `;
+  document.body.appendChild(modal);
+
+  modal.addEventListener("click", (e) => {
+    const clickedClose = e.target.closest("#closeModal");
+    const clickedOverlay = e.target.classList.contains("modalOverlay");
+    if (clickedOverlay || clickedClose) {
+      modal.remove();
+    }
+  });
 }
 
-function renderAbout() {
-  app.innerHTML = `
-    <section class="hero">
-      <h1>About</h1>
-      <p>THE PROPERTY BRIEF shares no-fluff ASEAN property news and marketing strategy. Built for buyers, investors, agents, and developers.</p>
-      <a class="btn" href="#home">Home</a>
-    </section>
+// Open a video modal
+function openVideoModal(videoId) {
+  const modal = document.createElement("div");
+  modal.className = "modalOverlay";
+  modal.innerHTML = `
+    <div class="modal">
+      <div class="modalTop">
+        <h3 style="margin:0;">Video</h3>
+        <button class="modalX" id="closeModal" type="button" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="videoWrap">
+        <iframe
+          src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+          title="YouTube video player"
+          frameborder="0"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
   `;
-}
+  document.body.appendChild(modal);
 
-function cardHTML(p) {
-  return `
-    <article class="card">
-      <span class="tag">${p.category} • ${p.market} • ${p.date}</span>
-      <h3>${p.title}</h3>
-      <p>${p.summary}</p>
-      <a class="btn" href="#post/${p.id}">Open</a>
-    </article>
-  `;
+  modal.addEventListener("click", (e) => {
+    const clickedClose = e.target.closest("#closeModal");
+    const clickedOverlay = e.target.classList.contains("modalOverlay");
+    if (clickedOverlay || clickedClose) {
+      modal.remove();
+    }
+  });
 }
-
-window.addEventListener("hashchange", route);
-route();

@@ -1,29 +1,71 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>THE PROPERTY BRIEF</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header class="topbar">
-      <div class="brand">THE PROPERTY BRIEF</div>
-      <nav class="nav">
-        <a href="#home">Home</a>
-        <a href="#news">News</a>
-        <a href="#strategy">Strategy</a>
-        <a href="#markets">Markets</a>
-        <a href="#about">About</a>
-      </nav>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THE PROPERTY BRIEF</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Sticky header with nav + subscribe form -->
+  <header class="topbar">
+    <div class="brand">THE PROPERTY BRIEF</div>
+    
+    <nav class="nav">
+      <a href="#home">Home</a>
+      <a href="#latest">News</a>
+      <a href="#strategies">Strategies</a>
+      <a href="#about">About</a>
+    </nav>
+    
+    <form class="headerSub" onsubmit="return false;">
+      <input class="headerInput" type="email" placeholder="Daily news update..(email address)" />
+      <button class="headerBtn" type="button">Subscribe</button>
+    </form>
+  </header>
 
-    <main class="container" id="app"></main>
+  <!-- Main content area -->
+  <main class="container" id="home">
+    <section class="layout">
+      <div class="maincol">
+        
+        <!-- Hero section -->
+        <section class="hero">
+          <p class="kicker">Daily insights • ASEAN property • quick reads</p>
+          <h1>THE PROPERTY BRIEF</h1>
+          <p class="sub">
+            Latest news, market signals, and practical property marketing strategies across Malaysia, Singapore, Thailand, Vietnam & Indonesia.
+          </p>
+        </section>
 
-    <footer class="footer">
-      <small>© <span id="year"></span> THE PROPERTY BRIEF</small>
-    </footer>
+        <!-- Latest news section -->
+        <section class="section" id="latest">
+          <h2>Latest news</h2>
+          <div id="latestList" class="latestList"></div>
+        </section>
 
-    <script src="app.js"></script>
-  </body>
+        <!-- Strategies section -->
+        <section class="section" id="strategies">
+          <h2>Strategies</h2>
+          <p class="muted">Field-tested sales & marketing playbooks.</p>
+          <div id="strategiesList" class="latestList"></div>
+        </section>
+
+        <!-- About section -->
+        <section class="section" id="about">
+          <h2>About</h2>
+          <p class="muted">THE PROPERTY BRIEF is built for buyers, investors, agents, and developers who want signal over noise.</p>
+        </section>
+        
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <small>© <span id="year"></span> THE PROPERTY BRIEF</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
 </html>

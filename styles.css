@@ -1,89 +1,388 @@
+/* ========================================
+   CSS VARIABLES
+   ======================================== */
 :root {
-  --bg: #0b0f14;
-  --card: #111827;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --accent: #22c55e;
-  --line: rgba(255,255,255,.08);
+  --bg: #0b0b0c;
+  --card: #121214;
+  --text: #f3f4f6;
+  --muted: #a1a1aa;
+  --line: rgba(255, 255, 255, 0.1);
+  --yellow: #f9d100;
 }
 
-* { box-sizing: border-box; }
+/* ========================================
+   BASE STYLES
+   ======================================== */
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  background: radial-gradient(1200px 600px at 10% 0%, rgba(34,197,94,.12), transparent 60%), var(--bg);
+  background: var(--bg);
   color: var(--text);
 }
 
-.topbar {
-  position: sticky; top: 0;
-  display: flex; gap: 16px;
-  justify-content: space-between; align-items: center;
-  padding: 14px 18px;
-  background: rgba(11,15,20,.75);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
+/* ========================================
+   LAYOUT
+   ======================================== */
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 18px;
 }
 
-.brand { font-weight: 800; letter-spacing: .5px; }
+.layout {
+  display: block;
+}
+
+/* ========================================
+   HEADER & NAVIGATION
+   ======================================== */
+.topbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: rgba(11, 11, 12, 0.88);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+  gap: 12px;
+  z-index: 50;
+}
+
+.brand {
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
 .nav a {
   color: var(--muted);
   text-decoration: none;
-  margin-left: 12px;
   font-size: 14px;
 }
-.nav a:hover { color: var(--text); }
 
-.container { max-width: 980px; margin: 0 auto; padding: 24px 18px; }
-
-.hero {
-  border: 1px solid var(--line);
-  background: linear-gradient(180deg, rgba(17,24,39,.9), rgba(17,24,39,.6));
-  padding: 18px;
-  border-radius: 16px;
-}
-.hero h1 { margin: 0 0 8px; font-size: 28px; }
-.hero p { margin: 0; color: var(--muted); line-height: 1.5; }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 14px;
-  margin-top: 16px;
+.nav a:hover {
+  color: var(--text);
 }
 
-.card {
-  grid-column: span 6;
-  border: 1px solid var(--line);
-  background: rgba(17,24,39,.55);
-  border-radius: 16px;
-  padding: 14px;
+/* Header subscribe form */
+.headerSub {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
-.card h3 { margin: 0 0 6px; font-size: 16px; }
-.card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
-.tag {
-  display: inline-block;
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  color: var(--muted);
-  margin-bottom: 10px;
-}
-.btn {
-  display: inline-block;
-  margin-top: 10px;
+
+.headerInput {
+  width: 260px;
+  max-width: 40vw;
   padding: 10px 12px;
   border-radius: 12px;
   border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.25);
   color: var(--text);
-  text-decoration: none;
+  outline: none;
 }
-.btn:hover { border-color: rgba(34,197,94,.5); }
 
-.footer { border-top: 1px solid var(--line); padding: 18px; color: var(--muted); text-align: center; }
+.headerInput:focus {
+  border-color: rgba(255, 255, 255, 0.35);
+}
 
-@media (max-width: 720px) {
-  .card { grid-column: span 12; }
-  .nav { display: none; } /* keep v1 simple on mobile */
+.headerBtn {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(249, 209, 0, 0.35);
+  background: var(--yellow);
+  color: #0b0b0c;
+  font-weight: 900;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.headerBtn:hover {
+  opacity: 0.9;
+}
+
+/* ========================================
+   HERO SECTION
+   ======================================== */
+.hero {
+  padding: 34px 0 10px;
+}
+
+.kicker {
+  color: var(--muted);
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
+.hero h1 {
+  margin: 0 0 12px;
+  font-size: 44px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.sub {
+  margin: 0 0 18px;
+  color: var(--muted);
+  max-width: 720px;
+  line-height: 1.6;
+}
+
+/* ========================================
+   SECTIONS
+   ======================================== */
+.section {
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+}
+
+.section h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+.muted {
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ========================================
+   POST CARDS (NEWS & STRATEGIES)
+   ======================================== */
+.latestList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.postCard {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.postCard:hover {
+  border-color: rgba(249, 209, 0, 0.35);
+}
+
+.postCard h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.postMeta {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+.btnPrimary,
+.btnGhost {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btnPrimary {
+  background: var(--yellow);
+  color: #0b0b0c;
+  border-color: rgba(249, 209, 0, 0.35);
+}
+
+.btnGhost {
+  background: transparent;
+  color: var(--text);
+}
+
+.btnGhost:hover {
+  border-color: rgba(249, 209, 0, 0.35);
+}
+
+/* ========================================
+   MODAL
+   ======================================== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  z-index: 999;
+}
+
+.modal {
+  width: min(920px, 100%);
+  max-height: 85vh;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #0b0b0c;
+  padding: 14px;
+}
+
+.modalTop {
+  position: relative;
+  padding: 10px 44px 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.modalX {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modalX:hover {
+  border-color: rgba(249, 209, 0, 0.35);
+}
+
+.modalBody {
+  padding-top: 12px;
+  line-height: 1.7;
+}
+
+.modalBody h3 {
+  margin: 24px 0 10px;
+  font-size: 18px;
+}
+
+.modalBody p {
+  margin: 10px 0;
+}
+
+/* ========================================
+   VIDEO THUMBNAIL & EMBED
+   ======================================== */
+.videoThumb {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.videoThumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.playBadge {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  background: var(--yellow);
+  color: #0b0b0c;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.videoSmall {
+  max-width: 520px;
+  margin: 10px 0;
+}
+
+.videoWrap {
+  margin-top: 12px;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.videoWrap iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ========================================
+   POST MEDIA (IMAGES IN MODALS)
+   ======================================== */
+.postMediaImg {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 18px;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* ========================================
+   RESPONSIVE (MOBILE)
+   ======================================== */
+@media (max-width: 820px) {
+  .topbar {
+    flex-wrap: wrap;
+  }
+
+  .headerSub {
+    width: 100%;
+  }
+
+  .headerInput {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 780px) {
+  .hero h1 {
+    font-size: 34px;
+  }
+
+  .latestList {
+    grid-template-columns: 1fr;
+  }
+
+  .postCard {
+    grid-column: span 1;
+  }
 }
