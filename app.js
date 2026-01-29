@@ -137,17 +137,6 @@ function formatPostBody(post) {
   html = html.replace(/\{\{IMAGE_PLACEHOLDER\}\}/g, imageHtml);
   html = html.replace(/\{\{PDF_PLACEHOLDER\}\}/g, pdfHtml);
   
-  // If placeholders weren't used, add media automatically
-  if (videoHtml && !hasVideoPH) {
-    html = videoHtml + html;
-  }
-  if (imageHtml && !hasImagePH) {
-    html = imageHtml + html;
-  }
-  if (pdfHtml && !hasPdfPH) {
-    html = html + pdfHtml; // PDFs go at bottom by default
-  }
-  
   return html;
 }
 
