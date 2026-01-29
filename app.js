@@ -111,13 +111,18 @@ function formatPostBody(post) {
   const imageHtml = post.image ? `<img src="${post.image}" alt="Post image" class="postMediaImg" />` : '';
   
   const pdfHtml = post.pdf ? `
-  <div class="pdfDownloadBox">
-    ${post.pdfPreview ? `<img src="${post.pdfPreview}" alt="PDF preview" class="pdfPreviewImg" />` : ''}
-    <a href="${post.pdf}" target="_blank" rel="noopener" download class="btnPrimary" style="width:auto; display:inline-block; margin-top:12px;">
-      📄 Download Full PDF
-    </a>
-  </div>
-` : '';
+    <div class="pdfDownloadBox">
+      ${post.pdfPreview ? `<img src="${post.pdfPreview}" alt="PDF preview" class="pdfPreviewImg" />` : ''}
+      <a href="${post.pdf}" target="_blank" rel="noopener" download class="btnPrimary" style="width:auto; display:inline-block; margin-top:12px;">
+        📄 Download Full PDF
+      </a>
+    </div>
+  ` : '';
+  
+  // Check if placeholders are used
+  const hasVideoPH = bodyText.includes('{{VIDEO}}');
+  const hasImagePH = bodyText.includes('{{IMAGE}}');
+  const hasPdfPH = bodyText.includes('{{PDF}}');
   
   // Replace placeholders BEFORE converting Markdown
   bodyText = bodyText.replace(/\{\{VIDEO\}\}/g, '{{VIDEO_PLACEHOLDER}}');
@@ -132,14 +137,14 @@ function formatPostBody(post) {
   html = html.replace(/\{\{IMAGE_PLACEHOLDER\}\}/g, imageHtml);
   html = html.replace(/\{\{PDF_PLACEHOLDER\}\}/g, pdfHtml);
   
-  // If placeholders weren't used, add media at the top (default)
-  if (videoHtml && !html.includes('data-video')) {
+  // If placeholders weren't used, add media automatically
+  if (videoHtml && !hasVideoPH) {
     html = videoHtml + html;
   }
-  if (imageHtml && !html.includes(post.image)) {
+  if (imageHtml && !hasImagePH) {
     html = imageHtml + html;
   }
-  if (pdfHtml && !html.includes('Download PDF')) {
+  if (pdfHtml && !hasPdfPH) {
     html = html + pdfHtml; // PDFs go at bottom by default
   }
   
