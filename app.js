@@ -56,7 +56,7 @@ function renderCards(items, sectionType) {
         </p>
 
         ${p.summary ? `<p class="muted" style="margin-top:10px;">${p.summary}</p>` : ""}
-        ${sectionType === 'strategies' && p.id ? `<button class="btnGhost openBtn" data-id="${p.id}" type="button">Open</button>` : ""}
+        ${p.id ? `<button class="btnGhost openBtn" data-id="${p.id}" type="button">Read more</button>` : ""}
       </article>
     `)
     .join("");
