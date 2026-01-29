@@ -402,3 +402,16 @@ body {
 .btnLoadMore:hover {
   border-color: rgba(249, 209, 0, 0.35);
 }
+/* PDF Download button */
+.pdfDownload {
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(249, 209, 0, 0.05);
+  text-align: center;
+}
+
+.pdfDownload a {
+  text-decoration: none;
+}

@@ -110,9 +110,18 @@ function formatPostBody(post) {
   
   const imageHtml = post.image ? `<img src="${post.image}" alt="Post image" class="postMediaImg" />` : '';
   
+  const pdfHtml = post.pdf ? `
+    <div class="pdfDownload">
+      <a href="${post.pdf}" target="_blank" rel="noopener" class="btnPrimary" style="width:auto; display:inline-block;">
+        📄 Download PDF
+      </a>
+    </div>
+  ` : '';
+  
   // Replace placeholders BEFORE converting Markdown
   bodyText = bodyText.replace(/\{\{VIDEO\}\}/g, '{{VIDEO_PLACEHOLDER}}');
   bodyText = bodyText.replace(/\{\{IMAGE\}\}/g, '{{IMAGE_PLACEHOLDER}}');
+  bodyText = bodyText.replace(/\{\{PDF\}\}/g, '{{PDF_PLACEHOLDER}}');
   
   // Convert Markdown to HTML
   let html = marked.parse(bodyText);
@@ -120,6 +129,7 @@ function formatPostBody(post) {
   // Now replace the placeholders with actual HTML
   html = html.replace(/\{\{VIDEO_PLACEHOLDER\}\}/g, videoHtml);
   html = html.replace(/\{\{IMAGE_PLACEHOLDER\}\}/g, imageHtml);
+  html = html.replace(/\{\{PDF_PLACEHOLDER\}\}/g, pdfHtml);
   
   // If placeholders weren't used, add media at the top (default)
   if (videoHtml && !html.includes('data-video')) {
@@ -127,6 +137,9 @@ function formatPostBody(post) {
   }
   if (imageHtml && !html.includes(post.image)) {
     html = imageHtml + html;
+  }
+  if (pdfHtml && !html.includes('Download PDF')) {
+    html = html + pdfHtml; // PDFs go at bottom by default
   }
   
   return html;
