@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: Squid9oo/The-Property-Brief
+  name: git-gateway
   branch: main
 
 media_folder: "assets/uploads"
