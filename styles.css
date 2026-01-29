@@ -50,8 +50,39 @@ h1,h2,h3{
 .layout{ display: block; }
 
 .section{
+  position: relative;
   padding: clamp(18px, 3vw, 34px) 0;
-  border-top: 1px solid var(--line);
+
+  /* remove the “one flat black” look */
+  margin: 16px 0;
+  padding: clamp(18px, 3vw, 34px) 16px;
+
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+
+  /* base surface */
+  background: rgba(255,255,255,0.02);
+}
+
+/* add a subtle “divider glow” at the top of every section */
+.section::before{
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(249,209,0,0.75), transparent);
+  opacity: 0.35;
+}
+
+/* alternate sections: slight yellow wash + slightly different surface */
+.section:nth-of-type(even){
+  border-color: rgba(249,209,0,0.18);
+  background:
+    radial-gradient(700px 220px at 20% 0%, rgba(249,209,0,0.12), transparent 60%),
+    rgba(255,255,255,0.02);
 }
 
 .section h2{
