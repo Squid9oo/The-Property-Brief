@@ -98,33 +98,35 @@ document.addEventListener("click", (e) => {
 });
 
 function formatPostBody(post) {
+  let bodyText = post.body || '';
+  
+  // Build media HTML
+  const videoHtml = post.videoId ? `
+    <div class="videoThumb videoSmall" data-video="${post.videoId}">
+      <img src="https://img.youtube.com/vi/${post.videoId}/hqdefault.jpg" alt="Video thumbnail" />
+      <div class="playBadge">Play</div>
+    </div>
+  ` : '';
+  
+  const imageHtml = post.image ? `<img src="${post.image}" alt="Post image" class="postMediaImg" />` : '';
+  
+  // Replace placeholders BEFORE converting Markdown
+  bodyText = bodyText.replace(/\{\{VIDEO\}\}/g, '{{VIDEO_PLACEHOLDER}}');
+  bodyText = bodyText.replace(/\{\{IMAGE\}\}/g, '{{IMAGE_PLACEHOLDER}}');
+  
   // Convert Markdown to HTML
-  let html = post.body ? marked.parse(post.body) : '';
+  let html = marked.parse(bodyText);
   
-  // Replace placeholders with actual media
-  if (post.videoId) {
-    const videoHtml = `
-      <div class="videoThumb videoSmall" data-video="${post.videoId}">
-        <img src="https://img.youtube.com/vi/${post.videoId}/hqdefault.jpg" alt="Video thumbnail" />
-        <div class="playBadge">Play</div>
-      </div>
-    `;
-    html = html.replace('{{VIDEO}}', videoHtml);
-    
-    // If no placeholder, add at top (default behavior)
-    if (!html.includes('data-video')) {
-      html = videoHtml + html;
-    }
+  // Now replace the placeholders with actual HTML
+  html = html.replace(/\{\{VIDEO_PLACEHOLDER\}\}/g, videoHtml);
+  html = html.replace(/\{\{IMAGE_PLACEHOLDER\}\}/g, imageHtml);
+  
+  // If placeholders weren't used, add media at the top (default)
+  if (videoHtml && !html.includes('data-video')) {
+    html = videoHtml + html;
   }
-  
-  if (post.image) {
-    const imageHtml = `<img src="${post.image}" alt="Post image" class="postMediaImg" />`;
-    html = html.replace('{{IMAGE}}', imageHtml);
-    
-    // If no placeholder, add at top (default behavior)
-    if (!html.includes(post.image)) {
-      html = imageHtml + html;
-    }
+  if (imageHtml && !html.includes(post.image)) {
+    html = imageHtml + html;
   }
   
   return html;
