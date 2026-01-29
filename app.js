@@ -48,7 +48,13 @@ function renderCards(items, sectionType) {
     .map((p) => `
       <article class="postCard">
         <h3>${p.title}</h3>
-        <p class="postMeta">${p.tag} • ${new Date(p.date).toLocaleDateString('en-US', {year: 'numeric', month: 'short', day: 'numeric'})}</p>
+
+        <p class="postMeta">
+          <span class="tagPill">${p.tag || "Update"}</span>
+          <span class="metaDot">•</span>
+          <span>${new Date(p.date).toLocaleDateString('en-US', {year: 'numeric', month: 'short', day: 'numeric'})}</span>
+        </p>
+
         ${p.summary ? `<p class="muted" style="margin-top:10px;">${p.summary}</p>` : ""}
         ${sectionType === 'strategies' && p.id ? `<button class="btnGhost openBtn" data-id="${p.id}" type="button">Open</button>` : ""}
       </article>
