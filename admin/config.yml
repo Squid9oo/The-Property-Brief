@@ -31,3 +31,4 @@ collections:
       - { label: "Body", name: "body", widget: "markdown" }
       - { label: "Featured Image", name: "image", widget: "image", required: false }
       - { label: "Video ID (YouTube)", name: "videoId", widget: "string", required: false }
+      - { label: "PDF Attachment", name: "pdf", widget: "file", required: false }
