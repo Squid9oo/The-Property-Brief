@@ -175,6 +175,16 @@ h1,h2,h3{
 
 .headerBtn:hover{ opacity: 0.92; }
 
+.headerBtnGhost{
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(249, 209, 0, 0.35);
+}
+
+.headerBtnGhost:hover{
+  background: rgba(249, 209, 0, 0.12);
+}
+
 /* ---------- Hero ---------- */
 .hero{
   padding: 34px 0 10px;
