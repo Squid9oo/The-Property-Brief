@@ -460,3 +460,5 @@ h1,h2,h3{
 @media (max-width: 780px){
   .latestList{ grid-template-columns: 1fr; }
 }
+
+.hp{ display:none; }
