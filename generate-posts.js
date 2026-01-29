@@ -25,7 +25,8 @@ function getPosts(folder) {
       body: body || '',
       image: data.image || null,
       videoId: data.videoId || null,
-      pdf: data.pdf || null
+      pdf: data.pdf || null,
+      pdfPreview: data.pdfPreview || null
     };
   }).sort((a, b) => new Date(b.date) - new Date(a.date));
 }

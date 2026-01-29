@@ -402,8 +402,8 @@ body {
 .btnLoadMore:hover {
   border-color: rgba(249, 209, 0, 0.35);
 }
-/* PDF Download button */
-.pdfDownload {
+/* PDF Download with Preview */
+.pdfDownloadBox {
   margin: 20px 0;
   padding: 16px;
   border: 1px solid var(--line);
@@ -412,6 +412,21 @@ body {
   text-align: center;
 }
 
-.pdfDownload a {
+.pdfPreviewImg {
+  display: block;
+  width: 100%;
+  max-width: 680px;
+  height: auto;
+  margin: 0 auto 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  cursor: pointer;
+}
+
+.pdfPreviewImg:hover {
+  opacity: 0.9;
+}
+
+.pdfDownloadBox a {
   text-decoration: none;
 }

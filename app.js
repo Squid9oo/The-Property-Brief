@@ -111,12 +111,13 @@ function formatPostBody(post) {
   const imageHtml = post.image ? `<img src="${post.image}" alt="Post image" class="postMediaImg" />` : '';
   
   const pdfHtml = post.pdf ? `
-    <div class="pdfDownload">
-      <a href="${post.pdf}" target="_blank" rel="noopener" class="btnPrimary" style="width:auto; display:inline-block;">
-        📄 Download PDF
-      </a>
-    </div>
-  ` : '';
+  <div class="pdfDownloadBox">
+    ${post.pdfPreview ? `<img src="${post.pdfPreview}" alt="PDF preview" class="pdfPreviewImg" />` : ''}
+    <a href="${post.pdf}" target="_blank" rel="noopener" download class="btnPrimary" style="width:auto; display:inline-block; margin-top:12px;">
+      📄 Download Full PDF
+    </a>
+  </div>
+` : '';
   
   // Replace placeholders BEFORE converting Markdown
   bodyText = bodyText.replace(/\{\{VIDEO\}\}/g, '{{VIDEO_PLACEHOLDER}}');
