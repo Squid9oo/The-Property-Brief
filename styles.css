@@ -644,7 +644,9 @@ h1,h2,h3{
   gap: 10px;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap; /* allows graceful wrap on small phones */
+  flex-wrap: nowrap; /* forces single line */
+  overflow-x: auto; /* if too tight it scroll instead of wrap */
+  -webkit-overflow-scrolling: touch;
   padding: 10px 12px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -698,4 +700,29 @@ h1,h2,h3{
 
 .searchResults{
   margin-top: 14px;
+}
+.searchInput{
+  flex: 1 1 420px;        /* can shrink/grow */
+  min-width: 240px;       /* prevents it becoming too tiny */
+}
+
+.searchSelect{
+  flex: 0 0 110px;
+  min-width: 110px;
+}
+
+.searchDate{
+  flex: 0 0 140px;
+  min-width: 140px;
+}
+
+.searchClear{
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.searchTo{
+  flex: 0 0 auto;
+  white-space: nowrap;
+  opacity: 0.8;
 }
