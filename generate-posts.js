@@ -28,6 +28,7 @@ function getPosts(folder) {
       pdf: data.pdf || null,
       pdfPreview: data.pdfPreview || null,
       link: data.link || null,
+      description: data.description || "",
       alt: data.alt || "",
       active: data.active !== undefined ? data.active : true,
     };

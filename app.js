@@ -96,7 +96,7 @@ function initSponsoredRotator(ads) {
     imgEl.src = ad.image;
     imgEl.alt = ad.alt || ad.title || "Sponsored ad";
     imgEl.style.display = "block";
-    if (noteEl) noteEl.textContent = "";
+    if (noteEl) noteEl.textContent = ad.description || "Tap/click to learn more.";
   }
 
   showAd(activeAds[i]);

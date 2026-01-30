@@ -48,5 +48,6 @@ collections:
       - { label: "Publish Date", name: "date", widget: "datetime" }
       - { label: "Banner Image", name: "image", widget: "image" }
       - { label: "Click Link (URL)", name: "link", widget: "string" }
+      - { label: "Description (shown under banner)", name: "description", widget: "string", required: false }
       - { label: "Alt text (optional)", name: "alt", widget: "string", required: false }
       - { label: "Active?", name: "active", widget: "boolean", default: true }
