@@ -534,3 +534,17 @@ h1,h2,h3{
   font-weight:900;
   font-size:18px;
 }
+/* Sponsored rotator: keep banner consistent */
+#sponsoredAdImg{
+  display: block;
+  width: 100%;
+  height: 260px;           /* pick a consistent banner height */
+  object-fit: cover;       /* fill the box nicely */
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+}
+
+/* Optional: hide sponsor text title under the banner (keep layout clean) */
+#sponsoredAdTitle{
+  display: none;
+}
