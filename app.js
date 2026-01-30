@@ -316,15 +316,117 @@ setDefaultLast30Days();
     return norm(`${p.title || ""} ${p.summary || ""} ${p.body || ""}`);
   }
 
-  function renderSearchResults(items) {
-    if (items.length === 0) {
-      resultsEl.innerHTML = `<div class="muted">No matches. Try a shorter keyword (example: "marketing").</div>`;
-      return;
-    }
+  function escapeHtml(str){
+  return (str || "")
+    .toString()
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
-    // Reuse your existing card renderer so UI stays consistent.
-    resultsEl.innerHTML = renderCards(items, "mixed");
+function escapeRegExp(str){
+  return (str || "").toString().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function stripMarkdown(md){
+  const s = (md || "").toString();
+  return s
+    .replace(/!\[.*?\]\(.*?\)/g, " ")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/`{1,3}[\s\S]*?`{1,3}/g, " ")
+    .replace(/[#>*_~\-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function makeSnippet(text, rawQuery, maxLen = 120){
+  const clean = stripMarkdown(text || "");
+  if (!clean) return "";
+
+  const q = (rawQuery || "").toLowerCase().trim();
+  if (!q) return clean.slice(0, maxLen);
+
+  const idx = clean.toLowerCase().indexOf(q);
+  if (idx === -1) return clean.slice(0, maxLen);
+
+  const start = Math.max(0, idx - 40);
+  const end = Math.min(clean.length, idx + q.length + 60);
+  let snip = clean.slice(start, end).trim();
+
+  if (start > 0) snip = "… " + snip;
+  if (end < clean.length) snip = snip + " …";
+  return snip;
+}
+
+function highlightText(text, rawQuery){
+  const safe = escapeHtml(text || "");
+  const raw = (rawQuery || "").trim();
+  if (!raw) return safe;
+
+  const terms = raw
+    .split(/\s+/)
+    .map(t => t.trim())
+    .filter(t => t.length >= 2);
+
+  if (terms.length === 0) return safe;
+
+  const pattern = terms.map(escapeRegExp).join("|");
+  const re = new RegExp(`(${pattern})`, "gi");
+  return safe.replace(re, `<mark class="hl">$1</mark>`);
+}
+
+function fmtDateLabel(dateStr){
+  try{
+    return new Date(dateStr).toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'});
+  } catch(e){
+    return "";
   }
+}
+
+function renderSearchResults(items, rawQuery) {
+  if (items.length === 0) {
+    resultsEl.innerHTML = `<div class="muted">No matches.</div>`;
+    return;
+  }
+
+  const MAX_RESULTS = 25;
+  const shown = items.slice(0, MAX_RESULTS);
+
+  const listHtml = shown.map(p => {
+    const section = p.__section === "strategies" ? "Strategies" : "News";
+    const title = highlightText(p.title || "Untitled", rawQuery);
+
+    const baseText = (p.summary && p.summary.trim()) ? p.summary : (p.body || "");
+    const snippetRaw = makeSnippet(baseText, rawQuery, 120);
+    const snippet = highlightText(snippetRaw, rawQuery);
+
+    return `
+      <div class="searchItem">
+        <div class="searchItemTop">
+          <span class="searchBadge">${section}</span>
+          <span class="searchDateText">${fmtDateLabel(p.date)}</span>
+        </div>
+
+        <button class="openBtn searchTitle" data-id="${escapeHtml(p.id)}" type="button">
+          ${title}
+        </button>
+
+        ${snippet ? `<div class="searchSnippet">${snippet}</div>` : ``}
+      </div>
+    `;
+  }).join("");
+
+  const countLine = (items.length > MAX_RESULTS)
+    ? `<div class="searchCount muted">Showing ${MAX_RESULTS} of ${items.length}. Keep typing to narrow.</div>`
+    : `<div class="searchCount muted">Showing ${items.length} result(s).</div>`;
+
+  resultsEl.innerHTML = `
+    ${countLine}
+    <div class="searchResultList">${listHtml}</div>
+  `;
+}
 
   function runSearch() {
   const raw = (inputEl.value || "").trim();
@@ -361,7 +463,7 @@ setDefaultLast30Days();
   merged = merged.filter(p => getHaystack(p).includes(q));
   merged.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  renderSearchResults(merged);
+  renderSearchResults(merged, raw);
 }
 
   // Run when user types/changes filters
