@@ -767,3 +767,55 @@ h1,h2,h3{
 .searchResults{
   margin-top: 14px;
 }
+
+/* Date inputs: improve iOS Safari visibility */
+.searchDate{
+  color: var(--text);
+  -webkit-text-fill-color: var(--text);
+  color-scheme: dark; /* helps date picker match dark UI */
+}
+
+.searchDate::-webkit-datetime-edit,
+.searchDate::-webkit-datetime-edit-text,
+.searchDate::-webkit-datetime-edit-month-field,
+.searchDate::-webkit-datetime-edit-day-field,
+.searchDate::-webkit-datetime-edit-year-field{
+  color: var(--text);
+}
+
+/* Mobile: 2-row layout (no horizontal scroll) */
+@media (max-width: 640px){
+  .searchLine{
+    flex-wrap: wrap;
+    overflow-x: visible;
+    gap: 10px;
+  }
+
+  /* Row 1: search + category */
+  .searchInput{
+    flex: 1 1 calc(100% - 108px);
+    min-width: 0;
+  }
+
+  .searchSelect{
+    flex: 0 0 98px;
+    min-width: 98px;
+  }
+
+  /* Row 2: date range */
+  #dateFrom{
+    order: 3;
+    flex: 1 1 44%;
+    min-width: 140px;
+  }
+
+  .searchTo{
+    order: 4;
+  }
+
+  #dateTo{
+    order: 5;
+    flex: 1 1 44%;
+    min-width: 140px;
+  }
+}
