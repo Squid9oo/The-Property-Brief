@@ -23,6 +23,7 @@ fetch('posts.json')
     // Render initial posts (6 each)
     renderSection('latestList', allNews, 6, 'news');
     renderSection('strategiesList', allStrategies, 6, 'strategies');
+    initSearch();
   })
   .catch(err => {
     console.error('Error loading posts:', err);
@@ -251,4 +252,116 @@ function openVideoModal(videoId) {
       modal.remove();
     }
   });
+}
+
+// ========================================
+// SEARCH (News + Strategies + body text + date filter)
+// ========================================
+function initSearch() {
+  const inputEl = document.getElementById("searchInput");
+  const sectionEl = document.getElementById("searchSection");
+  const fromEl = document.getElementById("dateFrom");
+  const toEl = document.getElementById("dateTo");
+  const clearEl = document.getElementById("searchClear");
+  const metaEl = document.getElementById("searchMeta");
+  const resultsEl = document.getElementById("searchResults");
+
+  // If the user hasn't added the search block to index.html yet, do nothing.
+  if (!inputEl || !sectionEl || !fromEl || !toEl || !resultsEl) return;
+
+  function norm(s) {
+    return (s || "").toString().toLowerCase().replace(/\s+/g, " ").trim();
+  }
+
+  function inDateRange(postDateISO, fromValue, toValue) {
+    if (!postDateISO) return true;
+
+    // Post date from posts.json is ISO like "2026-01-29T05:49:00.000Z"
+    const postTime = new Date(postDateISO).getTime();
+    if (Number.isNaN(postTime)) return true;
+
+    if (fromValue) {
+      const fromTime = new Date(fromValue + "T00:00:00").getTime();
+      if (!Number.isNaN(fromTime) && postTime < fromTime) return false;
+    }
+
+    if (toValue) {
+      const toTime = new Date(toValue + "T23:59:59").getTime();
+      if (!Number.isNaN(toTime) && postTime > toTime) return false;
+    }
+
+    return true;
+  }
+
+  function getHaystack(p) {
+    // Search title + summary + body
+    return norm(`${p.title || ""} ${p.summary || ""} ${p.body || ""}`);
+  }
+
+  function renderSearchResults(items) {
+    if (items.length === 0) {
+      resultsEl.innerHTML = `<div class="muted">No matches. Try a shorter keyword (example: "marketing").</div>`;
+      return;
+    }
+
+    // Reuse your existing card renderer so UI stays consistent.
+    resultsEl.innerHTML = renderCards(items, "mixed");
+  }
+
+  function runSearch() {
+    const q = norm(inputEl.value);
+    const which = sectionEl.value; // all | news | strategies
+    const fromV = fromEl.value;
+    const toV = toEl.value;
+
+    const sources =
+      which === "news" ? [{ type: "news", items: allNews }] :
+      which === "strategies" ? [{ type: "strategies", items: allStrategies }] :
+      [{ type: "news", items: allNews }, { type: "strategies", items: allStrategies }];
+
+    // Build one merged list
+    let merged = [];
+    sources.forEach(s => {
+      (s.items || []).forEach(p => merged.push({ ...p, __section: s.type }));
+    });
+
+    // Filter by date first (fast)
+    merged = merged.filter(p => inDateRange(p.date, fromV, toV));
+
+    // Filter by text (title+summary+body)
+    if (q) {
+      merged = merged.filter(p => getHaystack(p).includes(q));
+    }
+
+    // Sort newest first
+    merged.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Meta line
+    const label =
+      which === "news" ? "News" :
+      which === "strategies" ? "Strategies" : "All";
+
+    if (metaEl) {
+      metaEl.textContent = `Showing ${merged.length} result(s) • ${label}` + (q ? ` • “${inputEl.value.trim()}”` : "");
+    }
+
+    renderSearchResults(merged);
+  }
+
+  // Run when user types/changes filters
+  inputEl.addEventListener("input", runSearch);
+  sectionEl.addEventListener("change", runSearch);
+  fromEl.addEventListener("change", runSearch);
+  toEl.addEventListener("change", runSearch);
+
+  if (clearEl) {
+    clearEl.addEventListener("click", () => {
+      inputEl.value = "";
+      sectionEl.value = "all";
+      fromEl.value = "";
+      toEl.value = "";
+      if (metaEl) metaEl.textContent = "Type to search.";
+      resultsEl.innerHTML = "";
+    });
+  }
 }
