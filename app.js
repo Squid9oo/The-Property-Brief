@@ -340,7 +340,6 @@ setDefaultLast30Days();
   resultsEl.innerHTML = "";
   return;
 }
-  }
 
   // Minimum 3 characters: show nothing
   if (q.length < 3) {
