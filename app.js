@@ -360,7 +360,6 @@ function initSearch() {
       sectionEl.value = "all";
       fromEl.value = "";
       toEl.value = "";
-      if (metaEl) metaEl.textContent = "Type to search.";
       resultsEl.innerHTML = "";
     });
   }

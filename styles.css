@@ -583,6 +583,7 @@ h1,h2,h3{
 @media (max-width: 600px){
   .sponsorRotateHint{ display: block; }
 }
+
 /* Landscape phones: keep header compact */
 @media (max-height: 500px) and (orientation: landscape){
   .topbar{
@@ -623,4 +624,78 @@ h1,h2,h3{
     padding: 8px 12px;
     font-size: 13px;
   }
+}
+/* ========================================
+   Search bar (footer-style, single line)
+======================================== */
+.searchBlock{
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.searchBlock h2{
+  display: none; /* hide "Find posts" title for clean footer look */
+}
+
+.searchLine{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; /* allows graceful wrap on small phones */
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.02);
+}
+
+.searchInput{
+  width: min(520px, 55vw);
+  padding: 10px 12px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.25);
+  color: var(--text);
+  outline: none;
+}
+
+.searchInput:focus{
+  border-color: rgba(249, 209, 0, 0.55);
+  box-shadow: 0 0 0 4px rgba(249,209,0,0.12);
+}
+
+.searchSelect, .searchDate{
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.25);
+  color: var(--text);
+  padding: 0 10px;
+  outline: none;
+}
+
+.searchTo{
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.searchClear{
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.searchClear:hover{
+  background: rgba(255,255,255,0.07);
+}
+
+.searchResults{
+  margin-top: 14px;
 }

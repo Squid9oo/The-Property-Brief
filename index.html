@@ -95,19 +95,13 @@
 
           <div class="searchRow">
           <label class="searchLabel">
-          From
-          <input id="dateFrom" class="searchDate" type="date" />
-          </label>
-
-          <label class="searchLabel">
-          To
-          <input id="dateTo" class="searchDate" type="date" />
-          </label>
+          <input id="dateFrom" class="searchDate" type="date" aria-label="From date" />
+          <span class="searchTo">to</span>
+          <input id="dateTo" class="searchDate" type="date" aria-label="To date" />
 
           <button id="searchClear" class="btnSecondary" type="button">Clear</button>
           </div>
 
-          <div id="searchMeta" class="searchMeta">Type to search.</div>
           <div id="searchResults" class="searchResults"></div>
         </section>
         
