@@ -684,20 +684,6 @@ h1,h2,h3{
   font-size: 14px;
 }
 
-.searchClear{
-  height: 40px;
-  padding: 0 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.04);
-  color: var(--text);
-  cursor: pointer;
-}
-
-.searchClear:hover{
-  background: rgba(255,255,255,0.07);
-}
-
 .searchResults{
   margin-top: 14px;
 }
@@ -714,11 +700,6 @@ h1,h2,h3{
 .searchDate{
   flex: 0 0 140px;
   min-width: 140px;
-}
-
-.searchClear{
-  flex: 0 0 auto;
-  white-space: nowrap;
 }
 
 .searchTo{
@@ -781,18 +762,6 @@ h1,h2,h3{
   flex: 0 0 auto;
   white-space: nowrap;
   color: var(--muted);
-}
-
-.searchClear{
-  flex: 0 0 auto;
-  height: 40px;
-  padding: 0 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.06);
-  color: var(--text);
-  cursor: pointer;
-  white-space: nowrap;
 }
 
 .searchResults{

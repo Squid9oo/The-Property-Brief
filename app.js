@@ -262,7 +262,6 @@ function initSearch() {
   const sectionEl = document.getElementById("searchSection");
   const fromEl = document.getElementById("dateFrom");
   const toEl = document.getElementById("dateTo");
-  const clearEl = document.getElementById("searchClear");
   const metaEl = document.getElementById("searchMeta");
   const resultsEl = document.getElementById("searchResults");
 
@@ -309,44 +308,43 @@ function initSearch() {
   }
 
   function runSearch() {
-    const q = norm(inputEl.value);
-    const which = sectionEl.value; // all | news | strategies
-    const fromV = fromEl.value;
-    const toV = toEl.value;
+  const raw = (inputEl.value || "").trim();
+  const q = norm(raw);
+  const which = sectionEl.value; // all | news | strategies
+  const fromV = fromEl.value;
+  const toV = toEl.value;
 
-    const sources =
-      which === "news" ? [{ type: "news", items: allNews }] :
-      which === "strategies" ? [{ type: "strategies", items: allStrategies }] :
-      [{ type: "news", items: allNews }, { type: "strategies", items: allStrategies }];
-
-    // Build one merged list
-    let merged = [];
-    sources.forEach(s => {
-      (s.items || []).forEach(p => merged.push({ ...p, __section: s.type }));
-    });
-
-    // Filter by date first (fast)
-    merged = merged.filter(p => inDateRange(p.date, fromV, toV));
-
-    // Filter by text (title+summary+body)
-    if (q) {
-      merged = merged.filter(p => getHaystack(p).includes(q));
-    }
-
-    // Sort newest first
-    merged.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    // Meta line
-    const label =
-      which === "news" ? "News" :
-      which === "strategies" ? "Strategies" : "All";
-
-    if (metaEl) {
-      metaEl.textContent = `Showing ${merged.length} result(s) • ${label}` + (q ? ` • “${inputEl.value.trim()}”` : "");
-    }
-
-    renderSearchResults(merged);
+  // If user clears the box: clear everything (results + filters)
+  if (q.length === 0) {
+    sectionEl.value = "all";
+    fromEl.value = "";
+    toEl.value = "";
+    resultsEl.innerHTML = "";
+    return;
   }
+
+  // Minimum 3 characters: show nothing
+  if (q.length < 3) {
+    resultsEl.innerHTML = "";
+    return;
+  }
+
+  const sources =
+    which === "news" ? [{ type: "news", items: allNews }] :
+    which === "strategies" ? [{ type: "strategies", items: allStrategies }] :
+    [{ type: "news", items: allNews }, { type: "strategies", items: allStrategies }];
+
+  let merged = [];
+  sources.forEach(s => {
+    (s.items || []).forEach(p => merged.push({ ...p, __section: s.type }));
+  });
+
+  merged = merged.filter(p => inDateRange(p.date, fromV, toV));
+  merged = merged.filter(p => getHaystack(p).includes(q));
+  merged.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  renderSearchResults(merged);
+}
 
   // Run when user types/changes filters
   inputEl.addEventListener("input", runSearch);
@@ -354,13 +352,4 @@ function initSearch() {
   fromEl.addEventListener("change", runSearch);
   toEl.addEventListener("change", runSearch);
 
-  if (clearEl) {
-    clearEl.addEventListener("click", () => {
-      inputEl.value = "";
-      sectionEl.value = "all";
-      fromEl.value = "";
-      toEl.value = "";
-      resultsEl.innerHTML = "";
-    });
-  }
 }
