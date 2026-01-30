@@ -69,7 +69,8 @@ function renderCards(items, sectionType) {
       </article>
     `)
     .join("");
-    
+    }
+
 function initSponsoredRotator(ads) {
   const linkEl = document.getElementById("sponsoredAdLink");
   const imgEl = document.getElementById("sponsoredAdImg");
@@ -106,7 +107,7 @@ function initSponsoredRotator(ads) {
     showAd(activeAds[i]);
   }, 5000);
 }
-}
+
 
 // ========================================
 // LOAD MORE FUNCTIONALITY
