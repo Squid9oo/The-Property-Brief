@@ -37,3 +37,16 @@ collections:
       - { label: "Video ID (YouTube)", name: "videoId", widget: "string", required: false }
       - { label: "PDF Attachment", name: "pdf", widget: "file", required: false }
       - { label: "PDF Preview Image", name: "pdfPreview", widget: "image", required: false, hint: "Screenshot of PDF pages (optional)" }
+  
+  - name: "sponsored"
+    label: "Sponsored Ads"
+    folder: "content/sponsored"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Advertiser Name", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Banner Image", name: "image", widget: "image" }
+      - { label: "Click Link (URL)", name: "link", widget: "string" }
+      - { label: "Alt text (optional)", name: "alt", widget: "string", required: false }
+      - { label: "Active?", name: "active", widget: "boolean", default: true }
