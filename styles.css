@@ -583,3 +583,35 @@ h1,h2,h3{
 @media (max-width: 600px){
   .sponsorRotateHint{ display: block; }
 }
+/* Landscape phones: keep header compact */
+@media (max-height: 500px) and (orientation: landscape){
+  .topbar{
+    padding: 8px 12px;
+  }
+
+  /* Stop nav links from wrapping into 2–3 rows */
+  .nav{
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+  }
+
+  .nav a{
+    font-size: 13px;
+    padding: 6px 8px;
+    white-space: nowrap;
+  }
+
+  /* Optional: hide the email input in landscape to save space */
+  .headerInput{
+    display: none;
+  }
+
+  /* Keep buttons smaller too */
+  .headerBtn{
+    height: 36px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
