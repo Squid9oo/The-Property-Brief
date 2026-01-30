@@ -819,3 +819,105 @@ h1,h2,h3{
     min-width: 140px;
   }
 }
+/* Search layout: desktop 1-line, mobile 2-rows */
+.searchWrap{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.02);
+}
+
+.searchTop, .searchDates{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.searchTop{ flex: 1 1 auto; }
+.searchDates{ flex: 0 0 auto; }
+
+.searchInput{
+  flex: 1 1 520px;
+  min-width: 260px;
+  height: 40px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.25);
+  color: var(--text);
+  outline: none;
+}
+
+.searchSelect{
+  flex: 0 0 120px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.25);
+  color: var(--text);
+  padding: 0 10px;
+}
+
+.searchDate{
+  flex: 1 1 auto;
+  min-width: 140px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.25);
+  color: var(--text);
+  -webkit-text-fill-color: var(--text);
+  color-scheme: dark;
+  padding: 0 10px;
+}
+
+.searchTo{
+  flex: 0 0 auto;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+/* iPhone date text visibility */
+.searchDate::-webkit-datetime-edit,
+.searchDate::-webkit-datetime-edit-text,
+.searchDate::-webkit-datetime-edit-month-field,
+.searchDate::-webkit-datetime-edit-day-field,
+.searchDate::-webkit-datetime-edit-year-field{
+  color: var(--text);
+}
+
+/* Mobile portrait: 2 rows, dates in ONE line under search */
+@media (max-width: 640px){
+  .searchWrap{
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 18px;
+  }
+
+  .searchTop{
+    width: 100%;
+  }
+
+  .searchInput{
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .searchSelect{
+    flex: 0 0 90px;
+  }
+
+  .searchDates{
+    width: 100%;
+  }
+
+  .searchDate{
+    min-width: 0;
+    flex: 1 1 50%;
+  }
+}

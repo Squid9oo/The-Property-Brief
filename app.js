@@ -268,6 +268,25 @@ function initSearch() {
   // If the user hasn't added the search block to index.html yet, do nothing.
   if (!inputEl || !sectionEl || !fromEl || !toEl || !resultsEl) return;
 
+  function fmtDate(d){
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+function setDefaultLast30Days(){
+  const today = new Date();
+  const from = new Date();
+  from.setDate(today.getDate() - 30);
+
+  toEl.value = fmtDate(today);
+  fromEl.value = fmtDate(from);
+}
+
+// Always start with last 30 days visible
+setDefaultLast30Days();
+
   function norm(s) {
     return (s || "").toString().toLowerCase().replace(/\s+/g, " ").trim();
   }
@@ -316,11 +335,11 @@ function initSearch() {
 
   // If user clears the box: clear everything (results + filters)
   if (q.length === 0) {
-    sectionEl.value = "all";
-    fromEl.value = "";
-    toEl.value = "";
-    resultsEl.innerHTML = "";
-    return;
+  sectionEl.value = "all";
+  setDefaultLast30Days();
+  resultsEl.innerHTML = "";
+  return;
+}
   }
 
   // Minimum 3 characters: show nothing
