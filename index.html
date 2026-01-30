@@ -81,25 +81,21 @@
         <section id="search" class="searchBlock">
           <h2>Find posts</h2>
 
-          <div class="searchRow">
+          <div class="searchLine">
           <input id="searchInput" class="searchInput" type="search"
-          placeholder="Search title, summary, or body..."
-          autocomplete="off" />
+          placeholder="Search title, summary, or body..." autocomplete="off" />
 
           <select id="searchSection" class="searchSelect">
           <option value="all" selected>All</option>
           <option value="news">News</option>
           <option value="strategies">Strategies</option>
           </select>
-          </div>
 
-          <div class="searchRow">
-          <label class="searchLabel">
           <input id="dateFrom" class="searchDate" type="date" aria-label="From date" />
           <span class="searchTo">to</span>
           <input id="dateTo" class="searchDate" type="date" aria-label="To date" />
 
-          <button id="searchClear" class="btnSecondary" type="button">Clear</button>
+          <button id="searchClear" class="searchClear" type="button">Clear</button>
           </div>
 
           <div id="searchResults" class="searchResults"></div>
