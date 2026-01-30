@@ -604,8 +604,13 @@ h1,h2,h3{
   }
 
   /* Optional: hide the email input in landscape to save space */
-  .headerInput{
-    display: none;
+    .headerInput{
+    display: block;
+    width: 160px;     /* smaller input in landscape */
+    max-width: 32vw;
+    height: 36px;
+    padding: 8px 10px;
+    font-size: 13px;
   }
 
   /* Keep buttons smaller too */
