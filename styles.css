@@ -562,3 +562,12 @@ h1,h2,h3{
   font-size: 0.98rem;
   opacity: 0.85;
 }
+
+/* Mobile: show the FULL sponsored image (no cropping) */
+@media (max-width: 600px){
+  #sponsoredAdImg{
+    height: 180px;        /* keep a consistent box height on mobile */
+    object-fit: contain;  /* show whole image */
+    background: rgba(255,255,255,0.04); /* so empty space looks nice */
+  }
+}
