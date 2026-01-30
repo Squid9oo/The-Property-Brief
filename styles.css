@@ -571,3 +571,15 @@ h1,h2,h3{
     background: rgba(255,255,255,0.04); /* so empty space looks nice */
   }
 }
+
+.sponsorRotateHint{
+  margin: 6px 0 12px;
+  font-size: 12px;
+  opacity: 0.7;
+  letter-spacing: 0.2px;
+  display: none; /* hidden by default */
+}
+
+@media (max-width: 600px){
+  .sponsorRotateHint{ display: block; }
+}
