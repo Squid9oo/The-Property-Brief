@@ -9,12 +9,16 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 // ========================================
 let allNews = [];
 let allStrategies = [];
+let allSponsored = [];
+let sponsoredTimer = null;
 
 fetch('posts.json')
   .then(res => res.json())
   .then(data => {
     allNews = data.news || [];
     allStrategies = data.strategies || [];
+    allSponsored = data.sponsored || [];
+    initSponsoredRotator(allSponsored);
     
     // Render initial posts (6 each)
     renderSection('latestList', allNews, 6, 'news');
@@ -65,6 +69,43 @@ function renderCards(items, sectionType) {
       </article>
     `)
     .join("");
+    
+function initSponsoredRotator(ads) {
+  const linkEl = document.getElementById("sponsoredAdLink");
+  const imgEl = document.getElementById("sponsoredAdImg");
+  const titleEl = document.getElementById("sponsoredAdTitle");
+  const noteEl = document.getElementById("sponsoredAdNote");
+  if (!linkEl || !imgEl || !titleEl) return;
+
+  const activeAds = (ads || []).filter(a => a && a.active !== false && a.image && a.link);
+
+  if (activeAds.length === 0) {
+    titleEl.textContent = "Your banner here";
+    imgEl.style.display = "none";
+    linkEl.href = "mailto:thianlong@gmail.com";
+    if (noteEl) noteEl.textContent = "No sponsored ads yet (add some via /admin).";
+    return;
+  }
+
+  let i = 0;
+
+  function showAd(ad) {
+    linkEl.href = ad.link;
+    titleEl.textContent = ad.title || "Sponsored";
+    imgEl.src = ad.image;
+    imgEl.alt = ad.alt || ad.title || "Sponsored ad";
+    imgEl.style.display = "block";
+    if (noteEl) noteEl.textContent = "";
+  }
+
+  showAd(activeAds[i]);
+
+  if (sponsoredTimer) clearInterval(sponsoredTimer);
+  sponsoredTimer = setInterval(() => {
+    i = (i + 1) % activeAds.length;
+    showAd(activeAds[i]);
+  }, 5000);
+}
 }
 
 // ========================================

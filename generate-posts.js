@@ -26,14 +26,18 @@ function getPosts(folder) {
       image: data.image || null,
       videoId: data.videoId || null,
       pdf: data.pdf || null,
-      pdfPreview: data.pdfPreview || null
+      pdfPreview: data.pdfPreview || null,
+      link: data.link || null,
+      alt: data.alt || "",
+      active: data.active !== undefined ? data.active : true,
     };
   }).sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
 const posts = {
   news: getPosts('news'),
-  strategies: getPosts('strategies')
+  strategies: getPosts('strategies'),
+  sponsored: getPosts('sponsored')
 };
 
 fs.writeFileSync('posts.json', JSON.stringify(posts, null, 2));
