@@ -613,6 +613,10 @@ h1,h2,h3{
     font-size: 13px;
   }
 
+    .headerSub{
+    flex-wrap: nowrap;
+  }
+
   /* Keep buttons smaller too */
   .headerBtn{
     height: 36px;
