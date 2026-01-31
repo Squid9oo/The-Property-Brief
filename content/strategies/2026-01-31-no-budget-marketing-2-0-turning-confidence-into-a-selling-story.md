@@ -1,7 +1,7 @@
 ---
 title: "No Budget Marketing 2.0: Turning Confidence into a Selling Story"
 date: 2026-01-31T13:28:00.000+08:00
-tag: Strategy No budget marketing Confidence Assurance Program Storytelling
+tag: Strategy • No budget marketing • Confidence Assurance Program • Storytelling
 summary: >
   In an oversupplied high-rise market, buyers often have money but lack
   conviction so discounts only burn margin without solving the real problem:
