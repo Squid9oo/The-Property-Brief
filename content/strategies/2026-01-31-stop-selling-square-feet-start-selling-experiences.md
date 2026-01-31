@@ -9,6 +9,8 @@ summary: >-
   ​
 
   This idea flips the game: let prospects experience the township through a 2-night stay plus a guided “treasure hunt,” then close the loop with rewards, referrals, and social proof.
+pdf: /assets/uploads/selling-home-or-selling-sq-ft.pdf
+pdfPreview: /assets/uploads/selling-home-or-selling-sq-ft.jpeg
 ---
 Most developers compete on size, specs, and price until the market becomes a “sea of sameness.”​ When everyone claims “best location,” telling people your lifestyle is better isn’t enough.​
 
