@@ -10,8 +10,8 @@ summary: >
   ​
 
   This piece shares how a “Confidence Assurance Program (CAP)” reframes a buy-back idea into a trust story, while using fine print and caps to protect the developer.
-pdf: /assets/uploads/no-budget-marketing-2.0.pdf
-pdfPreview: /assets/uploads/no-budget-marketing-2.0.jpeg
+pdf: /assets/uploads/No Budget Marketing 2.0.pdf
+pdfPreview: /assets/uploads/No Budget Marketing 2.0.jpeg
 ---
 Previously, I shared “No Budget Marketing” as a simple principle: use what you already have your venues, database, and networks before asking for bigger ad spend. This round is “No Budget Marketing 2.0”: using **storytelling** to sell confidence in a tight-margin project.​
 
