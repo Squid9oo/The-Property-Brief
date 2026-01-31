@@ -10,7 +10,7 @@ summary: >-
   ​
 
   This reading pack helps junior marketers understand how Malaysia’s best campaigns use positioning, experience, digital tools (including VR/360), and smarter “offers” that reduce buyer risk instead of racing to the biggest rebate.
-pdf: /assets/uploads/ai-in-property-marketing.pdf
+pdf: /assets/uploads/AI in Property Marketing.pdf
 ---
 I’m sharing this as a learning resource for junior marketers who want to understand what *real* property marketing looks like in Malaysia beyond billboards, boosts, and “free legal fees.”​
 The biggest shift is simple: stop fighting in a sea of sameness and stop competing only on specs; start building a clear positioning and let buyers *feel* the experience behind the product.​
