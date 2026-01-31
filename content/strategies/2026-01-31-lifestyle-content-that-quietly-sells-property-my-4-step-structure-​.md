@@ -9,8 +9,8 @@ summary: >-
   ​
 
   Instead of choosing between hard selling and random lifestyle posts, I use lifestyle content to earn attention while a consistent brand presence does the quiet selling—hyperlocal, repeatable, and built for long-term familiarity.
-pdf: /assets/uploads/property-marketing-rules.pdf
-pdfPreview: /assets/uploads/scr-20260131-lplk.png
+pdf: /assets/uploads/Property Marketing Rules.pdf
+pdfPreview: /assets/uploads/Property Marketing Rules.jpeg
 ---
 Everyone talks about awareness, branding, funnels, and campaigns but I’m not here to impress you with jargon.​ In property marketing, I follow one simple rule: whatever we do must create real **benefit** for people.​
 
