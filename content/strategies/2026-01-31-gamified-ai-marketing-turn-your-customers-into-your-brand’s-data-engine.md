@@ -11,7 +11,7 @@ summary: >-
 
   This post argues that brand visibility is now driven by your data footprint, and proposes a gamified system where customers, agents, and partners create structured content that makes your brand easier for AI to understand and recommend.
 pdf: /assets/uploads/gamified-ai-marketing.pdf
-pdfPreview: /assets/uploads/gamified-ai-marketing.jpeg
+pdfPreview: /assets/uploads/Gamified AI Marketing.jpeg
 ---
 C-suites and GMs: it’s time to rethink how marketing really works.​ AI isn’t just a new channel, it’s a new way people think, search, and decide, and if your plan still relies mainly on Google Search or Meta Ads, you risk becoming invisible in the new customer journey.​
 
