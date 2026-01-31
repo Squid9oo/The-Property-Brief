@@ -2,9 +2,9 @@
 title: Malaysia's Property Sector Heats Up—RM200M+ in Land Deals & Major
   Regulatory Shifts
 date: 2026-01-31T08:28:00.000+08:00
-tag: ETA Group | SDS Group | EcoFirst Consolidated | MTAG Group | Hartanah
-  Kenyalang | NCT Alliance | Sime Darby Property | Sunway REIT | IGB Commercial
-  REIT | KLCC REIT | Pavilion REIT | EcoWorld | IOI Properties | JLL Malaysia
+tag: ETA Group • SDS Group • EcoFirst • MTAG • Hartanah Kenyalang • NCT • Sime
+  Darby • Sunway REIT • IGB REIT • KLCC REIT • Pavilion REIT • EcoWorld • IOI •
+  JLL
 summary: Malaysia's property sector delivered a blockbuster January 30, 2026,
   with RM200.6M in industrial and residential land acquisitions, a RM275.3M
   construction windfall for Hartanah Kenyalang, and fresh evidence that Johor is
