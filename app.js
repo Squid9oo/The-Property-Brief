@@ -266,6 +266,10 @@
         <canvas class="pdfCanvas" data-pdf-canvas></canvas>
       </div>
 
+      <div class="pdfFlipActions">
+        <button class="pdfFsBtn" type="button" data-pdf-fs>Full screen</button>
+      </div>
+
       <a href="${escapeHtml(post.pdf)}" target="_blank" rel="noopener" download class="btnPrimary" style="width:auto; display:inline-block; margin-top:12px;">
         📄 Download Full PDF
       </a>
@@ -318,6 +322,7 @@
   const nextBtn = box.querySelector("[data-pdf-next]");
   const pageEl = box.querySelector("[data-pdf-page]");
   const totalEl = box.querySelector("[data-pdf-total]");
+  const fsBtn = box.querySelector("[data-pdf-fs]");
 
   if (!url || !canvas || !wrap || !prevBtn || !nextBtn || !pageEl || !totalEl) return;
 
@@ -396,6 +401,32 @@
     pageNum += 1;
     await renderPage();
   });
+
+  // Fullscreen
+if (fsBtn) {
+  fsBtn.addEventListener("click", async () => {
+    try {
+      if (!document.fullscreenElement) {
+        await wrap.requestFullscreen();      // wrap is .pdfCanvasWrap
+        wrap.classList.add("isFullscreen");
+        fsBtn.textContent = "Exit full screen";
+      } else {
+        await document.exitFullscreen();
+      }
+      await renderPage(); // re-fit to new size
+    } catch (e) {
+      console.error("Fullscreen error:", e);
+    }
+  });
+
+  // If user presses ESC to exit fullscreen, clean the class + button text
+  document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) {
+      wrap.classList.remove("isFullscreen");
+      fsBtn.textContent = "Full screen";
+    }
+  });
+}
 
   // Swipe (touch)
   let startX = null;
