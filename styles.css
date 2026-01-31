@@ -460,6 +460,7 @@ h1,h2,h3{
 }
 
 /* PDF Download with Preview */
+
 .pdfDownloadBox{
   margin: 20px 0;
   padding: 16px;
@@ -494,6 +495,51 @@ h1,h2,h3{
   width: 100%;
   height: 70vh;  /* gives you the “scroll inside” feel */
   border: 0;
+  display: block;
+}
+
+/* PDF Flip Viewer (PDF.js) */
+.pdfFlipTop{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pdfNavBtn{
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.22);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  min-width: 88px;
+}
+
+.pdfNavBtn:disabled{
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pdfPageText{
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.pdfCanvasWrap{
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.25);
+  touch-action: pan-y; /* allows vertical page scroll but we handle horizontal swipe */
+}
+
+.pdfCanvas{
+  width: 100%;
+  height: auto;
   display: block;
 }
 

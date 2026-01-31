@@ -253,14 +253,17 @@
 
     const pdfHtml = post.pdf
   ? `
-    <div class="pdfDownloadBox">
-      <div class="pdfViewer">
-        <iframe
-          class="pdfFrame"
-          src="${escapeHtml(post.pdf)}"
-          title="PDF preview"
-          loading="lazy"
-        ></iframe>
+    <div class="pdfDownloadBox" data-pdf-url="${escapeHtml(post.pdf)}">
+      <div class="pdfFlipTop">
+        <button class="pdfNavBtn" type="button" data-pdf-prev>‹ Prev</button>
+        <div class="pdfPageText">
+          Page <span data-pdf-page>1</span> / <span data-pdf-total>?</span>
+        </div>
+        <button class="pdfNavBtn" type="button" data-pdf-next>Next ›</button>
+      </div>
+
+      <div class="pdfCanvasWrap" data-pdf-swipe>
+        <canvas class="pdfCanvas" data-pdf-canvas></canvas>
       </div>
 
       <a href="${escapeHtml(post.pdf)}" target="_blank" rel="noopener" download class="btnPrimary" style="width:auto; display:inline-block; margin-top:12px;">
@@ -292,6 +295,135 @@
 
     return html;
   }
+  async function initPdfFlip(modalRoot) {
+  // Find the PDF box inside the modal (if the post has a PDF)
+  const box = modalRoot.querySelector(".pdfDownloadBox[data-pdf-url]");
+  if (!box) return;
+
+  // Make sure PDF.js is loaded
+  if (!window.pdfjsLib) {
+    console.warn("pdfjsLib not found. Did you add the pdf.min.js script?");
+    return;
+  }
+
+  // Tell PDF.js where the worker file is (same version as your pdf.min.js)
+  // If you used a different version, the worker URL must match it.
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js";
+
+  const url = box.getAttribute("data-pdf-url");
+  const canvas = box.querySelector("[data-pdf-canvas]");
+  const wrap = box.querySelector("[data-pdf-swipe]");
+  const prevBtn = box.querySelector("[data-pdf-prev]");
+  const nextBtn = box.querySelector("[data-pdf-next]");
+  const pageEl = box.querySelector("[data-pdf-page]");
+  const totalEl = box.querySelector("[data-pdf-total]");
+
+  if (!url || !canvas || !wrap || !prevBtn || !nextBtn || !pageEl || !totalEl) return;
+
+  const ctx = canvas.getContext("2d");
+  let pdfDoc = null;
+  let pageNum = 1;
+  let numPages = 1;
+  let rendering = false;
+
+  function setButtons() {
+    prevBtn.disabled = pageNum <= 1;
+    nextBtn.disabled = pageNum >= numPages;
+    pageEl.textContent = String(pageNum);
+    totalEl.textContent = String(numPages);
+  }
+
+  async function renderPage() {
+    if (!pdfDoc || rendering) return;
+    rendering = true;
+
+    const page = await pdfDoc.getPage(pageNum);
+
+    // Fit-to-width rendering
+    const baseViewport = page.getViewport({ scale: 1 });
+    const wrapWidth = Math.max(320, wrap.clientWidth || 600);
+    const scale = wrapWidth / baseViewport.width;
+
+    const viewport = page.getViewport({ scale });
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.width = Math.floor(viewport.width * dpr);
+    canvas.height = Math.floor(viewport.height * dpr);
+    canvas.style.width = `${Math.floor(viewport.width)}px`;
+    canvas.style.height = `${Math.floor(viewport.height)}px`;
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    await page.render({
+      canvasContext: ctx,
+      viewport,
+    }).promise;
+
+    rendering = false;
+    setButtons();
+  }
+
+  // Load PDF
+  try {
+    pdfDoc = await window.pdfjsLib.getDocument(url).promise;
+    numPages = pdfDoc.numPages || 1;
+    pageNum = 1;
+    setButtons();
+    await renderPage();
+  } catch (e) {
+    console.error("PDF load error:", e);
+    wrap.innerHTML =
+      `<div class="muted" style="padding:12px;">PDF preview failed. Use the download button below.</div>`;
+    return;
+  }
+
+  // Buttons
+  prevBtn.addEventListener("click", async () => {
+    if (pageNum <= 1) return;
+    pageNum -= 1;
+    await renderPage();
+  });
+
+  nextBtn.addEventListener("click", async () => {
+    if (pageNum >= numPages) return;
+    pageNum += 1;
+    await renderPage();
+  });
+
+  // Swipe (touch)
+  let startX = null;
+  wrap.addEventListener("touchstart", (e) => {
+    startX = e.touches && e.touches[0] ? e.touches[0].clientX : null;
+  }, { passive: true });
+
+  wrap.addEventListener("touchend", async (e) => {
+    if (startX == null) return;
+    const endX = e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : null;
+    if (endX == null) return;
+
+    const dx = endX - startX;
+    startX = null;
+
+    // swipe threshold
+    if (Math.abs(dx) < 40) return;
+
+    if (dx < 0 && pageNum < numPages) {
+      pageNum += 1; // swipe left -> next page
+      await renderPage();
+    } else if (dx > 0 && pageNum > 1) {
+      pageNum -= 1; // swipe right -> previous page
+      await renderPage();
+    }
+  }, { passive: true });
+
+  // Re-render on resize (so it stays fit-to-width)
+  const onResize = () => renderPage();
+  window.addEventListener("resize", onResize);
+
+  // Cleanup when modal closes (avoid leaked listeners)
+  modalRoot._pdfCleanup = () => window.removeEventListener("resize", onResize);
+}
 
   function openModal(title, html) {
     const modal = document.createElement("div");
@@ -308,11 +440,16 @@
       </div>
     `;
     document.body.appendChild(modal);
+    // If this post contains a PDF flip viewer, initialize it
+    initPdfFlip(modal);
 
     modal.addEventListener("click", (e) => {
       const clickedClose = e.target.closest('[data-close="1"]');
       const clickedOverlay = e.target.classList.contains("modalOverlay");
-      if (clickedOverlay || clickedClose) modal.remove();
+if (clickedOverlay || clickedClose) {
+  if (typeof modal._pdfCleanup === "function") modal._pdfCleanup();
+  modal.remove();
+}
     });
   }
 
