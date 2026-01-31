@@ -35,3 +35,5 @@ Yes, some people will come for the voucher and never buy and I accept that risk.
 * Pilot 12 videos in 14 days: 8 lifestyle (with banner) + 4 property (no banner), then compare saves, shares, and profile visits.​
 * Tighten the voucher mechanic: require simple opt-in (WhatsApp/form) and track show-up rate + appointment set rate, not just redemptions.​
 * Create a repeatable caption template: “Place + distance/time to project + why it matters + gallery CTA.”​
+
+{{PDF}}
