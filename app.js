@@ -309,7 +309,7 @@
   // Tell PDF.js where the worker file is (same version as your pdf.min.js)
   // If you used a different version, the worker URL must match it.
   window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js";
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs";
 
   const url = box.getAttribute("data-pdf-url");
   const canvas = box.querySelector("[data-pdf-canvas]");
