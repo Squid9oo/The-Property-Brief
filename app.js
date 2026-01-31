@@ -427,8 +427,25 @@
   const onResize = () => renderPage();
   window.addEventListener("resize", onResize);
 
+  // Keyboard arrows (desktop): ← previous, → next
+  function onKeyDown(e) {
+  if (e.key === "ArrowRight" && pageNum < numPages) {
+    pageNum += 1;
+    renderPage();
+  }
+  if (e.key === "ArrowLeft" && pageNum > 1) {
+    pageNum -= 1;
+    renderPage();
+  }
+}
+
+window.addEventListener("keydown", onKeyDown);
+
   // Cleanup when modal closes (avoid leaked listeners)
-  modalRoot._pdfCleanup = () => window.removeEventListener("resize", onResize);
+modalRoot._pdfCleanup = () => {
+  window.removeEventListener("resize", onResize);
+  window.removeEventListener("keydown", onKeyDown);
+};
 }
 
   function openModal(title, html) {
