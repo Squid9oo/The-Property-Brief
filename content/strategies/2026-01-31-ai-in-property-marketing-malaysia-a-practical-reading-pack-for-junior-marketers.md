@@ -2,7 +2,7 @@
 title: "AI in Property Marketing (Malaysia): A Practical Reading Pack for Junior
   Marketers"
 date: 2026-01-31T13:21:00.000+08:00
-tag: Strategy . Knowledge sharing . Property Marketing
+tag: Strategy • Knowledge sharing • Property Marketing
 summary: >-
   Most developers aren’t really marketing, they’re promoting channels and
   freebies without a sharp reason to buy.
