@@ -252,15 +252,23 @@
       : "";
 
     const pdfHtml = post.pdf
-      ? `
-        <div class="pdfDownloadBox">
-          ${post.pdfPreview ? `<img src="${escapeHtml(post.pdfPreview)}" alt="PDF preview" class="pdfPreviewImg" />` : ""}
-          <a href="${escapeHtml(post.pdf)}" target="_blank" rel="noopener" download class="btnPrimary" style="width:auto; display:inline-block; margin-top:12px;">
-            📄 Download Full PDF
-          </a>
-        </div>
-      `
-      : "";
+  ? `
+    <div class="pdfDownloadBox">
+      <div class="pdfViewer">
+        <iframe
+          class="pdfFrame"
+          src="${escapeHtml(post.pdf)}"
+          title="PDF preview"
+          loading="lazy"
+        ></iframe>
+      </div>
+
+      <a href="${escapeHtml(post.pdf)}" target="_blank" rel="noopener" download class="btnPrimary" style="width:auto; display:inline-block; margin-top:12px;">
+        📄 Download Full PDF
+      </a>
+    </div>
+  `
+  : "";
 
     // Replace placeholders BEFORE markdown -> HTML
     let safe = bodyText

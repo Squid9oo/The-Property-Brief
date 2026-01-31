@@ -482,6 +482,21 @@ h1,h2,h3{
 
 .pdfDownloadBox a{ text-decoration: none; }
 
+.pdfViewer{
+  margin-top: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.25);
+}
+
+.pdfFrame{
+  width: 100%;
+  height: 70vh;  /* gives you the “scroll inside” feel */
+  border: 0;
+  display: block;
+}
+
 /* ---------- Sponsored ---------- */
 .adTitle{
   margin-top: 10px;
