@@ -371,7 +371,8 @@
 
   // Load PDF
   try {
-    pdfDoc = await window.pdfjsLib.getDocument(url).promise;
+    const loadingTask = window.pdfjsLib.getDocument({ url, disableWorker: true });
+    pdfDoc = await loadingTask.promise;
     numPages = pdfDoc.numPages || 1;
     pageNum = 1;
     setButtons();
