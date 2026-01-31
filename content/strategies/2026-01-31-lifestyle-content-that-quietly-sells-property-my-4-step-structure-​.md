@@ -9,8 +9,8 @@ summary: >-
   ​
 
   Instead of choosing between hard selling and random lifestyle posts, I use lifestyle content to earn attention while a consistent brand presence does the quiet selling—hyperlocal, repeatable, and built for long-term familiarity.
-pdf: /assets/uploads/property-marketing-rules.pdf
-pdfPreview: /assets/uploads/scr-20260131-lplk.png
+pdf: /assets/uploads/Property Marketing Rules.pdf
+pdfPreview: /assets/uploads/Property Marketing Rules.jpeg
 ---
 Everyone talks about awareness, branding, funnels, and campaigns but I’m not here to impress you with jargon.​ In property marketing, I follow one simple rule: whatever we do must create real **benefit** for people.​
 
@@ -35,3 +35,5 @@ Yes, some people will come for the voucher and never buy and I accept that risk.
 * Pilot 12 videos in 14 days: 8 lifestyle (with banner) + 4 property (no banner), then compare saves, shares, and profile visits.​
 * Tighten the voucher mechanic: require simple opt-in (WhatsApp/form) and track show-up rate + appointment set rate, not just redemptions.​
 * Create a repeatable caption template: “Place + distance/time to project + why it matters + gallery CTA.”​
+
+{{PDF}}
