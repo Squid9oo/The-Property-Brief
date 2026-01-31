@@ -1,7 +1,7 @@
 ---
 title: "Gamified AI Marketing: Turn Your Customers into Your Brand’s Data Engine"
 date: 2026-01-31T13:40:00.000+08:00
-tag: AI marketing Brand visibility
+tag: AI marketing • Brand visibility
 summary: >-
   AI has changed how people discover and compare property, buyers don’t just
   “search,” they ask AI to analyze trade-offs like yield, MRT access, and
