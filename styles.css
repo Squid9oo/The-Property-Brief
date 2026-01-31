@@ -583,6 +583,28 @@ h1,h2,h3{
   padding: 12px;
 }
 
+/* iPhone fallback: “fake fullscreen” (works even when Fullscreen API is blocked) */
+body.pfLock { overflow: hidden; }
+
+.pdfCanvasWrap.pseudoFullscreen{
+  position: fixed;
+  inset: 0;
+  z-index: 2001;
+
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  margin: 0;
+  border-radius: 0;
+
+  background: #000;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
 /* ---------- Sponsored ---------- */
 .adTitle{
   margin-top: 10px;
