@@ -348,16 +348,21 @@
     const viewport = page.getViewport({ scale });
     const dpr = window.devicePixelRatio || 1;
 
+    // Set the *real* pixel size of the canvas (for sharpness)
     canvas.width = Math.floor(viewport.width * dpr);
     canvas.height = Math.floor(viewport.height * dpr);
+
+    // Set the *CSS* size (what you see on screen)
     canvas.style.width = `${Math.floor(viewport.width)}px`;
     canvas.style.height = `${Math.floor(viewport.height)}px`;
 
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // Reset transform then scale once
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
 
     await page.render({
-      canvasContext: ctx,
-      viewport,
+    canvasContext: ctx,
+    viewport,
+    transform: [dpr, 0, 0, dpr, 0, 0],
     }).promise;
 
     rendering = false;
