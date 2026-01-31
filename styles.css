@@ -545,64 +545,9 @@ h1,h2,h3{
   display: block;
 }
 
-.pdfFlipActions{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  margin-top:10px;
-}
-
-.pdfFsBtn{
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(0,0,0,0.22);
-  color: var(--text);
-  padding: 10px 12px;
-  border-radius: 12px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.pdfCanvasWrap.isFullscreen{
-  max-width: none;
-  width: min(1100px, 96vw);
-}
-
-/* Fullscreen: make the wrap become a real full-screen stage */
-.pdfCanvasWrap:fullscreen{
-  width: 100vw;
-  height: 100vh;
-  max-width: none;
-  margin: 0;
-  border-radius: 0;
-
-  background: #000;
-  overflow: auto;              /* IMPORTANT: no more cropping */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-}
-
-/* iPhone fallback: “fake fullscreen” (works even when Fullscreen API is blocked) */
-body.pfLock { overflow: hidden; }
-
-.pdfCanvasWrap.pseudoFullscreen{
-  position: fixed;
-  inset: 0;
-  z-index: 2001;
-
-  width: 100vw;
-  height: 100vh;
-  max-width: none;
-  margin: 0;
-  border-radius: 0;
-
-  background: #000;
-  overflow: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
+/* Mobile: remove Full screen button (keep Download only) */
+@media (max-width: 768px){
+  .pdfFlipActions{ display: none; }
 }
 
 /* ---------- Sponsored ---------- */

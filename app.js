@@ -266,10 +266,6 @@
         <canvas class="pdfCanvas" data-pdf-canvas></canvas>
       </div>
 
-      <div class="pdfFlipActions">
-        <button class="pdfFsBtn" type="button" data-pdf-fs>Full screen</button>
-      </div>
-
       <a href="${escapeHtml(post.pdf)}" target="_blank" rel="noopener" download class="btnPrimary" style="width:auto; display:inline-block; margin-top:12px;">
         📄 Download Full PDF
       </a>
@@ -415,82 +411,6 @@
     await renderPage();
   });
 
-// Fullscreen (real when supported, fallback when not)
-function requestFs(el) {
-  const fn = el.requestFullscreen || el.webkitRequestFullscreen;
-  if (!fn) return false;
-  try {
-    fn.call(el);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-function exitFs() {
-  const fn = document.exitFullscreen || document.webkitExitFullscreen;
-  if (!fn) return false;
-  try {
-    fn.call(document);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-function enterPseudoFs() {
-  document.body.classList.add("pfLock");
-  wrap.classList.add("pseudoFullscreen");
-  wrap.classList.add("isFullscreen");
-  fsBtn.textContent = "Exit full screen";
-}
-
-function exitPseudoFs() {
-  document.body.classList.remove("pfLock");
-  wrap.classList.remove("pseudoFullscreen");
-  wrap.classList.remove("isFullscreen");
-  fsBtn.textContent = "Full screen";
-}
-
-if (fsBtn) {
-  fsBtn.addEventListener("click", async () => {
-    const isPseudo = wrap.classList.contains("pseudoFullscreen");
-    const isRealFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
-
-    if (isPseudo) {
-      exitPseudoFs();
-      await renderPage();
-      return;
-    }
-
-    if (isRealFs) {
-      exitFs();
-      return;
-    }
-
-    const ok = requestFs(wrap);
-    if (!ok) enterPseudoFs();
-
-    await renderPage();
-  });
-
-  document.addEventListener("fullscreenchange", () => {
-    if (!document.fullscreenElement && !wrap.classList.contains("pseudoFullscreen")) {
-      wrap.classList.remove("isFullscreen");
-      fsBtn.textContent = "Full screen";
-      renderPage();
-    }
-  });
-
-  document.addEventListener("webkitfullscreenchange", () => {
-    if (!document.webkitFullscreenElement && !wrap.classList.contains("pseudoFullscreen")) {
-      wrap.classList.remove("isFullscreen");
-      fsBtn.textContent = "Full screen";
-      renderPage();
-    }
-  });
-}
-
   // Swipe (touch)
   let startX = null;
   wrap.addEventListener("touchstart", (e) => {
@@ -539,8 +459,6 @@ window.addEventListener("keydown", onKeyDown);
 modalRoot._pdfCleanup = () => {
   window.removeEventListener("resize", onResize);
   window.removeEventListener("keydown", onKeyDown);
-  exitPseudoFs();
-  exitFs();
 };
 }
 
