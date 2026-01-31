@@ -347,10 +347,23 @@
 
     // Fit-to-width rendering
     const baseViewport = page.getViewport({ scale: 1 });
-    const wrapWidth = Math.max(320, wrap.clientWidth || 600);
-    const scale = wrapWidth / baseViewport.width;
+
+    const isFs = document.fullscreenElement === wrap;
+
+    // Width is always known
+    const availableW = Math.max(320, (wrap.clientWidth || 600) - 24);
+
+    // Only use height-fitting in fullscreen (because then wrap has real height: 100vh)
+    const availableH = isFs ? Math.max(320, (wrap.clientHeight || window.innerHeight) - 24) : null;
+
+    const scaleW = availableW / baseViewport.width;
+    const scaleH = (isFs && availableH) ? (availableH / baseViewport.height) : scaleW;
+
+    // Normal view: fit width. Fullscreen: fit both width+height (whichever is smaller)
+    const scale = isFs ? Math.min(scaleW, scaleH) : scaleW;
 
     const viewport = page.getViewport({ scale });
+
     const dpr = window.devicePixelRatio || 1;
 
     // Set the *real* pixel size of the canvas (for sharpness)

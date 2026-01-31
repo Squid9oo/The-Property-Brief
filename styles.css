@@ -567,10 +567,20 @@ h1,h2,h3{
   width: min(1100px, 96vw);
 }
 
-/* When the element is in real fullscreen */
+/* Fullscreen: make the wrap become a real full-screen stage */
 .pdfCanvasWrap:fullscreen{
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  margin: 0;
+  border-radius: 0;
+
   background: #000;
-  padding: 10px;
+  overflow: auto;              /* IMPORTANT: no more cropping */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
 }
 
 /* ---------- Sponsored ---------- */
