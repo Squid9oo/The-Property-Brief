@@ -31,3 +31,5 @@ A mentor says: don’t hard sell, either give people benefits or teach them some
 
 Personally, I’ve always leaned toward the mentor role guiding, not just instructing.​
 That’s why I keep a cloud drive of campaigns, visuals, animations, and ads so when my team needs direction, I don’t just tell them what to do, I show them what to learn from.​ That’s mentorship: not giving orders, but building thinkers.​
+
+{{PDF}}
