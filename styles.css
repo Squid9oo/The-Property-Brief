@@ -192,12 +192,24 @@ h1,h2,h3{
 .sharePostBtn{
   width: auto;
   display: inline-flex;
-  padding: 8px 10px;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 10px;
   margin: 0 0 10px 0;
-  border-radius: 12px;
-  font-size: 13px;
-  line-height: 1.1;
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  line-height: 1;
+
+  background: var(--yellow);
+  color: #0b0b0c;
+  border: 1px solid rgba(249, 209, 0, 0.35);
 }
+
+.sharePostBtn:hover{ opacity: 0.92; }
 
 .headerInput{
   width: 280px;
