@@ -9,7 +9,7 @@ summary: >-
   ​
 
   Here’s how I explain the difference using real examples from property marketing: visuals, lead generation, animation, campaign ideation, and branded content.
-pdf: ""
+pdf: /assets/uploads/boss-or-mentor.pdf
 ---
 People often ask: is your superior a boss or a mentor?​
 Here’s how I see the difference, especially in property marketing where execution quality and thinking quality decide everything.​
