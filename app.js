@@ -714,7 +714,7 @@ function openAdvertiseModal() {
 
       <div class="modalBody">
         <p class="muted" style="margin:0 0 12px;">
-          Tell me what you want to promote and I’ll reply within 1–2 business days.
+          I’ll reply within 1–2 business days.
         </p>
 
         <form id="advertiseForm">
@@ -769,7 +769,7 @@ function openAdvertiseModal() {
         <div id="advertiseThanks" style="display:none;">
           <h3 style="margin:14px 0 8px;">Thank you.</h3>
           <p class="muted" style="margin:0;">
-            Your enquiry is sent. Closing in <span id="advertiseCountdown">10</span> seconds…
+            Your enquiry is sent. Closing in <span id="advertiseCountdown">5</span> seconds…
           </p>
         </div>
       </div>
