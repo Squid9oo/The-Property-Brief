@@ -9,7 +9,7 @@ summary: >-
   ​
 
   Here’s how I explain the difference using real examples from property marketing: visuals, lead generation, animation, campaign ideation, and branded content.
-pdf: ""
+pdf: /assets/uploads/boss-or-mentor.pdf
 ---
 People often ask: is your superior a boss or a mentor?​
 Here’s how I see the difference, especially in property marketing where execution quality and thinking quality decide everything.​
@@ -31,3 +31,5 @@ A mentor says: don’t hard sell, either give people benefits or teach them some
 
 Personally, I’ve always leaned toward the mentor role guiding, not just instructing.​
 That’s why I keep a cloud drive of campaigns, visuals, animations, and ads so when my team needs direction, I don’t just tell them what to do, I show them what to learn from.​ That’s mentorship: not giving orders, but building thinkers.​
+
+{{PDF}}
