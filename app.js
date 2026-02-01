@@ -699,10 +699,141 @@ modalRoot._pdfCleanup = () => {
     toEl.addEventListener("change", runSearch);
   }
 
+function openAdvertiseModal() {
+  const modal = document.createElement("div");
+  modal.className = "modalOverlay";
+
+  modal.innerHTML = `
+    <div class="modal">
+      <div class="modalTop">
+        <h3 style="margin:0;">Advertise / Partner</h3>
+        <button class="modalX" type="button" aria-label="Close" data-close="1">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modalBody">
+        <p class="muted" style="margin:0 0 12px;">
+          Tell me what you want to promote and I’ll reply within 1–2 business days.
+        </p>
+
+        <form id="advertiseForm">
+          <input type="hidden" name="form-name" value="advertise" />
+          <p class="hp">
+            <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+          </p>
+
+          <p style="margin:0 0 10px;">
+            <input class="headerInput" style="width:100%; max-width:720px;"
+              type="text" name="name" placeholder="Your name" required />
+          </p>
+
+          <p style="margin:0 0 10px;">
+            <input class="headerInput" style="width:100%; max-width:720px;"
+              type="text" name="company" placeholder="Company / Brand" />
+          </p>
+
+          <p style="margin:0 0 10px;">
+            <input class="headerInput" style="width:100%; max-width:720px;"
+              type="email" name="email" placeholder="Email (so I can reply)" required />
+          </p>
+
+          <p style="margin:0 0 10px;">
+            <input class="headerInput" style="width:100%; max-width:720px;"
+              type="url" name="website" placeholder="Website (optional)" />
+          </p>
+
+          <p style="margin:0 0 10px;">
+            <select class="headerInput" style="width:100%; max-width:720px;"
+              name="interest" required>
+              <option value="" selected disabled>What are you interested in?</option>
+              <option>Sponsored banner</option>
+              <option>Project listing / feature</option>
+              <option>Newsletter mention</option>
+              <option>Partnership / collaboration</option>
+              <option>Other</option>
+            </select>
+          </p>
+
+          <p style="margin:0 0 12px;">
+            <textarea class="headerInput"
+              style="width:100%; max-width:720px; height:120px; border-radius:18px; padding:12px;"
+              name="message"
+              placeholder="What are you promoting, target audience, preferred dates, and budget range?"
+              required></textarea>
+          </p>
+
+          <button class="btnPrimary" style="width:auto;" type="submit">Send</button>
+        </form>
+
+        <div id="advertiseThanks" style="display:none;">
+          <h3 style="margin:14px 0 8px;">Thank you.</h3>
+          <p class="muted" style="margin:0;">
+            Your enquiry is sent. Closing in <span id="advertiseCountdown">10</span> seconds…
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  function close() { modal.remove(); }
+
+  modal.addEventListener("click", (e) => {
+    const clickedClose = e.target.closest('[data-close="1"]');
+    const clickedOverlay = e.target.classList.contains("modalOverlay");
+    if (clickedOverlay || clickedClose) close();
+  });
+
+  document.body.appendChild(modal);
+
+  const form = modal.querySelector("#advertiseForm");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Netlify Forms AJAX submit: URL-encoded body (Netlify doesn’t accept JSON)
+    const formData = new FormData(form);
+    const body = new URLSearchParams(formData).toString();
+
+    try {
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body,
+      });
+
+      // Show thanks + 10s countdown then close (stays on main page)
+      form.style.display = "none";
+      const thanks = modal.querySelector("#advertiseThanks");
+      const countdownEl = modal.querySelector("#advertiseCountdown");
+      thanks.style.display = "block";
+
+      let n = 10;
+      countdownEl.textContent = String(n);
+
+      const t = setInterval(() => {
+        n -= 1;
+        countdownEl.textContent = String(n);
+        if (n <= 0) {
+          clearInterval(t);
+          close();
+        }
+      }, 1000);
+    } catch (err) {
+      alert("Sorry — could not send. Please try again.");
+    }
+  });
+}
+
   // ----------------------------
   // Global click handling (Load More + Open + Video)
   // ----------------------------
   document.addEventListener("click", (e) => {
+    const advBtn = e.target.closest("#openAdvertise");
+if (advBtn) {
+  openAdvertiseModal();
+  return;
+}
+
     const shareBtn = e.target.closest("[data-share]");
 if (shareBtn) {
   const type = shareBtn.getAttribute("data-share");
