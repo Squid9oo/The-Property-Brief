@@ -2,7 +2,7 @@
 title: Stop Asking for Budget. Start Monetizing Your Database (The Value
   Exchange Model)
 date: 2026-02-01T10:51:00.000+08:00
-tag: Zero Budget Marketing Value Exchange
+tag: Zero Budget Marketing • Value Exchange
 summary: "Zero-Budget Co-Marketing is a simple value exchange model: leverage
   your key resource (database + community + venue) to trade for a partner’s key
   resource (expertise, product/service, or their audience) without touching your
