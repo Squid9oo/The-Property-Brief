@@ -24,6 +24,7 @@ function getPosts(folder) {
       summary: data.summary || '',
       body: body || '',
       image: data.image || null,
+      imageMobile: data.imageMobile || null,
       videoId: data.videoId || null,
       pdf: data.pdf || null,
       pdfPreview: data.pdfPreview || null,

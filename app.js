@@ -216,13 +216,18 @@
     function showAd(ad) {
       linkEl.href = ad.link;
       titleEl.textContent = ad.title || "Sponsored";
-      imgEl.src = ad.image;
+
+      const isMobile = window.matchMedia("(max-width: 600px)").matches;
+      imgEl.src = (isMobile && ad.imageMobile) ? ad.imageMobile : ad.image;
+
       imgEl.alt = ad.alt || ad.title || "Sponsored ad";
       imgEl.style.display = "block";
       if (noteEl) noteEl.textContent = ad.description || "Tap/click to learn more.";
     }
 
     showAd(activeAds[i]);
+
+    window.addEventListener("resize", () => showAd(activeAds[i]));
 
     if (sponsoredTimer) clearInterval(sponsoredTimer);
     sponsoredTimer = setInterval(() => {
