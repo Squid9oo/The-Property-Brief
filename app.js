@@ -132,6 +132,39 @@
     fromEl.value = fmtDateISO(from);
   }
 
+  function getSiteUrl() {
+  return "https://thepropertybrief.netlify.app/";
+}
+
+function getPostShareUrl(postId) {
+  return getSiteUrl() + "#post=" + encodeURIComponent(postId || "");
+}
+
+async function nativeShare({ title, text, url }) {
+  // Try native share (mobile)
+  if (navigator.share) {
+    try {
+      await navigator.share({ title, text, url });
+      return true;
+    } catch (e) {
+      // user cancelled or share failed — fall through to fallback
+    }
+  }
+
+  // Fallback: copy link
+  if (navigator.clipboard && url) {
+    try {
+      await navigator.clipboard.writeText(url);
+      alert("Link copied. Paste it into WhatsApp / social apps.");
+      return true;
+    } catch (e) {}
+  }
+
+  // Last fallback
+  if (url) prompt("Copy this link:", url);
+  return false;
+}
+
   function inDateRange(postDateISO, fromValue, toValue) {
     if (!postDateISO) return true;
 
@@ -455,33 +488,41 @@ modalRoot._pdfCleanup = () => {
 };
 }
 
-  function openModal(title, html) {
-    const modal = document.createElement("div");
-    modal.className = "modalOverlay";
-    modal.innerHTML = `
-      <div class="modal">
-        <div class="modalTop">
-          <h3 style="margin:0;">${escapeHtml(title || "")}</h3>
-          <button class="modalX" type="button" aria-label="Close" data-close="1">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modalBody">${html || ""}</div>
-      </div>
-    `;
-    document.body.appendChild(modal);
-    // If this post contains a PDF flip viewer, initialize it
-    initPdfFlip(modal);
+  function openModal(title, html, postId) {
+  const shareBtnHtml = postId
+    ? `<button class="btnGhost sharePostBtn" type="button" data-share="post" data-post-id="${escapeHtml(postId)}">Share</button>`
+    : "";
 
-    modal.addEventListener("click", (e) => {
-      const clickedClose = e.target.closest('[data-close="1"]');
-      const clickedOverlay = e.target.classList.contains("modalOverlay");
-if (clickedOverlay || clickedClose) {
-  if (typeof modal._pdfCleanup === "function") modal._pdfCleanup();
-  modal.remove();
+  const modal = document.createElement("div");
+  modal.className = "modalOverlay";
+  modal.innerHTML = `
+    <div class="modal">
+      <div class="modalTop">
+        <h3 style="margin:0;">${escapeHtml(title || "")}</h3>
+        <button class="modalX" type="button" aria-label="Close" data-close="1">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modalBody">
+        ${shareBtnHtml}
+        ${html || ""}
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  initPdfFlip(modal);
+
+  modal.addEventListener("click", (e) => {
+    const clickedClose = e.target.closest('[data-close="1"]');
+    const clickedOverlay = e.target.classList.contains("modalOverlay");
+
+    if (clickedOverlay || clickedClose) {
+      if (typeof modal._pdfCleanup === "function") modal._pdfCleanup();
+      modal.remove();
+    }
+  });
 }
-    });
-  }
 
   function openVideoModal(videoId) {
     const vid = escapeHtml(videoId || "");
@@ -631,6 +672,32 @@ if (clickedOverlay || clickedClose) {
   // Global click handling (Load More + Open + Video)
   // ----------------------------
   document.addEventListener("click", (e) => {
+    const shareBtn = e.target.closest("[data-share]");
+if (shareBtn) {
+  const type = shareBtn.getAttribute("data-share");
+
+  if (type === "site") {
+    nativeShare({
+      title: "THE PROPERTY BRIEF",
+      text: "Daily Malaysia & ASEAN real estate insights.",
+      url: getSiteUrl(),
+    });
+    return;
+  }
+
+  if (type === "post") {
+    const postId = shareBtn.getAttribute("data-post-id") || "";
+    const post = [...allNews, ...allStrategies].find((x) => x.id === postId);
+
+    nativeShare({
+      title: post?.title || "THE PROPERTY BRIEF",
+      text: post?.summary || "Read this post on The Property Brief.",
+      url: getPostShareUrl(postId),
+    });
+    return;
+  }
+}
+
     // Load More
     const loadMoreBtn = e.target.closest(".btnLoadMore");
     if (loadMoreBtn) {
@@ -658,7 +725,7 @@ if (clickedOverlay || clickedClose) {
       const post = [...allNews, ...allStrategies].find((x) => x.id === id);
       if (!post) return;
 
-      openModal(post.title || "", formatPostBody(post));
+    openModal(post.title || "", formatPostBody(post), post.id);
     }
   });
 
