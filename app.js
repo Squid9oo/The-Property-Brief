@@ -133,7 +133,7 @@
   }
 
   function getSiteUrl() {
-  return "https://thepropertybrief.netlify.app/";
+  return window.location.origin + "/";
 }
 
 function getPostShareUrl(postId) {
