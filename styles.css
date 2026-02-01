@@ -616,6 +616,15 @@ h1,h2,h3{
     background: rgba(255,255,255,0.04); /* nice “letterbox” */
   }
 
+/* Phone landscape: show full banner (no crop) */
+@media (orientation: landscape) and (max-height: 500px){
+  #sponsoredAdImg{
+    height: 180px;        /* smaller so it fits short screens */
+    object-fit: contain;  /* show whole banner */
+    background: #000;     /* letterbox in black */
+  }
+}
+
   .sponsorRotateHint{ display: block; }
 }
 
