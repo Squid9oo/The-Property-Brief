@@ -10,7 +10,7 @@ summary: >-
   ​
 
   It proposes a rotating “Four Seasons of Incentives” model (four distinct RM10,000 campaigns) and a future-ready marketing organization built around multi-skilled strategic marketers empowered by AI.
-pdf: /assets/uploads/beyond-bricks.pdf
+pdf: ""
 ---
 BEYOND BRICKS” is an e-book (or maybe a long manifesto) crafted by me, enhanced with AI.​ Someone once told me that because I’ve never led a high-rise project, my experience might be limited but to me, marketing isn’t about how to build; it’s about how to think.​
 
