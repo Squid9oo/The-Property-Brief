@@ -610,8 +610,9 @@ h1,h2,h3{
 
 @media (max-width: 600px){
   #sponsoredAdImg{
-    height: 180px;
-    object-fit: contain; /* show full banner */
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
   }
 
   .sponsorRotateHint{ display: block; }
