@@ -1,7 +1,7 @@
 ---
 title: A Boss Gives Orders. A Mentor Builds Thinkers.
 date: 2026-02-01T10:33:00.000+08:00
-tag: "Mentorship Systems Thinking "
+tag: "Mentorship • Systems Thinking "
 summary: >-
   A boss gives tasks. A mentor gives references, frameworks, and context so the
   team learns how to think, not just how to execute.
