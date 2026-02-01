@@ -20,3 +20,5 @@ This e-book captures my direction for how I would plan campaigns and groom a mar
 Yes, AI helped with language and design but the thinking, structure, and strategy are mine.​ What it really proves is simple: AI doesn’t replace creativity, it multiplies it.​
 
 If this sparks an idea or helps you rethink property marketing, feel free to share it.​
+
+{{PDF}}
