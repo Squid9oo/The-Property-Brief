@@ -594,6 +594,16 @@ h1,h2,h3{
   display: none; /* hidden until JS loads an ad */
 }
 
+/* Mobile landscape: ALWAYS show full banner (no crop) */
+@media (orientation: landscape) and (max-height: 600px){
+  #sponsoredAdImg{
+    height: auto;
+    max-height: 55vh;   /* keeps it from becoming too tall */
+    object-fit: contain;
+    background: #000;
+  }
+}
+
 #sponsoredAdNote{
   margin-top: 12px;
   font-size: 0.98rem;
