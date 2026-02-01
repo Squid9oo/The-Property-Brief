@@ -613,7 +613,7 @@ h1,h2,h3{
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: contain; /* show the whole banner */
-    background: rgba(255,255,255,0.04); /* nice “letterbox” */
+    background: var(--yellow); /* nice “letterbox” */
   }
 
   .sponsorRotateHint{ display: block; }
