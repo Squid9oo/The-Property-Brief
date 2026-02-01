@@ -140,28 +140,59 @@ function getPostShareUrl(postId) {
   return getSiteUrl() + "#post=" + encodeURIComponent(postId || "");
 }
 
+function showToast(msg) {
+  const el = document.createElement("div");
+  el.className = "toast";
+  el.textContent = msg || "Done";
+  document.body.appendChild(el);
+
+  requestAnimationFrame(() => el.classList.add("show"));
+
+  setTimeout(() => {
+    el.classList.remove("show");
+    setTimeout(() => el.remove(), 250);
+  }, 1200);
+}
+
 async function nativeShare({ title, text, url }) {
-  // Try native share (mobile)
+  // 1) Try native share (mobile)
   if (navigator.share) {
     try {
       await navigator.share({ title, text, url });
       return true;
     } catch (e) {
-      // user cancelled or share failed — fall through to fallback
+      // user cancelled or share failed — fall through
     }
   }
 
-  // Fallback: copy link
-  if (navigator.clipboard && url) {
+  // 2) Fallback: copy link silently + small toast
+  if (url) {
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(url);
+        showToast("Link copied");
+        return true;
+      } catch (e) {}
+    }
+
+    // Older Safari fallback
     try {
-      await navigator.clipboard.writeText(url);
-      alert("Link copied. Paste it into WhatsApp / social apps.");
+      const ta = document.createElement("textarea");
+      ta.value = url;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      showToast("Link copied");
       return true;
     } catch (e) {}
   }
 
-  // Last fallback
-  if (url) prompt("Copy this link:", url);
+  // 3) If everything fails, do nothing (no popup)
+  showToast("Could not copy");
   return false;
 }
 
