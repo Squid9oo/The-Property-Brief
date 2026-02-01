@@ -1,7 +1,7 @@
 ---
 title: Beyond Bricks Marketing Strategies
 date: 2026-02-01T10:40:00.000+08:00
-tag: Marketing Positioning Incentive Strategy
+tag: Marketing • Positioning • Incentive Strategy
 summary: >-
   Beyond Bricks” is my blueprint for selling low-to-mid cost homes in Malaysia
   by solving buyer anxieties, debt fear, cash-flow shock, and income stagnation
