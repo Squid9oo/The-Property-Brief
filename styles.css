@@ -189,7 +189,8 @@ h1,h2,h3{
   background: rgba(255,255,255,0.06);
 }
 
-.sharePostBtn{
+/* Share button inside the modal */
+.btnGhost.sharePostBtn{
   width: auto;
   display: inline-flex;
   align-items: center;
@@ -207,6 +208,10 @@ h1,h2,h3{
   background: var(--yellow);
   color: #0b0b0c;
   border: 1px solid rgba(249, 209, 0, 0.35);
+}
+
+.btnGhost.sharePostBtn:hover{
+  opacity: 0.92;
 }
 
 .sharePostBtn:hover{ opacity: 0.92; }
