@@ -661,6 +661,13 @@ h1,h2,h3{
     background: #000;
   }
 }
+/* iPad / tablet: show full sponsored banner (no crop) */
+@media (min-width: 601px) and (max-width: 1024px){
+  #sponsoredAdImg{
+    object-fit: contain;
+    background: #000; /* letterbox bars when aspect ratio differs */
+  }
+}
 
 #sponsoredAdNote{
   margin-top: 12px;
