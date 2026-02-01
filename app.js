@@ -636,7 +636,7 @@ if (clickedOverlay || clickedClose) {
     if (loadMoreBtn) {
       const section = loadMoreBtn.getAttribute("data-section");
       const currentShown = parseInt(loadMoreBtn.getAttribute("data-shown"), 10) || 0;
-      const newShown = currentShown + 6;
+      const newShown = currentShown + 4;
 
       if (section === "news") renderSection("latestList", allNews, newShown, "news");
       if (section === "strategies") renderSection("strategiesList", allStrategies, newShown, "strategies");
@@ -676,8 +676,8 @@ if (clickedOverlay || clickedClose) {
 
       initSponsoredRotator(allSponsored);
 
-      renderSection("latestList", allNews, 6, "news");
-      renderSection("strategiesList", allStrategies, 6, "strategies");
+      renderSection("latestList", allNews, 4, "news");
+      renderSection("strategiesList", allStrategies, 4, "strategies");
 
       initSearch();
     } catch (err) {
