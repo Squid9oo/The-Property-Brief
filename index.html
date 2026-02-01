@@ -121,9 +121,96 @@
 
         <!-- About section -->
         <section class="section" id="about">
-          <h2>About</h2>
-          <p class="muted">THE PROPERTY BRIEF is built for buyers, investors, agents, and developers who want signal over noise.</p>
-        </section>
+  <h2>About</h2>
+
+  <p class="muted">
+    THE PROPERTY BRIEF is a signal-first briefing on Malaysia real estate (and soon ASEAN) built for buyers,
+    investors, agents, and developers who want clarity over noise.
+  </p>
+
+  <p class="muted" style="margin-top:12px;">
+    What you’ll get by following:
+  </p>
+
+  <ul class="muted" style="margin:10px 0 0; padding-left:18px;">
+    <li>Short, practical reads you can finish fast.</li>
+    <li>Market signals (pricing, demand, launches, policy, sentiment) explained in plain English.</li>
+    <li>Real-world sales & marketing playbooks you can actually use.</li>
+    <li>Occasional deep-dives, checklists, and swipeable frameworks.</li>
+  </ul>
+
+  <p class="muted" style="margin-top:12px;">
+    If you like this style, subscribe at the top — I’m building this with consistency and long-term credibility in mind.
+  </p>
+
+  <h3 style="margin:18px 0 10px;">Advertise / Partner</h3>
+
+  <p class="muted" style="margin-bottom:12px;">
+    Want to sponsor a banner, feature a project, or promote a service?
+    Use the form below — I don’t show my email publicly to reduce spam.
+  </p>
+
+  <form
+    name="advertise"
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    action="/thanks-advertise.html"
+  >
+    <input type="hidden" name="form-name" value="advertise" />
+    <p class="hp">
+      <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+    </p>
+
+    <p style="margin:0 0 10px;">
+      <input class="headerInput" style="width:100%; max-width:720px;"
+        type="text" name="name" placeholder="Your name" required />
+    </p>
+
+    <p style="margin:0 0 10px;">
+      <input class="headerInput" style="width:100%; max-width:720px;"
+        type="text" name="company" placeholder="Company / Brand" />
+    </p>
+
+    <p style="margin:0 0 10px;">
+      <input class="headerInput" style="width:100%; max-width:720px;"
+        type="email" name="email" placeholder="Email (so I can reply)" required />
+    </p>
+
+    <p style="margin:0 0 10px;">
+      <input class="headerInput" style="width:100%; max-width:720px;"
+        type="url" name="website" placeholder="Website (optional)" />
+    </p>
+
+    <p style="margin:0 0 10px;">
+      <select class="headerInput" style="width:100%; max-width:720px;"
+        name="interest" required>
+        <option value="" selected disabled>What are you interested in?</option>
+        <option>Sponsored banner</option>
+        <option>Project listing / feature</option>
+        <option>Newsletter mention</option>
+        <option>Partnership / collaboration</option>
+        <option>Other</option>
+      </select>
+    </p>
+
+    <p style="margin:0 0 12px;">
+      <textarea
+        class="headerInput"
+        style="width:100%; max-width:720px; height:120px; border-radius:18px; padding:12px;"
+        name="message"
+        placeholder="Tell me what you want to promote, target market, preferred dates, and budget range."
+        required
+      ></textarea>
+    </p>
+
+    <button class="btnPrimary" style="width:auto;" type="submit">Send enquiry</button>
+
+    <p class="muted" style="margin-top:12px;">
+      I typically reply within 1–2 business days.
+    </p>
+  </form>
+</section>
 
   <!-- Search Bar section -->
   <section id="search" class="searchBlock">
