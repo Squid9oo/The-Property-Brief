@@ -1,0 +1,36 @@
+{
+  "version": "v1",
+  "country": "Malaysia",
+  "states": [
+    {
+      "name": "Selangor",
+      "districts": [
+        {
+          "name": "Petaling",
+          "areas": [
+            {
+              "name": "Puchong",
+              "aliases": ["Bandar Puteri Puchong", "Puchong Jaya", "Bandar Kinrara"]
+            },
+            {
+              "name": "Subang Jaya",
+              "aliases": ["SS15", "USJ", "Taipan"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Kuala Lumpur",
+      "districts": [
+        {
+          "name": "Kuala Lumpur",
+          "areas": [
+            { "name": "Mont Kiara", "aliases": ["Mont'Kiara"] },
+            { "name": "Bangsar", "aliases": ["Bangsar South"] }
+          ]
+        }
+      ]
+    }
+  ]
+}

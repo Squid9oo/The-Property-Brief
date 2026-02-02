@@ -103,62 +103,184 @@
         </div>
 
         <form name="project-submit" method="POST" data-netlify="true" enctype="multipart/form-data">
-        <input type="hidden" name="form-name" value="project-submit" />
+  <input type="hidden" name="form-name" value="project-submit" />
 
-        <label>
-        Project name
-        <input name="projectName" required />
-        </label>
+  <!-- SECTION 1 -->
+  <h3>Section 1</h3>
 
-        <label>
-        Location (text)
-        <input name="location" placeholder="e.g., Puchong, Selangor" required />
-        </label>
+  <label>
+    For
+    <select name="listingType" id="listingType" required>
+      <option value="">Select</option>
+      <option value="For Rent">For Rent</option>
+      <option value="Sub Sale">Sub Sale</option>
+      <option value="New Launch">New Launch</option>
+    </select>
+  </label>
 
-        <label>
-        Type
-        <select name="type" required>
-          <option value="Apartment">Apartment</option>
-          <option value="1-Storey Link">1-Storey Link</option>
-          <option value="2-Storey Link">2-Storey Link</option>
-          <option value="Semi-D">Semi-D</option>
-          <option value="Bungalow">Bungalow</option>
-          <option value="Land">Land</option>
-        </select>
-        </label>
+  <label>
+    Category
+    <select name="category" id="category" required>
+      <option value="">Select</option>
+      <option value="Apartment">Apartment</option>
+      <option value="House">House</option>
+      <option value="Commercial">Commercial</option>
+      <option value="Land">Land</option>
+    </select>
+  </label>
 
-        <label>
-        Starting price (RM)
-        <input name="priceFrom" type="number" required />
-        </label>
+  <label>
+    Seller Type
+    <select name="sellerType" id="sellerType" required>
+      <option value="">Select</option>
+      <option value="Private Seller">Private Seller</option>
+      <option value="Agent">Agent</option>
+    </select>
+  </label>
 
-        <label>
-        Developer (optional)
-        <input name="developer" />
-        </label>
+  <!-- SECTION 2 (COMMON) -->
+  <h3>Section 2</h3>
 
-        <label>
-        Video link (optional)
-        <input name="videoUrl" placeholder="YouTube link" />
-        </label>
+  <label>
+    Photos (up to 5 images)
+    <input name="photo1" type="file" accept="image/*" />
+    <input name="photo2" type="file" accept="image/*" />
+    <input name="photo3" type="file" accept="image/*" />
+    <input name="photo4" type="file" accept="image/*" />
+    <input name="photo5" type="file" accept="image/*" />
+  </label>
 
-        <label>
-        Image (1 file)
-        <input name="image" type="file" accept="image/*" />
-        </label>
+  <label>
+    Ad Title
+    <input name="adTitle" type="text" required />
+  </label>
 
-        <label>
-        Google Maps link (optional)
-        <input name="googleMapUrl" placeholder="Paste Google Maps share link" />
-        </label>
+  <label>
+    Tenure
+    <select name="tenure" required>
+      <option value="">Select</option>
+      <option value="Freehold">Freehold</option>
+      <option value="Leasehold">Leasehold</option>
+    </select>
+  </label>
 
-        <label>
-        Notes (optional)
-        <textarea name="notes" rows="4"></textarea>
-        </label>
+  <label>
+    Location
+    <!-- Temporary: text input first; next step we convert to full dropdown list -->
+    <input name="location" type="text" placeholder="e.g., Puchong, Selangor" required />
+  </label>
 
-        <button type="submit">Send</button>
-        </form>
+  <label>
+    Description
+    <textarea name="description" rows="5" required></textarea>
+  </label>
+
+  <label>
+    Price (RM)
+    <input name="priceRm" type="number" required />
+  </label>
+
+  <label>
+    Contact
+    <input name="contact" type="text" required />
+  </label>
+
+  <!-- APARTMENT ONLY -->
+  <div id="fields-apartment" style="display:none;">
+    <label>Bedrooms <input name="bedrooms" type="number" min="1" max="5" /></label>
+    <label>Bathrooms <input name="bathrooms" type="number" min="1" max="5" /></label>
+    <label>Built Up (sq.ft.) <input name="builtUpSqft" type="number" /></label>
+    <label>Parking Lot <input name="parking" type="number" min="1" max="5" /></label>
+  </div>
+
+  <!-- HOUSE ONLY -->
+  <div id="fields-house" style="display:none;">
+    <label>
+      Property Type
+      <select name="houseType">
+        <option value="">Select</option>
+        <option value="Bungalow">Bungalow</option>
+        <option value="Semi Detached">Semi Detached</option>
+        <option value="Cluster">Cluster</option>
+        <option value="1-Storey Link">1-Storey Link</option>
+        <option value="2-Storey Link">2-Storey Link</option>
+        <option value="Townhouse">Townhouse</option>
+      </select>
+    </label>
+
+    <label>
+      Land Title
+      <select name="landTitle">
+        <option value="">Select</option>
+        <option value="Bumi">Bumi</option>
+        <option value="Non-bumi">Non-bumi</option>
+        <option value="Malay Reserved">Malay Reserved</option>
+      </select>
+    </label>
+
+    <label>Bedrooms <input name="bedrooms" type="number" min="1" max="10" /></label>
+    <label>Bathrooms <input name="bathrooms" type="number" min="1" max="10" /></label>
+    <label>Built Up (sq.ft.) <input name="builtUpSqft" type="number" /></label>
+    <label>Parking Lot <input name="parking" type="number" min="1" max="10" /></label>
+  </div>
+
+  <!-- COMMERCIAL ONLY -->
+  <div id="fields-commercial" style="display:none;">
+    <label>
+      Property Type
+      <select name="commercialType">
+        <option value="">Select</option>
+        <option value="Shop Lot">Shop Lot</option>
+        <option value="Office">Office</option>
+        <option value="Factory">Factory</option>
+      </select>
+    </label>
+
+    <label>
+      Land Title
+      <select name="landTitle">
+        <option value="">Select</option>
+        <option value="Bumi">Bumi</option>
+        <option value="Non-bumi">Non-bumi</option>
+        <option value="Malay Reserved">Malay Reserved</option>
+      </select>
+    </label>
+
+    <label>Built Up (sq.ft.) <input name="builtUpSqft" type="number" /></label>
+    <label>No. Of Storey <input name="storeyCount" type="number" min="1" max="5" /></label>
+  </div>
+
+  <!-- LAND ONLY -->
+  <div id="fields-land" style="display:none;">
+    <label>
+      Property Type
+      <select name="landType">
+        <option value="">Select</option>
+        <option value="Residential">Residential</option>
+        <option value="Industrial">Industrial</option>
+        <option value="Agricultural">Agricultural</option>
+        <option value="Commercial">Commercial</option>
+        <option value="Mix-Development">Mix-Development</option>
+        <option value="Others">Others</option>
+      </select>
+    </label>
+
+    <label>
+      Land Title
+      <select name="landTitle">
+        <option value="">Select</option>
+        <option value="Bumi">Bumi</option>
+        <option value="Non-bumi">Non-bumi</option>
+        <option value="Malay Reserved">Malay Reserved</option>
+      </select>
+    </label>
+
+    <label>Land Size (acres / sq.ft) <input name="landSize" type="text" /></label>
+  </div>
+
+  <button type="submit">Send</button>
+</form>
+
     </div>
     </div>
 
