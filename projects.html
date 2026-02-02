@@ -20,35 +20,58 @@
   </header>
 
   <main class="container">
-    <section class="hero">
-      <h1>Project Listings</h1>
-      <p>Search by location, type, and price.</p>
+    <section class="projects-top">
+        <div class="projects-tabs">
+            <button class="tab active" type="button" data-tab="buy">Buy</button>
+            <button class="tab" type="button" data-tab="rent">Rent</button>
+            <button class="tab" type="button" data-tab="directory">Apartment Directory</button>
+        </div>
 
-      <div class="filters">
-        <select id="filter-location">
-          <option value="">All locations</option>
-          <option value="Malaysia">Malaysia</option>
-          <option value="Selangor">Selangor</option>
-          <option value="Puchong">Puchong</option>
-        </select>
+        <div class="filters">
+            <select id="filter-location">
+            <option value="">Malaysia (All)</option>
+            <option value="Malaysia">Malaysia</option>
+            <option value="Selangor">Selangor</option>
+            <option value="Puchong">Puchong</option>
+            </select>
 
-        <select id="filter-type">
-          <option value="">All types</option>
-          <option value="Apartment">Apartment</option>
-          <option value="1-Storey Link">1-Storey Link</option>
-          <option value="2-Storey Link">2-Storey Link</option>
-          <option value="Semi-D">Semi-D</option>
-          <option value="Bungalow">Bungalow</option>
-          <option value="Land">Land</option>
-        </select>
+            <input id="filter-q" type="text" placeholder="Search cities like Subang Jaya" />
 
-        <input id="filter-min" type="number" placeholder="Min price (RM)" />
-        <input id="filter-max" type="number" placeholder="Max price (RM)" />
+            <button id="btn-search" type="button">Search</button>
 
-        <input id="filter-q" type="text" placeholder="Search (name / area / developer)" />
-        <button id="btn-search" type="button">Search</button>
-        <button id="btn-reset" type="button">Reset</button>
-      </div>
+            <select id="filter-type">
+            <option value="">All properties</option>
+            <option value="Apartment">Apartment</option>
+            <option value="1-Storey Link">1-Storey Link</option>
+            <option value="2-Storey Link">2-Storey Link</option>
+            <option value="Semi-D">Semi-D</option>
+            <option value="Bungalow">Bungalow</option>
+            <option value="Land">Land</option>
+            </select>
+
+            <select id="filter-price">
+            <option value="">Price Range (RM)</option>
+            <option value="0-300000">0 - 300k</option>
+            <option value="300000-600000">300k - 600k</option>
+            <option value="600000-1000000">600k - 1M</option>
+            <option value="1000000-999999999">1M+</option>
+            </select>
+
+            <select id="filter-tenure">
+            <option value="">Tenure</option>
+            <option value="Freehold">Freehold</option>
+            <option value="Leasehold">Leasehold</option>
+            </select>
+
+            <select id="filter-sale">
+            <option value="">Sale Type</option>
+            <option value="New Launch">New Launch</option>
+            <option value="Subsale">Subsale</option>
+            <option value="Auction">Auction</option>
+            </select>
+
+            <button id="btn-reset" type="button">Reset</button>
+        </div>
     </section>
 
     <section>

@@ -1,24 +1,52 @@
 let allProjects = [];
 
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".tab");
+  if (!btn) return;
+  document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+});
+
 function money(n) {
   if (typeof n !== "number") return "";
   return "RM " + n.toLocaleString("en-MY");
 }
 
+function getVal(id) {
+  const el = document.getElementById(id);
+  return el ? String(el.value || "").trim() : "";
+}
+
+function getPriceMinMax() {
+  const range = getVal("filter-price"); // new dropdown
+  if (range && range.includes("-")) {
+    const [a, b] = range.split("-").map(Number);
+    return { min: Number.isFinite(a) ? a : 0, max: Number.isFinite(b) ? b : Infinity };
+  }
+  return { min: 0, max: Infinity };
+}
+
 function matchesFilters(p) {
-  const loc = document.getElementById("filter-location").value.trim();
-  const type = document.getElementById("filter-type").value.trim();
-  const min = Number(document.getElementById("filter-min").value || 0);
-  const maxRaw = document.getElementById("filter-max").value;
-  const max = maxRaw === "" ? Infinity : Number(maxRaw);
-  const q = document.getElementById("filter-q").value.trim().toLowerCase();
+  const loc = getVal("filter-location");
+  const type = getVal("filter-type");
+  const tenure = getVal("filter-tenure");
+  const sale = getVal("filter-sale");
+  const q = getVal("filter-q").toLowerCase();
+
+  const { min, max } = getPriceMinMax();
 
   const hay = `${p.name} ${p.location} ${p.state} ${p.developer || ""}`.toLowerCase();
 
   if (loc && !(p.country === loc || p.state === loc || p.location === loc)) return false;
   if (type && p.type !== type) return false;
-  if (p.priceFrom < min) return false;
-  if (p.priceFrom > max) return false;
+  if (tenure && (p.tenure || "") !== tenure) return false;
+  if (sale && (p.saleType || "") !== sale) return false;
+
+  if (typeof p.priceFrom === "number") {
+    if (p.priceFrom < min) return false;
+    if (p.priceFrom > max) return false;
+  }
+
   if (q && !hay.includes(q)) return false;
 
   return true;
