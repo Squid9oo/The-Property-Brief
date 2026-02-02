@@ -414,6 +414,7 @@ form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 #form-back-btn:hover {
@@ -427,16 +428,18 @@ form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
   padding: 0.875rem 1.5rem;
   background: #F9D342;
   color: #000000;
-  border: none;
+  border: 2px solid transparent; /* Add invisible border to match Back button */
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 #form-section-2 button[type="submit"]:hover {
   background: #f4c842;
+  border: 2px solid transparent;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(249, 211, 66, 0.4);
 }
