@@ -1,0 +1,31 @@
+{
+  "state": "Selangor",
+  "districts": [
+    {
+      "name": "Petaling",
+      "areas": [
+        { "name": "Puchong", "aliases": ["Bandar Puteri Puchong", "Puchong Jaya", "Bandar Kinrara"] },
+        { "name": "Subang Jaya", "aliases": ["USJ", "SS15", "SS2", "Taipan"] },
+        { "name": "Petaling Jaya", "aliases": ["PJ", "Damansara", "Kelana Jaya", "Bandar Utama"] },
+        { "name": "Shah Alam", "aliases": ["Seksyen 7", "Seksyen 13", "Setia Alam", "Elmina"] }
+      ]
+    },
+    {
+      "name": "Hulu Langat",
+      "areas": [
+        { "name": "Kajang", "aliases": ["Bandar Kajang", "Sungai Chua"] },
+        { "name": "Bangi", "aliases": ["Bandar Baru Bangi"] },
+        { "name": "Cheras", "aliases": ["Cheras Selatan", "Bandar Mahkota Cheras"] },
+        { "name": "Semenyih", "aliases": ["Bandar Rinching", "Eco Majestic"] }
+      ]
+    },
+    {
+      "name": "Sepang",
+      "areas": [
+        { "name": "Cyberjaya", "aliases": [] },
+        { "name": "Dengkil", "aliases": [] },
+        { "name": "Nilai", "aliases": ["Bandar Baru Nilai"] }
+      ]
+    }
+  ]
+}
