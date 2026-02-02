@@ -1,0 +1,35 @@
+{
+  "state": "Melaka",
+  "districts": [
+    {
+      "name": "Melaka Tengah",
+      "areas": [
+        { "name": "Bandar Melaka", "aliases": ["Melaka City", "Bandaraya Melaka"], "popular": true },
+        { "name": "Bukit Beruang", "aliases": [], "popular": true },
+        { "name": "Batu Berendam", "aliases": [], "popular": true },
+        { "name": "Ayer Keroh", "aliases": ["Ayer Keroh Heights"], "popular": true },
+        { "name": "Tanjung Kling", "aliases": [], "popular": true },
+        { "name": "Klebang", "aliases": [], "popular": false },
+        { "name": "Cheng", "aliases": [], "popular": false },
+        { "name": "Durian Tunggal", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Alor Gajah",
+      "areas": [
+        { "name": "Alor Gajah Town", "aliases": [], "popular": true },
+        { "name": "Bemban", "aliases": [], "popular": false },
+        { "name": "Masjid Tanah", "aliases": [], "popular": true },
+        { "name": "Pulau Sebang", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Jasin",
+      "areas": [
+        { "name": "Jasin Town", "aliases": [], "popular": true },
+        { "name": "Merlimau", "aliases": [], "popular": false },
+        { "name": "Sungai Rambai", "aliases": [], "popular": false }
+      ]
+    }
+  ]
+}
