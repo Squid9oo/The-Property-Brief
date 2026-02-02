@@ -1,0 +1,9 @@
+{
+  "country": "Malaysia",
+  "districtsByState": {
+    "Selangor": ["Petaling", "Hulu Langat", "Klang", "Gombak", "Kuala Langat", "Kuala Selangor", "Hulu Selangor", "Sabak Bernam", "Sepang"],
+    "Kuala Lumpur": ["Kuala Lumpur"],
+    "Putrajaya": ["Putrajaya"],
+    "Labuan": ["Labuan"]
+  }
+}
