@@ -215,3 +215,38 @@ form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
 .topbar .shareRow{
   margin-left: auto;
 }
+/* Hero background (image from CMS) */
+#projectsHero{
+  position: relative;
+  padding: 18px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.03); /* fallback if no image yet */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Dark overlay so text/filters stay readable */
+#projectsHero::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  pointer-events: none;
+}
+
+/* Keep real content above overlay */
+#projectsHero > *{
+  position: relative;
+  z-index: 1;
+}
+#projectsHero{ background-image: var(--hero-desktop); }
+
+@media (max-width: 960px){
+  #projectsHero{ background-image: var(--hero-tablet, var(--hero-desktop)); }
+}
+
+@media (max-width: 600px){
+  #projectsHero{ background-image: var(--hero-mobile, var(--hero-tablet, var(--hero-desktop))); }
+}

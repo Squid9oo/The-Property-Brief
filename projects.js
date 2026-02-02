@@ -96,9 +96,27 @@ function apply() {
   render(allProjects.filter(matchesFilters));
 }
 
+async function loadProjectsHeroBackground() {
+  const hero = document.getElementById("projectsHero");
+  if (!hero) return;
+
+  try {
+    const res = await fetch("content/settings/projects-hero.json", { cache: "no-store" });
+    if (!res.ok) return;
+
+    const data = await res.json();
+
+    // Save the 3 image URLs as CSS variables
+    if (data.heroDesktop) hero.style.setProperty("--hero-desktop", `url("${data.heroDesktop}")`);
+    if (data.heroTablet) hero.style.setProperty("--hero-tablet", `url("${data.heroTablet}")`);
+    if (data.heroMobile) hero.style.setProperty("--hero-mobile", `url("${data.heroMobile}")`);
+  } catch (e) {}
+}
+
 async function init() {
   const res = await fetch("projects.json", { cache: "no-store" });
   allProjects = await res.json();
+  await loadProjectsHeroBackground();
   apply();
 }
 

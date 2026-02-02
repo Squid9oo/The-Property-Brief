@@ -52,3 +52,15 @@ collections:
       - { label: "Description (shown under banner)", name: "description", widget: "string", required: false }
       - { label: "Alt text (optional)", name: "alt", widget: "string", required: false }
       - { label: "Active?", name: "active", widget: "boolean", default: true }
+  
+  - name: "settings"
+    label: "Settings"
+    files:
+      - name: "projectsHero"
+        label: "Projects Hero Background"
+        file: "content/settings/projects-hero.json"
+        format: "json"
+        fields:
+          - { label: "Hero Image (Desktop)", name: "heroDesktop", widget: "image", required: false }
+          - { label: "Hero Image (Tablet)", name: "heroTablet", widget: "image", required: false }
+          - { label: "Hero Image (Mobile)", name: "heroMobile", widget: "image", required: false }
