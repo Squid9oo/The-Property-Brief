@@ -243,20 +243,6 @@ form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
   position: relative;
   z-index: 1;
 }
-/* Header button */
-.postAdBtn{
-  height: 40px;
-  padding: 0 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(0,0,0,0.22);
-  color: var(--text);
-  font-weight: 900;
-  cursor: pointer;
-}
-.postAdBtn:hover{
-  border-color: rgba(249, 209, 0, 0.35);
-}
 
 /* Modal */
 .modalOverlay{
