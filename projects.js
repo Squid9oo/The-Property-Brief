@@ -179,19 +179,21 @@ async function initAdLocations() {
 
   if (!stateEl || !districtEl || !areaEl || !fullEl) return;
 
-  // Load states
-  const statesRes = await fetch("content/settings/locations/states.json", { cache: "no-store" });
-  const statesData = await statesRes.json();
-  const availableStates = Object.keys(districtsByState);
-
-  stateEl.innerHTML =
-  `<option value="">Select state</option>` +
-  availableStates.map(s => `<option value="${s}">${s}</option>`).join("");
-
-  // Load districts
+    // Load districts first (this controls what states we show)
   const distRes = await fetch("content/settings/locations/districts.json", { cache: "no-store" });
   const distData = await distRes.json();
   const districtsByState = distData.districtsByState || {};
+
+  // Load states (optional, but we keep it for future use)
+  const statesRes = await fetch("content/settings/locations/states.json", { cache: "no-store" });
+  const statesData = await statesRes.json();
+
+  // Show only states that have districts configured
+  const availableStates = Object.keys(districtsByState);
+
+  stateEl.innerHTML =
+    `<option value="">Select state</option>` +
+    availableStates.map(s => `<option value="${s}">${s}</option>`).join("");
 
   async function loadAreasFileForState(stateName) {
     // For now we only have Selangor file; later we add more files
