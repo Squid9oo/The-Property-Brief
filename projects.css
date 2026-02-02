@@ -217,28 +217,29 @@ form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
 }
 /* Hero background (image from CMS) */
 #projectsHero{
-  position: relative;
   width: 100%;
-  padding: 38px 0;         /* makes the hero taller */
+  min-height: 520px;              /* taller hero */
+  padding: 40px 0;                /* top/bottom breathing space */
+  display: flex;
+  align-items: flex-end;          /* push content to bottom */
   overflow: hidden;
 
-  background-color: rgba(255,255,255,0.03); /* fallback */
+  background-color: rgba(255,255,255,0.03);
   background-image: var(--hero-desktop);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-#projectsHero::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  pointer-events: none;
+@media (max-width: 960px){
+  #projectsHero{ min-height: 460px; }
+}
+
+@media (max-width: 600px){
+  #projectsHero{ min-height: 420px; }
 }
 
 #projectsHero > *{
   position: relative;
   z-index: 1;
 }
-
