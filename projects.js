@@ -171,6 +171,42 @@ document.getElementById("btn-search").addEventListener("click", apply);document.
 
 if (window.Auth) window.Auth.initAuth();
 
+function initCategoryFields() {
+  const categorySelect = document.getElementById("category");
+  if (!categorySelect) return;
+
+  const apartmentFields = document.getElementById("fields-apartment");
+  const houseFields = document.getElementById("fields-house");
+  const commercialFields = document.getElementById("fields-commercial");
+  const landFields = document.getElementById("fields-land");
+
+  function hideAllCategoryFields() {
+    if (apartmentFields) apartmentFields.style.display = "none";
+    if (houseFields) houseFields.style.display = "none";
+    if (commercialFields) commercialFields.style.display = "none";
+    if (landFields) landFields.style.display = "none";
+  }
+
+  categorySelect.addEventListener("change", () => {
+    const category = categorySelect.value;
+    hideAllCategoryFields();
+
+    // Show the correct category-specific fields
+    if (category === "Apartment" && apartmentFields) {
+      apartmentFields.style.display = "block";
+    } else if (category === "House" && houseFields) {
+      houseFields.style.display = "block";
+    } else if (category === "Commercial" && commercialFields) {
+      commercialFields.style.display = "block";
+    } else if (category === "Land" && landFields) {
+      landFields.style.display = "block";
+    }
+  });
+}
+
+// Call it
+initCategoryFields();
+
 async function initAdLocations() {
   const stateEl = document.getElementById("ad-state");
   const districtEl = document.getElementById("ad-district");
