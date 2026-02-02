@@ -369,18 +369,24 @@ form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
 }
 
 /* Next button (yellow theme) */
+/* ========== FORM BUTTON STYLES ========== */
+
+/* Next button (Section 1 - centered, yellow, 30% smaller) */
 #form-next-btn {
-  width: 100%;
-  padding: 0.875rem 1.5rem;
+  display: block;
+  margin: 1.5rem auto 0 auto; /* Centers the button */
+  padding: 0.6125rem 1.05rem; /* 30% smaller: 0.875 * 0.7 = 0.6125, 1.5 * 0.7 = 1.05 */
+  width: auto;
+  max-width: 200px;
   background: #F9D342;
   color: #000000;
-  border: none;
+  border: 2px solid transparent;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 1.5rem;
+  box-sizing: border-box;
 }
 
 #form-next-btn:hover {
@@ -389,59 +395,71 @@ form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
   box-shadow: 0 4px 12px rgba(249, 211, 66, 0.4);
 }
 
-/* Back and Submit buttons container */
+/* Back and Submit buttons container (Section 2 - centered) */
 #form-section-2 .form-buttons {
   display: flex;
   gap: 1rem;
-  margin-top: 2rem;
-  align-items: stretch;
+  margin: 2rem auto 0 auto;
+  justify-content: center;
+  max-width: 400px; /* Limits the container width */
 }
 
 #form-section-2 .form-buttons button {
   flex: 1;
-  max-width: none;
-}
-
-/* Back button */
-#form-back-btn {
-  flex: 1;
-  padding: 0.875rem 1.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  max-width: 200px;
   box-sizing: border-box;
 }
 
-#form-back-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-/* Submit button (yellow theme) */
-#form-section-2 button[type="submit"] {
-  flex: 1;
-  padding: 0.875rem 1.5rem;
+/* Back button (yellow theme, 30% smaller) */
+#form-back-btn {
+  padding: 0.6125rem 1.05rem; /* 30% smaller */
   background: #F9D342;
   color: #000000;
-  border: 2px solid transparent; /* Add invisible border to match Back button */
+  border: 2px solid transparent;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-sizing: border-box;
+}
+
+#form-back-btn:hover {
+  background: #f4c842;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(249, 211, 66, 0.4);
+}
+
+/* Submit button (yellow theme, 30% smaller) */
+#form-section-2 button[type="submit"] {
+  padding: 0.6125rem 1.05rem; /* 30% smaller */
+  background: #F9D342;
+  color: #000000;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 #form-section-2 button[type="submit"]:hover {
   background: #f4c842;
-  border: 2px solid transparent;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(249, 211, 66, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #form-section-2 .form-buttons {
+    flex-direction: column;
+    max-width: 200px;
+  }
+
+  #form-back-btn,
+  #form-section-2 button[type="submit"] {
+    width: 100%;
+    max-width: none;
+  }
 }
 
 /* Category-specific field blocks spacing */
