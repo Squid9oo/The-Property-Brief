@@ -200,3 +200,18 @@ form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
   border-color: rgba(255,255,255,0.10);
   background: rgba(255,255,255,0.03);
 }
+/* Projects header: keep nav near brand */
+.topbar{
+  justify-content: flex-start;
+}
+
+.topbarLeft{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* push the share icon to the far right */
+.topbar .shareRow{
+  margin-left: auto;
+}
