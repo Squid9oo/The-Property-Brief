@@ -29,7 +29,19 @@ function closeAdModal() {
   adModal.setAttribute("aria-hidden", "true");
 }
 
-if (openAdModalBtn) openAdModalBtn.addEventListener("click", openAdModal);
+if (openAdModalBtn) {
+  openAdModalBtn.addEventListener("click", async () => {
+    if (window.Auth) {
+      const ok = await window.Auth.requireLogin();
+      if (!ok) return; // user is being redirected to login
+    }
+    openAdModal();
+  });
+}
+
+// After Auth0 redirects back, auth.js will fire this event to open the modal
+window.addEventListener("open-post-ad", () => openAdModal());
+
 if (closeAdModalBtn) closeAdModalBtn.addEventListener("click", closeAdModal);
 
 if (adModal) {
@@ -156,5 +168,7 @@ document.getElementById("btn-search").addEventListener("click", apply);document.
     });
   apply();
 });
+
+if (window.Auth) window.Auth.initAuth();
 
 init();
