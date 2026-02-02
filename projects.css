@@ -193,3 +193,10 @@ form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
   background: rgba(40, 120, 255, 0.25);
   border-color: rgba(40, 120, 255, 0.45);
 }
+
+/* Make the current page link look active */
+.nav a.active{
+  color: var(--text);
+  border-color: rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+}

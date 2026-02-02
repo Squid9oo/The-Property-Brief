@@ -1,3 +1,18 @@
+const shareBtn = document.getElementById("sharePageBtn");
+if (shareBtn) {
+  shareBtn.addEventListener("click", async () => {
+    const url = location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: document.title, url });
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        alert("Link copied!");
+      }
+    } catch (e) {}
+  });
+}
+
 let allProjects = [];
 
 document.addEventListener("click", (e) => {
@@ -87,13 +102,12 @@ async function init() {
   apply();
 }
 
-document.getElementById("btn-search").addEventListener("click", apply);
-document.getElementById("btn-reset").addEventListener("click", () => {
-  document.getElementById("filter-location").value = "";
-  document.getElementById("filter-type").value = "";
-  document.getElementById("filter-min").value = "";
-  document.getElementById("filter-max").value = "";
-  document.getElementById("filter-q").value = "";
+document.getElementById("btn-search").addEventListener("click", apply);document.getElementById("btn-reset").addEventListener("click", () => {
+  ["filter-location","filter-type","filter-q","filter-price","filter-tenure","filter-sale"]
+    .forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
   apply();
 });
 
