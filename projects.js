@@ -207,6 +207,40 @@ function initCategoryFields() {
 // Call it
 initCategoryFields();
 
+function initFormSections() {
+  const section1 = document.getElementById("form-section-1");
+  const section2 = document.getElementById("form-section-2");
+  const nextBtn = document.getElementById("form-next-btn");
+  const backBtn = document.getElementById("form-back-btn");
+
+  const listingType = document.getElementById("listingType");
+  const category = document.getElementById("category");
+  const sellerType = document.getElementById("sellerType");
+
+  if (!section1 || !section2 || !nextBtn || !backBtn) return;
+
+  nextBtn.addEventListener("click", () => {
+    // Validate Section 1 fields
+    if (!listingType.value || !category.value || !sellerType.value) {
+      alert("Please complete all fields in Section 1");
+      return;
+    }
+
+    // Hide Section 1, show Section 2
+    section1.style.display = "none";
+    section2.style.display = "block";
+  });
+
+  backBtn.addEventListener("click", () => {
+    // Show Section 1, hide Section 2
+    section1.style.display = "block";
+    section2.style.display = "none";
+  });
+}
+
+// Call it
+initFormSections();
+
 async function initAdLocations() {
   const stateEl = document.getElementById("ad-state");
   const districtEl = document.getElementById("ad-district");
