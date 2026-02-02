@@ -1,0 +1,161 @@
+{
+  "state": "Sabah",
+  "districts": [
+    {
+      "name": "Kota Kinabalu",
+      "areas": [
+        { "name": "Kota Kinabalu City", "aliases": ["KK", "Bandar Kota Kinabalu"], "popular": true },
+        { "name": "Likas", "aliases": [], "popular": true },
+        { "name": "Tanjung Aru", "aliases": [], "popular": true },
+        { "name": "Kepayan", "aliases": [], "popular": false },
+        { "name": "Inanam", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Penampang",
+      "areas": [
+        { "name": "Penampang Town", "aliases": ["Donggongon"], "popular": true }
+      ]
+    },
+    {
+      "name": "Putatan",
+      "areas": [
+        { "name": "Putatan Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Papar",
+      "areas": [
+        { "name": "Papar Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Tuaran",
+      "areas": [
+        { "name": "Tuaran Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Kota Belud",
+      "areas": [
+        { "name": "Kota Belud Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Ranau",
+      "areas": [
+        { "name": "Ranau Town", "aliases": [], "popular": true },
+        { "name": "Kundasang", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Kota Marudu",
+      "areas": [
+        { "name": "Kota Marudu Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Pitas",
+      "areas": [
+        { "name": "Pitas Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Kudat",
+      "areas": [
+        { "name": "Kudat Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Sandakan",
+      "areas": [
+        { "name": "Sandakan Town", "aliases": [], "popular": true },
+        { "name": "Batu Sapi", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Kinabatangan",
+      "areas": [
+        { "name": "Kinabatangan Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Beluran",
+      "areas": [
+        { "name": "Beluran Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Telupid",
+      "areas": [
+        { "name": "Telupid Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Tongod",
+      "areas": [
+        { "name": "Tongod Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Keningau",
+      "areas": [
+        { "name": "Keningau Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Tambunan",
+      "areas": [
+        { "name": "Tambunan Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Tenom",
+      "areas": [
+        { "name": "Tenom Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Nabawan",
+      "areas": [
+        { "name": "Nabawan Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Sipitang",
+      "areas": [
+        { "name": "Sipitang Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Beaufort",
+      "areas": [
+        { "name": "Beaufort Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Kuala Penyu",
+      "areas": [
+        { "name": "Kuala Penyu Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Lahad Datu",
+      "areas": [
+        { "name": "Lahad Datu Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Semporna",
+      "areas": [
+        { "name": "Semporna Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Tawau",
+      "areas": [
+        { "name": "Tawau Town", "aliases": [], "popular": true }
+      ]
+    }
+  ]
+}

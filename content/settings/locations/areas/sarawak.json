@@ -1,0 +1,85 @@
+{
+  "state": "Sarawak",
+  "districts": [
+    {
+      "name": "Kuching",
+      "areas": [
+        { "name": "Kuching City", "aliases": ["Bandar Kuching"], "popular": true },
+        { "name": "Petra Jaya", "aliases": [], "popular": true },
+        { "name": "Matang", "aliases": [], "popular": false },
+        { "name": "Padawan", "aliases": [], "popular": false },
+        { "name": "Bau", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Sri Aman",
+      "areas": [
+        { "name": "Sri Aman Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Sibu",
+      "areas": [
+        { "name": "Sibu Town", "aliases": ["Bandar Sibu"], "popular": true },
+        { "name": "Kanowit", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Miri",
+      "areas": [
+        { "name": "Miri City", "aliases": ["Bandar Miri"], "popular": true },
+        { "name": "Lutong", "aliases": [], "popular": false },
+        { "name": "Tusan", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Limbang",
+      "areas": [
+        { "name": "Limbang Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Sarikei",
+      "areas": [
+        { "name": "Sarikei Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Kapit",
+      "areas": [
+        { "name": "Kapit Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Samarahan",
+      "areas": [
+        { "name": "Kota Samarahan", "aliases": [], "popular": true },
+        { "name": "Asajaya", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Bintulu",
+      "areas": [
+        { "name": "Bintulu Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Mukah",
+      "areas": [
+        { "name": "Mukah Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Betong",
+      "areas": [
+        { "name": "Betong Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Serian",
+      "areas": [
+        { "name": "Serian Town", "aliases": [], "popular": true }
+      ]
+    }
+  ]
+}
