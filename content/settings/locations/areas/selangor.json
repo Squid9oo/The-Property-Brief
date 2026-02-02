@@ -4,27 +4,92 @@
     {
       "name": "Petaling",
       "areas": [
-        { "name": "Puchong", "aliases": ["Bandar Puteri Puchong", "Puchong Jaya", "Bandar Kinrara"] },
-        { "name": "Subang Jaya", "aliases": ["USJ", "SS15", "SS2", "Taipan"] },
-        { "name": "Petaling Jaya", "aliases": ["PJ", "Damansara", "Kelana Jaya", "Bandar Utama"] },
-        { "name": "Shah Alam", "aliases": ["Seksyen 7", "Seksyen 13", "Setia Alam", "Elmina"] }
+        { "name": "Puchong", "aliases": ["Bandar Puteri Puchong", "Puchong Jaya", "Bandar Kinrara"], "popular": true },
+        { "name": "Subang Jaya", "aliases": ["USJ", "SS15", "SS2", "Taipan"], "popular": true },
+        { "name": "Petaling Jaya", "aliases": ["PJ", "Damansara", "Kelana Jaya", "Bandar Utama"], "popular": true },
+        { "name": "Shah Alam", "aliases": ["Seksyen 7", "Seksyen 13", "Setia Alam", "Elmina"], "popular": true },
+        { "name": "Kota Damansara", "aliases": ["Damansara Damai"], "popular": true },
+        { "name": "Sunway", "aliases": ["Bandar Sunway", "Sunway City"], "popular": true },
+        { "name": "Ara Damansara", "aliases": [], "popular": true },
+        { "name": "Bukit Jalil", "aliases": [], "popular": true },
+        { "name": "Seri Kembangan", "aliases": ["Mines"], "popular": true },
+        { "name": "Sungai Buloh", "aliases": [], "popular": true },
+        { "name": "Kota Kemuning", "aliases": [], "popular": true },
+        { "name": "Taman Tun Dr Ismail", "aliases": ["TTDI"], "popular": false },
+        { "name": "Sri Hartamas", "aliases": [], "popular": false },
+        { "name": "Mont Kiara", "aliases": [], "popular": false },
+        { "name": "Damansara Perdana", "aliases": [], "popular": false }
       ]
     },
     {
       "name": "Hulu Langat",
       "areas": [
-        { "name": "Kajang", "aliases": ["Bandar Kajang", "Sungai Chua"] },
-        { "name": "Bangi", "aliases": ["Bandar Baru Bangi"] },
-        { "name": "Cheras", "aliases": ["Cheras Selatan", "Bandar Mahkota Cheras"] },
-        { "name": "Semenyih", "aliases": ["Bandar Rinching", "Eco Majestic"] }
+        { "name": "Kajang", "aliases": ["Bandar Kajang", "Sungai Chua"], "popular": true },
+        { "name": "Bangi", "aliases": ["Bandar Baru Bangi"], "popular": true },
+        { "name": "Cheras", "aliases": ["Cheras Selatan", "Bandar Mahkota Cheras"], "popular": true },
+        { "name": "Semenyih", "aliases": ["Bandar Rinching", "Eco Majestic"], "popular": true },
+        { "name": "Ampang", "aliases": ["Ampang Jaya"], "popular": true },
+        { "name": "Balakong", "aliases": [], "popular": true },
+        { "name": "Sungai Long", "aliases": [], "popular": false },
+        { "name": "Beranang", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Klang",
+      "areas": [
+        { "name": "Klang Town", "aliases": ["Bandar Klang"], "popular": true },
+        { "name": "Port Klang", "aliases": ["Pelabuhan Klang"], "popular": true },
+        { "name": "Meru", "aliases": [], "popular": false },
+        { "name": "Bukit Tinggi", "aliases": [], "popular": false },
+        { "name": "Bandar Botanic", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Gombak",
+      "areas": [
+        { "name": "Batu Caves", "aliases": [], "popular": true },
+        { "name": "Rawang", "aliases": [], "popular": true },
+        { "name": "Selayang", "aliases": [], "popular": true },
+        { "name": "Kepong", "aliases": [], "popular": false },
+        { "name": "Batu Arang", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Kuala Langat",
+      "areas": [
+        { "name": "Banting", "aliases": [], "popular": true },
+        { "name": "Jenjarom", "aliases": [], "popular": false },
+        { "name": "Teluk Panglima Garang", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Kuala Selangor",
+      "areas": [
+        { "name": "Kuala Selangor Town", "aliases": [], "popular": true },
+        { "name": "Tanjung Karang", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Hulu Selangor",
+      "areas": [
+        { "name": "Kuala Kubu Bharu", "aliases": ["KKB"], "popular": true },
+        { "name": "Batang Kali", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Sabak Bernam",
+      "areas": [
+        { "name": "Sabak Bernam Town", "aliases": [], "popular": true },
+        { "name": "Sungai Besar", "aliases": [], "popular": false }
       ]
     },
     {
       "name": "Sepang",
       "areas": [
-        { "name": "Cyberjaya", "aliases": [] },
-        { "name": "Dengkil", "aliases": [] },
-        { "name": "Nilai", "aliases": ["Bandar Baru Nilai"] }
+        { "name": "Cyberjaya", "aliases": [], "popular": true },
+        { "name": "Sepang Town", "aliases": [], "popular": true },
+        { "name": "Dengkil", "aliases": [], "popular": true },
+        { "name": "Salak Tinggi", "aliases": ["KLIA", "KLIA2"], "popular": false }
       ]
     }
   ]

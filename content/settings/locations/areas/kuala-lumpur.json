@@ -4,14 +4,24 @@
     {
       "name": "Kuala Lumpur",
       "areas": [
-        { "name": "Mont Kiara", "aliases": ["Mont'Kiara"] },
-        { "name": "Bangsar", "aliases": ["Bangsar South"] },
-        { "name": "KLCC", "aliases": ["Kuala Lumpur City Centre"] },
-        { "name": "Bukit Bintang", "aliases": [] },
-        { "name": "Setapak", "aliases": [] },
-        { "name": "Cheras (KL)", "aliases": ["Cheras"] },
-        { "name": "Sri Petaling", "aliases": [] },
-        { "name": "Kepong", "aliases": [] }
+        { "name": "KLCC", "aliases": ["Kuala Lumpur City Centre"], "popular": true },
+        { "name": "Bukit Bintang", "aliases": [], "popular": true },
+        { "name": "Mont Kiara", "aliases": ["Mont'Kiara"], "popular": true },
+        { "name": "Bangsar", "aliases": ["Bangsar South"], "popular": true },
+        { "name": "Cheras", "aliases": ["Taman Cheras", "Cheras KL"], "popular": true },
+        { "name": "Kepong", "aliases": [], "popular": true },
+        { "name": "Setapak", "aliases": ["Wangsa Maju"], "popular": true },
+        { "name": "Sri Petaling", "aliases": [], "popular": true },
+        { "name": "Sentul", "aliases": [], "popular": true },
+        { "name": "Titiwangsa", "aliases": [], "popular": true },
+        { "name": "Brickfields", "aliases": ["Little India"], "popular": false },
+        { "name": "Segambut", "aliases": [], "popular": false },
+        { "name": "Seputeh", "aliases": ["Mid Valley"], "popular": false },
+        { "name": "Lembah Pantai", "aliases": ["Pantai Dalam"], "popular": false },
+        { "name": "Bukit Jalil", "aliases": [], "popular": false },
+        { "name": "Bandar Tun Razak", "aliases": [], "popular": false },
+        { "name": "Salak South", "aliases": [], "popular": false },
+        { "name": "Desa Petaling", "aliases": [], "popular": false }
       ]
     }
   ]
