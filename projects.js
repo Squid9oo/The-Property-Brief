@@ -197,10 +197,13 @@ async function initAdLocations() {
 
   async function loadAreasFileForState(stateName) {
     // For now we only have Selangor file; later we add more files
-    const key = String(stateName || "").toLowerCase();
-    const res = await fetch(`content/settings/locations/areas/${key}.json`, { cache: "no-store" });
-    if (!res.ok) return null;
-    return await res.json();
+  const key = String(stateName || "")
+  .trim()
+  .toLowerCase()
+  .replace(/\s+/g, "-");
+  const res = await fetch(`content/settings/locations/areas/${key}.json`, { cache: "no-store" });
+  if (!res.ok) return null;
+  return await res.json();
   }
 
   function resetSelect(el, placeholder) {
