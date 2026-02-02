@@ -1,0 +1,17 @@
+[
+  {
+    "id": "puchong-demo-1",
+    "name": "Demo Residences Puchong",
+    "location": "Puchong",
+    "state": "Selangor",
+    "country": "Malaysia",
+    "type": "Apartment",
+    "priceFrom": 410000,
+    "developer": "Demo Developer",
+    "beds": 3,
+    "baths": 2,
+    "sizeSqft": 1400,
+    "tenure": "Freehold",
+    "image": "assets/uploads/placeholder.jpg"
+  }
+]

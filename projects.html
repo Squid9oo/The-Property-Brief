@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Projects | The Property Brief</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="logo">The Property Brief</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="projects.html" class="active">Projects</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Project Listings</h1>
+      <p>Search by location, type, and price.</p>
+
+      <div class="filters">
+        <select id="filter-location">
+          <option value="">All locations</option>
+          <option value="Malaysia">Malaysia</option>
+          <option value="Selangor">Selangor</option>
+          <option value="Puchong">Puchong</option>
+        </select>
+
+        <select id="filter-type">
+          <option value="">All types</option>
+          <option value="Apartment">Apartment</option>
+          <option value="1-Storey Link">1-Storey Link</option>
+          <option value="2-Storey Link">2-Storey Link</option>
+          <option value="Semi-D">Semi-D</option>
+          <option value="Bungalow">Bungalow</option>
+          <option value="Land">Land</option>
+        </select>
+
+        <input id="filter-min" type="number" placeholder="Min price (RM)" />
+        <input id="filter-max" type="number" placeholder="Max price (RM)" />
+
+        <input id="filter-q" type="text" placeholder="Search (name / area / developer)" />
+        <button id="btn-search" type="button">Search</button>
+        <button id="btn-reset" type="button">Reset</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Results</h2>
+      <div id="projects-count"></div>
+      <div id="projects-grid" class="cards"></div>
+    </section>
+
+    <section>
+      <h2>Submit a Project</h2>
+      <p>Send details for review. Approved projects will be added to the site.</p>
+
+      <form name="project-submit" method="POST" data-netlify="true" enctype="multipart/form-data">
+        <input type="hidden" name="form-name" value="project-submit" />
+
+        <label>
+          Project name
+          <input name="projectName" required />
+        </label>
+
+        <label>
+          Location (text)
+          <input name="location" placeholder="e.g., Puchong, Selangor" required />
+        </label>
+
+        <label>
+          Type
+          <select name="type" required>
+            <option value="Apartment">Apartment</option>
+            <option value="1-Storey Link">1-Storey Link</option>
+            <option value="2-Storey Link">2-Storey Link</option>
+            <option value="Semi-D">Semi-D</option>
+            <option value="Bungalow">Bungalow</option>
+            <option value="Land">Land</option>
+          </select>
+        </label>
+
+        <label>
+          Starting price (RM)
+          <input name="priceFrom" type="number" required />
+        </label>
+
+        <label>
+          Developer (optional)
+          <input name="developer" />
+        </label>
+
+        <label>
+          Video link (optional)
+          <input name="videoUrl" placeholder="YouTube link" />
+        </label>
+
+        <label>
+          Image (1 file, max size limits apply)
+          <input name="image" type="file" accept="image/*" />
+        </label>
+
+        <label>
+          Google Maps link (optional)
+          <input name="googleMapUrl" placeholder="Paste Google Maps share link" />
+        </label>
+
+        <label>
+          Notes (optional)
+          <textarea name="notes" rows="4"></textarea>
+        </label>
+
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="projects.js"></script>
+</body>
+</html>
