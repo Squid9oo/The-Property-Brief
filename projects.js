@@ -232,31 +232,74 @@ async function initAdLocations() {
     districtEl._areasData = await loadAreasFileForState(state);
   });
 
-  districtEl.addEventListener("change", () => {
-    const state = stateEl.value;
-    const district = districtEl.value;
+ districtEl.addEventListener("change", () => {
+  const state = stateEl.value;
+  const district = districtEl.value;
 
-    resetSelect(areaEl, "Select area");
-    areaEl.disabled = true;
-    fullEl.value = "";
+  resetSelect(areaEl, "Select area");
+  areaEl.disabled = true;
+  fullEl.value = "";
 
-    const areasData = districtEl._areasData;
-    if (!areasData || !district) return;
+  // Hide custom input by default
+  const customWrapper = document.getElementById("ad-area-custom-wrapper");
+  const customInput = document.getElementById("ad-area-custom");
+  if (customWrapper) customWrapper.style.display = "none";
+  if (customInput) {
+    customInput.required = false;
+    customInput.value = "";
+  }
 
-    const districtObj = (areasData.districts || []).find(d => d.name === district);
-    const areas = districtObj ? (districtObj.areas || []) : [];
+  const areasData = districtEl._areasData;
+  if (!areasData || !district) return;
 
-    areaEl.innerHTML = `<option value="">Select area</option>` +
-      areas.map(a => `<option value="${a.name}">${a.name}</option>`).join("");
-    areaEl.disabled = false;
-  });
+  const districtObj = (areasData.districts || []).find(d => d.name === district);
+  const areas = districtObj ? (districtObj.areas || []) : [];
+
+  // Populate dropdown + add "Other" option
+  areaEl.innerHTML = `<option value="">Select area</option>` +
+    areas.map(a => `<option value="${a.name}">${a.name}</option>`).join("") +
+    `<option value="__other__">Other (type location)</option>`;
+  areaEl.disabled = false;
+});
 
   areaEl.addEventListener("change", () => {
-    const state = stateEl.value;
-    const district = districtEl.value;
-    const area = areaEl.value;
+  const state = stateEl.value;
+  const district = districtEl.value;
+  const area = areaEl.value;
+
+  const customWrapper = document.getElementById("ad-area-custom-wrapper");
+  const customInput = document.getElementById("ad-area-custom");
+
+  // Show custom input if "Other" selected
+  if (area === "__other__") {
+    if (customWrapper) customWrapper.style.display = "block";
+    if (customInput) {
+      customInput.required = true;
+      customInput.focus();
+    }
+    areaEl.required = false;
+    fullEl.value = "";
+  } else {
+    if (customWrapper) customWrapper.style.display = "none";
+    if (customInput) {
+      customInput.required = false;
+      customInput.value = "";
+    }
+    areaEl.required = true;
     fullEl.value = area ? `${area}, ${district}, ${state}` : "";
-  });
+  }
+  
+});
+  // Handle custom area input
+  const customInput = document.getElementById("ad-area-custom");
+  if (customInput) {
+    customInput.addEventListener("input", () => {
+      const state = stateEl.value;
+      const district = districtEl.value;
+      fullEl.value = customInput.value ? `${customInput.value}, ${district}, ${state}` : "";
+    });
+  }
+
 }
 
 // Call it
