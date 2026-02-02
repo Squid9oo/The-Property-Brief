@@ -218,7 +218,7 @@ form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
 /* Hero background (image from CMS) */
 #projectsHero{
   width: 100%;
-  min-height: 520px;              /* taller hero */
+  min-height: 440px;              /* taller hero */
   padding: 40px 0;                /* top/bottom breathing space */
   display: flex;
   align-items: flex-end;          /* push content to bottom */
@@ -232,14 +232,70 @@ form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
 }
 
 @media (max-width: 960px){
-  #projectsHero{ min-height: 460px; }
+  #projectsHero{ min-height: 390px; }
 }
 
 @media (max-width: 600px){
-  #projectsHero{ min-height: 420px; }
+  #projectsHero{ min-height: 360px; }
 }
 
 #projectsHero > *{
   position: relative;
   z-index: 1;
+}
+/* Header button */
+.postAdBtn{
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.22);
+  color: var(--text);
+  font-weight: 900;
+  cursor: pointer;
+}
+.postAdBtn:hover{
+  border-color: rgba(249, 209, 0, 0.35);
+}
+
+/* Modal */
+.modalOverlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 9999;
+}
+
+.modalOverlay.open{ display: flex; }
+
+.modalCard{
+  width: min(760px, 96vw);
+  max-height: 86vh;
+  overflow: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(18,18,18,0.96);
+  padding: 14px 14px 18px;
+}
+
+.modalHeader{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.modalClose{
+  height: 36px;
+  width: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
 }

@@ -13,6 +13,34 @@ if (shareBtn) {
   });
 }
 
+const adModal = document.getElementById("adModal");
+const openAdModalBtn = document.getElementById("openAdModalBtn");
+const closeAdModalBtn = document.getElementById("closeAdModalBtn");
+
+function openAdModal() {
+  if (!adModal) return;
+  adModal.classList.add("open");
+  adModal.setAttribute("aria-hidden", "false");
+}
+
+function closeAdModal() {
+  if (!adModal) return;
+  adModal.classList.remove("open");
+  adModal.setAttribute("aria-hidden", "true");
+}
+
+if (openAdModalBtn) openAdModalBtn.addEventListener("click", openAdModal);
+if (closeAdModalBtn) closeAdModalBtn.addEventListener("click", closeAdModal);
+
+if (adModal) {
+  adModal.addEventListener("click", (e) => {
+    if (e.target === adModal) closeAdModal(); // click outside card closes
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && adModal.classList.contains("open")) closeAdModal();
+  });
+}
+
 let allProjects = [];
 
 document.addEventListener("click", (e) => {

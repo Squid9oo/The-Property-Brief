@@ -24,7 +24,8 @@
         </div>
 
         <div class="shareRow">
-        <button class="shareIconBtn" id="sharePageBtn" type="button" aria-label="Share this page">↗</button>
+            <button class="postAdBtn" id="openAdModalBtn" type="button">Post Free Ad</button>
+            <button class="shareIconBtn" id="sharePageBtn" type="button" aria-label="Share this page">↗</button>
         </div>
     </header>
 
@@ -92,71 +93,76 @@
       <div id="projects-grid" class="cards"></div>
     </section>
 
-    <section>
-      <h2>Submit a Project</h2>
-      <p>Send details for review. Approved projects will be added to the site.</p>
-
-      <form name="project-submit" method="POST" data-netlify="true" enctype="multipart/form-data">
-        <input type="hidden" name="form-name" value="project-submit" />
-
-        <label>
-          Project name
-          <input name="projectName" required />
-        </label>
-
-        <label>
-          Location (text)
-          <input name="location" placeholder="e.g., Puchong, Selangor" required />
-        </label>
-
-        <label>
-          Type
-          <select name="type" required>
-            <option value="Apartment">Apartment</option>
-            <option value="1-Storey Link">1-Storey Link</option>
-            <option value="2-Storey Link">2-Storey Link</option>
-            <option value="Semi-D">Semi-D</option>
-            <option value="Bungalow">Bungalow</option>
-            <option value="Land">Land</option>
-          </select>
-        </label>
-
-        <label>
-          Starting price (RM)
-          <input name="priceFrom" type="number" required />
-        </label>
-
-        <label>
-          Developer (optional)
-          <input name="developer" />
-        </label>
-
-        <label>
-          Video link (optional)
-          <input name="videoUrl" placeholder="YouTube link" />
-        </label>
-
-        <label>
-          Image (1 file, max size limits apply)
-          <input name="image" type="file" accept="image/*" />
-        </label>
-
-        <label>
-          Google Maps link (optional)
-          <input name="googleMapUrl" placeholder="Paste Google Maps share link" />
-        </label>
-
-        <label>
-          Notes (optional)
-          <textarea name="notes" rows="4"></textarea>
-        </label>
-
-        <button type="submit">Submit</button>
-      </form>
-    </div>  
-    </section>
   </main>
 
   <script src="projects.js"></script>
+
+    <div class="modalOverlay" id="adModal" aria-hidden="true">
+    <div class="modalCard" role="dialog" aria-modal="true" aria-label="Post Free Ad">
+        <div class="modalHeader">
+            <h2>Post Free Ad</h2>
+            <button class="modalClose" id="closeAdModalBtn" type="button" aria-label="Close">✕</button>
+        </div>
+
+        <form name="project-submit" method="POST" data-netlify="true" enctype="multipart/form-data">
+        <input type="hidden" name="form-name" value="project-submit" />
+
+        <label>
+        Project name
+        <input name="projectName" required />
+        </label>
+
+        <label>
+        Location (text)
+        <input name="location" placeholder="e.g., Puchong, Selangor" required />
+        </label>
+
+        <label>
+        Type
+        <select name="type" required>
+          <option value="Apartment">Apartment</option>
+          <option value="1-Storey Link">1-Storey Link</option>
+          <option value="2-Storey Link">2-Storey Link</option>
+          <option value="Semi-D">Semi-D</option>
+          <option value="Bungalow">Bungalow</option>
+          <option value="Land">Land</option>
+        </select>
+        </label>
+
+        <label>
+        Starting price (RM)
+        <input name="priceFrom" type="number" required />
+        </label>
+
+        <label>
+        Developer (optional)
+        <input name="developer" />
+        </label>
+
+        <label>
+        Video link (optional)
+        <input name="videoUrl" placeholder="YouTube link" />
+        </label>
+
+        <label>
+        Image (1 file)
+        <input name="image" type="file" accept="image/*" />
+        </label>
+
+        <label>
+        Google Maps link (optional)
+        <input name="googleMapUrl" placeholder="Paste Google Maps share link" />
+        </label>
+
+        <label>
+        Notes (optional)
+        <textarea name="notes" rows="4"></textarea>
+        </label>
+
+        <button type="submit">Send</button>
+        </form>
+    </div>
+    </div>
+
 </body>
 </html>
