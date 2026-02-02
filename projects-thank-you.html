@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You - The Property Brief</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .thank-you-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    }
+
+    .thank-you-card {
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 3rem;
+      text-align: center;
+    }
+
+    .thank-you-card h1 {
+      color: #F9D342;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .thank-you-card .checkmark {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #F9D342;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem auto;
+      font-size: 3rem;
+    }
+
+    .thank-you-card p {
+      color: #ffffff;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .thank-you-card .back-btn {
+      display: inline-block;
+      padding: 0.875rem 2rem;
+      background: #F9D342;
+      color: #000000;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+    }
+
+    .thank-you-card .back-btn:hover {
+      background: #f4c842;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(249, 211, 66, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="thank-you-container">
+    <div class="thank-you-card">
+      <div class="checkmark">✓</div>
+      <h1>Thank You for Your Submission!</h1>
+      <p>
+        Your property listing is under review. We'll notify you via email once it's approved 
+        (usually within 24 hours). Your ad will be live for 30 days.
+      </p>
+      <a href="/projects.html" class="back-btn">Back to Projects</a>
+    </div>
+  </div>
+</body>
+</html>
