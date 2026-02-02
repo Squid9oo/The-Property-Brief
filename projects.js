@@ -182,8 +182,11 @@ async function initAdLocations() {
   // Load states
   const statesRes = await fetch("content/settings/locations/states.json", { cache: "no-store" });
   const statesData = await statesRes.json();
-  stateEl.innerHTML = `<option value="">Select state</option>` +
-    (statesData.states || []).map(s => `<option value="${s}">${s}</option>`).join("");
+  const availableStates = Object.keys(districtsByState);
+
+  stateEl.innerHTML =
+  `<option value="">Select state</option>` +
+  availableStates.map(s => `<option value="${s}">${s}</option>`).join("");
 
   // Load districts
   const distRes = await fetch("content/settings/locations/districts.json", { cache: "no-store" });
