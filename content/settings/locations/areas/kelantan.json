@@ -1,0 +1,70 @@
+{
+  "state": "Kelantan",
+  "districts": [
+    {
+      "name": "Kota Bharu",
+      "areas": [
+        { "name": "Kota Bharu Town", "aliases": ["KB", "Bandar Kota Bharu"], "popular": true },
+        { "name": "Kubang Kerian", "aliases": [], "popular": true },
+        { "name": "Wakaf Che Yeh", "aliases": [], "popular": false },
+        { "name": "Ketereh", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Pasir Mas",
+      "areas": [
+        { "name": "Pasir Mas Town", "aliases": [], "popular": true },
+        { "name": "Rantau Panjang", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Tumpat",
+      "areas": [
+        { "name": "Tumpat Town", "aliases": [], "popular": true },
+        { "name": "Pengkalan Kubor", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Pasir Puteh",
+      "areas": [
+        { "name": "Pasir Puteh Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Bachok",
+      "areas": [
+        { "name": "Bachok Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Kuala Krai",
+      "areas": [
+        { "name": "Kuala Krai Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Machang",
+      "areas": [
+        { "name": "Machang Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Tanah Merah",
+      "areas": [
+        { "name": "Tanah Merah Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Jeli",
+      "areas": [
+        { "name": "Jeli Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Gua Musang",
+      "areas": [
+        { "name": "Gua Musang Town", "aliases": [], "popular": true }
+      ]
+    }
+  ]
+}

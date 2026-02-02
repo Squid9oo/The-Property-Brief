@@ -1,0 +1,86 @@
+{
+  "state": "Pahang",
+  "districts": [
+    {
+      "name": "Kuantan",
+      "areas": [
+        { "name": "Kuantan Town", "aliases": ["Bandar Kuantan"], "popular": true },
+        { "name": "Teluk Cempedak", "aliases": [], "popular": true },
+        { "name": "Bandar Indera Mahkota", "aliases": [], "popular": true },
+        { "name": "Gambang", "aliases": [], "popular": false },
+        { "name": "Balok", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Temerloh",
+      "areas": [
+        { "name": "Temerloh Town", "aliases": [], "popular": true },
+        { "name": "Mentakab", "aliases": [], "popular": true },
+        { "name": "Lanchang", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Bentong",
+      "areas": [
+        { "name": "Bentong Town", "aliases": [], "popular": true },
+        { "name": "Genting Highlands", "aliases": ["Resorts World Genting"], "popular": true },
+        { "name": "Bukit Tinggi", "aliases": ["Colmar Tropicale"], "popular": true },
+        { "name": "Karak", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Raub",
+      "areas": [
+        { "name": "Raub Town", "aliases": [], "popular": true },
+        { "name": "Fraser's Hill", "aliases": ["Bukit Fraser"], "popular": false }
+      ]
+    },
+    {
+      "name": "Jerantut",
+      "areas": [
+        { "name": "Jerantut Town", "aliases": [], "popular": true },
+        { "name": "Bandar Tun Razak", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Pekan",
+      "areas": [
+        { "name": "Pekan Town", "aliases": [], "popular": true },
+        { "name": "Nenasi", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Lipis",
+      "areas": [
+        { "name": "Kuala Lipis", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Cameron Highlands",
+      "areas": [
+        { "name": "Tanah Rata", "aliases": [], "popular": true },
+        { "name": "Brinchang", "aliases": [], "popular": true },
+        { "name": "Ringlet", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Rompin",
+      "areas": [
+        { "name": "Kuala Rompin", "aliases": [], "popular": true },
+        { "name": "Endau", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Bera",
+      "areas": [
+        { "name": "Bandar Bera", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Maran",
+      "areas": [
+        { "name": "Maran Town", "aliases": [], "popular": true }
+      ]
+    }
+  ]
+}

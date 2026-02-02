@@ -3,10 +3,10 @@
   "districtsByState": {
     "Johor": ["Johor Bahru", "Batu Pahat", "Muar", "Kluang", "Pontian", "Segamat", "Kulai", "Kota Tinggi", "Mersing", "Tangkak"],
     "Kedah": ["Kota Setar", "Kubang Pasu", "Padang Terap", "Langkawi", "Kuala Muda", "Yan", "Sik", "Baling", "Kulim", "Bandar Baharu", "Pendang", "Pokok Sena"],
-    "Kelantan": [],
+    "Kelantan": ["Kota Bharu", "Pasir Mas", "Tumpat", "Pasir Puteh", "Bachok", "Kuala Krai", "Machang", "Tanah Merah", "Jeli", "Gua Musang"],
     "Melaka": ["Melaka Tengah", "Alor Gajah", "Jasin"],
     "Negeri Sembilan": ["Seremban", "Port Dickson", "Rembau", "Kuala Pilah", "Jempol", "Tampin", "Jelebu"],
-    "Pahang": [],
+    "Pahang": ["Kuantan", "Temerloh", "Bentong", "Raub", "Jerantut", "Pekan", "Lipis", "Cameron Highlands", "Rompin", "Bera", "Maran"],
     "Penang": ["Timur Laut", "Seberang Perai"],
     "Perak": ["Kinta", "Larut, Matang dan Selama", "Hilir Perak", "Batang Padang", "Perak Tengah", "Kampar", "Kuala Kangsar", "Kerian", "Hulu Perak", "Manjung"],
     "Perlis": [],
