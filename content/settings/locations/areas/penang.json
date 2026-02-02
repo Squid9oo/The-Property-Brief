@@ -1,0 +1,35 @@
+{
+  "state": "Penang",
+  "districts": [
+    {
+      "name": "Timur Laut",
+      "areas": [
+        { "name": "George Town", "aliases": ["Georgetown", "Bandar George Town"], "popular": true },
+        { "name": "Tanjung Bungah", "aliases": [], "popular": true },
+        { "name": "Batu Ferringhi", "aliases": [], "popular": true },
+        { "name": "Pulau Tikus", "aliases": [], "popular": true },
+        { "name": "Jelutong", "aliases": [], "popular": true },
+        { "name": "Air Itam", "aliases": [], "popular": true },
+        { "name": "Tanjung Tokong", "aliases": [], "popular": true },
+        { "name": "Gelugor", "aliases": [], "popular": true },
+        { "name": "Sungai Ara", "aliases": [], "popular": false },
+        { "name": "Bayan Lepas", "aliases": [], "popular": true },
+        { "name": "Relau", "aliases": [], "popular": false },
+        { "name": "Balik Pulau", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Seberang Perai",
+      "areas": [
+        { "name": "Butterworth", "aliases": ["Perai"], "popular": true },
+        { "name": "Seberang Jaya", "aliases": [], "popular": true },
+        { "name": "Bukit Mertajam", "aliases": ["BM"], "popular": true },
+        { "name": "Kepala Batas", "aliases": [], "popular": true },
+        { "name": "Nibong Tebal", "aliases": [], "popular": true },
+        { "name": "Perai", "aliases": [], "popular": false },
+        { "name": "Permatang Pauh", "aliases": [], "popular": false },
+        { "name": "Simpang Ampat", "aliases": [], "popular": false }
+      ]
+    }
+  ]
+}
