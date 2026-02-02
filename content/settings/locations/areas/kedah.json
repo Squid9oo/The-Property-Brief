@@ -1,0 +1,87 @@
+{
+  "state": "Kedah",
+  "districts": [
+    {
+      "name": "Kota Setar",
+      "areas": [
+        { "name": "Alor Setar", "aliases": ["Alor Star"], "popular": true },
+        { "name": "Anak Bukit", "aliases": [], "popular": false },
+        { "name": "Jitra", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Kubang Pasu",
+      "areas": [
+        { "name": "Jitra", "aliases": [], "popular": true },
+        { "name": "Changlun", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Padang Terap",
+      "areas": [
+        { "name": "Kuala Nerang", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Langkawi",
+      "areas": [
+        { "name": "Kuah", "aliases": [], "popular": true },
+        { "name": "Pantai Cenang", "aliases": [], "popular": true },
+        { "name": "Pantai Kok", "aliases": [], "popular": false },
+        { "name": "Padang Matsirat", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Kuala Muda",
+      "areas": [
+        { "name": "Sungai Petani", "aliases": ["SP"], "popular": true },
+        { "name": "Bedong", "aliases": [], "popular": false },
+        { "name": "Tikam Batu", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Yan",
+      "areas": [
+        { "name": "Yan Town", "aliases": [], "popular": true },
+        { "name": "Guar Chempedak", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Sik",
+      "areas": [
+        { "name": "Sik Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Baling",
+      "areas": [
+        { "name": "Baling Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Kulim",
+      "areas": [
+        { "name": "Kulim Town", "aliases": [], "popular": true },
+        { "name": "Kulim Hi-Tech Park", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Bandar Baharu",
+      "areas": [
+        { "name": "Bandar Baharu Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Pendang",
+      "areas": [
+        { "name": "Pendang Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Pokok Sena",
+      "areas": [
+        { "name": "Pokok Sena Town", "aliases": [], "popular": true }
+      ]
+    }
+  ]
+}

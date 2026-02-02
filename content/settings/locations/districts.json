@@ -2,10 +2,10 @@
   "country": "Malaysia",
   "districtsByState": {
     "Johor": ["Johor Bahru", "Batu Pahat", "Muar", "Kluang", "Pontian", "Segamat", "Kulai", "Kota Tinggi", "Mersing", "Tangkak"],
-    "Kedah": [],
+    "Kedah": ["Kota Setar", "Kubang Pasu", "Padang Terap", "Langkawi", "Kuala Muda", "Yan", "Sik", "Baling", "Kulim", "Bandar Baharu", "Pendang", "Pokok Sena"],
     "Kelantan": [],
     "Melaka": ["Melaka Tengah", "Alor Gajah", "Jasin"],
-    "Negeri Sembilan": [],
+    "Negeri Sembilan": ["Seremban", "Port Dickson", "Rembau", "Kuala Pilah", "Jempol", "Tampin", "Jelebu"],
     "Pahang": [],
     "Penang": ["Timur Laut", "Seberang Perai"],
     "Perak": ["Kinta", "Larut, Matang dan Selama", "Hilir Perak", "Batang Padang", "Perak Tengah", "Kampar", "Kuala Kangsar", "Kerian", "Hulu Perak", "Manjung"],

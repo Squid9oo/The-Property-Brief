@@ -1,0 +1,60 @@
+{
+  "state": "Negeri Sembilan",
+  "districts": [
+    {
+      "name": "Seremban",
+      "areas": [
+        { "name": "Seremban Town", "aliases": ["Bandar Seremban"], "popular": true },
+        { "name": "Seremban 2", "aliases": ["S2"], "popular": true },
+        { "name": "Nilai", "aliases": ["Bandar Baru Nilai"], "popular": true },
+        { "name": "Senawang", "aliases": [], "popular": true },
+        { "name": "Paroi", "aliases": [], "popular": false },
+        { "name": "Labu", "aliases": [], "popular": false },
+        { "name": "Setul", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Port Dickson",
+      "areas": [
+        { "name": "Port Dickson Town", "aliases": ["PD"], "popular": true },
+        { "name": "Teluk Kemang", "aliases": [], "popular": true },
+        { "name": "Si Rusa", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Rembau",
+      "areas": [
+        { "name": "Rembau Town", "aliases": [], "popular": true },
+        { "name": "Chembong", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Kuala Pilah",
+      "areas": [
+        { "name": "Kuala Pilah Town", "aliases": [], "popular": true },
+        { "name": "Dangi", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Jempol",
+      "areas": [
+        { "name": "Bahau", "aliases": [], "popular": true },
+        { "name": "Bandar Seri Jempol", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Tampin",
+      "areas": [
+        { "name": "Tampin Town", "aliases": [], "popular": true },
+        { "name": "Gemas", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Jelebu",
+      "areas": [
+        { "name": "Kuala Klawang", "aliases": [], "popular": true },
+        { "name": "Jelebu Town", "aliases": [], "popular": false }
+      ]
+    }
+  ]
+}
