@@ -171,4 +171,87 @@ document.getElementById("btn-search").addEventListener("click", apply);document.
 
 if (window.Auth) window.Auth.initAuth();
 
+async function initAdLocations() {
+  const stateEl = document.getElementById("ad-state");
+  const districtEl = document.getElementById("ad-district");
+  const areaEl = document.getElementById("ad-area");
+  const fullEl = document.getElementById("ad-locationFull");
+
+  if (!stateEl || !districtEl || !areaEl || !fullEl) return;
+
+  // Load states
+  const statesRes = await fetch("content/settings/locations/states.json", { cache: "no-store" });
+  const statesData = await statesRes.json();
+  stateEl.innerHTML = `<option value="">Select state</option>` +
+    (statesData.states || []).map(s => `<option value="${s}">${s}</option>`).join("");
+
+  // Load districts
+  const distRes = await fetch("content/settings/locations/districts.json", { cache: "no-store" });
+  const distData = await distRes.json();
+  const districtsByState = distData.districtsByState || {};
+
+  async function loadAreasFileForState(stateName) {
+    // For now we only have Selangor file; later we add more files
+    const key = String(stateName || "").toLowerCase();
+    const res = await fetch(`content/settings/locations/areas/${key}.json`, { cache: "no-store" });
+    if (!res.ok) return null;
+    return await res.json();
+  }
+
+  function resetSelect(el, placeholder) {
+    el.innerHTML = `<option value="">${placeholder}</option>`;
+    el.value = "";
+  }
+
+  stateEl.addEventListener("change", async () => {
+    const state = stateEl.value;
+
+    resetSelect(districtEl, "Select district");
+    resetSelect(areaEl, "Select area");
+    districtEl.disabled = true;
+    areaEl.disabled = true;
+    fullEl.value = "";
+
+    if (!state) return;
+
+    // Fill districts
+    const dList = districtsByState[state] || [];
+    districtEl.innerHTML = `<option value="">Select district</option>` +
+      dList.map(d => `<option value="${d}">${d}</option>`).join("");
+    districtEl.disabled = false;
+
+    // Preload areas JSON for this state (if exists)
+    districtEl._areasData = await loadAreasFileForState(state);
+  });
+
+  districtEl.addEventListener("change", () => {
+    const state = stateEl.value;
+    const district = districtEl.value;
+
+    resetSelect(areaEl, "Select area");
+    areaEl.disabled = true;
+    fullEl.value = "";
+
+    const areasData = districtEl._areasData;
+    if (!areasData || !district) return;
+
+    const districtObj = (areasData.districts || []).find(d => d.name === district);
+    const areas = districtObj ? (districtObj.areas || []) : [];
+
+    areaEl.innerHTML = `<option value="">Select area</option>` +
+      areas.map(a => `<option value="${a.name}">${a.name}</option>`).join("");
+    areaEl.disabled = false;
+  });
+
+  areaEl.addEventListener("change", () => {
+    const state = stateEl.value;
+    const district = districtEl.value;
+    const area = areaEl.value;
+    fullEl.value = area ? `${area}, ${district}, ${state}` : "";
+  });
+}
+
+// Call it
+initAdLocations();
+
 init();

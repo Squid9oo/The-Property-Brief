@@ -165,10 +165,27 @@
   </label>
 
   <label>
-    Location
-    <!-- Temporary: text input first; next step we convert to full dropdown list -->
-    <input name="location" type="text" placeholder="e.g., Puchong, Selangor" required />
-  </label>
+  State
+  <select name="state" id="ad-state" required>
+    <option value="">Select state</option>
+  </select>
+</label>
+
+<label>
+  District
+  <select name="district" id="ad-district" required disabled>
+    <option value="">Select district</option>
+  </select>
+</label>
+
+<label>
+  Area / Township
+  <select name="area" id="ad-area" required disabled>
+    <option value="">Select area</option>
+  </select>
+</label>
+
+<input type="hidden" name="locationFull" id="ad-locationFull" value="" />
 
   <label>
     Description
