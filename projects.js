@@ -253,7 +253,8 @@ async function initAdLocations() {
   if (!areasData || !district) return;
 
   const districtObj = (areasData.districts || []).find(d => d.name === district);
-  const areas = districtObj ? (districtObj.areas || []) : [];
+  const allAreas = districtObj ? (districtObj.areas || []) : [];
+  const areas = allAreas.filter(a => a.popular !== false); // Show popular + undefined (default true)
 
   // Populate dropdown + add "Other" option
   areaEl.innerHTML = `<option value="">Select area</option>` +

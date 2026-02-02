@@ -1,0 +1,86 @@
+{
+  "state": "Johor",
+  "districts": [
+    {
+      "name": "Johor Bahru",
+      "areas": [
+        { "name": "Johor Bahru City", "aliases": ["JB", "Bandar Johor Bahru"], "popular": true },
+        { "name": "Skudai", "aliases": ["Taman Universiti"], "popular": true },
+        { "name": "Nusajaya", "aliases": ["Iskandar Puteri"], "popular": true },
+        { "name": "Gelang Patah", "aliases": [], "popular": true },
+        { "name": "Pasir Gudang", "aliases": [], "popular": true },
+        { "name": "Plentong", "aliases": ["Taman Johor Jaya"], "popular": true },
+        { "name": "Masai", "aliases": [], "popular": true },
+        { "name": "Permas Jaya", "aliases": [], "popular": true },
+        { "name": "Desa Tebrau", "aliases": [], "popular": false },
+        { "name": "Taman Molek", "aliases": [], "popular": false },
+        { "name": "Mount Austin", "aliases": ["Taman Mount Austin"], "popular": false }
+      ]
+    },
+    {
+      "name": "Batu Pahat",
+      "areas": [
+        { "name": "Batu Pahat Town", "aliases": ["Bandar Penggaram"], "popular": true },
+        { "name": "Parit Raja", "aliases": [], "popular": true },
+        { "name": "Yong Peng", "aliases": [], "popular": true },
+        { "name": "Senggarang", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Muar",
+      "areas": [
+        { "name": "Muar Town", "aliases": ["Bandar Maharani"], "popular": true },
+        { "name": "Pagoh", "aliases": [], "popular": true },
+        { "name": "Tangkak", "aliases": ["Ledang"], "popular": false }
+      ]
+    },
+    {
+      "name": "Kluang",
+      "areas": [
+        { "name": "Kluang Town", "aliases": [], "popular": true },
+        { "name": "Paloh", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Pontian",
+      "areas": [
+        { "name": "Pontian Town", "aliases": [], "popular": true },
+        { "name": "Pontian Kechil", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Segamat",
+      "areas": [
+        { "name": "Segamat Town", "aliases": [], "popular": true },
+        { "name": "Buloh Kasap", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Kulai",
+      "areas": [
+        { "name": "Kulai Town", "aliases": [], "popular": true },
+        { "name": "Senai", "aliases": [], "popular": true },
+        { "name": "Saleng", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Kota Tinggi",
+      "areas": [
+        { "name": "Kota Tinggi Town", "aliases": [], "popular": true },
+        { "name": "Pengerang", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Mersing",
+      "areas": [
+        { "name": "Mersing Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Tangkak",
+      "areas": [
+        { "name": "Tangkak Town", "aliases": ["Ledang"], "popular": true }
+      ]
+    }
+  ]
+}

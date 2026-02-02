@@ -1,7 +1,19 @@
 {
   "country": "Malaysia",
   "districtsByState": {
+    "Johor": ["Johor Bahru", "Batu Pahat", "Muar", "Kluang", "Pontian", "Segamat", "Kulai", "Kota Tinggi", "Mersing", "Tangkak"],
+    "Kedah": [],
+    "Kelantan": [],
+    "Melaka": [],
+    "Negeri Sembilan": [],
+    "Pahang": [],
+    "Penang": [],
+    "Perak": [],
+    "Perlis": [],
+    "Sabah": [],
+    "Sarawak": [],
     "Selangor": ["Petaling", "Hulu Langat", "Klang", "Gombak", "Kuala Langat", "Kuala Selangor", "Hulu Selangor", "Sabak Bernam", "Sepang"],
+    "Terengganu": [],
     "Kuala Lumpur": ["Kuala Lumpur"],
     "Putrajaya": ["Putrajaya"],
     "Labuan": ["Labuan"]
