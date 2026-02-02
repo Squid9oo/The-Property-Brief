@@ -1,0 +1,14 @@
+{
+  "state": "Perlis",
+  "districts": [
+    {
+      "name": "Perlis",
+      "areas": [
+        { "name": "Kangar", "aliases": ["Bandar Kangar"], "popular": true },
+        { "name": "Arau", "aliases": [], "popular": true },
+        { "name": "Kuala Perlis", "aliases": [], "popular": true },
+        { "name": "Padang Besar", "aliases": [], "popular": false }
+      ]
+    }
+  ]
+}

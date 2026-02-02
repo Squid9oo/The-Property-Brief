@@ -1,0 +1,60 @@
+{
+  "state": "Terengganu",
+  "districts": [
+    {
+      "name": "Kuala Terengganu",
+      "areas": [
+        { "name": "Kuala Terengganu Town", "aliases": ["KT", "Bandar Kuala Terengganu"], "popular": true },
+        { "name": "Gong Badak", "aliases": [], "popular": false },
+        { "name": "Cabang Tiga", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Kemaman",
+      "areas": [
+        { "name": "Chukai", "aliases": ["Cukai"], "popular": true },
+        { "name": "Kerteh", "aliases": [], "popular": false },
+        { "name": "Kemasik", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Dungun",
+      "areas": [
+        { "name": "Dungun Town", "aliases": [], "popular": true },
+        { "name": "Paka", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Marang",
+      "areas": [
+        { "name": "Marang Town", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Hulu Terengganu",
+      "areas": [
+        { "name": "Kuala Berang", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Kuala Nerus",
+      "areas": [
+        { "name": "Kuala Nerus Town", "aliases": [], "popular": true },
+        { "name": "Seberang Takir", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Besut",
+      "areas": [
+        { "name": "Jerteh", "aliases": [], "popular": true },
+        { "name": "Kuala Besut", "aliases": [], "popular": true }
+      ]
+    },
+    {
+      "name": "Setiu",
+      "areas": [
+        { "name": "Permaisuri", "aliases": [], "popular": true }
+      ]
+    }
+  ]
+}
