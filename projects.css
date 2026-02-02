@@ -285,3 +285,196 @@ form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
   color: var(--text);
   cursor: pointer;
 }
+/* ========== POST FREE AD MODAL FORM STYLES ========== */
+
+/* Modal title styling */
+#adModal h2 {
+  color: #F9D342; /* Your yellow theme */
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Section headings */
+#adModal h3 {
+  color: #F9D342;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #F9D342;
+}
+
+/* Form sections spacing */
+#form-section-1,
+#form-section-2 {
+  padding: 1rem 0;
+}
+
+/* Form labels */
+#adModal label {
+  display: block;
+  margin-bottom: 1.25rem;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Form inputs, selects, textareas */
+#adModal input[type="text"],
+#adModal input[type="number"],
+#adModal input[type="file"],
+#adModal select,
+#adModal textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+#adModal input[type="text"]:focus,
+#adModal input[type="number"]:focus,
+#adModal select:focus,
+#adModal textarea:focus {
+  outline: none;
+  border-color: #F9D342;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* File input styling */
+#adModal input[type="file"] {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+#adModal input[type="file"]::file-selector-button {
+  background: #F9D342;
+  color: #000000;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-right: 0.75rem;
+}
+
+#adModal input[type="file"]::file-selector-button:hover {
+  background: #f4c842;
+}
+
+/* Next button (yellow theme) */
+#form-next-btn {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: #F9D342;
+  color: #000000;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1.5rem;
+}
+
+#form-next-btn:hover {
+  background: #f4c842;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(249, 211, 66, 0.4);
+}
+
+/* Back and Submit buttons container */
+#form-section-2 > div[style*="flex"] {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Back button */
+#form-back-btn {
+  flex: 1;
+  padding: 0.875rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#form-back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Submit button (yellow theme) */
+#adModal button[type="submit"] {
+  flex: 1;
+  padding: 0.875rem 1.5rem;
+  background: #F9D342;
+  color: #000000;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#adModal button[type="submit"]:hover {
+  background: #f4c842;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(249, 211, 66, 0.4);
+}
+
+/* Category-specific field blocks spacing */
+#fields-apartment,
+#fields-house,
+#fields-commercial,
+#fields-land {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Custom area input wrapper */
+#ad-area-custom-wrapper {
+  margin-top: 0.5rem;
+}
+
+/* Photos upload section */
+#adModal label:has(input[type="file"]) {
+  margin-bottom: 2rem;
+}
+
+#adModal input[type="file"] + input[type="file"] {
+  margin-top: 0.75rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #adModal h2 {
+    font-size: 1.5rem;
+  }
+
+  #adModal h3 {
+    font-size: 1.1rem;
+  }
+
+  #form-section-2 > div[style*="flex"] {
+    flex-direction: column;
+  }
+
+  #form-back-btn,
+  #adModal button[type="submit"] {
+    width: 100%;
+  }
+}
