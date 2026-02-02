@@ -1,0 +1,172 @@
+/* ========================================
+   PROJECTS PAGE (Mudah-style)
+======================================== */
+
+.filters{
+  display: grid;
+  grid-template-columns: 180px 200px 160px 160px 1fr auto auto;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.02);
+  align-items: center;
+  overflow: hidden;
+}
+
+.filters input,
+.filters select{
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.22);
+  color: var(--text);
+  outline: none;
+}
+
+.filters input:focus,
+.filters select:focus{
+  border-color: rgba(249, 209, 0, 0.55);
+  box-shadow: 0 0 0 4px rgba(249,209,0,0.12);
+}
+
+#btn-search,
+#btn-reset{
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+#btn-search{
+  background: var(--yellow);
+  color: #0b0b0c;
+  border-color: rgba(249, 209, 0, 0.35);
+}
+#btn-search:hover{ opacity: 0.92; }
+
+#btn-reset{
+  background: transparent;
+  color: var(--text);
+}
+#btn-reset:hover{
+  border-color: rgba(249, 209, 0, 0.35);
+  background: rgba(255,255,255,0.03);
+}
+
+#projects-count{
+  margin: 10px 2px 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.cards{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.card{
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  overflow: hidden;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+.card:hover{
+  border-color: rgba(249, 209, 0, 0.40);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 0 0 1px rgba(249,209,0,0.12);
+}
+
+.card-image{
+  height: 200px;
+  background: rgba(255,255,255,0.03);
+}
+.card-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-body{
+  padding: 14px 16px 16px;
+}
+
+.card-price{
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  background: rgba(249,209,0,0.14);
+  border: 1px solid rgba(249,209,0,0.28);
+}
+
+.card-title{
+  margin: 10px 0 6px;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.card-sub{
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.card-meta{
+  color: rgba(243,244,246,0.80);
+  font-size: 13px;
+}
+
+/* Form styling on Projects page */
+form[name="project-submit"]{
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+  max-width: 720px;
+}
+
+form[name="project-submit"] label{
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+form[name="project-submit"] input,
+form[name="project-submit"] select,
+form[name="project-submit"] textarea{
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.22);
+  color: var(--text);
+  outline: none;
+}
+
+form[name="project-submit"] button[type="submit"]{
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(249, 209, 0, 0.35);
+  background: var(--yellow);
+  color: #0b0b0c;
+  font-weight: 900;
+  cursor: pointer;
+}
+form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
+
+/* Responsive */
+@media (max-width: 960px){
+  .filters{
+    grid-template-columns: 1fr 1fr;
+  }
+  .cards{
+    grid-template-columns: 1fr;
+  }
+}
