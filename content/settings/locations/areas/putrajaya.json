@@ -1,0 +1,22 @@
+{
+  "state": "Putrajaya",
+  "districts": [
+    {
+      "name": "Putrajaya",
+      "areas": [
+        { "name": "Precinct 1", "aliases": ["Presint 1"] },
+        { "name": "Precinct 2", "aliases": ["Presint 2"] },
+        { "name": "Precinct 3", "aliases": ["Presint 3"] },
+        { "name": "Precinct 4", "aliases": ["Presint 4"] },
+        { "name": "Precinct 5", "aliases": ["Presint 5"] },
+        { "name": "Precinct 8", "aliases": ["Presint 8"] },
+        { "name": "Precinct 9", "aliases": ["Presint 9"] },
+        { "name": "Precinct 10", "aliases": ["Presint 10"] },
+        { "name": "Precinct 11", "aliases": ["Presint 11"] },
+        { "name": "Precinct 14", "aliases": ["Presint 14"] },
+        { "name": "Precinct 15", "aliases": ["Presint 15"] },
+        { "name": "Precinct 16", "aliases": ["Presint 16"] }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "state": "Labuan",
+  "districts": [
+    {
+      "name": "Labuan",
+      "areas": [
+        { "name": "Victoria", "aliases": ["Bandar Labuan"] },
+        { "name": "Rancha-Rancha", "aliases": [] },
+        { "name": "Kiansam", "aliases": [] }
+      ]
+    }
+  ]
+}
