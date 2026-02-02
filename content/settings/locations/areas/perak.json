@@ -1,0 +1,85 @@
+{
+  "state": "Perak",
+  "districts": [
+    {
+      "name": "Kinta",
+      "areas": [
+        { "name": "Ipoh", "aliases": ["Bandar Ipoh"], "popular": true },
+        { "name": "Batu Gajah", "aliases": [], "popular": true },
+        { "name": "Chemor", "aliases": [], "popular": false },
+        { "name": "Simpang Pulai", "aliases": [], "popular": false },
+        { "name": "Tanjung Rambutan", "aliases": [], "popular": false },
+        { "name": "Bercham", "aliases": [], "popular": false },
+        { "name": "Menglembu", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Larut, Matang dan Selama",
+      "areas": [
+        { "name": "Taiping", "aliases": [], "popular": true },
+        { "name": "Kamunting", "aliases": [], "popular": true },
+        { "name": "Simpang", "aliases": ["Simpang Empat"], "popular": false },
+        { "name": "Matang", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Hilir Perak",
+      "areas": [
+        { "name": "Teluk Intan", "aliases": [], "popular": true },
+        { "name": "Langkap", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Batang Padang",
+      "areas": [
+        { "name": "Tapah", "aliases": [], "popular": true },
+        { "name": "Tanjung Malim", "aliases": [], "popular": true },
+        { "name": "Slim River", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Perak Tengah",
+      "areas": [
+        { "name": "Seri Iskandar", "aliases": [], "popular": true },
+        { "name": "Parit", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Kampar",
+      "areas": [
+        { "name": "Kampar Town", "aliases": [], "popular": true },
+        { "name": "Gopeng", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Kuala Kangsar",
+      "areas": [
+        { "name": "Kuala Kangsar Town", "aliases": [], "popular": true },
+        { "name": "Sayong", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Kerian",
+      "areas": [
+        { "name": "Parit Buntar", "aliases": [], "popular": true },
+        { "name": "Bagan Serai", "aliases": [], "popular": false }
+      ]
+    },
+    {
+      "name": "Hulu Perak",
+      "areas": [
+        { "name": "Gerik", "aliases": [], "popular": true },
+        { "name": "Pengkalan Hulu", "aliases": ["Kroh"], "popular": false }
+      ]
+    },
+    {
+      "name": "Manjung",
+      "areas": [
+        { "name": "Lumut", "aliases": [], "popular": true },
+        { "name": "Sitiawan", "aliases": [], "popular": true },
+        { "name": "Seri Manjung", "aliases": [], "popular": true },
+        { "name": "Pangkor", "aliases": ["Pulau Pangkor"], "popular": false }
+      ]
+    }
+  ]
+}
