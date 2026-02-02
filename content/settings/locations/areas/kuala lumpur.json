@@ -1,0 +1,18 @@
+{
+  "state": "Kuala Lumpur",
+  "districts": [
+    {
+      "name": "Kuala Lumpur",
+      "areas": [
+        { "name": "Mont Kiara", "aliases": ["Mont'Kiara"] },
+        { "name": "Bangsar", "aliases": ["Bangsar South"] },
+        { "name": "KLCC", "aliases": ["Kuala Lumpur City Centre"] },
+        { "name": "Bukit Bintang", "aliases": [] },
+        { "name": "Setapak", "aliases": [] },
+        { "name": "Cheras (KL)", "aliases": ["Cheras"] },
+        { "name": "Sri Petaling", "aliases": [] },
+        { "name": "Kepong", "aliases": [] }
+      ]
+    }
+  ]
+}
