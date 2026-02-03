@@ -377,3 +377,22 @@ async function initAdLocations() {
 initAdLocations();
 
 init();
+
+// Fix: Remove name attributes from hidden category fields before submit
+document.querySelector('form[name="project-submit"]').addEventListener('submit', function(e) {
+  // Find all category field containers
+  const sections = ['fields-apartment', 'fields-house', 'fields-commercial', 'fields-land'];
+  
+  sections.forEach(sectionId => {
+    const section = document.getElementById(sectionId);
+    if (section && section.style.display === 'none') {
+      // Remove name attribute from all inputs/selects in hidden sections
+      section.querySelectorAll('input, select, textarea').forEach(field => {
+        if (field.name) {
+          field.setAttribute('data-original-name', field.name);
+          field.removeAttribute('name');
+        }
+      });
+    }
+  });
+});
