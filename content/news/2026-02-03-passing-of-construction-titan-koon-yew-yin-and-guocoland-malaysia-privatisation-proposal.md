@@ -2,7 +2,7 @@
 title: Passing of Construction Titan Koon Yew Yin and GuocoLand Malaysia
   Privatisation Proposal
 date: 2026-02-04T07:21:00.000+08:00
-tag: Gamuda, IJM Corp, Mudajaya, GuocoLand Malaysia
+tag: Gamuda • IJM Corp • Mudajaya • GuocoLand Malaysia
 summary: "Malaysia’s construction and property landscape saw two major
   developments in early February 2026: the passing of industry titan Koon Yew
   Yin, co‑founder of Gamuda, IJM Corp and Mudajaya, and a proposal by GuocoLand
