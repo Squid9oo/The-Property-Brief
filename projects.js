@@ -396,27 +396,72 @@ document.querySelector('form[name="project-submit"]').addEventListener('submit',
     }
   });
 });
-let allProperties = []; // This stores the list so we don't have to keep fetching it
+let allProperties = [];
 
 async function displayProperties() {
-    const container = document.getElementById('listings-container');
-    const stateSelect = document.getElementById('filter-state');
-
     try {
         const response = await fetch('./data/projects.json');
         const data = await response.json();
-        allProperties = data; // Save the data
+        allProperties = data;
 
-        // Fill the State dropdown automatically
-        const states = [...new Set(data.map(item => item.state))];
+        // Populate State dropdown initially
+        const stateSelect = document.getElementById('filter-state');
+        const states = [...new Set(data.map(item => item.state))].sort();
         states.forEach(state => {
             if(state) stateSelect.innerHTML += `<option value="${state}">${state}</option>`;
         });
 
         renderCards(allProperties);
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Error loading properties:", error);
     }
+}
+
+function updateDistrictDropdown() {
+    const selectedState = document.getElementById('filter-state').value;
+    const districtSelect = document.getElementById('filter-district');
+    districtSelect.innerHTML = '<option value="">All Districts</option>'; // Reset
+    
+    const districts = [...new Set(allProperties
+        .filter(p => p.state === selectedState || selectedState === "")
+        .map(p => p.district))].sort();
+    
+    districts.forEach(d => {
+        if(d) districtSelect.innerHTML += `<option value="${d}">${d}</option>`;
+    });
+    updateAreaDropdown(); // Reset area too
+}
+
+function updateAreaDropdown() {
+    const selectedDistrict = document.getElementById('filter-district').value;
+    const areaSelect = document.getElementById('filter-area');
+    areaSelect.innerHTML = '<option value="">All Areas</option>'; // Reset
+
+    const areas = [...new Set(allProperties
+        .filter(p => p.district === selectedDistrict || selectedDistrict === "")
+        .map(p => p.area))].sort();
+
+    areas.forEach(a => {
+        if(a) areaSelect.innerHTML += `<option value="${a}">${a}</option>`;
+    });
+}
+
+function applyFilters() {
+    const state = document.getElementById('filter-state').value;
+    const district = document.getElementById('filter-district').value;
+    const area = document.getElementById('filter-area').value;
+    const category = document.getElementById('filter-category').value;
+    const maxPrice = document.getElementById('filter-price-max').value;
+
+    const filtered = allProperties.filter(p => {
+        return (state === "" || p.state === state) &&
+               (district === "" || p.district === district) &&
+               (area === "" || p.area === area) &&
+               (category === "" || p.category === category) &&
+               (maxPrice === "" || parseFloat(p.priceRm) <= parseFloat(maxPrice));
+    });
+
+    renderCards(filtered);
 }
 
 function renderCards(properties) {
@@ -426,25 +471,10 @@ function renderCards(properties) {
             <img src="${item.photo1 || 'https://via.placeholder.com/300x200'}" alt="Property">
             <h3>${item.adTitle}</h3>
             <p class="price">RM ${item.priceRm}</p>
-            <p class="location">${item.state} - ${item.district}</p>
+            <p class="location">${item.state} > ${item.district} > ${item.area}</p>
             <span class="badge">${item.category}</span>
         </div>
     `).join('');
-}
-
-function applyFilters() {
-    const state = document.getElementById('filter-state').value;
-    const category = document.getElementById('filter-category').value;
-    const maxPrice = document.getElementById('filter-price-max').value;
-
-    const filtered = allProperties.filter(p => {
-        const matchState = state === "" || p.state === state;
-        const matchCat = category === "" || p.category === category;
-        const matchPrice = maxPrice === "" || parseFloat(p.priceRm) <= parseFloat(maxPrice);
-        return matchState && matchCat && matchPrice;
-    });
-
-    renderCards(filtered);
 }
 
 document.addEventListener('DOMContentLoaded', displayProperties);

@@ -88,7 +88,18 @@
 
     <section class="listings-section">
     <div class="filter-bar" style="margin-bottom: 30px; display: flex; gap: 10px; flex-wrap: wrap;">
-    <select id="filter-state"><option value="">All States</option></select>
+    <select id="filter-state" onchange="updateDistrictDropdown()">
+        <option value="">All States</option>
+    </select>
+
+    <select id="filter-district" onchange="updateAreaDropdown()">
+        <option value="">All Districts</option>
+    </select>
+
+    <select id="filter-area">
+        <option value="">All Areas</option>
+    </select>
+
     <select id="filter-category">
         <option value="">All Types</option>
         <option value="Apartment">Apartment</option>
@@ -96,7 +107,9 @@
         <option value="Commercial">Commercial</option>
         <option value="Land">Land</option>
     </select>
+
     <input type="number" id="filter-price-max" placeholder="Max Price (RM)">
+
     <button onclick="applyFilters()" style="padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer;">Search</button>
     </div>
     <div class="container">
