@@ -2,9 +2,7 @@
 title: Malaysia Property Plays Double Down on Data Centres and Industrial Land
   in Early 2026
 date: 2026-02-06T07:06:00.000+08:00
-tag: IOI Properties IOIPG Binastra Binastra Corp Sunway IJM AME REIT AME-REIT
-  Haily Group Johor Industrial Land Data Centre Bursa Malaysia Malaysia Property
-  Market
+tag: "IOI Properties • Binastra • Sunway • IJM • AME REIT • Haily "
 summary: Malaysia’s listed property and construction names are riding a strong
   data-centre and industrial wave as IOI Properties unlocks RM740.68 million
   from a Banting land sale while Binastra secures a RM503 million Cheras
