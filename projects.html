@@ -30,7 +30,10 @@
     </header>
 
   <main>
-    <section class="projects-top" id="projectsHero">
+    <section class="hero-image-section" style="background-image: url('images/your-banner-image.jpg'); height: 400px; background-size: cover; background-position: center;">
+    <div class="hero-overlay" style="background: rgba(0,0,0,0.3); height: 100%; display: flex; align-items: center; justify-content: center;">
+        <h1 style="color: white; font-size: 3rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.5);">Project Listings</h1>
+    </div>
     </section>
 
     <section class="listings-section">
@@ -66,6 +69,7 @@
     <input type="number" id="filter-price-max" placeholder="Max Price (RM)">
 
     <button onclick="applyFilters()" style="padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer;">Search</button>
+    <button onclick="clearFilters()" style="padding: 10px 20px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 5px;">Reset</button>
     </div>
     <div class="container">
         <h2>Latest Property Briefs</h2>

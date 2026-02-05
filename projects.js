@@ -480,3 +480,15 @@ function renderCards(properties) {
 }
 
 document.addEventListener('DOMContentLoaded', displayProperties);
+function clearFilters() {
+    // 1. Reset all dropdown values
+    document.getElementById('filter-listing-type').value = "";
+    document.getElementById('filter-state').value = "";
+    document.getElementById('filter-district').innerHTML = '<option value="">All Districts</option>';
+    document.getElementById('filter-area').innerHTML = '<option value="">All Areas</option>';
+    document.getElementById('filter-category').value = "";
+    document.getElementById('filter-price-max').value = "";
+
+    // 2. Show all properties again
+    renderCards(allProperties);
+}
