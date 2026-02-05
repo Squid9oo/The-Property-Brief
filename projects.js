@@ -447,6 +447,7 @@ function updateAreaDropdown() {
 }
 
 function applyFilters() {
+    const listingType = document.getElementById('filter-listing-type').value; 
     const state = document.getElementById('filter-state').value;
     const district = document.getElementById('filter-district').value;
     const area = document.getElementById('filter-area').value;
@@ -454,11 +455,12 @@ function applyFilters() {
     const maxPrice = document.getElementById('filter-price-max').value;
 
     const filtered = allProperties.filter(p => {
-        return (state === "" || p.state === state) &&
-               (district === "" || p.district === district) &&
-               (area === "" || p.area === area) &&
-               (category === "" || p.category === category) &&
-               (maxPrice === "" || parseFloat(p.priceRm) <= parseFloat(maxPrice));
+      return (listingType === "" || p.listingType === listingType) &&
+        (state === "" || p.state === state) &&
+        (district === "" || p.district === district) &&
+        (area === "" || p.area === area) &&
+        (category === "" || p.category === category) &&
+        (maxPrice === "" || parseFloat(p.priceRm) <= parseFloat(maxPrice));
     });
 
     renderCards(filtered);

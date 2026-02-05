@@ -88,24 +88,32 @@
 
     <section class="listings-section">
     <div class="filter-bar" style="margin-bottom: 30px; display: flex; gap: 10px; flex-wrap: wrap;">
+    
+    <select id="filter-listing-type">
+      <option value="">All Listings</option>
+      <option value="For Rent">For Rent</option>
+      <option value="Sub Sale">Sub Sale</option>
+      <option value="New Launch">New Launch</option>
+    </select>
+
     <select id="filter-state" onchange="updateDistrictDropdown()">
-        <option value="">All States</option>
+      <option value="">All States</option>
     </select>
 
     <select id="filter-district" onchange="updateAreaDropdown()">
-        <option value="">All Districts</option>
+      <option value="">All Districts</option>
     </select>
 
     <select id="filter-area">
-        <option value="">All Areas</option>
+      <option value="">All Areas</option>
     </select>
 
     <select id="filter-category">
-        <option value="">All Types</option>
-        <option value="Apartment">Apartment</option>
-        <option value="House">House</option>
-        <option value="Commercial">Commercial</option>
-        <option value="Land">Land</option>
+      <option value="">All Types</option>
+      <option value="Apartment">Apartment</option>
+      <option value="House">House</option>
+      <option value="Commercial">Commercial</option>
+      <option value="Land">Land</option>
     </select>
 
     <input type="number" id="filter-price-max" placeholder="Max Price (RM)">
