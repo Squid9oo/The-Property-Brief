@@ -87,6 +87,18 @@
     </section>
 
     <section class="listings-section">
+    <div class="filter-bar" style="margin-bottom: 30px; display: flex; gap: 10px; flex-wrap: wrap;">
+    <select id="filter-state"><option value="">All States</option></select>
+    <select id="filter-category">
+        <option value="">All Types</option>
+        <option value="Apartment">Apartment</option>
+        <option value="House">House</option>
+        <option value="Commercial">Commercial</option>
+        <option value="Land">Land</option>
+    </select>
+    <input type="number" id="filter-price-max" placeholder="Max Price (RM)">
+    <button onclick="applyFilters()" style="padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer;">Search</button>
+    </div>
     <div class="container">
         <h2>Latest Property Briefs</h2>
         <div id="listings-container" class="property-grid">

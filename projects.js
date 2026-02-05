@@ -396,42 +396,55 @@ document.querySelector('form[name="project-submit"]').addEventListener('submit',
     }
   });
 });
-// Function to fetch and show properties
+let allProperties = []; // This stores the list so we don't have to keep fetching it
+
 async function displayProperties() {
     const container = document.getElementById('listings-container');
-    if (!container) return;
+    const stateSelect = document.getElementById('filter-state');
 
     try {
-        // Fetch the JSON file created by Make.com
         const response = await fetch('./data/projects.json');
         const data = await response.json();
-        
-        // Clear the loading message
-        container.innerHTML = '';
+        allProperties = data; // Save the data
 
-        if (!data || data.length === 0) {
-            container.innerHTML = '<p>No active listings at the moment. Check back soon!</p>';
-            return;
-        }
-
-        // Loop through and build cards
-        data.forEach(item => {
-            const card = `
-                <div class="property-card" style="border: 1px solid #ddd; padding: 15px; margin: 10px; border-radius: 8px;">
-                    <img src="${item.photo1 || 'https://via.placeholder.com/300x200?text=No+Image'}" style="width:100%; border-radius: 4px;">
-                    <h3 style="margin: 10px 0;">${item.adTitle}</h3>
-                    <p><strong>RM ${item.priceRm}</strong></p>
-                    <p>${item.state} - ${item.district}</p>
-                    <p><small>${item.category} | ${item.tenure}</small></p>
-                </div>
-            `;
-            container.innerHTML += card;
+        // Fill the State dropdown automatically
+        const states = [...new Set(data.map(item => item.state))];
+        states.forEach(state => {
+            if(state) stateSelect.innerHTML += `<option value="${state}">${state}</option>`;
         });
+
+        renderCards(allProperties);
     } catch (error) {
-        console.log("Error loading properties:", error);
-        container.innerHTML = '<p>Check back soon for new listings!</p>';
+        console.error("Error:", error);
     }
 }
 
-// Run the display function when the page loads
+function renderCards(properties) {
+    const container = document.getElementById('listings-container');
+    container.innerHTML = properties.map(item => `
+        <div class="property-card">
+            <img src="${item.photo1 || 'https://via.placeholder.com/300x200'}" alt="Property">
+            <h3>${item.adTitle}</h3>
+            <p class="price">RM ${item.priceRm}</p>
+            <p class="location">${item.state} - ${item.district}</p>
+            <span class="badge">${item.category}</span>
+        </div>
+    `).join('');
+}
+
+function applyFilters() {
+    const state = document.getElementById('filter-state').value;
+    const category = document.getElementById('filter-category').value;
+    const maxPrice = document.getElementById('filter-price-max').value;
+
+    const filtered = allProperties.filter(p => {
+        const matchState = state === "" || p.state === state;
+        const matchCat = category === "" || p.category === category;
+        const matchPrice = maxPrice === "" || parseFloat(p.priceRm) <= parseFloat(maxPrice);
+        return matchState && matchCat && matchPrice;
+    });
+
+    renderCards(filtered);
+}
+
 document.addEventListener('DOMContentLoaded', displayProperties);
