@@ -31,9 +31,14 @@
 
   <main>
     <section id="projectsHero">
-    <div class="hero-overlay" style="width: 100%; padding: 20px; background: rgba(0,0,0,0.2);">
-        <h1 style="color: white; font-size: 3rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.5);">Project Listings</h1>
-    </div>
+      <div class="hero-slider">
+        <div id="admin-slider-container"></div>
+
+        <button class="slider-arrow prev" type="button" onclick="changeSlide(-1)" aria-label="Previous slide">‹</button>
+        <button class="slider-arrow next" type="button" onclick="changeSlide(1)" aria-label="Next slide">›</button>
+
+        <div class="slider-dots" id="slider-dots" aria-label="Slider dots"></div>
+      </div>
     </section>
 
     <section class="listings-section">
