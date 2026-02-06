@@ -204,11 +204,11 @@ function renderCards(properties) {
 
     // Update the count text
     if (countDisplay) {
-        countDisplay.innerText = `Showing ${properties.length} property briefs`;
+        countDisplay.innerText = `Showing ${properties.length} property listings`;
     }
     
     if (properties.length === 0) {
-        container.innerHTML = '<p>No matching property briefs found.</p>';
+        container.innerHTML = '<p>No matching property found.</p>';
         return;
     }
 
