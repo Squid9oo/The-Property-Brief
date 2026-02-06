@@ -1,5 +1,18 @@
 {
-  "heroDesktop": "/assets/uploads/desktop-1920x1080.jpg",
-  "heroTablet": "/assets/uploads/tablet-1536x1024.jpg",
-  "heroMobile": "/assets/uploads/mobile-1080x1920.jpg"
+  "slides": [
+    {
+      "desktop": "images/hero1-desktop.jpg",
+      "tablet": "images/hero1-tablet.jpg",
+      "mobile": "images/hero1-mobile.jpg",
+      "title": "Exclusive New Launch",
+      "link": "https://your-target-url.com"
+    },
+    {
+      "desktop": "images/hero2-desktop.jpg",
+      "tablet": "images/hero2-tablet.jpg",
+      "mobile": "images/hero2-mobile.jpg",
+      "title": "Luxury Penthouse Collection",
+      "link": "https://another-url.com"
+    }
+  ]
 }
