@@ -167,3 +167,90 @@
 .modalOverlay.open {
     display: flex !important; /* This shows it only when clicked */
 }
+/* === Hero slider (projects) - FIX === */
+.hero-slider {
+  position: relative;
+  height: 380px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #111; /* fallback so it isn't white */
+}
+
+#admin-slider-container {
+  position: relative;
+  height: 100%;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  background-image: var(--img-d);
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  cursor: pointer;
+}
+
+.hero-slide.active {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .hero-slide { background-image: var(--img-t); }
+}
+
+@media (max-width: 600px) {
+  .hero-slide { background-image: var(--img-m); }
+}
+
+.slide-caption {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.slider-arrow.prev { left: 12px; }
+.slider-arrow.next { right: 12px; }
+
+.slider-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  z-index: 6;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.slider-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.45);
+  cursor: pointer;
+}
+
+.slider-dots .dot.active {
+  background: rgba(255,255,255,0.95);
+}
