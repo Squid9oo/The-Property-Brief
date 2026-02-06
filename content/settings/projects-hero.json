@@ -3,12 +3,12 @@
     {
       "desktop": "/assets/uploads/hero1-desktop.jpg",
       "tablet": "/assets/uploads/hero1-tablet.jpg",
-      "mobile": "assets/uploads/hero1-mobile.jpg",
+      "mobile": "/assets/uploads/hero1-mobile.jpg",
       "title": "Exclusive New Launch",
       "link": "https://your-target-url.com"
     },
     {
-      "desktop": "assets/uploads/hero2-desktop.jpg",
+      "desktop": "/assets/uploads/hero2-desktop.jpg",
       "tablet": "/assets/uploads/hero2-tablet.jpg",
       "mobile": "/assets/uploads/hero2-mobile.jpg",
       "title": "Luxury Penthouse Collection",
