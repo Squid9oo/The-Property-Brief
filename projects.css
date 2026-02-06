@@ -142,6 +142,28 @@
 .badge { margin: 0 15px 20px; display: inline-block; background: #f0f0f0; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
 
 /* --- 6. MODAL STYLES --- */
-/* (Keep your existing Modal and Form styles below this line) */
-.modalOverlay { ... }
-/* ... (existing modal code here) ... */
+/* Modal overlay is hidden by default */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 10000;
+}
+
+/* Only visible when JS adds .open */
+.modalOverlay.open {
+  display: flex;
+}
+
+/* FORCE HIDE MODAL UNLESS OPEN */
+.modalOverlay {
+    display: none !important; /* This hides it by default */
+}
+
+.modalOverlay.open {
+    display: flex !important; /* This shows it only when clicked */
+}

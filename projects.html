@@ -30,13 +30,15 @@
     </header>
 
   <main>
-    <section id="projectsHero" class="hero-slider">
-    <div id="admin-slider-container"></div>
+    <section id="projectsHero">
+      <div class="hero-slider">
+        <div id="admin-slider-container"></div>
 
-    <button class="slider-arrow prev" onclick="changeSlide(-1)">&#10094;</button>
-    <button class="slider-arrow next" onclick="changeSlide(1)">&#10095;</button>
+        <button class="slider-arrow prev" type="button" onclick="changeSlide(-1)" aria-label="Previous slide">‹</button>
+        <button class="slider-arrow next" type="button" onclick="changeSlide(1)" aria-label="Next slide">›</button>
 
-    <div id="slider-dots" class="slider-dots"></div>
+        <div class="slider-dots" id="slider-dots" aria-label="Slider dots"></div>
+      </div>
     </section>
 
     <section class="listings-section">
@@ -76,9 +78,8 @@
     </div>
     <div class="container">
         <h2>Latest Property Briefs</h2>
-        <p id="property-count" style="margin-bottom: 15px; color: #666; font-weight: 500;">Loading properties...</p>
         <div id="listings-container" class="property-grid">
-        <p>Loading the latest properties...</p>
+            <p>Loading the latest properties...</p>
         </div>
     </div>
     </section>

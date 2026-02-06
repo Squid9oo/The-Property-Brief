@@ -1,36 +1,40 @@
-// --- 1. GLOBAL DATA (Must be at the very top) ---
+// --- 1. GLOBAL DATA ---
 let allProperties = []; 
 let currentSlideIndex = 0;
 let sliderTimer;
 let adminSlides = [];
 
-// --- 2. INITIALIZATION ENGINE ---
+// --- 2. INITIALIZATION ---
 async function init() {
+  // 1) Always try to load the hero slider (it has its own try/catch inside too)
+  await loadAdminHeroSlider();
+
+  // 2) Try to load listings data, but DON'T let the page break if missing
   try {
-    // Correct path to the data folder
     const res = await fetch("data/projects.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("Could not find data/projects.json");
-    
-    allProperties = await res.json();
-    
-    // Load Admin Slider first
-    await loadAdminHeroSlider(); 
-    
-    // Show user listings
-    renderCards(allProperties);         
-    
-    // Set up dropdowns
-    populateStateDropdown(); 
-    
-    // Ensure modal starts CLOSED
-    closeAdModal(); 
-    
+
+    if (!res.ok) {
+      allProperties = [];
+    } else {
+      const raw = await res.json();
+
+      // Accept BOTH formats:
+      // A) Array: [ {listingType, state, district, ...}, ... ]
+      // B) Object: { listings: [ ... ] }
+      allProperties = Array.isArray(raw) ? raw : (raw.listings || []);
+    }
   } catch (e) {
-    console.log("Init error:", e);
+    console.log("Data load error:", e);
+    allProperties = [];
   }
+
+  // 3) Render + setup filters
+  renderCards(allProperties);
+  populateStateDropdown();
+  updateDistrictDropdown(); // ensures district/area dropdowns are in sync
 }
 
-// --- 3. ADMIN HERO SLIDER LOGIC ---
+// --- 3. ADMIN SLIDER LOGIC ---
 async function loadAdminHeroSlider() {
     const container = document.getElementById('admin-slider-container');
     const dotsContainer = document.getElementById('slider-dots');
@@ -47,7 +51,7 @@ async function loadAdminHeroSlider() {
         container.innerHTML = adminSlides.map((slide, index) => `
             <div class="hero-slide ${index === 0 ? 'active' : ''}" 
                  style="--img-d: url('${slide.desktop}'); --img-t: url('${slide.tablet}'); --img-m: url('${slide.mobile}');"
-                 onclick="window.open('${slide.link}', '_blank')">
+                 onclick="if('${slide.link}') window.open('${slide.link}', '_blank')">
                 <div class="slide-caption">
                     <h2>${slide.title || ''}</h2>
                 </div>
@@ -59,11 +63,8 @@ async function loadAdminHeroSlider() {
                 <span class="dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></span>
             `).join('');
         }
-
         startAutoSlide();
-    } catch (e) {
-        console.log("Slider Error:", e);
-    }
+    } catch (e) { console.log("Slider Error:", e); }
 }
 
 // --- 4. SLIDER CONTROLS ---
@@ -79,8 +80,8 @@ function showSlide(index) {
     slides.forEach(s => s.classList.remove('active'));
     dots.forEach(d => d.classList.remove('active'));
 
-    slides[currentSlideIndex].classList.add('active');
-    if (dots[currentSlideIndex]) dots[currentSlideIndex].classList.add('active');
+    if(slides[currentSlideIndex]) slides[currentSlideIndex].classList.add('active');
+    if(dots[currentSlideIndex]) dots[currentSlideIndex].classList.add('active');
 }
 
 function changeSlide(n) { showSlide(currentSlideIndex + n); resetTimer(); }
@@ -105,11 +106,7 @@ function updateDistrictDropdown() {
     const districtSelect = document.getElementById('filter-district');
     if (!districtSelect) return;
     districtSelect.innerHTML = '<option value="">All Districts</option>';
-    
-    const districts = [...new Set(allProperties
-        .filter(p => p.state === selectedState || selectedState === "")
-        .map(p => p.district))].filter(Boolean).sort();
-    
+    const districts = [...new Set(allProperties.filter(p => p.state === selectedState || selectedState === "").map(p => p.district))].filter(Boolean).sort();
     districts.forEach(d => districtSelect.innerHTML += `<option value="${d}">${d}</option>`);
     updateAreaDropdown(); 
 }
@@ -119,11 +116,7 @@ function updateAreaDropdown() {
     const areaSelect = document.getElementById('filter-area');
     if (!areaSelect) return;
     areaSelect.innerHTML = '<option value="">All Areas</option>';
-
-    const areas = [...new Set(allProperties
-        .filter(p => p.district === selectedDistrict || selectedDistrict === "")
-        .map(p => p.area))].filter(Boolean).sort();
-
+    const areas = [...new Set(allProperties.filter(p => p.district === selectedDistrict || selectedDistrict === "").map(p => p.area))].filter(Boolean).sort();
     areas.forEach(a => areaSelect.innerHTML += `<option value="${a}">${a}</option>`);
 }
 
@@ -147,12 +140,10 @@ function applyFilters() {
 }
 
 function clearFilters() {
-    document.getElementById('filter-listing-type').value = "";
-    document.getElementById('filter-state').value = "";
-    document.getElementById('filter-district').innerHTML = '<option value="">All Districts</option>';
-    document.getElementById('filter-area').innerHTML = '<option value="">All Areas</option>';
-    document.getElementById('filter-category').value = "";
-    document.getElementById('filter-price-max').value = "";
+    const ids = ['filter-listing-type', 'filter-state', 'filter-category', 'filter-price-max'];
+    ids.forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ""; });
+    if(document.getElementById('filter-district')) document.getElementById('filter-district').innerHTML = '<option value="">All Districts</option>';
+    if(document.getElementById('filter-area')) document.getElementById('filter-area').innerHTML = '<option value="">All Areas</option>';
     renderCards(allProperties);
 }
 
@@ -161,24 +152,25 @@ function renderCards(properties) {
     const container = document.getElementById('listings-container');
     const countDisplay = document.getElementById('property-count');
     if (!container) return;
-
-    if (countDisplay) {
-        countDisplay.innerText = `Showing ${properties.length} property briefs`;
-    }
+    if (countDisplay) countDisplay.innerText = `Showing ${properties.length} project listings`;
     
-    if (properties.length === 0) {
-        container.innerHTML = '<p>No matching property briefs found.</p>';
-        return;
-    }
-
+    if (!properties || properties.length === 0) {
+  container.innerHTML = `
+    <p style="padding: 12px; background:#fff3cd; border:1px solid #ffeeba; border-radius:10px;">
+      No listings yet. If you’re testing Phase 1, try submitting a form first (it will be Pending in Airtable),
+      then Phase 2 will publish it to this page.
+    </p>
+  `;
+  return;
+}
     container.innerHTML = properties.map(item => `
         <div class="property-card">
             <img src="${item.photo1 || 'https://via.placeholder.com/300x200'}" alt="Property">
             <div class="card-content" style="padding:15px;">
                 <h3>${item.adTitle}</h3>
-                <p class="price" style="color:#27ae60; font-weight:bold;">RM ${item.priceRm}</p>
+                <p class="price">RM ${item.priceRm}</p>
                 <p class="location">${item.state} > ${item.district}</p>
-                <span class="badge" style="background:#eee; padding:2px 8px; border-radius:10px; font-size:12px;">${item.category}</span>
+                <span class="badge">${item.category}</span>
             </div>
         </div>
     `).join('');
@@ -186,14 +178,11 @@ function renderCards(properties) {
 
 // --- 7. MODAL LOGIC ---
 const adModal = document.getElementById("adModal");
-const openAdModalBtn = document.getElementById("openAdModalBtn");
-const closeAdModalBtn = document.getElementById("closeAdModalBtn");
+const openBtn = document.getElementById("openAdModalBtn");
+const closeBtn = document.getElementById("closeAdModalBtn");
 
-function openAdModal() { if (adModal) { adModal.classList.add("open"); adModal.setAttribute("aria-hidden", "false"); } }
-function closeAdModal() { if (adModal) { adModal.classList.remove("open"); adModal.setAttribute("aria-hidden", "true"); } }
+if (openBtn) openBtn.onclick = () => { if(adModal) adModal.classList.add("open"); };
+if (closeBtn) closeBtn.onclick = () => { if(adModal) adModal.classList.remove("open"); };
 
-if (openAdModalBtn) openAdModalBtn.onclick = openAdModal;
-if (closeAdModalBtn) closeAdModalBtn.onclick = closeAdModal;
-
-// START EVERYTHING
+// Start the engine
 document.addEventListener('DOMContentLoaded', init);
