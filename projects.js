@@ -141,24 +141,50 @@ async function loadProjectsHeroBackground() {
   if (!hero) return;
 
   try {
+    // Correct path to your CMS settings file
     const res = await fetch("content/settings/projects-hero.json", { cache: "no-store" });
-    if (!res.ok) return;
+    if (!res.ok) {
+        console.log("CMS Settings file not found");
+        return;
+    }
 
     const data = await res.json();
 
-    // Save the 3 image URLs as CSS variables
+    // Injects the images into your CSS variables
     if (data.heroDesktop) hero.style.setProperty("--hero-desktop", `url("${data.heroDesktop}")`);
     if (data.heroTablet) hero.style.setProperty("--hero-tablet", `url("${data.heroTablet}")`);
     if (data.heroMobile) hero.style.setProperty("--hero-mobile", `url("${data.heroMobile}")`);
-  } catch (e) {}
+  } catch (e) {
+      console.log("Hero load error:", e);
+  }
 }
 
 async function init() {
-  const res = await fetch("projects.json", { cache: "no-store" });
-  allProjects = await res.json();
-  await loadProjectsHeroBackground();
-  apply();
+  try {
+    // UPDATED PATH: Pointing to the 'data' folder we created in Phase 2
+    const res = await fetch("data/projects.json", { cache: "no-store" });
+    allProperties = await res.json(); // Use 'allProperties' to match your filter code
+    
+    await loadProjectsHeroBackground();
+    
+    // Initial render of all cards
+    renderCards(allProperties); 
+    
+    // Populate the state dropdown
+    const stateSelect = document.getElementById('filter-state');
+    if (stateSelect) {
+        const states = [...new Set(allProperties.map(item => item.state))].sort();
+        states.forEach(state => {
+            if(state) stateSelect.innerHTML += `<option value="${state}">${state}</option>`;
+        });
+    }
+  } catch (e) {
+    console.log("Init error:", e);
+  }
 }
+
+// Make sure this is at the bottom to start the engine
+document.addEventListener('DOMContentLoaded', init);
 
 document.getElementById("btn-search").addEventListener("click", apply);document.getElementById("btn-reset").addEventListener("click", () => {
   ["filter-location","filter-type","filter-q","filter-price","filter-tenure","filter-sale"]
