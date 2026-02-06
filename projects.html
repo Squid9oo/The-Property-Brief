@@ -68,8 +68,8 @@
 
     <input type="number" id="filter-price-max" placeholder="Max Price (RM)">
 
-    <button onclick="applyFilters()" style="padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer;">Search</button>
-    <button onclick="clearFilters()" style="padding: 10px 20px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 5px;">Reset</button>
+    <button id="btn-search" onclick="applyFilters()">Search</button>
+    <button id="btn-reset" onclick="clearFilters()">Reset</button>
     </div>
     <div class="container">
         <h2>Latest Property Briefs</h2>
@@ -77,13 +77,6 @@
             <p>Loading the latest properties...</p>
         </div>
     </div>
-    </section>
-
-    <section>
-    <div class="container">
-      <h2>Results</h2>
-      <div id="projects-count"></div>
-      <div id="projects-grid" class="cards"></div>
     </section>
 
   </main>
