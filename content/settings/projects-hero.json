@@ -6,6 +6,12 @@
       "mobile": "assets/uploads/mobile-1080x1920.jpg",
       "title": "Exclusive New Launch",
       "link": "https://your-target-url.com"
+    },
+    {
+      "title": "",
+      "desktop": "/assets/uploads/untitled-design.jpg",
+      "tablet": "/assets/uploads/untitled-design-3.jpg",
+      "mobile": "/assets/uploads/untitled-design-2.jpg"
     }
   ]
 }
