@@ -1,42 +1,87 @@
 // --- GLOBAL DATA ---
 let allProperties = []; 
+let currentSlideIndex = 0;
+let sliderTimer;
+let adminSlides = [];
 
 // --- 1. INITIALIZATION ENGINE ---
 async function init() {
   try {
-    // Correct path to the data folder we set up in Make.com
     const res = await fetch("data/projects.json", { cache: "no-store" });
     if (!res.ok) throw new Error("Could not find data/projects.json");
     
     allProperties = await res.json();
     
-    await loadProjectsHeroBackground(); // Load CMS Hero
-    renderCards(allProperties);         // Show all houses
-    populateStateDropdown();            // Set up search filters
+    // Switch from Background to Slider
+    await loadAdminHeroSlider(); 
+    renderCards(allProperties);         
+    populateStateDropdown();            
   } catch (e) {
     console.log("Init error:", e);
   }
 }
 
-// --- 2. HERO & CMS LOGIC ---
-async function loadProjectsHeroBackground() {
-  const hero = document.getElementById("projectsHero");
-  if (!hero) return;
+// --- 2. ADMIN HERO SLIDER LOGIC ---
+async function loadAdminHeroSlider() {
+    const container = document.getElementById('admin-slider-container');
+    const dotsContainer = document.getElementById('slider-dots');
+    if (!container) return;
 
-  try {
-    const res = await fetch("content/settings/projects-hero.json", { cache: "no-store" });
-    if (!res.ok) return;
-    const data = await res.json();
+    try {
+        const res = await fetch("content/settings/projects-hero.json", { cache: "no-store" });
+        if (!res.ok) return;
+        const data = await res.json();
+        adminSlides = data.slides || [];
 
-    if (data.heroDesktop) hero.style.setProperty("--hero-desktop", `url("${data.heroDesktop}")`);
-    if (data.heroTablet) hero.style.setProperty("--hero-tablet", `url("${data.heroTablet}")`);
-    if (data.heroMobile) hero.style.setProperty("--hero-mobile", `url("${data.heroMobile}")`);
-  } catch (e) {
-    console.log("Hero Load Error:", e);
-  }
+        if (adminSlides.length === 0) return;
+
+        // Build HTML with 3 image sizes injected as CSS variables
+        container.innerHTML = adminSlides.map((slide, index) => `
+            <div class="hero-slide ${index === 0 ? 'active' : ''}" 
+                 style="--img-d: url('${slide.desktop}'); --img-t: url('${slide.tablet}'); --img-m: url('${slide.mobile}');"
+                 onclick="window.open('${slide.link}', '_blank')">
+                <div class="slide-caption">
+                    <h2>${slide.title || ''}</h2>
+                </div>
+            </div>
+        `).join('');
+
+        // Build Navigation Dots
+        if (dotsContainer) {
+            dotsContainer.innerHTML = adminSlides.map((_, index) => `
+                <span class="dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></span>
+            `).join('');
+        }
+
+        startAutoSlide();
+    } catch (e) {
+        console.log("Slider Error:", e);
+    }
 }
 
-// --- 3. SEARCH & FILTER LOGIC ---
+// --- 3. SLIDER CONTROLS ---
+function showSlide(index) {
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.dot');
+    if (slides.length === 0) return;
+
+    if (index >= slides.length) currentSlideIndex = 0;
+    else if (index < 0) currentSlideIndex = slides.length - 1;
+    else currentSlideIndex = index;
+
+    slides.forEach(s => s.classList.remove('active'));
+    dots.forEach(d => d.classList.remove('active'));
+
+    slides[currentSlideIndex].classList.add('active');
+    if (dots[currentSlideIndex]) dots[currentSlideIndex].classList.add('active');
+}
+
+function changeSlide(n) { showSlide(currentSlideIndex + n); resetTimer(); }
+function goToSlide(n) { showSlide(n); resetTimer(); }
+function startAutoSlide() { sliderTimer = setInterval(() => showSlide(currentSlideIndex + 1), 5000); }
+function resetTimer() { clearInterval(sliderTimer); startAutoSlide(); }
+
+// --- 4. SEARCH & FILTER LOGIC ---
 function populateStateDropdown() {
     const stateSelect = document.getElementById('filter-state');
     if (!stateSelect) return;
@@ -99,7 +144,7 @@ function clearFilters() {
     renderCards(allProperties);
 }
 
-// --- 4. RENDER CARDS ---
+// --- 5. RENDER CARDS ---
 function renderCards(properties) {
     const container = document.getElementById('listings-container');
     const countDisplay = document.getElementById('property-count'); // New line
@@ -128,7 +173,7 @@ function renderCards(properties) {
     `).join('');
 }
 
-// --- 5. MODAL & AD FORM LOGIC (Your Original Code) ---
+// --- 6. MODAL & AD FORM LOGIC (Your Original Code) ---
 const adModal = document.getElementById("adModal");
 const openAdModalBtn = document.getElementById("openAdModalBtn");
 const closeAdModalBtn = document.getElementById("closeAdModalBtn");
