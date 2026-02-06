@@ -1,5 +1,18 @@
 {
-  "heroDesktop": "/assets/uploads/desktop-1920x1080.jpg",
-  "heroTablet": "/assets/uploads/tablet-1536x1024.jpg",
-  "heroMobile": "/assets/uploads/mobile-1080x1920.jpg"
+  "slides": [
+    {
+      "desktop": "https://placehold.co/1600x700/png?text=Hero+Desktop+1",
+      "tablet": "https://placehold.co/1200x700/png?text=Hero+Tablet+1",
+      "mobile": "https://placehold.co/800x700/png?text=Hero+Mobile+1",
+      "title": "Exclusive New Launch",
+      "link": "https://thepropertybrief.org"
+    },
+    {
+      "desktop": "https://placehold.co/1600x700/png?text=Hero+Desktop+2",
+      "tablet": "https://placehold.co/1200x700/png?text=Hero+Tablet+2",
+      "mobile": "https://placehold.co/800x700/png?text=Hero+Mobile+2",
+      "title": "Luxury Penthouse Collection",
+      "link": "https://thepropertybrief.org/projects.html"
+    }
+  ]
 }
