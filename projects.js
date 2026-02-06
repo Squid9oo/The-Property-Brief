@@ -163,11 +163,11 @@ function renderCards(properties) {
     if (!container) return;
 
     if (countDisplay) {
-        countDisplay.innerText = `Showing ${properties.length} project listings`;
+        countDisplay.innerText = `Showing ${properties.length} property briefs`;
     }
     
     if (properties.length === 0) {
-        container.innerHTML = '<p>No matching property found.</p>';
+        container.innerHTML = '<p>No matching property briefs found.</p>';
         return;
     }
 
