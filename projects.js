@@ -102,7 +102,13 @@ function clearFilters() {
 // --- 4. RENDER CARDS ---
 function renderCards(properties) {
     const container = document.getElementById('listings-container');
+    const countDisplay = document.getElementById('property-count'); // New line
     if (!container) return;
+
+    // Update the count text
+    if (countDisplay) {
+        countDisplay.innerText = `Showing ${properties.length} property briefs`;
+    }
     
     if (properties.length === 0) {
         container.innerHTML = '<p>No matching property briefs found.</p>';
