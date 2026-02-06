@@ -139,8 +139,34 @@
     white-space: nowrap; /* Prevents text from wrapping inside buttons */
 }
 
-#btn-search { background: #27ae60; color: white; border: none; cursor: pointer; font-weight: 700; }
-#btn-reset { background: #95a5a6; color: white; border: none; cursor: pointer; }
+#btn-search {
+    background: #f9d100;
+    color: #0b0b0c;
+    border: 1px solid rgba(249, 209, 0, 0.35);
+    cursor: pointer;
+    font-weight: 800;
+    transition: all 0.2s ease;
+}
+
+#btn-search:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(249,209,0,0.35);
+}
+
+#btn-reset {
+    background: rgba(255,255,255,0.08);
+    color: #f3f4f6;
+    border: 1px solid rgba(255,255,255,0.14);
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+#btn-reset:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.24);
+}
 
 /* TABLET/MOBILE FIX: On small screens, let it wrap so it doesn't break */
 @media (max-width: 1000px) {

@@ -126,21 +126,24 @@ function applyFilters() {
     const district = document.getElementById('filter-district').value;
     const area = document.getElementById('filter-area').value;
     const category = document.getElementById('filter-category').value;
+    const minPrice = document.getElementById('filter-price-min').value;
     const maxPrice = document.getElementById('filter-price-max').value;
 
     const filtered = allProperties.filter(p => {
+        const price = parseFloat(p.priceRm);
         return (listingType === "" || p.listingType === listingType) &&
                (state === "" || p.state === state) &&
                (district === "" || p.district === district) &&
                (area === "" || p.area === area) &&
                (category === "" || p.category === category) &&
-               (maxPrice === "" || parseFloat(p.priceRm) <= parseFloat(maxPrice));
+               (minPrice === "" || price >= parseFloat(minPrice)) &&
+               (maxPrice === "" || price <= parseFloat(maxPrice));
     });
     renderCards(filtered);
 }
 
 function clearFilters() {
-    const ids = ['filter-listing-type', 'filter-state', 'filter-category', 'filter-price-max'];
+    const ids = ['filter-listing-type', 'filter-state', 'filter-category', 'filter-price-min', 'filter-price-max'];
     ids.forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ""; });
     if(document.getElementById('filter-district')) document.getElementById('filter-district').innerHTML = '<option value="">All Districts</option>';
     if(document.getElementById('filter-area')) document.getElementById('filter-area').innerHTML = '<option value="">All Areas</option>';
