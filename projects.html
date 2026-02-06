@@ -472,71 +472,89 @@
   
   // Step A: Load States
   async function loadStates() {
-    const response = await fetch('/content/settings/locations/states.json');
-    const states = await response.json();
-    stateSelect.innerHTML = '<option value="">Select state</option>';
-    states.forEach(state => {
-      stateSelect.innerHTML += `<option value="${state.name}">${state.name}</option>`;
-    });
+    try {
+      const response = await fetch('/content/settings/locations/states.json');
+      const data = await response.json();
+      const states = data.states; // Extract the states array
+      
+      stateSelect.innerHTML = '<option value="">Select state</option>';
+      states.forEach(stateName => {
+        stateSelect.innerHTML += `<option value="${stateName}">${stateName}</option>`;
+      });
+    } catch (err) {
+      console.error('Error loading states:', err);
+    }
   }
-
 
   // Step B: Load Districts when State changes
   stateSelect.addEventListener('change', async (e) => {
     const stateName = e.target.value;
-    if (!stateName) return;
+    if (!stateName) {
+      districtSelect.disabled = true;
+      areaSelect.disabled = true;
+      return;
+    }
 
-
-    districtSelect.disabled = false;
-    const response = await fetch('/content/settings/locations/districts.json');
-    const allDistricts = await response.json();
-    
-    // Filter districts that belong to the selected state
-    const filtered = allDistricts.filter(d => d.state_name === stateName);
-    
-    districtSelect.innerHTML = '<option value="">Select district</option>';
-    filtered.forEach(d => {
-      districtSelect.innerHTML += `<option value="${d.name}">${d.name}</option>`;
-    });
+    try {
+      districtSelect.disabled = false;
+      const response = await fetch('/content/settings/locations/districts.json');
+      const data = await response.json();
+      const districts = data.districtsByState[stateName]; // Get districts for selected state
+      
+      districtSelect.innerHTML = '<option value="">Select district</option>';
+      districts.forEach(districtName => {
+        districtSelect.innerHTML += `<option value="${districtName}">${districtName}</option>`;
+      });
+      
+      // Reset area dropdown
+      areaSelect.innerHTML = '<option value="">Select area</option>';
+      areaSelect.disabled = true;
+    } catch (err) {
+      console.error('Error loading districts:', err);
+    }
   });
-
 
   // Step C: Load Areas when District changes
   districtSelect.addEventListener('change', async (e) => {
     const districtName = e.target.value;
-    const stateName = stateSelect.value.toLowerCase().replace(/\s+/g, '-'); // e.g. "Kuala Lumpur" -> "kuala-lumpur"
+    const stateName = stateSelect.value.toLowerCase().replace(/\s+/g, '-'); // "Kuala Lumpur" -> "kuala-lumpur"
     
-    if (!districtName) return;
+    if (!districtName) {
+      areaSelect.disabled = true;
+      return;
+    }
 
-
-    areaSelect.disabled = false;
-    // We try to load the state-specific file you mentioned (e.g., selangor.json)
     try {
+      areaSelect.disabled = false;
       const response = await fetch(`/content/settings/locations/areas/${stateName}.json`);
-      const areas = await response.json();
+      const data = await response.json();
       
-      const filteredAreas = areas.filter(a => a.district_name === districtName);
+      // Find the district object that matches the selected district
+      const districtObj = data.districts.find(d => d.name === districtName);
       
-      areaSelect.innerHTML = '<option value="">Select area</option>';
-      filteredAreas.forEach(a => {
-        areaSelect.innerHTML += `<option value="${a.name}">${a.name}</option>`;
-      });
-      // Add an "Others" option to trigger the custom text box
-      areaSelect.innerHTML += `<option value="others">Others (Type manually)</option>`;
+      if (districtObj && districtObj.areas) {
+        areaSelect.innerHTML = '<option value="">Select area</option>';
+        districtObj.areas.forEach(areaObj => {
+          areaSelect.innerHTML += `<option value="${areaObj.name}">${areaObj.name}</option>`;
+        });
+        areaSelect.innerHTML += `<option value="others">Others (Type manually)</option>`;
+      } else {
+        // No areas found, show custom input
+        customAreaWrapper.style.display = 'block';
+      }
     } catch (err) {
-      console.log("Could not find area file, showing custom input");
+      console.error('Error loading areas:', err);
       customAreaWrapper.style.display = 'block';
     }
   });
-
 
   // Show custom input if "Others" is selected
   areaSelect.addEventListener('change', (e) => {
     customAreaWrapper.style.display = (e.target.value === 'others') ? 'block' : 'none';
   });
 
-
 </script>
 </body>
 </html>
+
 
