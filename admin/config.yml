@@ -57,10 +57,17 @@ collections:
     label: "Settings"
     files:
       - name: "projectsHero"
-        label: "Projects Hero Background"
+        label: "Projects Hero Slider"
         file: "content/settings/projects-hero.json"
         format: "json"
         fields:
-          - { label: "Hero Image (Desktop)", name: "heroDesktop", widget: "image", required: false }
-          - { label: "Hero Image (Tablet)", name: "heroTablet", widget: "image", required: false }
-          - { label: "Hero Image (Mobile)", name: "heroMobile", widget: "image", required: false }
+          - label: "Slides"
+            name: "slides"
+            widget: "list"
+            summary: '{{fields.title}}'
+            fields:
+              - { label: "Slide Title", name: "title", widget: "string", required: false }
+              - { label: "Click Link (URL)", name: "link", widget: "string", required: false }
+              - { label: "Desktop Image", name: "desktop", widget: "image" }
+              - { label: "Tablet Image", name: "tablet", widget: "image" }
+              - { label: "Mobile Image", name: "mobile", widget: "image" }

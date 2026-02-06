@@ -1,21 +1,11 @@
 {
   "slides": [
     {
-      "desktop": "/assets/uploads/hero1-desktop.jpg",
-      "tablet": "/assets/uploads/hero1-tablet.jpg",
-      "mobile": "/assets/uploads/hero1-mobile.jpg",
+      "desktop": "assets/uploads/desktop-1920x1080.jpg",
+      "tablet": "assets/uploads/tablet-1536x1024.jpg",
+      "mobile": "assets/uploads/mobile-1080x1920.jpg",
       "title": "Exclusive New Launch",
       "link": "https://your-target-url.com"
-    },
-    {
-      "desktop": "/assets/uploads/hero2-desktop.jpg",
-      "tablet": "/assets/uploads/hero2-tablet.jpg",
-      "mobile": "/assets/uploads/hero2-mobile.jpg",
-      "title": "Luxury Penthouse Collection",
-      "link": "https://another-url.com"
     }
-  ],
-  "heroDesktop": "/assets/uploads/desktop-1920x1080.jpg",
-  "heroTablet": "/assets/uploads/tablet-1536x1024.jpg",
-  "heroMobile": "/assets/uploads/mobile-1080x1920.jpg"
+  ]
 }
