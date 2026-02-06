@@ -1,27 +1,36 @@
-// --- GLOBAL DATA ---
+// --- 1. GLOBAL DATA (Must be at the very top) ---
 let allProperties = []; 
 let currentSlideIndex = 0;
 let sliderTimer;
 let adminSlides = [];
 
-// --- 1. INITIALIZATION ENGINE ---
+// --- 2. INITIALIZATION ENGINE ---
 async function init() {
   try {
+    // Correct path to the data folder
     const res = await fetch("data/projects.json", { cache: "no-store" });
     if (!res.ok) throw new Error("Could not find data/projects.json");
     
     allProperties = await res.json();
     
-    // Switch from Background to Slider
+    // Load Admin Slider first
     await loadAdminHeroSlider(); 
+    
+    // Show user listings
     renderCards(allProperties);         
-    populateStateDropdown();            
+    
+    // Set up dropdowns
+    populateStateDropdown(); 
+    
+    // Ensure modal starts CLOSED
+    closeAdModal(); 
+    
   } catch (e) {
     console.log("Init error:", e);
   }
 }
 
-// --- 2. ADMIN HERO SLIDER LOGIC ---
+// --- 3. ADMIN HERO SLIDER LOGIC ---
 async function loadAdminHeroSlider() {
     const container = document.getElementById('admin-slider-container');
     const dotsContainer = document.getElementById('slider-dots');
@@ -35,7 +44,6 @@ async function loadAdminHeroSlider() {
 
         if (adminSlides.length === 0) return;
 
-        // Build HTML with 3 image sizes injected as CSS variables
         container.innerHTML = adminSlides.map((slide, index) => `
             <div class="hero-slide ${index === 0 ? 'active' : ''}" 
                  style="--img-d: url('${slide.desktop}'); --img-t: url('${slide.tablet}'); --img-m: url('${slide.mobile}');"
@@ -46,7 +54,6 @@ async function loadAdminHeroSlider() {
             </div>
         `).join('');
 
-        // Build Navigation Dots
         if (dotsContainer) {
             dotsContainer.innerHTML = adminSlides.map((_, index) => `
                 <span class="dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></span>
@@ -59,7 +66,7 @@ async function loadAdminHeroSlider() {
     }
 }
 
-// --- 3. SLIDER CONTROLS ---
+// --- 4. SLIDER CONTROLS ---
 function showSlide(index) {
     const slides = document.querySelectorAll('.hero-slide');
     const dots = document.querySelectorAll('.dot');
@@ -78,10 +85,13 @@ function showSlide(index) {
 
 function changeSlide(n) { showSlide(currentSlideIndex + n); resetTimer(); }
 function goToSlide(n) { showSlide(n); resetTimer(); }
-function startAutoSlide() { sliderTimer = setInterval(() => showSlide(currentSlideIndex + 1), 5000); }
-function resetTimer() { clearInterval(sliderTimer); startAutoSlide(); }
+function startAutoSlide() { 
+    clearInterval(sliderTimer);
+    sliderTimer = setInterval(() => showSlide(currentSlideIndex + 1), 5000); 
+}
+function resetTimer() { startAutoSlide(); }
 
-// --- 4. SEARCH & FILTER LOGIC ---
+// --- 5. SEARCH & FILTER LOGIC ---
 function populateStateDropdown() {
     const stateSelect = document.getElementById('filter-state');
     if (!stateSelect) return;
@@ -93,6 +103,7 @@ function populateStateDropdown() {
 function updateDistrictDropdown() {
     const selectedState = document.getElementById('filter-state').value;
     const districtSelect = document.getElementById('filter-district');
+    if (!districtSelect) return;
     districtSelect.innerHTML = '<option value="">All Districts</option>';
     
     const districts = [...new Set(allProperties
@@ -106,6 +117,7 @@ function updateDistrictDropdown() {
 function updateAreaDropdown() {
     const selectedDistrict = document.getElementById('filter-district').value;
     const areaSelect = document.getElementById('filter-area');
+    if (!areaSelect) return;
     areaSelect.innerHTML = '<option value="">All Areas</option>';
 
     const areas = [...new Set(allProperties
@@ -144,13 +156,12 @@ function clearFilters() {
     renderCards(allProperties);
 }
 
-// --- 5. RENDER CARDS ---
+// --- 6. RENDER CARDS ---
 function renderCards(properties) {
     const container = document.getElementById('listings-container');
-    const countDisplay = document.getElementById('property-count'); // New line
+    const countDisplay = document.getElementById('property-count');
     if (!container) return;
 
-    // Update the count text
     if (countDisplay) {
         countDisplay.innerText = `Showing ${properties.length} project listings`;
     }
@@ -173,7 +184,7 @@ function renderCards(properties) {
     `).join('');
 }
 
-// --- 6. MODAL & AD FORM LOGIC (Your Original Code) ---
+// --- 7. MODAL LOGIC ---
 const adModal = document.getElementById("adModal");
 const openAdModalBtn = document.getElementById("openAdModalBtn");
 const closeAdModalBtn = document.getElementById("closeAdModalBtn");
@@ -181,8 +192,8 @@ const closeAdModalBtn = document.getElementById("closeAdModalBtn");
 function openAdModal() { if (adModal) { adModal.classList.add("open"); adModal.setAttribute("aria-hidden", "false"); } }
 function closeAdModal() { if (adModal) { adModal.classList.remove("open"); adModal.setAttribute("aria-hidden", "true"); } }
 
-if (openAdModalBtn) openAdModalBtn.addEventListener("click", openAdModal);
-if (closeAdModalBtn) closeAdModalBtn.addEventListener("click", closeAdModal);
+if (openAdModalBtn) openAdModalBtn.onclick = openAdModal;
+if (closeAdModalBtn) closeAdModalBtn.onclick = closeAdModal;
 
 // START EVERYTHING
 document.addEventListener('DOMContentLoaded', init);
