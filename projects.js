@@ -152,17 +152,17 @@ function renderCards(properties) {
     const container = document.getElementById('listings-container');
     const countDisplay = document.getElementById('property-count');
     if (!container) return;
-    if (countDisplay) countDisplay.innerText = `Showing ${properties.length} project listings`;
+
+    // Update the count text
+    if (countDisplay) {
+        countDisplay.innerText = `Showing ${properties.length} property briefs`;
+    }
     
-    if (!properties || properties.length === 0) {
-  container.innerHTML = `
-    <p style="padding: 12px; background:#fff3cd; border:1px solid #ffeeba; border-radius:10px;">
-      No listings yet. If you’re testing Phase 1, try submitting a form first (it will be Pending in Airtable),
-      then Phase 2 will publish it to this page.
-    </p>
-  `;
-  return;
-}
+    if (properties.length === 0) {
+        container.innerHTML = '<p>No matching property found.</p>';
+        return;
+    }
+
     container.innerHTML = properties.map(item => `
         <div class="property-card">
             <img src="${item.photo1 || 'https://via.placeholder.com/300x200'}" alt="Property">
