@@ -1,578 +1,147 @@
 /* ========================================
-   PROJECTS PAGE (Mudah-style)
+   PROJECTS PAGE - MASTER STYLES
 ======================================== */
 
-.filters{
-  display: grid;
-  grid-template-columns: 180px 200px 160px 160px 1fr auto auto;
-  gap: 10px;
-  padding: 12px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: rgba(255,255,255,0.02);
-  align-items: center;
-  overflow: hidden;
-}
-
-.filters input,
-.filters select{
-  height: 42px;
-  padding: 0 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(0,0,0,0.22);
-  color: var(--text);
-  outline: none;
-}
-
-.filters input:focus,
-.filters select:focus{
-  border-color: rgba(249, 209, 0, 0.55);
-  box-shadow: 0 0 0 4px rgba(249,209,0,0.12);
-}
-
-#btn-search,
-#btn-reset{
-  height: 42px;
-  padding: 0 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.14);
-  cursor: pointer;
-  font-weight: 800;
-}
-
-#btn-search{
-  background: var(--yellow);
-  color: #0b0b0c;
-  border-color: rgba(249, 209, 0, 0.35);
-}
-#btn-search:hover{ opacity: 0.92; }
-
-#btn-reset{
-  background: transparent;
-  color: var(--text);
-}
-#btn-reset:hover{
-  border-color: rgba(249, 209, 0, 0.35);
-  background: rgba(255,255,255,0.03);
-}
-
-#projects-count{
-  margin: 10px 2px 14px;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.cards{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-}
-
-.card{
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: var(--radius);
-  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-  overflow: hidden;
-  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-}
-.card:hover{
-  border-color: rgba(249, 209, 0, 0.40);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 0 0 1px rgba(249,209,0,0.12);
-}
-
-.card-image{
-  height: 200px;
-  background: rgba(255,255,255,0.03);
-}
-.card-image img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card-body{
-  padding: 14px 16px 16px;
-}
-
-.card-price{
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 900;
-  background: rgba(249,209,0,0.14);
-  border: 1px solid rgba(249,209,0,0.28);
-}
-
-.card-title{
-  margin: 10px 0 6px;
-  font-size: 18px;
-  line-height: 1.2;
-}
-
-.card-sub{
-  color: var(--muted);
-  font-size: 13px;
-  margin-bottom: 8px;
-}
-
-.card-meta{
-  color: rgba(243,244,246,0.80);
-  font-size: 13px;
-}
-
-/* Form styling on Projects page */
-form[name="project-submit"]{
-  margin-top: 12px;
-  display: grid;
-  gap: 10px;
-  max-width: 720px;
-}
-
-form[name="project-submit"] label{
-  display: grid;
-  gap: 6px;
-  font-size: 14px;
-  color: var(--text);
-}
-
-form[name="project-submit"] input,
-form[name="project-submit"] select,
-form[name="project-submit"] textarea{
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(0,0,0,0.22);
-  color: var(--text);
-  outline: none;
-}
-
-form[name="project-submit"] button[type="submit"]{
-  height: 44px;
-  border-radius: 12px;
-  border: 1px solid rgba(249, 209, 0, 0.35);
-  background: var(--yellow);
-  color: #0b0b0c;
-  font-weight: 900;
-  cursor: pointer;
-}
-form[name="project-submit"] button[type="submit"]:hover{ opacity: 0.92; }
-
-/* Responsive */
-@media (max-width: 960px){
-  .filters{
-    grid-template-columns: 1fr 1fr;
-  }
-  .cards{
-    grid-template-columns: 1fr;
-  }
-}
-.projects-top{ margin: 14px 0 18px; }
-
-.projects-tabs{
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.projects-tabs .tab{
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(0,0,0,0.22);
-  color: var(--text);
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.projects-tabs .tab.active{
-  background: rgba(40, 120, 255, 0.25);
-  border-color: rgba(40, 120, 255, 0.45);
-}
-
-/* Make the current page link look active */
-.nav a.active{
-  color: var(--text);
-  border-color: rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.03);
-}
-/* Projects header: keep nav near brand */
-.topbar{
-  justify-content: flex-start;
-}
-
-.topbarLeft{
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-/* push the share icon to the far right */
-.topbar .shareRow{
-  margin-left: auto;
-}
-/* Hero background (image from CMS) */
-#projectsHero{
-  width: 100%;
-  min-height: 440px;              /* taller hero */
-  padding: 40px 0;                /* top/bottom breathing space */
-  display: flex;
-  align-items: flex-end;          /* push content to bottom */
-  overflow: hidden;
-
-  background-color: rgba(255,255,255,0.03);
-  background-image: var(--hero-desktop);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-@media (max-width: 960px){
-  #projectsHero{ min-height: 390px; }
-}
-
-@media (max-width: 600px){
-  #projectsHero{ min-height: 360px; }
-}
-
-#projectsHero > *{
-  position: relative;
-  z-index: 1;
-}
-
-/* Modal */
-.modalOverlay{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 18px;
-  z-index: 9999;
-}
-
-.modalOverlay.open{ display: flex; }
-
-.modalCard{
-  width: min(760px, 96vw);
-  max-height: 86vh;
-  overflow: auto;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(18,18,18,0.96);
-  padding: 14px 14px 18px;
-}
-
-.modalHeader{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.modalClose{
-  height: 36px;
-  width: 36px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: transparent;
-  color: var(--text);
-  cursor: pointer;
-}
-/* ========== POST FREE AD MODAL FORM STYLES ========== */
-
-/* Modal title styling */
-#adModal h2 {
-  color: #F9D342; /* Your yellow theme */
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-/* Section headings */
-#adModal h3 {
-  color: #F9D342;
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #F9D342;
-}
-
-/* Form sections spacing */
-#form-section-1,
-#form-section-2 {
-  padding: 1rem 0;
-}
-
-/* Form labels */
-#adModal label {
-  display: block;
-  margin-bottom: 1.25rem;
-  color: #ffffff;
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-
-/* Form inputs, selects, textareas */
-#adModal input[type="text"],
-#adModal input[type="number"],
-#adModal input[type="file"],
-#adModal select,
-#adModal textarea {
-  width: 100%;
-  padding: 0.75rem;
-  margin-top: 0.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  color: #ffffff;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-}
-
-#adModal input[type="text"]:focus,
-#adModal input[type="number"]:focus,
-#adModal select:focus,
-#adModal textarea:focus {
-  outline: none;
-  border-color: #F9D342;
-  background: rgba(255, 255, 255, 0.15);
-}
-
-/* File input styling */
-#adModal input[type="file"] {
-  padding: 0.5rem;
-  cursor: pointer;
-}
-
-#adModal input[type="file"]::file-selector-button {
-  background: #F9D342;
-  color: #000000;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  margin-right: 0.75rem;
-}
-
-#adModal input[type="file"]::file-selector-button:hover {
-  background: #f4c842;
-}
-
-/* Next button (yellow theme) */
-/* ========== FORM BUTTON STYLES ========== */
-
-/* Next button (Section 1 - centered, yellow, 30% smaller) */
-#form-next-btn {
-  display: block;
-  margin: 1.5rem auto 0 auto; /* Centers the button */
-  padding: 0.6125rem 1.05rem; /* 30% smaller: 0.875 * 0.7 = 0.6125, 1.5 * 0.7 = 1.05 */
-  width: auto;
-  max-width: 200px;
-  background: #F9D342;
-  color: #000000;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-sizing: border-box;
-}
-
-#form-next-btn:hover {
-  background: #f4c842;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(249, 211, 66, 0.4);
-}
-
-/* Back and Submit buttons container (Section 2 - centered) */
-#form-section-2 .form-buttons {
-  display: flex;
-  gap: 1rem;
-  margin: 2rem auto 0 auto;
-  justify-content: center;
-  max-width: 400px; /* Limits the container width */
-}
-
-#form-section-2 .form-buttons button {
-  flex: 1;
-  max-width: 200px;
-  box-sizing: border-box;
-}
-
-/* Back button (yellow theme, 30% smaller) */
-#form-back-btn {
-  padding: 0.6125rem 1.05rem; /* 30% smaller */
-  background: #F9D342;
-  color: #000000;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#form-back-btn:hover {
-  background: #f4c842;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(249, 211, 66, 0.4);
-}
-
-/* Submit button (yellow theme, 30% smaller) */
-#form-section-2 button[type="submit"] {
-  padding: 0.6125rem 1.05rem; /* 30% smaller */
-  background: #F9D342;
-  color: #000000;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#form-section-2 button[type="submit"]:hover {
-  background: #f4c842;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(249, 211, 66, 0.4);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  #form-section-2 .form-buttons {
-    flex-direction: column;
-    max-width: 200px;
-  }
-
-  #form-back-btn,
-  #form-section-2 button[type="submit"] {
+/* --- 1. ADMIN HERO SLIDER (Multi-Device) --- */
+.hero-slider {
+    position: relative;
     width: 100%;
-    max-width: none;
-  }
+    height: 480px;
+    overflow: hidden;
+    background: #000;
 }
 
-/* Category-specific field blocks spacing */
-#fields-apartment,
-#fields-house,
-#fields-commercial,
-#fields-land {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Custom area input wrapper */
-#ad-area-custom-wrapper {
-  margin-top: 0.5rem;
-}
-
-/* Photos upload section */
-#adModal label:has(input[type="file"]) {
-  margin-bottom: 2rem;
-}
-
-#adModal input[type="file"] + input[type="file"] {
-  margin-top: 0.75rem;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  #adModal h2 {
-    font-size: 1.5rem;
-  }
-
-  #adModal h3 {
-    font-size: 1.1rem;
-  }
-
-  #form-section-2 > div[style*="flex"] {
-    flex-direction: column;
-  }
-
-  #form-back-btn,
-  #adModal button[type="submit"] {
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-  }
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* DEFAULT: Desktop Image */
+    background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)), var(--img-d);
 }
-/* Phase 3: Property Grid Layout */
+
+/* TABLET: 960px and below */
+@media (max-width: 960px) {
+    .hero-slider { height: 400px; }
+    .hero-slide { background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)), var(--img-t); }
+}
+
+/* MOBILE: 600px and below */
+@media (max-width: 600px) {
+    .hero-slider { height: 340px; }
+    .hero-slide { background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)), var(--img-m); }
+}
+
+.hero-slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* --- 2. FADE-IN TEXT ANIMATION --- */
+.slide-caption h2 {
+    color: #F9D342; /* The Property Brief Yellow */
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    text-shadow: 2px 2px 20px rgba(0,0,0,0.8);
+    text-align: center;
+    padding: 0 20px;
+    
+    /* Animation: Slide Up & Fade In */
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.9s ease-out;
+    transition-delay: 0.5s; /* Wait for image fade to finish */
+}
+
+.hero-slide.active .slide-caption h2 {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- 3. SLIDER NAVIGATION --- */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.3);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 24px;
+    transition: background 0.3s;
+}
+.slider-arrow:hover { background: rgba(0,0,0,0.7); }
+.prev { left: 0; border-radius: 0 8px 8px 0; }
+.next { right: 0; border-radius: 8px 0 0 8px; }
+
+.slider-dots {
+    position: absolute;
+    bottom: 25px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    z-index: 10;
+}
+.dot {
+    width: 12px;
+    height: 12px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.dot.active { background: #F9D342; width: 30px; border-radius: 10px; } /* Stylish active dot */
+
+/* --- 4. FILTER BAR --- */
+.filter-bar {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-top: -30px; /* Slight overlap for modern look */
+    position: relative;
+    z-index: 20;
+}
+
+#btn-search { background: #27ae60; color: white; border: none; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-weight: 700; }
+#btn-reset { background: #95a5a6; color: white; border: none; padding: 10px 25px; border-radius: 6px; cursor: pointer; margin-left: 8px; }
+
+/* --- 5. PROPERTY GRID --- */
 .property-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    padding: 20px 0;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 30px 0;
 }
 
 .property-card {
     background: #ffffff;
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.property-card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
 
-.property-card:hover {
-    transform: translateY(-5px);
-}
+.property-card img { width: 100%; height: 220px; object-fit: cover; }
+.card-content h3 { margin: 15px; font-size: 1.25rem; color: #222; }
+.price { margin: 0 15px; color: #27ae60; font-weight: 800; font-size: 1.4rem; }
+.location { margin: 12px 15px; font-size: 0.9rem; color: #777; }
+.badge { margin: 0 15px 20px; display: inline-block; background: #f0f0f0; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
 
-.property-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover; /* This makes sure photos aren't squished */
-}
-
-.property-card h3 {
-    font-size: 1.2rem;
-    margin: 15px 15px 5px;
-    color: #333;
-}
-
-.property-card .price {
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #27ae60; /* A nice green for the price */
-    margin: 0 15px;
-}
-
-.property-card .location {
-    font-size: 0.9rem;
-    color: #666;
-    margin: 10px 15px;
-}
-
-.property-card .badge {
-    display: inline-block;
-    background: #f0f0f0;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    margin: 0 15px 15px;
-    align-self: flex-start;
-}
-.filter-bar {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    justify-content: center; /* Centers the filters */
-    align-items: center;
-}
-
-.filter-bar select, .filter-bar input {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 8px 12px;
-    font-family: inherit;
-}
+/* --- 6. MODAL STYLES --- */
+/* (Keep your existing Modal and Form styles below this line) */
+.modalOverlay { ... }
+/* ... (existing modal code here) ... */
