@@ -203,3 +203,254 @@
 .modalOverlay.open {
     display: flex !important; /* This shows it only when clicked */
 }
+/* --- 7. POST FREE AD MODAL (Matches Main Theme) --- */
+.modalCard {
+  width: min(680px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 18px;
+  background: rgba(11,11,12,0.95);
+  backdrop-filter: blur(20px);
+  padding: 0;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  
+  color: #f3f4f6;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+.modalHeader {
+  position: relative;
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  background: linear-gradient(180deg, rgba(249,209,0,0.08), transparent);
+}
+
+.modalHeader h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: #f3f4f6;
+}
+
+.modalClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f3f4f6;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+}
+
+.modalClose:hover {
+  border-color: rgba(249, 209, 0, 0.45);
+  background: rgba(249, 209, 0, 0.12);
+  transform: rotate(90deg);
+}
+
+/* Form Content */
+.modalCard form {
+  padding: 24px;
+}
+
+.modalCard h3 {
+  margin: 0 0 20px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f9d100;
+  letter-spacing: 0.3px;
+}
+
+.modalCard label {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #a1a1aa;
+}
+
+.modalCard input[type="text"],
+.modalCard input[type="number"],
+.modalCard input[type="file"],
+.modalCard select,
+.modalCard textarea {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.35);
+  color: #f3f4f6;
+  outline: none;
+  
+  transition: all 0.2s ease;
+}
+
+.modalCard input::placeholder,
+.modalCard textarea::placeholder {
+  color: rgba(243,244,246,0.45);
+}
+
+.modalCard input:focus,
+.modalCard select:focus,
+.modalCard textarea:focus {
+  border-color: rgba(249, 209, 0, 0.55);
+  box-shadow: 0 0 0 4px rgba(249,209,0,0.12);
+  background: rgba(0,0,0,0.45);
+}
+
+.modalCard textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+/* File input styling */
+.modalCard input[type="file"] {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.modalCard input[type="file"]::file-selector-button {
+  padding: 8px 14px;
+  margin-right: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(249, 209, 0, 0.35);
+  background: rgba(249,209,0,0.15);
+  color: #f9d100;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modalCard input[type="file"]::file-selector-button:hover {
+  background: rgba(249,209,0,0.25);
+}
+
+/* Buttons */
+.modalCard button[type="button"],
+.modalCard button[type="submit"] {
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+/* Next button (yellow) */
+#form-next-btn,
+.modalCard button[type="submit"] {
+  width: 100%;
+  background: #f9d100;
+  color: #0b0b0c;
+  border-color: rgba(249, 209, 0, 0.35);
+}
+
+#form-next-btn:hover,
+.modalCard button[type="submit"]:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(249,209,0,0.35);
+}
+
+/* Form buttons container */
+.form-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+#form-back-btn {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  color: #f3f4f6;
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+#form-back-btn:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.24);
+}
+
+.form-buttons button[type="submit"] {
+  flex: 2;
+}
+
+/* Conditional field groups */
+#fields-apartment,
+#fields-house,
+#fields-commercial,
+#fields-land {
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 12px;
+  border: 1px solid rgba(249,209,0,0.20);
+  background: rgba(249,209,0,0.04);
+}
+
+/* Smooth scrollbar for modal */
+.modalCard::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modalCard::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.25);
+  border-radius: 10px;
+}
+
+.modalCard::-webkit-scrollbar-thumb {
+  background: rgba(249,209,0,0.35);
+  border-radius: 10px;
+}
+
+.modalCard::-webkit-scrollbar-thumb:hover {
+  background: rgba(249,209,0,0.55);
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .modalCard {
+    max-height: 90vh;
+    border-radius: 14px;
+  }
+  
+  .modalCard form {
+    padding: 18px;
+  }
+  
+  .modalHeader {
+    padding: 18px 18px 16px;
+  }
+  
+  .modalHeader h2 {
+    font-size: 20px;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+  }
+  
+  #form-back-btn,
+  .form-buttons button[type="submit"] {
+    width: 100%;
+  }
+}
