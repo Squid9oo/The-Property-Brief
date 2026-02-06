@@ -472,7 +472,7 @@
   
   // Step A: Load States
   async function loadStates() {
-    const response = await fetch('/contents/settings/locations/states.json');
+    const response = await fetch('/content/settings/locations/states.json');
     const states = await response.json();
     stateSelect.innerHTML = '<option value="">Select state</option>';
     states.forEach(state => {
@@ -480,13 +480,15 @@
     });
   }
 
+
   // Step B: Load Districts when State changes
   stateSelect.addEventListener('change', async (e) => {
     const stateName = e.target.value;
     if (!stateName) return;
 
+
     districtSelect.disabled = false;
-    const response = await fetch('/contents/settings/locations/district.json');
+    const response = await fetch('/content/settings/locations/districts.json');
     const allDistricts = await response.json();
     
     // Filter districts that belong to the selected state
@@ -498,17 +500,19 @@
     });
   });
 
+
   // Step C: Load Areas when District changes
   districtSelect.addEventListener('change', async (e) => {
     const districtName = e.target.value;
-    const stateName = stateSelect.value.toLowerCase().replace(/\s+/g, ''); // e.g. "Kuala Lumpur" -> "kualalumpur"
+    const stateName = stateSelect.value.toLowerCase().replace(/\s+/g, '-'); // e.g. "Kuala Lumpur" -> "kuala-lumpur"
     
     if (!districtName) return;
+
 
     areaSelect.disabled = false;
     // We try to load the state-specific file you mentioned (e.g., selangor.json)
     try {
-      const response = await fetch(`/contents/settings/locations/areas/${stateName}.json`);
+      const response = await fetch(`/content/settings/locations/areas/${stateName}.json`);
       const areas = await response.json();
       
       const filteredAreas = areas.filter(a => a.district_name === districtName);
@@ -525,11 +529,14 @@
     }
   });
 
+
   // Show custom input if "Others" is selected
   areaSelect.addEventListener('change', (e) => {
     customAreaWrapper.style.display = (e.target.value === 'others') ? 'block' : 'none';
   });
 
+
 </script>
 </body>
 </html>
+
