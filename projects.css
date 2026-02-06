@@ -112,9 +112,27 @@
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    margin-top: -30px; /* Slight overlap for modern look */
+    margin-top: -60px; /* Moves it up slightly more over the hero */
     position: relative;
     z-index: 20;
+    
+    /* NEW STUFF BELOW */
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap on small screens */
+    gap: 15px;      /* Even spacing between inputs */
+    justify-content: space-between; /* Spreads items out */
+    align-items: center;
+    width: 100%;    /* Take up full width of the container */
+    box-sizing: border-box; /* Ensures padding doesn't make it too wide */
+}
+
+/* Make sure the inputs inside the bar grow to fill space */
+.filter-bar select, 
+.filter-bar input {
+    flex: 1 1 150px; /* This tells them: "Grow to fill space, but don't get smaller than 150px" */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
 }
 
 #btn-search { background: #27ae60; color: white; border: none; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-weight: 700; }
