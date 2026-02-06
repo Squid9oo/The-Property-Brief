@@ -9,427 +9,430 @@
 </head>
 
 <body>
-    <header class="topbar">
-        <div class="topbarLeft">
-        <div class="brand">THE PROPERTY BRIEF</div>
+  <header class="topbar">
+    <div class="topbarLeft">
+      <div class="brand">THE PROPERTY BRIEF</div>
 
-        <nav class="nav">
-            <a href="index.html#home">Home</a>
-            <a href="index.html#latest">News</a>
-            <a href="index.html#strategies">Strategies</a>
-            <a href="index.html#about">About</a>
-            <a href="index.html#search">Search</a>
-            <a href="projects.html" class="active">Project Listing</a>
-        </nav>
-        </div>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html#home">Home</a>
+        <a href="index.html#latest">News</a>
+        <a href="index.html#strategies">Strategies</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#search">Search</a>
+        <a href="projects.html" class="active" aria-current="page">Project Listing</a>
+      </nav>
+    </div>
 
-        <div class="shareRow">
-            <button class="headerBtn" id="openAdModalBtn" type="button">Post Free Ad</button>
-            <button class="shareIconBtn" id="sharePageBtn" type="button" aria-label="Share this page">↗</button>
-        </div>
-    </header>
+    <div class="shareRow">
+      <button class="headerBtn" id="openAdModalBtn" type="button">Post Free Ad</button>
+      <button class="shareIconBtn" id="sharePageBtn" type="button" aria-label="Share this page">↗</button>
+    </div>
+  </header>
 
   <main>
-    <section class="hero-section">
-    <div class="hero-overlay">
-        <h1>Project Listings</h1>
-    </div>
+    <!-- HERO (Admin slider) -->
+    <section id="projectsHero" class="hero-section" aria-label="Hero">
+      <div class="hero-slider">
+        <div id="admin-slider-container"></div>
+
+        <button class="slider-arrow prev" type="button" onclick="changeSlide(-1)" aria-label="Previous slide">‹</button>
+        <button class="slider-arrow next" type="button" onclick="changeSlide(1)" aria-label="Next slide">›</button>
+
+        <div class="slider-dots" id="slider-dots" aria-label="Slider dots"></div>
+      </div>
     </section>
 
-    <section class="listings-section">
-    <div class="filter-bar" style="margin-bottom: 30px; display: flex; gap: 10px; flex-wrap: wrap;">
-    
-    <select id="filter-listing-type">
-      <option value="">All Listings</option>
-      <option value="For Rent">For Rent</option>
-      <option value="Sub Sale">Sub Sale</option>
-      <option value="New Launch">New Launch</option>
-    </select>
+    <!-- LISTINGS + FILTERS -->
+    <section class="listings-section" aria-label="Listings">
+      <div class="container">
+        <div class="filter-bar">
+          <select id="filter-listing-type" aria-label="Filter listing type">
+            <option value="">All Listings</option>
+            <option value="For Rent">For Rent</option>
+            <option value="Sub Sale">Sub Sale</option>
+            <option value="New Launch">New Launch</option>
+          </select>
 
-    <select id="filter-state" onchange="updateDistrictDropdown()">
-      <option value="">All States</option>
-    </select>
+          <select id="filter-state" aria-label="Filter state" onchange="updateDistrictDropdown()">
+            <option value="">All States</option>
+          </select>
 
-    <select id="filter-district" onchange="updateAreaDropdown()">
-      <option value="">All Districts</option>
-    </select>
+          <select id="filter-district" aria-label="Filter district" onchange="updateAreaDropdown()">
+            <option value="">All Districts</option>
+          </select>
 
-    <select id="filter-area">
-      <option value="">All Areas</option>
-    </select>
+          <select id="filter-area" aria-label="Filter area">
+            <option value="">All Areas</option>
+          </select>
 
-    <select id="filter-category">
-      <option value="">All Types</option>
-      <option value="Apartment">Apartment</option>
-      <option value="House">House</option>
-      <option value="Commercial">Commercial</option>
-      <option value="Land">Land</option>
-    </select>
+          <select id="filter-category" aria-label="Filter property type">
+            <option value="">All Types</option>
+            <option value="Apartment">Apartment</option>
+            <option value="House">House</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Land">Land</option>
+          </select>
 
-    <input type="number" id="filter-price-max" placeholder="Max Price (RM)">
+          <input type="number" id="filter-price-max" placeholder="Max Price (RM)" aria-label="Max price" />
 
-    <button id="btn-search" onclick="applyFilters()">Search</button>
-    <button id="btn-reset" onclick="clearFilters()">Reset</button>
-    </div>
-    <div class="container">
-        <h2>Latest Property Briefs</h2>
-        <div id="listings-container" class="property-grid">
-            <p>Loading the latest properties...</p>
+          <!-- Important: explicit type="button" avoids accidental form submits -->
+          <button id="btn-search" type="button" onclick="applyFilters()">Search</button>
+          <button id="btn-reset" type="button" onclick="clearFilters()">Reset</button>
         </div>
-    </div>
-    </section>
 
+        <h2>Latest Property Briefs</h2>
+        <p id="property-count" style="margin: 8px 0 0; color:#666;"></p>
+
+        <div id="listings-container" class="property-grid">
+          <p>Loading the latest properties...</p>
+        </div>
+      </div>
+    </section>
   </main>
 
-    <div class="modalOverlay" id="adModal" aria-hidden="true">
+  <!-- POST FREE AD MODAL -->
+  <div class="modalOverlay" id="adModal" aria-hidden="true">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Post Free Ad">
-        <div class="modalHeader">
-            <h2>Post Free Ad</h2>
-            <button class="modalClose" id="closeAdModalBtn" type="button" aria-label="Close">✕</button>
+      <div class="modalHeader">
+        <h2>Post Free Ad</h2>
+        <button class="modalClose" id="closeAdModalBtn" type="button" aria-label="Close">✕</button>
+      </div>
+
+      <form
+        name="project-submit"
+        method="POST"
+        data-netlify="true"
+        action="/projects-thank-you.html"
+        enctype="multipart/form-data"
+      >
+        <!-- Netlify needs this hidden field to match the form name -->
+        <input type="hidden" name="form-name" value="project-submit" />
+
+        <!-- SECTION 1 (visible first) -->
+        <div id="form-section-1">
+          <h3>Section 1 - Basic Info</h3>
+
+          <label>
+            For
+            <select name="listingType" id="listingType" required>
+              <option value="">Select</option>
+              <option value="For Rent">For Rent</option>
+              <option value="Sub Sale">Sub Sale</option>
+              <option value="New Launch">New Launch</option>
+            </select>
+          </label>
+
+          <label>
+            Category
+            <select name="category" id="category" required>
+              <option value="">Select</option>
+              <option value="Apartment">Apartment</option>
+              <option value="House">House</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Land">Land</option>
+            </select>
+          </label>
+
+          <label>
+            Seller Type
+            <select name="sellerType" id="sellerType" required>
+              <option value="">Select</option>
+              <option value="Private Seller">Private Seller</option>
+              <option value="Agent">Agent</option>
+            </select>
+          </label>
+
+          <button type="button" id="form-next-btn">Next</button>
         </div>
 
-<form name="project-submit" 
-    method="POST" 
-    data-netlify="true" 
-    action="/projects-thank-you.html"
-    enctype="multipart/form-data">
-  <input type="hidden" name="form-name" value="project-submit" />
+        <!-- SECTION 2 (hidden initially) -->
+        <div id="form-section-2" style="display:none;">
+          <h3>Section 2 - Property Details</h3>
 
-  <!-- SECTION 1 (visible first) -->
-  <div id="form-section-1">
-    <h3>Section 1 - Basic Info</h3>
+          <label>
+            Photos (up to 5 images)
+            <input name="photo1" type="file" accept="image/*" />
+            <input name="photo2" type="file" accept="image/*" />
+            <input name="photo3" type="file" accept="image/*" />
+            <input name="photo4" type="file" accept="image/*" />
+            <input name="photo5" type="file" accept="image/*" />
+          </label>
 
-    <label>
-      For
-      <select name="listingType" id="listingType" required>
-        <option value="">Select</option>
-        <option value="For Rent">For Rent</option>
-        <option value="Sub Sale">Sub Sale</option>
-        <option value="New Launch">New Launch</option>
-      </select>
-    </label>
+          <label>
+            Ad Title
+            <input name="adTitle" type="text" required />
+          </label>
 
-    <label>
-      Category
-      <select name="category" id="category" required>
-        <option value="">Select</option>
-        <option value="Apartment">Apartment</option>
-        <option value="House">House</option>
-        <option value="Commercial">Commercial</option>
-        <option value="Land">Land</option>
-      </select>
-    </label>
+          <label>
+            Tenure
+            <select name="tenure" required>
+              <option value="">Select</option>
+              <option value="Freehold">Freehold</option>
+              <option value="Leasehold">Leasehold</option>
+            </select>
+          </label>
 
-    <label>
-      Seller Type
-      <select name="sellerType" id="sellerType" required>
-        <option value="">Select</option>
-        <option value="Private Seller">Private Seller</option>
-        <option value="Agent">Agent</option>
-      </select>
-    </label>
+          <!-- APARTMENT -->
+          <div id="fields-apartment" style="display:none;">
+            <label>
+              Title
+              <select name="landTitle">
+                <option value="">Select</option>
+                <option value="Bumi">Bumi</option>
+                <option value="Non-Bumi">Non-Bumi</option>
+              </select>
+            </label>
 
-    <button type="button" id="form-next-btn">Next</button>
-  </div>
+            <label>
+              Bedrooms
+              <select name="bedrooms">
+                <option value="">Select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </label>
 
-  <!-- SECTION 2 (hidden initially) -->
-  <div id="form-section-2" style="display:none;">
-  <h3>Section 2 - Property Details</h3>
+            <label>
+              Bathrooms
+              <select name="bathrooms">
+                <option value="">Select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </label>
 
-  <!-- Photos (common to all) -->
-  <label>
-    Photos (up to 5 images)
-    <input name="photo1" type="file" accept="image/*" />
-    <input name="photo2" type="file" accept="image/*" />
-    <input name="photo3" type="file" accept="image/*" />
-    <input name="photo4" type="file" accept="image/*" />
-    <input name="photo5" type="file" accept="image/*" />
-  </label>
+            <label>
+              Built Up (sq.ft.)
+              <input name="builtUpSqft" type="number" placeholder="e.g., 1200" />
+            </label>
 
-  <!-- Ad Title (common to all) -->
-  <label>
-    Ad Title
-    <input name="adTitle" type="text" required />
-  </label>
+            <label>
+              Parking Lot
+              <select name="parking">
+                <option value="">Select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </label>
+          </div>
 
-  <!-- Tenure (common to all) -->
-  <label>
-    Tenure
-    <select name="tenure" required>
-      <option value="">Select</option>
-      <option value="Freehold">Freehold</option>
-      <option value="Leasehold">Leasehold</option>
-    </select>
-  </label>
+          <!-- HOUSE -->
+          <div id="fields-house" style="display:none;">
+            <label>
+              Property Type
+              <select name="houseType">
+                <option value="">Select</option>
+                <option value="Bungalow">Bungalow</option>
+                <option value="Semi Detached">Semi Detached</option>
+                <option value="Cluster">Cluster</option>
+                <option value="1-Storey Link">1-Storey Link</option>
+                <option value="2-Storey Link">2-Storey Link</option>
+                <option value="Townhouse">Townhouse</option>
+              </select>
+            </label>
 
-  <!-- APARTMENT ONLY FIELDS (inserted here in sequence) -->
-  <div id="fields-apartment" style="display:none;">
-    <label>
-      Title
-      <select name="landTitle">
-        <option value="">Select</option>
-        <option value="Bumi">Bumi</option>
-        <option value="Non-Bumi">Non-Bumi</option>
-      </select>
-    </label>
+            <label>
+              Land Title
+              <select name="landTitle">
+                <option value="">Select</option>
+                <option value="Bumi">Bumi</option>
+                <option value="Non-bumi">Non-bumi</option>
+                <option value="Malay Reserved">Malay Reserved</option>
+              </select>
+            </label>
 
-    <label>
-      Bedrooms
-      <select name="bedrooms">
-        <option value="">Select</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
-    </label>
+            <label>
+              Bedrooms
+              <select name="bedrooms">
+                <option value="">Select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </label>
 
-    <label>
-      Bathrooms
-      <select name="bathrooms">
-        <option value="">Select</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
-    </label>
+            <label>
+              Bathrooms
+              <select name="bathrooms">
+                <option value="">Select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </label>
 
-    <label>
-      Built Up (sq.ft.)
-      <input name="builtUpSqft" type="number" placeholder="e.g., 1200" />
-    </label>
+            <label>
+              Built Up (sq.ft.)
+              <input name="builtUpSqft" type="number" placeholder="e.g., 2400" />
+            </label>
 
-    <label>
-      Parking Lot
-      <select name="parking">
-        <option value="">Select</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
-    </label>
-  </div>
+            <label>
+              Parking Lot
+              <select name="parking">
+                <option value="">Select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </label>
+          </div>
 
-  <!-- HOUSE ONLY FIELDS -->
-  <div id="fields-house" style="display:none;">
-    <label>
-      Property Type
-      <select name="houseType">
-        <option value="">Select</option>
-        <option value="Bungalow">Bungalow</option>
-        <option value="Semi Detached">Semi Detached</option>
-        <option value="Cluster">Cluster</option>
-        <option value="1-Storey Link">1-Storey Link</option>
-        <option value="2-Storey Link">2-Storey Link</option>
-        <option value="Townhouse">Townhouse</option>
-      </select>
-    </label>
+          <!-- COMMERCIAL -->
+          <div id="fields-commercial" style="display:none;">
+            <label>
+              Property Type
+              <select name="commercialType">
+                <option value="">Select</option>
+                <option value="Shop Lot">Shop Lot</option>
+                <option value="Office">Office</option>
+                <option value="Factory">Factory</option>
+              </select>
+            </label>
 
-    <label>
-      Land Title
-      <select name="landTitle">
-        <option value="">Select</option>
-        <option value="Bumi">Bumi</option>
-        <option value="Non-bumi">Non-bumi</option>
-        <option value="Malay Reserved">Malay Reserved</option>
-      </select>
-    </label>
+            <label>
+              Land Title
+              <select name="landTitle">
+                <option value="">Select</option>
+                <option value="Bumi">Bumi</option>
+                <option value="Non-bumi">Non-bumi</option>
+                <option value="Malay Reserved">Malay Reserved</option>
+              </select>
+            </label>
 
-    <label>
-      Bedrooms
-      <select name="bedrooms">
-        <option value="">Select</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-      </select>
-    </label>
+            <label>
+              Built Up (sq.ft.)
+              <input name="builtUpSqft" type="number" placeholder="e.g., 3000" />
+            </label>
 
-    <label>
-      Bathrooms
-      <select name="bathrooms">
-        <option value="">Select</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-      </select>
-    </label>
+            <label>
+              No. Of Storey
+              <select name="storeyCount">
+                <option value="">Select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </label>
+          </div>
 
-    <label>
-      Built Up (sq.ft.)
-      <input name="builtUpSqft" type="number" placeholder="e.g., 2400" />
-    </label>
+          <!-- LAND -->
+          <div id="fields-land" style="display:none;">
+            <label>
+              Property Type
+              <select name="landType">
+                <option value="">Select</option>
+                <option value="Residential">Residential</option>
+                <option value="Industrial">Industrial</option>
+                <option value="Agricultural">Agricultural</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Mix-Development">Mix-Development</option>
+                <option value="Others">Others</option>
+              </select>
+            </label>
 
-    <label>
-      Parking Lot
-      <select name="parking">
-        <option value="">Select</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-      </select>
-    </label>
-  </div>
+            <label>
+              Land Title
+              <select name="landTitle">
+                <option value="">Select</option>
+                <option value="Bumi">Bumi</option>
+                <option value="Non-bumi">Non-bumi</option>
+                <option value="Malay Reserved">Malay Reserved</option>
+              </select>
+            </label>
 
-  <!-- COMMERCIAL ONLY FIELDS -->
-  <div id="fields-commercial" style="display:none;">
-    <label>
-      Property Type
-      <select name="commercialType">
-        <option value="">Select</option>
-        <option value="Shop Lot">Shop Lot</option>
-        <option value="Office">Office</option>
-        <option value="Factory">Factory</option>
-      </select>
-    </label>
+            <label>
+              Land Size (acres / sq.ft)
+              <input name="landSize" type="text" placeholder="e.g., 5 acres or 50000 sq.ft" />
+            </label>
+          </div>
 
-    <label>
-      Land Title
-      <select name="landTitle">
-        <option value="">Select</option>
-        <option value="Bumi">Bumi</option>
-        <option value="Non-bumi">Non-bumi</option>
-        <option value="Malay Reserved">Malay Reserved</option>
-      </select>
-    </label>
+          <label>
+            Description
+            <textarea name="description" rows="5" required></textarea>
+          </label>
 
-    <label>
-      Built Up (sq.ft.)
-      <input name="builtUpSqft" type="number" placeholder="e.g., 3000" />
-    </label>
+          <label>
+            State
+            <select name="state" id="ad-state" required>
+              <option value="">Select state</option>
+            </select>
+          </label>
 
-    <label>
-      No. Of Storey
-      <select name="storeyCount">
-        <option value="">Select</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
-    </label>
-  </div>
+          <label>
+            District
+            <select name="district" id="ad-district" required disabled>
+              <option value="">Select district</option>
+            </select>
+          </label>
 
-  <!-- LAND ONLY FIELDS -->
-  <div id="fields-land" style="display:none;">
-    <label>
-      Property Type
-      <select name="landType">
-        <option value="">Select</option>
-        <option value="Residential">Residential</option>
-        <option value="Industrial">Industrial</option>
-        <option value="Agricultural">Agricultural</option>
-        <option value="Commercial">Commercial</option>
-        <option value="Mix-Development">Mix-Development</option>
-        <option value="Others">Others</option>
-      </select>
-    </label>
+          <label>
+            Area / Township
+            <select name="area" id="ad-area" required disabled>
+              <option value="">Select area</option>
+            </select>
+          </label>
 
-    <label>
-      Land Title
-      <select name="landTitle">
-        <option value="">Select</option>
-        <option value="Bumi">Bumi</option>
-        <option value="Non-bumi">Non-bumi</option>
-        <option value="Malay Reserved">Malay Reserved</option>
-      </select>
-    </label>
+          <label id="ad-area-custom-wrapper" style="display:none;">
+            Or type your location
+            <input type="text" name="areaCustom" id="ad-area-custom" placeholder="e.g., Taman Kinrara, Bandar Sunway" />
+          </label>
 
-    <label>
-      Land Size (acres / sq.ft)
-      <input name="landSize" type="text" placeholder="e.g., 5 acres or 50000 sq.ft" />
-    </label>
-  </div>
+          <input type="hidden" name="locationFull" id="ad-locationFull" value="" />
 
-  <!-- Description (common to all, appears after category fields) -->
-  <label>
-    Description
-    <textarea name="description" rows="5" required></textarea>
-  </label>
+          <label>
+            Price (RM)
+            <input name="priceRm" type="number" placeholder="e.g., 450000" required />
+          </label>
 
-  <!-- Location dropdowns (common to all) -->
-  <label>
-    State
-    <select name="state" id="ad-state" required>
-      <option value="">Select state</option>
-    </select>
-  </label>
+          <label>
+            Contact
+            <input name="contact" type="text" placeholder="e.g., +60123456789 or email" required />
+          </label>
 
-  <label>
-    District
-    <select name="district" id="ad-district" required disabled>
-      <option value="">Select district</option>
-    </select>
-  </label>
-
-  <label>
-    Area / Township
-    <select name="area" id="ad-area" required disabled>
-      <option value="">Select area</option>
-    </select>
-  </label>
-
-  <label id="ad-area-custom-wrapper" style="display:none;">
-    Or type your location
-    <input type="text" name="areaCustom" id="ad-area-custom" placeholder="e.g., Taman Kinrara, Bandar Sunway" />
-  </label>
-
-  <input type="hidden" name="locationFull" id="ad-locationFull" value="" />
-
-  <!-- Price (common to all) -->
-  <label>
-    Price (RM)
-    <input name="priceRm" type="number" placeholder="e.g., 450000" required />
-  </label>
-
-  <!-- Contact (common to all) -->
-  <label>
-    Contact
-    <input name="contact" type="text" placeholder="e.g., +60123456789 or email" required />
-  </label>
-
-  <!-- Navigation buttons -->
-  <div class="form-buttons">
-  <button type="button" id="form-back-btn">Back</button>
-  <button type="submit">Submit</button>
-</div>
-</div>
-
-</form>
-
+          <div class="form-buttons">
+            <button type="button" id="form-back-btn">Back</button>
+            <button type="submit">Submit</button>
+          </div>
+        </div>
+      </form>
     </div>
-    </div>
+  </div>
 
-<script src="https://cdn.auth0.com/js/auth0-spa-js/2.5/auth0-spa-js.production.js"></script>
-<script src="auth.js"></script>
-<script src="projects.js"></script>
-
+  <!-- Scripts: load projects.js first so it still runs even if auth breaks -->
+  <script defer src="projects.js"></script>
+  <script defer src="https://cdn.auth0.com/js/auth0-spa-js/2.5/auth0-spa-js.production.js"></script>
+  <script defer src="auth.js"></script>
 </body>
 </html>
