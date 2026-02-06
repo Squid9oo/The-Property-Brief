@@ -187,5 +187,19 @@ const closeBtn = document.getElementById("closeAdModalBtn");
 if (openBtn) openBtn.onclick = () => { if(adModal) adModal.classList.add("open"); };
 if (closeBtn) closeBtn.onclick = () => { if(adModal) adModal.classList.remove("open"); };
 
-// Start the engine
-document.addEventListener('DOMContentLoaded', init);
+// --- 8. ATTACH FILTER DROPDOWN LISTENERS ---
+document.addEventListener('DOMContentLoaded', () => {
+    const stateFilter = document.getElementById('filter-state');
+    const districtFilter = document.getElementById('filter-district');
+    
+    if (stateFilter) {
+        stateFilter.addEventListener('change', updateDistrictDropdown);
+    }
+    
+    if (districtFilter) {
+        districtFilter.addEventListener('change', updateAreaDropdown);
+    }
+    
+    // Start the engine
+    init();
+});
