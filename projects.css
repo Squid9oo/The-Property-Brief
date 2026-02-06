@@ -109,37 +109,50 @@
 /* --- 4. FILTER BAR --- */
 .filter-bar {
     background: #f8f9fa;
-    padding: 25px;
+    padding: 15px; /* Shrunk padding slightly to save space */
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    margin-top: -60px;
+    margin: -50px auto 30px auto; /* Centers the bar and overlaps the hero */
     position: relative;
     z-index: 20;
-
-    /* LEGO BLOCK SETUP (GRID) */
+    
     display: grid;
-    /* This creates 4 equal columns. On small screens, it adjusts! */
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-    gap: 15px;
-    width: 100%;
+    /* This creates 8 equal columns in 1 row */
+    grid-template-columns: repeat(8, 1fr); 
+    gap: 8px; /* Tightened the gap between boxes */
+    width: 95%; /* Makes the bar wide to match the hero */
+    max-width: 1300px; /* Adjust this to match your hero's width */
     box-sizing: border-box;
 }
 
-/* This makes sure every select, input, and button looks uniform */
+/* Make the boxes look sleek and fit the tight row */
 .filter-bar select, 
 .filter-bar input, 
 .filter-bar button {
-    width: 100%; /* Fill their little Lego square */
-    padding: 12px;
+    width: 100%;
+    padding: 8px 5px;
     border: 1px solid #ddd;
     border-radius: 6px;
-    font-size: 14px;
-    height: 45px; /* Keeps them all the same height */
+    font-size: 13px; /* Smaller text so it fits comfortably */
+    height: 40px;
     box-sizing: border-box;
+    white-space: nowrap; /* Prevents text from wrapping inside buttons */
 }
 
 #btn-search { background: #27ae60; color: white; border: none; cursor: pointer; font-weight: 700; }
 #btn-reset { background: #95a5a6; color: white; border: none; cursor: pointer; }
+
+/* TABLET/MOBILE FIX: On small screens, let it wrap so it doesn't break */
+@media (max-width: 1000px) {
+    .filter-bar {
+        grid-template-columns: repeat(4, 1fr); /* 2 rows of 4 on tablets */
+    }
+}
+@media (max-width: 600px) {
+    .filter-bar {
+        grid-template-columns: repeat(2, 1fr); /* 4 rows of 2 on phones */
+    }
+}
 
 /* --- 5. PROPERTY GRID --- */
 .property-grid {
