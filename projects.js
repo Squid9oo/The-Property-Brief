@@ -92,32 +92,78 @@ function startAutoSlide() {
 }
 function resetTimer() { startAutoSlide(); }
 
-// --- 5. SEARCH & FILTER LOGIC ---
-function populateStateDropdown() {
+// --- 5. SEARCH & FILTER LOGIC (Using Location JSON Files) ---
+async function populateStateDropdown() {
     const stateSelect = document.getElementById('filter-state');
     if (!stateSelect) return;
-    stateSelect.innerHTML = '<option value="">All States</option>';
-    const states = [...new Set(allProperties.map(item => item.state))].filter(Boolean).sort();
-    states.forEach(s => stateSelect.innerHTML += `<option value="${s}">${s}</option>`);
+    
+    try {
+        const response = await fetch('/content/settings/locations/states.json');
+        const data = await response.json();
+        const states = data.states;
+        
+        stateSelect.innerHTML = '<option value="">All States</option>';
+        states.forEach(stateName => {
+            stateSelect.innerHTML += `<option value="${stateName}">${stateName}</option>`;
+        });
+    } catch (err) {
+        console.error('Error loading states:', err);
+    }
 }
 
-function updateDistrictDropdown() {
+async function updateDistrictDropdown() {
     const selectedState = document.getElementById('filter-state').value;
     const districtSelect = document.getElementById('filter-district');
+    const areaSelect = document.getElementById('filter-area');
+    
     if (!districtSelect) return;
+    
     districtSelect.innerHTML = '<option value="">All Districts</option>';
-    const districts = [...new Set(allProperties.filter(p => p.state === selectedState || selectedState === "").map(p => p.district))].filter(Boolean).sort();
-    districts.forEach(d => districtSelect.innerHTML += `<option value="${d}">${d}</option>`);
-    updateAreaDropdown(); 
+    if (areaSelect) areaSelect.innerHTML = '<option value="">All Areas</option>';
+    
+    if (!selectedState) return;
+    
+    try {
+        const response = await fetch('/content/settings/locations/districts.json');
+        const data = await response.json();
+        const districts = data.districtsByState[selectedState];
+        
+        if (districts) {
+            districts.forEach(districtName => {
+                districtSelect.innerHTML += `<option value="${districtName}">${districtName}</option>`;
+            });
+        }
+    } catch (err) {
+        console.error('Error loading districts:', err);
+    }
 }
 
-function updateAreaDropdown() {
+async function updateAreaDropdown() {
+    const selectedState = document.getElementById('filter-state').value;
     const selectedDistrict = document.getElementById('filter-district').value;
     const areaSelect = document.getElementById('filter-area');
+    
     if (!areaSelect) return;
+    
     areaSelect.innerHTML = '<option value="">All Areas</option>';
-    const areas = [...new Set(allProperties.filter(p => p.district === selectedDistrict || selectedDistrict === "").map(p => p.area))].filter(Boolean).sort();
-    areas.forEach(a => areaSelect.innerHTML += `<option value="${a}">${a}</option>`);
+    
+    if (!selectedState || !selectedDistrict) return;
+    
+    try {
+        const stateName = selectedState.toLowerCase().replace(/\s+/g, '-');
+        const response = await fetch(`/content/settings/locations/areas/${stateName}.json`);
+        const data = await response.json();
+        
+        const districtObj = data.districts.find(d => d.name === selectedDistrict);
+        
+        if (districtObj && districtObj.areas) {
+            districtObj.areas.forEach(areaObj => {
+                areaSelect.innerHTML += `<option value="${areaObj.name}">${areaObj.name}</option>`;
+            });
+        }
+    } catch (err) {
+        console.error('Error loading areas:', err);
+    }
 }
 
 function applyFilters() {
