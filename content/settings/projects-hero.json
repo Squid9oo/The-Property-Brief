@@ -1,5 +1,5 @@
 {
-  "heroDesktop": "",
-  "heroTablet": "",
-  "heroMobile": ""
+  "heroDesktop": "/assets/uploads/me-banner.jpg",
+  "heroTablet": "/assets/uploads/tablet-1536x1024.jpg",
+  "heroMobile": "/assets/uploads/mobile-1080x1920.jpg"
 }
