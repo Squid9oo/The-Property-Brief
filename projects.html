@@ -436,49 +436,100 @@
   <script defer src="auth.js"></script>
 
   <script>
-  // 1. Get our elements from the page
   const nextBtn = document.getElementById('form-next-btn');
   const backBtn = document.getElementById('form-back-btn');
   const section1 = document.getElementById('form-section-1');
   const section2 = document.getElementById('form-section-2');
   const categorySelect = document.getElementById('category');
 
-  // 2. Make the 'Next' button switch sections
-  nextBtn.addEventListener('click', () => {
-    // Basic validation: Check if Section 1 fields are filled
-    const inputs = section1.querySelectorAll('select[required]');
-    let allFilled = true;
-    inputs.forEach(input => { if(!input.value) allFilled = false; });
+  // Location Elements
+  const stateSelect = document.getElementById('ad-state');
+  const districtSelect = document.getElementById('ad-district');
+  const areaSelect = document.getElementById('ad-area');
+  const customAreaWrapper = document.getElementById('ad-area-custom-wrapper');
 
-    if(allFilled) {
-      section1.style.display = 'none';
-      section2.style.display = 'block';
-    } else {
-      alert('Please fill in all fields in Section 1 first!');
-    }
+  // 1. Navigation Logic
+  nextBtn.addEventListener('click', () => {
+    section1.style.display = 'none';
+    section2.style.display = 'block';
+    loadStates(); // Load states as soon as we move forward
   });
 
-  // 3. Make the 'Back' button return to Section 1
   backBtn.addEventListener('click', () => {
     section2.style.display = 'none';
     section1.style.display = 'block';
   });
 
-  // 4. Show the right details based on Category (House, Apartment, etc.)
+  // 2. Category Logic
   categorySelect.addEventListener('change', (e) => {
     const val = e.target.value.toLowerCase();
-    // Hide all sub-sections first
-    document.getElementById('fields-apartment').style.display = 'none';
-    document.getElementById('fields-house').style.display = 'none';
-    document.getElementById('fields-commercial').style.display = 'none';
-    document.getElementById('fields-land').style.display = 'none';
-
-    // Show the specific one
-    if(val === 'apartment') document.getElementById('fields-apartment').style.display = 'block';
-    if(val === 'house') document.getElementById('fields-house').style.display = 'block';
-    if(val === 'commercial') document.getElementById('fields-commercial').style.display = 'block';
-    if(val === 'land') document.getElementById('fields-land').style.display = 'block';
+    ['apartment', 'house', 'commercial', 'land'].forEach(cat => {
+      document.getElementById(`fields-${cat}`).style.display = (val === cat) ? 'block' : 'none';
+    });
   });
+
+  // 3. FETCHING THE DATA
+  
+  // Step A: Load States
+  async function loadStates() {
+    const response = await fetch('/contents/settings/locations/states.json');
+    const states = await response.json();
+    stateSelect.innerHTML = '<option value="">Select state</option>';
+    states.forEach(state => {
+      stateSelect.innerHTML += `<option value="${state.name}">${state.name}</option>`;
+    });
+  }
+
+  // Step B: Load Districts when State changes
+  stateSelect.addEventListener('change', async (e) => {
+    const stateName = e.target.value;
+    if (!stateName) return;
+
+    districtSelect.disabled = false;
+    const response = await fetch('/contents/settings/locations/district.json');
+    const allDistricts = await response.json();
+    
+    // Filter districts that belong to the selected state
+    const filtered = allDistricts.filter(d => d.state_name === stateName);
+    
+    districtSelect.innerHTML = '<option value="">Select district</option>';
+    filtered.forEach(d => {
+      districtSelect.innerHTML += `<option value="${d.name}">${d.name}</option>`;
+    });
+  });
+
+  // Step C: Load Areas when District changes
+  districtSelect.addEventListener('change', async (e) => {
+    const districtName = e.target.value;
+    const stateName = stateSelect.value.toLowerCase().replace(/\s+/g, ''); // e.g. "Kuala Lumpur" -> "kualalumpur"
+    
+    if (!districtName) return;
+
+    areaSelect.disabled = false;
+    // We try to load the state-specific file you mentioned (e.g., selangor.json)
+    try {
+      const response = await fetch(`/contents/settings/locations/areas/${stateName}.json`);
+      const areas = await response.json();
+      
+      const filteredAreas = areas.filter(a => a.district_name === districtName);
+      
+      areaSelect.innerHTML = '<option value="">Select area</option>';
+      filteredAreas.forEach(a => {
+        areaSelect.innerHTML += `<option value="${a.name}">${a.name}</option>`;
+      });
+      // Add an "Others" option to trigger the custom text box
+      areaSelect.innerHTML += `<option value="others">Others (Type manually)</option>`;
+    } catch (err) {
+      console.log("Could not find area file, showing custom input");
+      customAreaWrapper.style.display = 'block';
+    }
+  });
+
+  // Show custom input if "Others" is selected
+  areaSelect.addEventListener('change', (e) => {
+    customAreaWrapper.style.display = (e.target.value === 'others') ? 'block' : 'none';
+  });
+
 </script>
 </body>
 </html>
