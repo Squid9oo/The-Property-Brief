@@ -210,85 +210,68 @@
   }
 
   /* This styles the white "Card" the form sits on */
-  /* 1. THE BOX (MODAL) - Fixing the scrolling issue */
-.modalCard {
-  background: #1a1a1a; /* Dark background to match your news portal vibe */
-  color: #ffffff;
-  border-radius: 12px;
-  padding: 30px;
-  width: 95%; 
-  max-width: 600px;
-  margin: 20px auto;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-  
-  /* CRITICAL SCROLL FIXES: */
-  max-height: 85vh;    /* Box can't be taller than 85% of screen */
-  overflow-y: auto;   /* Adds a scrollbar INSIDE the box if content is long */
-  position: relative;
-  border: 1px solid #fdd835; /* Yellow border glow */
-}
+  .modalCard {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 600px;
+    margin: 50px auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
 
-/* 2. THE TITLES */
-.modalHeader h2, #form-section-1 h3, #form-section-2 h3 {
-  color: #fdd835; /* Property Brief Yellow */
-  border-bottom: 2px solid #333;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-}
+  .modalHeader h2 {
+    color: #1a1a1a;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
 
-/* 3. THE INPUTS & LABELS */
-label {
-  display: block;
-  margin-bottom: 15px;
-  font-weight: 600;
-  color: #cccccc;
-}
+  /* Styling labels and inputs to look modern */
+  label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #333;
+  }
 
-input, select, textarea {
-  width: 100%;
-  padding: 12px;
-  margin-top: 5px;
-  background: #2b2b2b; /* Darker input boxes */
-  border: 1px solid #444;
-  border-radius: 6px;
-  color: white;
-  font-size: 16px;
-}
+  input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+  }
 
-/* 4. THE BUTTONS - Vibe matching (Yellow background, Black text) */
-#form-next-btn, button[type="submit"] {
-  background-color: #fdd835; 
-  color: #000000;
-  padding: 14px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 800;
-  width: 100%;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.2s ease;
-}
+  /* Making the buttons look like "The Property Brief" style */
+  #form-next-btn, button[type="submit"] {
+    background-color: #007bff; /* Change this to your main theme color! */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: background 0.3s;
+  }
 
-#form-next-btn:hover, button[type="submit"]:hover {
-  background-color: #ffffff; /* Turns white on hover */
-  transform: translateY(-2px);
-}
+  #form-next-btn:hover, button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
 
-#form-back-btn {
-  background: transparent;
-  color: #fdd835;
-  border: 1px solid #fdd835;
-  padding: 10px 20px;
-  border-radius: 8px;
-  margin-right: 10px;
-  cursor: pointer;
-}
+  #form-back-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin-right: 10px;
+  }
 
-/* Ensure buttons sit nicely at the bottom */
-.form-buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 30px;
-  padding-bottom: 10px;
-}
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
