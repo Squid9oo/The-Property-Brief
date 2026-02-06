@@ -422,90 +422,62 @@ document.querySelector('form[name="project-submit"]').addEventListener('submit',
     }
   });
 });
-let allProperties = [];
+// 1. Declare this at the VERY TOP so it's ready before init() runs
+let allProperties = []; 
 
-async function displayProperties() {
-    try {
-        const response = await fetch('./data/projects.json');
-        const data = await response.json();
-        allProperties = data;
+async function loadProjectsHeroBackground() {
+  const hero = document.getElementById("projectsHero");
+  if (!hero) return;
 
-        // Populate State dropdown initially
-        const stateSelect = document.getElementById('filter-state');
-        const states = [...new Set(data.map(item => item.state))].sort();
-        states.forEach(state => {
-            if(state) stateSelect.innerHTML += `<option value="${state}">${state}</option>`;
-        });
+  try {
+    // Correct path to your CMS settings
+    const res = await fetch("content/settings/projects-hero.json", { cache: "no-store" });
+    if (!res.ok) return;
 
-        renderCards(allProperties);
-    } catch (error) {
-        console.error("Error loading properties:", error);
-    }
+    const data = await res.json();
+
+    // This re-links your CMS image variables
+    if (data.heroDesktop) hero.style.setProperty("--hero-desktop", `url("${data.heroDesktop}")`);
+    if (data.heroTablet) hero.style.setProperty("--hero-tablet", `url("${data.heroTablet}")`);
+    if (data.heroMobile) hero.style.setProperty("--hero-mobile", `url("${data.heroMobile}")`);
+  } catch (e) {
+    console.log("Hero Image Error:", e);
+  }
 }
 
-function updateDistrictDropdown() {
-    const selectedState = document.getElementById('filter-state').value;
-    const districtSelect = document.getElementById('filter-district');
-    districtSelect.innerHTML = '<option value="">All Districts</option>'; // Reset
+async function init() {
+  try {
+    // Fetch from the correct folder we set up in Make.com
+    const res = await fetch("data/projects.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("Could not find data/projects.json");
     
-    const districts = [...new Set(allProperties
-        .filter(p => p.state === selectedState || selectedState === "")
-        .map(p => p.district))].sort();
+    allProperties = await res.json();
     
-    districts.forEach(d => {
-        if(d) districtSelect.innerHTML += `<option value="${d}">${d}</option>`;
+    // Now that data is loaded, run these
+    await loadProjectsHeroBackground();
+    renderCards(allProperties);
+    populateFilters(); // We'll consolidate the dropdown logic here
+  } catch (e) {
+    console.log("Init error:", e);
+  }
+}
+
+function populateFilters() {
+    const stateSelect = document.getElementById('filter-state');
+    if (!stateSelect) return;
+    
+    // Clear existing and add fresh states from your data
+    stateSelect.innerHTML = '<option value="">All States</option>';
+    const states = [...new Set(allProperties.map(item => item.state))].filter(Boolean).sort();
+    states.forEach(state => {
+        stateSelect.innerHTML += `<option value="${state}">${state}</option>`;
     });
-    updateAreaDropdown(); // Reset area too
 }
 
-function updateAreaDropdown() {
-    const selectedDistrict = document.getElementById('filter-district').value;
-    const areaSelect = document.getElementById('filter-area');
-    areaSelect.innerHTML = '<option value="">All Areas</option>'; // Reset
+// 2. IMPORTANT: Remove any old document.getElementById('search-btn').addEventListener lines 
+// at the bottom of your file, as they are causing the 'null' error in your screenshot.
 
-    const areas = [...new Set(allProperties
-        .filter(p => p.district === selectedDistrict || selectedDistrict === "")
-        .map(p => p.area))].sort();
-
-    areas.forEach(a => {
-        if(a) areaSelect.innerHTML += `<option value="${a}">${a}</option>`;
-    });
-}
-
-function applyFilters() {
-    const listingType = document.getElementById('filter-listing-type').value; 
-    const state = document.getElementById('filter-state').value;
-    const district = document.getElementById('filter-district').value;
-    const area = document.getElementById('filter-area').value;
-    const category = document.getElementById('filter-category').value;
-    const maxPrice = document.getElementById('filter-price-max').value;
-
-    const filtered = allProperties.filter(p => {
-      return (listingType === "" || p.listingType === listingType) &&
-        (state === "" || p.state === state) &&
-        (district === "" || p.district === district) &&
-        (area === "" || p.area === area) &&
-        (category === "" || p.category === category) &&
-        (maxPrice === "" || parseFloat(p.priceRm) <= parseFloat(maxPrice));
-    });
-
-    renderCards(filtered);
-}
-
-function renderCards(properties) {
-    const container = document.getElementById('listings-container');
-    container.innerHTML = properties.map(item => `
-        <div class="property-card">
-            <img src="${item.photo1 || 'https://via.placeholder.com/300x200'}" alt="Property">
-            <h3>${item.adTitle}</h3>
-            <p class="price">RM ${item.priceRm}</p>
-            <p class="location">${item.state} > ${item.district} > ${item.area}</p>
-            <span class="badge">${item.category}</span>
-        </div>
-    `).join('');
-}
-
-document.addEventListener('DOMContentLoaded', displayProperties);
+document.addEventListener('DOMContentLoaded', init);
 function clearFilters() {
     // 1. Reset all dropdown values
     document.getElementById('filter-listing-type').value = "";
