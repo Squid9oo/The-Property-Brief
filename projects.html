@@ -434,5 +434,51 @@
   <script defer src="projects.js"></script>
   <script defer src="https://cdn.auth0.com/js/auth0-spa-js/2.5/auth0-spa-js.production.js"></script>
   <script defer src="auth.js"></script>
+
+  <script>
+  // 1. Get our elements from the page
+  const nextBtn = document.getElementById('form-next-btn');
+  const backBtn = document.getElementById('form-back-btn');
+  const section1 = document.getElementById('form-section-1');
+  const section2 = document.getElementById('form-section-2');
+  const categorySelect = document.getElementById('category');
+
+  // 2. Make the 'Next' button switch sections
+  nextBtn.addEventListener('click', () => {
+    // Basic validation: Check if Section 1 fields are filled
+    const inputs = section1.querySelectorAll('select[required]');
+    let allFilled = true;
+    inputs.forEach(input => { if(!input.value) allFilled = false; });
+
+    if(allFilled) {
+      section1.style.display = 'none';
+      section2.style.display = 'block';
+    } else {
+      alert('Please fill in all fields in Section 1 first!');
+    }
+  });
+
+  // 3. Make the 'Back' button return to Section 1
+  backBtn.addEventListener('click', () => {
+    section2.style.display = 'none';
+    section1.style.display = 'block';
+  });
+
+  // 4. Show the right details based on Category (House, Apartment, etc.)
+  categorySelect.addEventListener('change', (e) => {
+    const val = e.target.value.toLowerCase();
+    // Hide all sub-sections first
+    document.getElementById('fields-apartment').style.display = 'none';
+    document.getElementById('fields-house').style.display = 'none';
+    document.getElementById('fields-commercial').style.display = 'none';
+    document.getElementById('fields-land').style.display = 'none';
+
+    // Show the specific one
+    if(val === 'apartment') document.getElementById('fields-apartment').style.display = 'block';
+    if(val === 'house') document.getElementById('fields-house').style.display = 'block';
+    if(val === 'commercial') document.getElementById('fields-commercial').style.display = 'block';
+    if(val === 'land') document.getElementById('fields-land').style.display = 'block';
+  });
+</script>
 </body>
 </html>
