@@ -133,6 +133,8 @@ h1,h2,h3{
   height: 55px;
   width: auto;
   display: block;
+  max-width: 100%;  /* Prevents overflow on mobile */
+  object-fit: contain;  /* Maintains aspect ratio */
 }
 
 .nav{
@@ -258,6 +260,14 @@ h1,h2,h3{
 }
 
 .headerBtn:hover{ opacity: 0.92; }
+
+/* Header actions container */
+.headerActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: nowrap;
+}
 
 /* ---------- Hero ---------- */
 .hero{ padding: 34px 0 10px; }
@@ -1055,5 +1065,63 @@ mark.hl{
   
   .nav a:last-child {
     border-bottom: none;
+  }
+}
+/* ---------- Mobile Header Fixes ---------- */
+@media (max-width: 820px) {
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 18px;
+  }
+  
+  .brand {
+    flex: 0 1 auto;
+    max-width: 200px; /* Prevents logo from being too wide */
+  }
+  
+  .logo {
+    height: 40px; /* Smaller on mobile */
+  }
+  
+  .hamburger {
+    order: 2;
+    flex: 0 0 auto;
+    margin-left: auto; /* Pushes to the right */
+  }
+  
+  .nav {
+    order: 3;
+    width: 100%;
+  }
+  
+  .headerSub,
+  .headerActions {
+    order: 4;
+    width: 100%;
+    margin-top: 8px;
+  }
+  
+  .headerInput {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .brand {
+    max-width: 160px; /* Even smaller on tiny screens */
+  }
+  
+  .logo {
+    height: 35px;
+  }
+  
+  .topbar {
+    padding: 8px 12px;
   }
 }
