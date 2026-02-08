@@ -1068,16 +1068,20 @@ mark.hl{
   }
 }
 /* ---------- Mobile Header Fixes ---------- */
+/* ---------- Mobile Header Fixes ---------- */
 @media (max-width: 820px) {
-  /* Header layout */
+  /* Force header to have fixed height */
   .topbar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 10px 18px;
-    min-height: 60px; /* Fixed height prevents content jump */
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    padding: 10px 18px !important;
+    min-height: 70px !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
   }
   
   .brand {
@@ -1086,7 +1090,7 @@ mark.hl{
   }
   
   .logo {
-    height: 40px;
+    height: 40px !important;
   }
   
   .hamburger {
@@ -1108,21 +1112,25 @@ mark.hl{
   }
   
   .headerInput {
-    width: 100%;
-    max-width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   
-  /* Prevent content overlap */
-  .container {
-    padding-top: 28px;
+  /* CRITICAL: Push content down below sticky header */
+  body {
+    padding-top: 0 !important;
   }
   
   main {
-    margin-top: 8px;
+    padding-top: 85px !important; /* Creates space below header */
+  }
+  
+  .container {
+    margin-top: 0 !important;
   }
   
   .hero {
-    padding-top: 24px;
+    padding-top: 10px !important;
   }
 }
 
