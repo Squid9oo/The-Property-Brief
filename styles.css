@@ -135,6 +135,11 @@ h1,h2,h3{
   box-shadow: 0 0 0 4px rgba(249,209,0,0.15);
   transform: translateY(-1px);
 }
+.logo {
+  height: 40px;
+  width: auto;
+  display: block;
+}
 
 .nav{
   display: flex;
