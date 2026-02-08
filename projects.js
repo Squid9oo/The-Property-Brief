@@ -1,3 +1,23 @@
+// Hamburger menu toggle for projects page
+const hamburgerProjects = document.getElementById('hamburgerProjects');
+const mainNavProjects = document.getElementById('mainNavProjects');
+
+if (hamburgerProjects && mainNavProjects) {
+  hamburgerProjects.addEventListener('click', () => {
+    hamburgerProjects.classList.toggle('active');
+    mainNavProjects.classList.toggle('active');
+  });
+  
+  // Close menu when clicking nav links
+  const navLinks = mainNavProjects.querySelectorAll('a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      hamburgerProjects.classList.remove('active');
+      mainNavProjects.classList.remove('active');
+    });
+  });
+}
+
 // --- 1. GLOBAL DATA ---
 let allProperties = []; 
 let currentSlideIndex = 0;

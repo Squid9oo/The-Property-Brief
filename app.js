@@ -7,6 +7,25 @@
    - Modal (post + video)
    - Search (min 3 chars, last 30 days default, highlight, compact results)
 ======================================== */
+// Hamburger menu toggle
+const hamburger = document.getElementById('hamburger');
+const mainNav = document.getElementById('mainNav');
+
+if (hamburger && mainNav) {
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    mainNav.classList.toggle('active');
+  });
+  
+  // Close menu when clicking nav links
+  const navLinks = mainNav.querySelectorAll('a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      mainNav.classList.remove('active');
+    });
+  });
+}
 
 (() => {
   // ----------------------------

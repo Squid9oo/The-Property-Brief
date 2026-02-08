@@ -19,26 +19,33 @@
 
 <body>
   <header class="topbar">
-    <div class="topbarLeft">
-<div class="brand">
-  <img src="assets/Logo TPB White.png" alt="The Property Brief" class="logo" />
-</div>
-
-      <nav class="nav" aria-label="Main navigation">
-        <a href="index.html#home">Home</a>
-        <a href="index.html#latest">News</a>
-        <a href="index.html#strategies">Strategies</a>
-        <a href="index.html#about">About</a>
-        <a href="index.html#search">Search</a>
-        <a href="projects.html" class="active" aria-current="page">Project Listing</a>
-      </nav>
+  <div class="topbarLeft">
+    <div class="brand">
+      <img src="assets/Logo TPB White.png" alt="The Property Brief" class="logo" />
     </div>
 
-    <div class="shareRow">
-      <button class="headerBtn" id="openAdModalBtn" type="button">Post Free Ad</button>
-      <button class="shareIconBtn" id="sharePageBtn" type="button" aria-label="Share this page">↗</button>
-    </div>
-  </header>
+    <!-- Hamburger button (mobile only) -->
+    <button class="hamburger" id="hamburgerProjects" type="button" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav class="nav" id="mainNavProjects" aria-label="Main navigation">
+      <a href="index.html#home">Home</a>
+      <a href="index.html#latest">News</a>
+      <a href="index.html#strategies">Strategies</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#search">Search</a>
+      <a href="projects.html" class="active" aria-current="page">Listings</a>
+    </nav>
+  </div>
+
+  <div class="shareRow">
+    <button class="headerBtn" id="openAdModalBtn" type="button">Post Free Ad</button>
+    <button class="shareIconBtn" id="sharePageBtn" type="button" aria-label="Share this page">↗</button>
+  </div>
+</header>
 
   <main>
     <!-- HERO (Admin slider) -->

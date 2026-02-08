@@ -60,36 +60,43 @@
 <body>
   <!-- Sticky header with nav + subscribe form -->
   <header class="topbar">
-<div class="brand">
-  <img src="assets/Logo TPB White.png" alt="The Property Brief" class="logo" />
-</div>
-    
-    <nav class="nav">
-      <a href="#home">Home</a>
-      <a href="#latest">News</a>
-      <a href="#strategies">Strategies</a>
-      <a href="#about">About</a>
-      <a href="#search">Search</a>
-    </nav>
-    
-  <form class="headerSub" name="subscribe" method="POST" data-netlify="true" action="/thanks.html" netlify-honeypot="bot-field">
-  <input type="hidden" name="form-name" value="subscribe" />
-  <p class="hp">
-  <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
-  </p>
-  <input class="headerInput" type="email" name="email" placeholder="Your email" required />
-  <button class="headerBtn" type="submit">Subscribe</button>
-  <a class="headerBtn" href="https://buymeacoffee.com/thepropertybrief" target="_blank" rel="noopener">  
-  Coffee Sponsor RM5</a>
-  <div class="shareRow" aria-label="Share The Property Brief">
-  <button class="shareIconBtn" type="button" data-share="site" title="Share this site" aria-label="Share this site">
-    <span aria-hidden="true">↗</span>
-  </button>
+  <div class="brand">
+    <img src="assets/Logo TPB White.png" alt="The Property Brief" class="logo" />
   </div>
-
+  
+  <!-- Hamburger button (mobile only) -->
+  <button class="hamburger" id="hamburger" type="button" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  
+  <nav class="nav" id="mainNav">
+    <a href="#home">Home</a>
+    <a href="#latest">News</a>
+    <a href="#strategies">Strategies</a>
+    <a href="#about">About</a>
+    <a href="#search">Search</a>
+    <a href="projects.html">Listings</a>
+  </nav>
+  
+  <form class="headerSub" name="subscribe" method="POST" data-netlify="true" action="/thanks.html" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="subscribe" />
+    <p class="hp">
+      <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+    </p>
+    <input class="headerInput" type="email" name="email" placeholder="Your email" required />
+    <button class="headerBtn" type="submit">Subscribe</button>
+    <a class="headerBtn" href="https://buymeacoffee.com/thepropertybrief" target="_blank" rel="noopener">  
+      Coffee Sponsor RM5
+    </a>
+    <div class="shareRow" aria-label="Share The Property Brief">
+      <button class="shareIconBtn" type="button" data-share="site" title="Share this site" aria-label="Share this site">
+        <span aria-hidden="true">↗</span>
+      </button>
+    </div>
   </form>
-
-  </header>
+</header>
 
   <!-- Main content area -->
   <main class="container" id="home">
