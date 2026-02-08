@@ -480,3 +480,14 @@
     width: 100%;
   }
 }
+/* ---------- Mobile fixes for projects page ---------- */
+@media (max-width: 820px) {
+  .hero-section {
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+  
+  .listings-section {
+    padding-top: 20px;
+  }
+}
