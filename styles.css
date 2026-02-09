@@ -23,7 +23,7 @@
 
 html{ 
   scroll-behavior: smooth;
-  scroll-padding-top: 70px; /* Offset for sticky header */
+  scroll-padding-top: 140px; /* Offset for sticky header on mobile (header + subscribe form) */
 }
 
 body{
