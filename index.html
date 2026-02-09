@@ -194,11 +194,18 @@
     <small>© <span id="year"></span> THE PROPERTY BRIEF</small>
   </footer>
 
+  <!-- Scripts: Load in order -->
   <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  
+  <!-- PDF.js module import -->
   <script type="module">
   import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs";
   window.pdfjsLib = pdfjsLib;
   </script>
+  
+  <!-- Load CONFIG first, then shared modules, then main app -->
+  <script src="CONFIG.js"></script>
+  <script src="menu.js"></script>
   <script defer src="app.js"></script>
 
   <script>
@@ -217,7 +224,7 @@
 <form name="advertise" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
   <input type="hidden" name="form-name" value="advertise" />
   <p class="hp">
-    <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+    <label>Don't fill this out if you're human: <input name="bot-field" /></label>
   </p>
 
   <input type="text" name="name" />
@@ -232,4 +239,3 @@
 
 </body>
 </html>
-<!-- Test 123 -->
