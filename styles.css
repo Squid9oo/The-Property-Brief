@@ -1078,7 +1078,7 @@ mark.hl{
     justify-content: space-between !important;
     gap: 12px !important;
     padding: 10px 18px !important;
-    min-height: 70px !important;
+    min-height: auto !important;
     position: sticky !important;
     top: 0 !important;
     z-index: 100 !important;
@@ -1109,6 +1109,7 @@ mark.hl{
     order: 4;
     width: 100%;
     margin-top: 8px;
+    flex-wrap: wrap;
   }
   
   .headerInput {
@@ -1117,20 +1118,19 @@ mark.hl{
   }
   
   /* CRITICAL: Push content down below sticky header */
-  body {
-    padding-top: 0 !important;
-  }
-  
-  main {
-    padding-top: 85px !important; /* Creates space below header */
-  }
-  
   .container {
+    padding-top: 20px !important;
     margin-top: 0 !important;
   }
   
   .hero {
     padding-top: 10px !important;
+  }
+  
+  /* Fix hero slider on projects.html */
+  .hero-section {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
   }
 }
 
@@ -1141,11 +1141,10 @@ mark.hl{
   }
   
   .logo {
-    height: 35px;
+    height: 35px !important;
   }
   
   .topbar {
-    padding: 8px 12px;
-    min-height: 55px;
+    padding: 8px 12px !important;
   }
 }
