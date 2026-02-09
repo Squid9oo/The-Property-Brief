@@ -989,7 +989,7 @@ mark.hl{
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* ---------- RESPONSIVE (MOBILE) - FINAL FIX ---------- */
+/* ---------- RESPONSIVE (MOBILE) - FIXED DROPDOWN ---------- */
 @media (max-width: 820px) {
   /* --- 1. Header Layout --- */
   .topbar {
@@ -1008,7 +1008,7 @@ mark.hl{
     order: 1;
     flex: 0 0 auto;
     margin: 0;
-    z-index: 200; /* Highest priority to be clickable */
+    z-index: 1001 !important; /* Clickable above everything */
     position: relative;
   }
   
@@ -1018,7 +1018,7 @@ mark.hl{
     flex: 0 1 auto;
     max-width: 160px;
     margin: 0;
-    z-index: 200; /* Keep logo above menu too */
+    z-index: 1001;
     position: relative;
   }
   
@@ -1029,69 +1029,71 @@ mark.hl{
     display: inline-grid !important;
     order: 3;
     margin-left: auto;
-    z-index: 200;
+    z-index: 1001;
   }
 
   /* --- 2. The "Floating" Dropdown Menu --- */
   .nav {
     order: 5;
-    position: absolute; /* Floats relative to the header */
-    top: 100%; /* Sits exactly below the header */
-    left: 10px;
-    right: 10px; /* Margins make it look like a floating card */
-    bottom: auto; /* Let height grow naturally */
-    height: auto; /* Only as tall as the links */
+    position: absolute !important; /* Floats */
+    top: 100% !important; /* Below header */
+    left: 10px !important;
+    right: 10px !important;
+    bottom: auto !important;
+    height: auto !important;
+    width: auto !important;
     
-    background: #121214; /* Card color */
-    border: 1px solid rgba(255,255,255,0.15); /* Subtle border */
-    border-radius: 12px; /* Rounded corners */
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5); /* Deep shadow for "floating" effect */
+    background: #121214 !important; /* Dark card */
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6) !important; /* Strong shadow */
     
-    padding: 10px 0; /* Vertical spacing inside the box */
-    margin-top: 10px; /* Slight gap from the header */
+    padding: 10px 0 !important;
+    margin-top: 10px !important;
     
-    display: flex;
+    display: flex !important;
     flex-direction: column !important;
     align-items: stretch !important;
     gap: 0 !important;
     
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px); /* Slide down effect */
-    pointer-events: none;
-    transition: all 0.2s ease-in-out;
-    z-index: 999; /* Float above EVERYTHING */
+    /* HIDDEN BY DEFAULT */
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-10px) !important;
+    pointer-events: none !important;
+    
+    transition: all 0.3s ease !important;
+    z-index: 1000 !important; /* High but under hamburger */
   }
   
+  /* SHOW WHEN ACTIVE */
   .nav.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    pointer-events: auto;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
   }
   
-  /* Link Styling - Clean, No Lines */
+  /* Link Styling */
   .nav a {
     display: block !important;
     width: 100% !important;
     margin: 0 !important;
-    border-radius: 8px !important; /* Slight curve on hover */
-    border: none !important; /* NO DIVIDERS */
+    border-radius: 8px !important;
+    border: none !important;
     
-    text-align: center; /* Centered text looks best in a card */
-    padding: 12px 20px; /* Spacing */
+    text-align: center !important;
+    padding: 12px 20px !important;
     font-size: 15px !important;
-    font-weight: 500;
+    font-weight: 500 !important;
     color: #e4e4e7 !important;
     background: transparent !important;
   }
 
-  /* No special top border for first item */
   .nav a:first-child {
     border-top: none !important;
   }
 
-  /* Simple Hover Effect */
   .nav a:hover {
     background: rgba(255,255,255,0.05) !important;
     color: var(--yellow) !important;
@@ -1140,5 +1142,5 @@ mark.hl{
 @media (max-height: 500px) and (orientation: landscape){
   .topbar{ padding: 8px 12px !important; }
   .headerBtn{ height: 36px; padding: 8px 12px; font-size: 13px; }
-  .nav { overflow-y: auto; } /* Scrollable if menu too tall */
+  .nav { overflow-y: auto; max-height: 80vh !important; }
 }
