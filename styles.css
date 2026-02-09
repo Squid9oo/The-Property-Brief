@@ -1031,6 +1031,7 @@ mark.hl{
   }
   
   /* 4. Navigation (Clean Vertical List) */
+  /* 4. Navigation (Vertical List View) */
   .nav {
     order: 5;
     position: fixed;
@@ -1038,17 +1039,16 @@ mark.hl{
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(11, 11, 12, 0.98); /* Dark background */
-    backdrop-filter: blur(15px); /* Modern blur effect */
+    background: rgba(11, 11, 12, 0.98);
+    backdrop-filter: blur(15px);
     
     display: flex;
-    flex-direction: column !important; /* FORCE Vertical stack */
-    align-items: center !important;   /* Center horizontally */
-    justify-content: center !important; /* Center vertically */
-    gap: 30px !important; /* Space between items */
-    padding: 20px;
+    flex-direction: column !important; /* Stack vertically */
+    align-items: stretch !important;   /* Stretch full width */
+    justify-content: flex-start !important; /* Start from top */
+    padding: 80px 20px 20px; /* Top padding clears the header */
+    gap: 0 !important; /* Remove gap, use borders instead */
     
-    /* Animation hidden state */
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -1063,18 +1063,24 @@ mark.hl{
   }
   
   .nav a {
-    width: auto !important; /* Don't stretch full width */
-    padding: 10px 20px;
-    font-size: 22px !important; /* Bigger, readable text */
-    font-weight: 600;
-    color: #f3f4f6;
-    border-bottom: none !important; /* Remove those ugly lines */
-    text-align: center;
+    display: block; /* Make it a full row */
+    width: 100% !important;
+    padding: 16px 0; /* Vertical spacing */
+    font-size: 16px !important; /* Smaller, cleaner font */
+    font-weight: 500;
+    color: #a1a1aa; /* Softer text color */
+    text-align: center; /* Center the text */
+    border-bottom: 1px solid rgba(255,255,255,0.08); /* The "Line" you wanted */
+    text-decoration: none;
+  }
+  
+  .nav a:first-child {
+    border-top: 1px solid rgba(255,255,255,0.08); /* Top line for first item */
   }
   
   .nav a:hover {
-    color: var(--yellow); /* Highlight on touch */
-    background: transparent;
+    color: var(--text);
+    background: rgba(255,255,255,0.03);
   }
 
   /* 5. Subscription Form (Bottom Row) */
