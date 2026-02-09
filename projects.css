@@ -480,12 +480,11 @@
     width: 100%;
   }
 }
+
 /* ---------- Mobile fixes for projects page ---------- */
 @media (max-width: 820px) {
-  /* FORCE hide the nav menu on projects page */
-  .nav {
-    display: none !important;
-  }
+  /* ENABLE hamburger menu - remove the display:none */
+  /* The menu is hidden by default via styles.css, and shows when .active class is added by menu.js */
   
   /* Remove all spacing gaps */
   .hero-section {
