@@ -1,90 +1,56 @@
-/**
- * THE PROPERTY BRIEF - Configuration Constants
- * All magic numbers and configuration in one place
- * Last updated: 2026-02-09
- */
+/* ========================================
+   THE PROPERTY BRIEF — Configuration
+   All magic numbers and constants in one place
+======================================== */
 
-const CONFIG = {
-  // Search Settings
-  SEARCH: {
-    MIN_LENGTH: 3,
-    MAX_RESULTS: 25,
-    DEFAULT_DATE_RANGE_DAYS: 30,
-    EXCERPT_LENGTH: 180,
-    SNIPPET_LENGTH: 120,
-    SNIPPET_CONTEXT_BEFORE: 40,
-    SNIPPET_CONTEXT_AFTER: 60,
-  },
-
-  // Toast Notifications
-  TOAST: {
-    DURATION_MS: 1200,
-    FADE_OUT_MS: 250,
-  },
-
-  // Sponsored Ads Rotation
-  SPONSORED: {
-    ROTATION_INTERVAL_MS: 5000,
-  },
-
-  // Posts Loading
-  POSTS: {
-    INITIAL_LOAD: 4,
-    LOAD_MORE_INCREMENT: 4,
-  },
-
+export const CONFIG = {
+  // Search
+  MIN_SEARCH_LENGTH: 3,
+  MAX_SEARCH_RESULTS: 25,
+  SEARCH_SNIPPET_LENGTH: 120,
+  DEFAULT_DATE_RANGE_DAYS: 30,
+  
+  // UI Timings
+  TOAST_DURATION: 1200,
+  TOAST_FADE_OUT: 250,
+  SPONSORED_ROTATION_INTERVAL: 5000,
+  SLIDER_ROTATION_INTERVAL: 5000,
+  ADVERTISE_MODAL_COUNTDOWN: 10,
+  
+  // Rendering
+  INITIAL_POSTS_PER_SECTION: 4,
+  LOAD_MORE_INCREMENT: 4,
+  EXCERPT_MAX_LENGTH: 180,
+  SNIPPET_CONTEXT_BEFORE: 40,
+  SNIPPET_CONTEXT_AFTER: 60,
+  
   // PDF Viewer
-  PDF: {
-    WORKER_URL: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs',
-    MIN_CANVAS_WIDTH: 320,
-    DEFAULT_CANVAS_WIDTH: 600,
-    SWIPE_THRESHOLD: 40,
-  },
-
-  // Modal
-  MODAL: {
-    MAX_WIDTH: '920px',
-    MAX_HEIGHT: '85vh',
-  },
-
-  // Advertise Modal Countdown
-  ADVERTISE: {
-    COUNTDOWN_SECONDS: 10,
-    COUNTDOWN_INTERVAL_MS: 1000,
-  },
-
-  // Slider (projects page)
-  SLIDER: {
-    AUTO_SLIDE_INTERVAL_MS: 5000,
-  },
-
-  // API Endpoints
-  API: {
-    POSTS_JSON: 'posts.json',
-    PROJECTS_JSON: 'data/projects.json',
-    PROJECTS_HERO_JSON: 'content/settings/projects-hero.json',
-    STATES_JSON: '/content/settings/locations/states.json',
-    DISTRICTS_JSON: '/content/settings/locations/districts.json',
-    AREAS_BASE_PATH: '/content/settings/locations/areas/',
-  },
-
-  // Cache Settings
-  CACHE: {
-    NO_STORE: { cache: 'no-store' },
-  },
-
-  // Date Formatting
-  DATE_FORMAT: {
-    locale: 'en-US',
-    options: {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    },
-  },
+  PDF_WORKER_URL: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs',
+  PDF_MIN_CANVAS_WIDTH: 320,
+  PDF_DEFAULT_WIDTH: 600,
+  PDF_SWIPE_THRESHOLD: 40,
+  
+  // Breakpoints (sync with CSS)
+  BREAKPOINT_MOBILE: 600,
+  BREAKPOINT_TABLET: 820,
+  BREAKPOINT_DESKTOP: 1024,
+  
+  // Defaults
+  DEFAULT_TAG: 'Update',
+  DEFAULT_SECTION: 'all',
+  
+  // External URLs
+  YOUTUBE_THUMBNAIL_BASE: 'https://img.youtube.com/vi/',
+  YOUTUBE_EMBED_BASE: 'https://www.youtube.com/embed/',
+  
+  // Paths
+  POSTS_JSON_PATH: 'posts.json',
+  PROJECTS_JSON_PATH: 'data/projects.json',
+  HERO_SLIDER_JSON_PATH: 'content/settings/projects-hero.json',
+  STATES_JSON_PATH: '/content/settings/locations/states.json',
+  DISTRICTS_JSON_PATH: '/content/settings/locations/districts.json',
+  AREAS_JSON_BASE: '/content/settings/locations/areas/',
 };
 
-// Export for use in other files
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = CONFIG;
-}
+// Freeze to prevent accidental mutation
+Object.freeze(CONFIG);
