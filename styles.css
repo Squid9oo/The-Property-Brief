@@ -1032,59 +1032,66 @@ mark.hl{
     z-index: 200;
   }
 
-  /* --- 2. The Vertical Menu (The Fix) --- */
+  /* --- 2. The "Floating" Dropdown Menu --- */
   .nav {
     order: 5;
-    position: fixed; /* Lock to screen */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 100vh; /* Full height */
+    position: absolute; /* Floats relative to the header */
+    top: 100%; /* Sits exactly below the header */
+    left: 10px;
+    right: 10px; /* Margins make it look like a floating card */
+    bottom: auto; /* Let height grow naturally */
+    height: auto; /* Only as tall as the links */
     
-    background: #0b0b0c; /* Solid dark background */
-    padding-top: 80px; /* Space for the header */
+    background: #121214; /* Card color */
+    border: 1px solid rgba(255,255,255,0.15); /* Subtle border */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5); /* Deep shadow for "floating" effect */
+    
+    padding: 10px 0; /* Vertical spacing inside the box */
+    margin-top: 10px; /* Slight gap from the header */
     
     display: flex;
-    flex-direction: column !important; /* STRICT Vertical Stack */
-    align-items: stretch !important;   /* Full width items */
-    justify-content: flex-start !important; /* Start from top */
-    gap: 0 !important; /* No gaps, we use borders */
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
     
     opacity: 0;
     visibility: hidden;
+    transform: translateY(-10px); /* Slide down effect */
     pointer-events: none;
-    transition: opacity 0.25s ease;
-    z-index: 100; /* Behind the logo/hamburger */
+    transition: all 0.2s ease-in-out;
+    z-index: 999; /* Float above EVERYTHING */
   }
   
   .nav.active {
     opacity: 1;
     visibility: visible;
+    transform: translateY(0);
     pointer-events: auto;
   }
   
-  /* Link Styling - Stripping the "Pill" look */
+  /* Link Styling - Clean, No Lines */
   .nav a {
-    display: block !important; /* Force block */
+    display: block !important;
     width: 100% !important;
     margin: 0 !important;
-    border-radius: 0 !important; /* KILL the pill shape */
-    border: none !important;
-    border-bottom: 1px solid rgba(255,255,255,0.1) !important; /* The divider line */
+    border-radius: 8px !important; /* Slight curve on hover */
+    border: none !important; /* NO DIVIDERS */
     
-    text-align: left; /* Left align text */
-    padding: 15px 24px; /* Comfortable touch target */
-    font-size: 15px !important; /* Smaller font as requested */
+    text-align: center; /* Centered text looks best in a card */
+    padding: 12px 20px; /* Spacing */
+    font-size: 15px !important;
+    font-weight: 500;
     color: #e4e4e7 !important;
     background: transparent !important;
   }
 
-  /* Top border for the very first item */
+  /* No special top border for first item */
   .nav a:first-child {
-    border-top: 1px solid rgba(255,255,255,0.1) !important;
+    border-top: none !important;
   }
 
+  /* Simple Hover Effect */
   .nav a:hover {
     background: rgba(255,255,255,0.05) !important;
     color: var(--yellow) !important;
