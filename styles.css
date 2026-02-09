@@ -167,14 +167,10 @@ h1,h2,h3{
   flex-wrap: nowrap;
 }
 
-/* Position share button at top right */
-.shareRow {
-  position: absolute !important;
-  top: 12px;
-  right: 18px;
-  margin: 0 !important;
-  display: inline-flex !important;
-  z-index: 10;
+.shareRow{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .shareIconBtn{
@@ -1013,7 +1009,6 @@ mark.hl{
     flex: 0 1 auto;
     max-width: 200px;
     margin-left: 12px;
-    margin-right: 0;     /* ADD this line */
   }
   
   .logo {
