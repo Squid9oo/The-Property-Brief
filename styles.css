@@ -988,7 +988,6 @@ mark.hl{
 }
 
 /* ---------- RESPONSIVE (MOBILE) ---------- */
-/* ---------- RESPONSIVE (MOBILE) ---------- */
 @media (max-width: 820px) {
   /* Compact header with subscription form below */
   .topbar {
@@ -1018,7 +1017,7 @@ mark.hl{
   .nav {
     order: 3;
     position: fixed;
-    top: 62px;
+    top: 64px;
     left: 0;
     right: 0;
     background: rgba(11, 11, 12, 0.98);
@@ -1030,12 +1029,14 @@ mark.hl{
     gap: 0;
     max-height: 0;
     overflow: hidden;
+    visibility: hidden;
     transition: max-height 0.3s ease;
     flex-wrap: nowrap;
   }
   
   .nav.active {
     max-height: 400px;
+    visibility: visible;
   }
   
   .nav a {
