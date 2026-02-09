@@ -999,6 +999,7 @@ mark.hl{
     padding: 12px 18px !important;
     flex-wrap: wrap !important;
     align-items: center !important;
+    justify-content: flex-start !important;
 }
   
   /* ORDER: Hamburger (1), Logo (2), Nav (3), Subscription (4) */
@@ -1006,11 +1007,13 @@ mark.hl{
     display: flex;
     order: 1;
     flex: 0 0 auto;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
   
   .brand {
     order: 2;
-    flex: 0 1 auto;
+    flex: 0 0 auto;
     max-width: 200px;
     margin-left: 12px;
     margin-right: 0;     /* ADD this line */
@@ -1022,6 +1025,7 @@ mark.hl{
   
   .nav {
     order: 3;
+    width: 100%;
     position: fixed;
     top: 64px;
     left: 0;
