@@ -1005,8 +1005,8 @@ mark.hl{
   
   .brand {
     order: 2;
-    flex: 1 1 auto;
-    max-width: 180px;
+    flex: 0 1 auto;
+    max-width: 200px;
     margin-left: 12px;
   }
   
@@ -1049,15 +1049,26 @@ mark.hl{
     border-bottom: none;
   }
   
+  /* Move share button to top right */
+  .shareRow {
+  order: 3;
+  margin-left: auto;
+}
+
   /* Show subscription form on separate row */
   .headerSub {
-    order: 4;
-    display: flex !important;
-    width: 100%;
-    margin-top: 12px;
-    gap: 8px;
-    flex-wrap: wrap;
+  order: 4;
+  display: flex !important;
+  width: 100%;
+  margin-top: 12px;
+  gap: 8px;
+  flex-wrap: wrap;
   }
+
+  /* Hide duplicate share button in subscription row */
+  .headerSub .shareRow {
+  display: none !important;
+}
   
   .headerInput {
     flex: 1 1 100%;
