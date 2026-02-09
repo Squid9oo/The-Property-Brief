@@ -989,71 +989,73 @@ mark.hl{
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* ---------- RESPONSIVE (MOBILE) ---------- */
+/* ---------- RESPONSIVE (MOBILE) - FINAL FIX ---------- */
 @media (max-width: 820px) {
-  /* Compact header layout */
+  /* --- 1. Header Layout --- */
   .topbar {
     position: relative !important;
     padding: 12px 18px !important;
-    flex-wrap: wrap !important; /* Allow wrapping */
+    display: flex !important;
+    flex-wrap: wrap !important;
     align-items: center !important;
     justify-content: flex-start !important; 
     gap: 16px; 
   }
-  
-  /* 1. Hamburger (Left) */
+
+  /* Hamburger (Left) */
   .hamburger {
     display: flex;
     order: 1;
     flex: 0 0 auto;
     margin: 0;
-    z-index: 101;
+    z-index: 200; /* Highest priority to be clickable */
     position: relative;
   }
   
-  /* 2. Logo (Next to Hamburger) */
+  /* Logo (Next to Hamburger) */
   .brand {
     order: 2;
     flex: 0 1 auto;
     max-width: 160px;
     margin: 0;
+    z-index: 200; /* Keep logo above menu too */
+    position: relative;
   }
   
-  .logo {
-    height: 38px !important;
+  .logo { height: 38px !important; }
+
+  /* Share Button (Far Right) */
+  .mobileShare {
+    display: inline-grid !important;
+    order: 3;
+    margin-left: auto;
+    z-index: 200;
   }
 
-  /* 3. Share Button (Far Right) */
-  .mobileShare {
-    display: inline-grid !important; /* Make visible on mobile */
-    order: 3;
-    margin-left: auto; /* Pushes it to the far right */
-  }
-  
-  /* 4. Navigation (Clean Vertical List) */
-  /* 4. Navigation (Vertical List View) */
+  /* --- 2. The Vertical Menu (The Fix) --- */
   .nav {
     order: 5;
-    position: fixed;
+    position: fixed; /* Lock to screen */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(11, 11, 12, 0.98);
-    backdrop-filter: blur(15px);
+    height: 100vh; /* Full height */
+    
+    background: #0b0b0c; /* Solid dark background */
+    padding-top: 80px; /* Space for the header */
     
     display: flex;
-    flex-direction: column !important; /* Stack vertically */
-    align-items: stretch !important;   /* Stretch full width */
+    flex-direction: column !important; /* STRICT Vertical Stack */
+    align-items: stretch !important;   /* Full width items */
     justify-content: flex-start !important; /* Start from top */
-    padding: 80px 20px 20px; /* Top padding clears the header */
-    gap: 0 !important; /* Remove gap, use borders instead */
+    gap: 0 !important; /* No gaps, we use borders */
     
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: all 0.3s ease-in-out;
-    z-index: 100;
+    transition: opacity 0.25s ease;
+    z-index: 100; /* Behind the logo/hamburger */
   }
   
   .nav.active {
@@ -1062,63 +1064,55 @@ mark.hl{
     pointer-events: auto;
   }
   
+  /* Link Styling - Stripping the "Pill" look */
   .nav a {
-    display: block; /* Make it a full row */
+    display: block !important; /* Force block */
     width: 100% !important;
-    padding: 16px 0; /* Vertical spacing */
-    font-size: 16px !important; /* Smaller, cleaner font */
-    font-weight: 500;
-    color: #a1a1aa; /* Softer text color */
-    text-align: center; /* Center the text */
-    border-bottom: 1px solid rgba(255,255,255,0.08); /* The "Line" you wanted */
-    text-decoration: none;
-  }
-  
-  .nav a:first-child {
-    border-top: 1px solid rgba(255,255,255,0.08); /* Top line for first item */
-  }
-  
-  .nav a:hover {
-    color: var(--text);
-    background: rgba(255,255,255,0.03);
+    margin: 0 !important;
+    border-radius: 0 !important; /* KILL the pill shape */
+    border: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.1) !important; /* The divider line */
+    
+    text-align: left; /* Left align text */
+    padding: 15px 24px; /* Comfortable touch target */
+    font-size: 15px !important; /* Smaller font as requested */
+    color: #e4e4e7 !important;
+    background: transparent !important;
   }
 
-  /* 5. Subscription Form (Bottom Row) */
+  /* Top border for the very first item */
+  .nav a:first-child {
+    border-top: 1px solid rgba(255,255,255,0.1) !important;
+  }
+
+  .nav a:hover {
+    background: rgba(255,255,255,0.05) !important;
+    color: var(--yellow) !important;
+  }
+
+  /* --- 3. Subscription Form (Below Header) --- */
   .headerSub {
     position: relative !important;
-    top: auto;
-    left: auto;
-    right: auto;
     display: flex !important;
-    width: 100%; /* Take full width of new row */
-    max-width: 100%;
+    width: 100%;
     margin: 12px 0 0 0 !important;
     padding: 14px;
     gap: 10px;
-    flex-wrap: wrap;
-    background: rgba(11, 11, 12, 0.5); 
-    border: 1px solid rgba(249, 209, 0, 0.20);
+    background: rgba(255,255,255,0.03); 
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 14px;
-    order: 4; /* Force to next line */
+    order: 4;
   }
   
-  /* Hide the DUPLICATE share button inside the form */
-  .headerSub .shareRow {
-    display: none !important;
-  }
+  .headerSub .shareRow { display: none !important; }
   
   .headerInput {
     flex: 1 1 100%;
     width: 100% !important;
-    max-width: 100% !important;
-    height: 40px;
   }
   
   .headerBtn {
     flex: 1 1 calc(50% - 6px); 
-    height: 40px;
-    padding: 8px 12px;
-    font-size: 13px;
     margin: 0;
   }
   
@@ -1139,4 +1133,5 @@ mark.hl{
 @media (max-height: 500px) and (orientation: landscape){
   .topbar{ padding: 8px 12px !important; }
   .headerBtn{ height: 36px; padding: 8px 12px; font-size: 13px; }
+  .nav { overflow-y: auto; } /* Scrollable if menu too tall */
 }
