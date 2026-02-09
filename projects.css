@@ -490,4 +490,23 @@
   .listings-section {
     padding-top: 20px;
   }
+  
+  /* Hide subscription form on projects page */
+  .headerSub {
+    display: none !important;
+  }
+  
+  /* Show Post Free Ad button */
+  .headerActions {
+    display: flex !important;
+    order: 4;
+    margin-left: auto;
+    gap: 8px;
+  }
+  
+  .headerBtn {
+    height: 40px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
 }
