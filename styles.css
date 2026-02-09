@@ -993,7 +993,9 @@ mark.hl{
 @media (max-width: 820px) {
   /* --- 1. Header Layout --- */
   .topbar {
-    position: relative !important;
+    position: sticky !important; /* CHANGED from relative to sticky */
+    top: 0 !important;
+    z-index: 100 !important; /* Higher z-index to stay above content */
     padding: 12px 18px !important;
     display: flex !important;
     flex-wrap: wrap !important;
@@ -1038,8 +1040,8 @@ mark.hl{
     position: absolute !important;
     top: 100% !important;
     left: 10px !important;
-    right: auto !important; /* Changed from right: 10px */
-    width: min(280px, 45vw) !important; /* Half width, max 280px */
+    right: auto !important;
+    width: min(280px, 45vw) !important;
     height: auto !important;
     
     background: #121214 !important;
@@ -1058,7 +1060,7 @@ mark.hl{
     /* HIDDEN BY DEFAULT */
     opacity: 0 !important;
     visibility: hidden !important;
-    transform: translateX(-10px) !important; /* Slide from left */
+    transform: translateX(-10px) !important;
     pointer-events: none !important;
     
     transition: all 0.25s ease !important;
@@ -1080,14 +1082,14 @@ mark.hl{
     margin: 0 !important;
     padding: 14px 20px !important;
     
-    text-align: left !important; /* Left-aligned text */
+    text-align: left !important;
     font-size: 15px !important;
     font-weight: 500 !important;
     color: #e4e4e7 !important;
     background: transparent !important;
     
     border: none !important;
-    border-bottom: 1px solid rgba(255,255,255,0.08) !important; /* Divider line */
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
     border-radius: 0 !important;
     
     transition: all 0.2s ease !important;
@@ -1102,7 +1104,7 @@ mark.hl{
   .nav a:hover {
     background: rgba(249, 209, 0, 0.12) !important;
     color: var(--yellow) !important;
-    padding-left: 24px !important; /* Indent on hover */
+    padding-left: 24px !important;
   }
 
   /* --- 3. Subscription Form (Below Header) --- */
