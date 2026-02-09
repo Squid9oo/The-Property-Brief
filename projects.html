@@ -447,7 +447,9 @@
     </div>
   </div>
 
-  <!-- Scripts: load projects.js first so it still runs even if auth breaks -->
+  <!-- Scripts: Load in correct order -->
+  <script src="CONFIG.js"></script>
+  <script src="menu.js"></script>
   <script defer src="projects.js"></script>
   <script defer src="https://cdn.auth0.com/js/auth0-spa-js/2.5/auth0-spa-js.production.js"></script>
   <script defer src="auth.js"></script>
@@ -573,5 +575,3 @@
 </script>
 </body>
 </html>
-
-
