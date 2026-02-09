@@ -113,7 +113,7 @@ h1,h2,h3{
   gap: 12px;
 
   padding: 14px 18px;
-  background: rgba(11, 11, 12, 0.80);
+  background: rgba(11, 11, 12, 0.95);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(12px);
 }
@@ -166,6 +166,18 @@ h1,h2,h3{
   align-items: center;
   flex-wrap: nowrap;
 }
+
+/* Mobile: hide subscription form to keep header thin */
+@media (max-width: 820px) {
+  .headerSub {
+    display: none;
+  }
+  
+  .topbar {
+    flex-wrap: nowrap !important;
+  }
+}
+
 .shareRow{
   display: inline-flex;
   align-items: center;
@@ -942,13 +954,6 @@ mark.hl{
   color: var(--muted);
 }
 
-/* ---------- Responsive (site-wide) ---------- */
-@media (max-width: 820px){
-  .topbar{ flex-wrap: wrap; }
-  .headerSub{ width: 100%; flex-wrap: wrap; }
-  .headerInput{ width: 100%; max-width: 100%; }
-}
-
 @media (max-width: 780px){
   .latestList{ grid-template-columns: 1fr; }
 }
@@ -978,8 +983,6 @@ mark.hl{
     padding: 8px 10px;
     font-size: 13px;
   }
-
-  .headerSub{ flex-wrap: nowrap; }
 
   .headerBtn{
     height: 36px;
@@ -1102,19 +1105,6 @@ mark.hl{
   .nav {
     order: 3;
     width: 100%;
-  }
-  
-  .headerSub,
-  .headerActions {
-    order: 4;
-    width: 100%;
-    margin-top: 8px;
-    flex-wrap: wrap;
-  }
-  
-  .headerInput {
-    width: 100% !important;
-    max-width: 100% !important;
   }
   
   /* CRITICAL: Push content down below sticky header */
