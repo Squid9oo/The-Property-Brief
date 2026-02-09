@@ -995,20 +995,23 @@ mark.hl{
     padding: 12px 18px !important;
     flex-wrap: wrap !important;
     align-items: center !important;
-}
+    justify-content: flex-start !important; /* FIX: Aligns hamburger and logo side-by-side */
+    gap: 16px; /* Space between hamburger and logo */
+  }
   
   /* ORDER: Hamburger (1), Logo (2), Nav (3), Subscription (4) */
   .hamburger {
     display: flex;
     order: 1;
     flex: 0 0 auto;
+    margin: 0;
   }
   
   .brand {
     order: 2;
     flex: 0 1 auto;
     max-width: 200px;
-    margin-left: 12px;
+    margin: 0; /* Remove left margin since we have gap */
   }
   
   .logo {
@@ -1018,60 +1021,67 @@ mark.hl{
   .nav {
     order: 3;
     position: fixed;
-    top: 64px;
+    top: 0; /* Full screen menu starting from top */
     left: 0;
     right: 0;
+    bottom: 0; /* Cover full screen */
     background: rgba(11, 11, 12, 0.98);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--line);
     flex-direction: column;
-    align-items: flex-start;
-    padding: 12px 18px;
-    gap: 0;
-    max-height: 0;
-    overflow: hidden;
+    align-items: center; /* Center links */
+    justify-content: center; /* Center links vertically */
+    padding: 40px 18px;
+    gap: 20px;
+    
+    /* Animation hidden state */
+    opacity: 0;
     visibility: hidden;
-    transition: max-height 0.3s ease;
-    flex-wrap: nowrap;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 100;
   }
   
   .nav.active {
-    max-height: 400px;
+    opacity: 1;
     visibility: visible;
+    pointer-events: auto;
   }
   
   .nav a {
-    width: 100%;
-    padding: 12px 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  
-  .nav a:last-child {
+    width: auto;
+    padding: 10px 20px;
+    font-size: 18px; /* Bigger font for mobile menu */
     border-bottom: none;
   }
 
-  /* Hide subscription form from sticky header, show it in page */
+  /* Make sure Hamburger stays above the menu when open */
+  .hamburger {
+    z-index: 101;
+    position: relative;
+  }
+
+  /* FIX: Subscription box now flows naturally (not absolute) */
   .headerSub {
-  position: absolute !important;
-  top: 100%;
-  left: 0;
-  right: 0;
-  display: flex !important;
-  width: calc(100% - 36px);
-  max-width: 600px;
-  margin: 12px auto 0 !important;
-  padding: 14px;
-  gap: 8px;
-  flex-wrap: wrap;
-  background: rgba(11, 11, 12, 0.95);
-  border: 1px solid rgba(249, 209, 0, 0.20);
-  border-radius: 14px;
-  z-index: 40;
+    position: relative !important; /* Changed from absolute to relative */
+    top: auto;
+    left: auto;
+    right: auto;
+    display: flex !important;
+    width: 100%;
+    max-width: 100%;
+    margin: 12px 0 0 0 !important;
+    padding: 14px;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: rgba(11, 11, 12, 0.5); /* Slight background */
+    border: 1px solid rgba(249, 209, 0, 0.20);
+    border-radius: 14px;
+    order: 4; /* Ensures it sits at the bottom of header */
   }
   
   /* Hide share button inside subscription form */
   .headerSub .shareRow {
-  display: none !important;
+    display: none !important;
   }
   
   .headerInput {
@@ -1082,13 +1092,14 @@ mark.hl{
   }
   
   .headerBtn {
-    flex: 1 1 calc(50% - 4px);
+    flex: 1 1 calc(50% - 6px); /* Better split */
     height: 40px;
     padding: 8px 12px;
     font-size: 13px;
+    margin: 0;
   }
   
-  /* Hide headerActions on index.html (not needed there) */
+  /* Hide headerActions on index.html */
   .headerActions {
     display: none !important;
   }
@@ -1100,11 +1111,6 @@ mark.hl{
   
   .hero {
     padding-top: 10px !important;
-  }
-  
-  /* Fix projects.html */
-  .hero-section {
-    margin-top: 0 !important;
   }
   
   /* Single column cards */
@@ -1128,7 +1134,7 @@ mark.hl{
   }
 }
 
-/* Landscape phones: compact everything */
+/* Landscape phones */
 @media (max-height: 500px) and (orientation: landscape){
   .topbar{ 
     padding: 8px 12px !important;
