@@ -1030,26 +1030,29 @@ mark.hl{
     margin-left: auto; /* Pushes it to the far right */
   }
   
-  /* 4. Navigation (Hidden Menu) */
+  /* 4. Navigation (Clean Vertical List) */
   .nav {
-    order: 5; /* Sit behind everything else */
+    order: 5;
     position: fixed;
-    top: 0; 
+    top: 0;
     left: 0;
     right: 0;
-    bottom: 0; 
-    background: rgba(11, 11, 12, 0.98);
-    backdrop-filter: blur(12px);
-    flex-direction: column;
-    align-items: center; 
-    justify-content: center; 
-    padding: 40px 18px;
-    gap: 20px;
+    bottom: 0;
+    background: rgba(11, 11, 12, 0.98); /* Dark background */
+    backdrop-filter: blur(15px); /* Modern blur effect */
     
+    display: flex;
+    flex-direction: column !important; /* FORCE Vertical stack */
+    align-items: center !important;   /* Center horizontally */
+    justify-content: center !important; /* Center vertically */
+    gap: 30px !important; /* Space between items */
+    padding: 20px;
+    
+    /* Animation hidden state */
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
     z-index: 100;
   }
   
@@ -1060,10 +1063,18 @@ mark.hl{
   }
   
   .nav a {
-    width: auto;
+    width: auto !important; /* Don't stretch full width */
     padding: 10px 20px;
-    font-size: 18px;
-    border-bottom: none;
+    font-size: 22px !important; /* Bigger, readable text */
+    font-weight: 600;
+    color: #f3f4f6;
+    border-bottom: none !important; /* Remove those ugly lines */
+    text-align: center;
+  }
+  
+  .nav a:hover {
+    color: var(--yellow); /* Highlight on touch */
+    background: transparent;
   }
 
   /* 5. Subscription Form (Bottom Row) */
