@@ -989,7 +989,7 @@ mark.hl{
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* ---------- RESPONSIVE (MOBILE) - FIXED DROPDOWN ---------- */
+/* ---------- RESPONSIVE (MOBILE) - HALF-WIDTH MENU WITH DIVIDERS ---------- */
 @media (max-width: 820px) {
   /* --- 1. Header Layout --- */
   .topbar {
@@ -1008,7 +1008,7 @@ mark.hl{
     order: 1;
     flex: 0 0 auto;
     margin: 0;
-    z-index: 1001 !important; /* Clickable above everything */
+    z-index: 1001 !important;
     position: relative;
   }
   
@@ -1032,23 +1032,22 @@ mark.hl{
     z-index: 1001;
   }
 
-  /* --- 2. The "Floating" Dropdown Menu --- */
+  /* --- 2. Half-Width Left-Aligned Dropdown Menu with Dividers --- */
   .nav {
     order: 5;
-    position: absolute !important; /* Floats */
-    top: 100% !important; /* Below header */
+    position: absolute !important;
+    top: 100% !important;
     left: 10px !important;
-    right: 10px !important;
-    bottom: auto !important;
+    right: auto !important; /* Changed from right: 10px */
+    width: min(280px, 45vw) !important; /* Half width, max 280px */
     height: auto !important;
-    width: auto !important;
     
-    background: #121214 !important; /* Dark card */
+    background: #121214 !important;
     border: 1px solid rgba(255,255,255,0.15) !important;
     border-radius: 12px !important;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6) !important; /* Strong shadow */
+    box-shadow: 0 10px 40px rgba(0,0,0,0.7) !important;
     
-    padding: 10px 0 !important;
+    padding: 8px 0 !important;
     margin-top: 10px !important;
     
     display: flex !important;
@@ -1059,44 +1058,51 @@ mark.hl{
     /* HIDDEN BY DEFAULT */
     opacity: 0 !important;
     visibility: hidden !important;
-    transform: translateY(-10px) !important;
+    transform: translateX(-10px) !important; /* Slide from left */
     pointer-events: none !important;
     
-    transition: all 0.3s ease !important;
-    z-index: 1000 !important; /* High but under hamburger */
+    transition: all 0.25s ease !important;
+    z-index: 1000 !important;
   }
   
   /* SHOW WHEN ACTIVE */
   .nav.active {
     opacity: 1 !important;
     visibility: visible !important;
-    transform: translateY(0) !important;
+    transform: translateX(0) !important;
     pointer-events: auto !important;
   }
   
-  /* Link Styling */
+  /* Link Styling with Dividers */
   .nav a {
     display: block !important;
     width: 100% !important;
     margin: 0 !important;
-    border-radius: 8px !important;
-    border: none !important;
+    padding: 14px 20px !important;
     
-    text-align: center !important;
-    padding: 12px 20px !important;
+    text-align: left !important; /* Left-aligned text */
     font-size: 15px !important;
     font-weight: 500 !important;
     color: #e4e4e7 !important;
     background: transparent !important;
+    
+    border: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important; /* Divider line */
+    border-radius: 0 !important;
+    
+    transition: all 0.2s ease !important;
   }
 
-  .nav a:first-child {
-    border-top: none !important;
+  /* Last link: no bottom border */
+  .nav a:last-child {
+    border-bottom: none !important;
   }
 
+  /* Hover Effect */
   .nav a:hover {
-    background: rgba(255,255,255,0.05) !important;
+    background: rgba(249, 209, 0, 0.12) !important;
     color: var(--yellow) !important;
+    padding-left: 24px !important; /* Indent on hover */
   }
 
   /* --- 3. Subscription Form (Below Header) --- */
@@ -1136,6 +1142,11 @@ mark.hl{
   .brand { max-width: 140px; }
   .logo { height: 32px !important; }
   .topbar { padding: 10px 12px !important; }
+  
+  /* Slightly wider menu on very small screens */
+  .nav {
+    width: min(240px, 60vw) !important;
+  }
 }
 
 /* Landscape phones */
