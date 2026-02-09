@@ -1059,14 +1059,28 @@ mark.hl{
     border-bottom: none;
   }
 
-  /* Show subscription form on separate row */
+  /* Hide subscription form from sticky header, show it in page */
   .headerSub {
-  order: 4;
+  position: absolute !important;
+  top: 100%;
+  left: 0;
+  right: 0;
   display: flex !important;
-  width: 100%;
-  margin-top: 12px;
+  width: calc(100% - 36px);
+  max-width: 600px;
+  margin: 12px auto 0 !important;
+  padding: 14px;
   gap: 8px;
   flex-wrap: wrap;
+  background: rgba(11, 11, 12, 0.95);
+  border: 1px solid rgba(249, 209, 0, 0.20);
+  border-radius: 14px;
+  z-index: 40;
+  }
+  
+  /* Hide share button inside subscription form */
+  .headerSub .shareRow {
+  display: none !important;
   }
   
   .headerInput {
