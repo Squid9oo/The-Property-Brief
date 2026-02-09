@@ -991,10 +991,11 @@ mark.hl{
 @media (max-width: 820px) {
   /* Compact header with subscription form below */
   .topbar {
+    position: relative !important;
     padding: 12px 18px !important;
     flex-wrap: wrap !important;
     align-items: center !important;
-  }
+}
   
   /* ORDER: Hamburger (1), Logo (2), Nav (3), Subscription (4) */
   .hamburger {
@@ -1048,12 +1049,6 @@ mark.hl{
   .nav a:last-child {
     border-bottom: none;
   }
-  
-  /* Move share button to top right */
-  .shareRow {
-  order: 3;
-  margin-left: auto;
-}
 
   /* Show subscription form on separate row */
   .headerSub {
@@ -1064,11 +1059,6 @@ mark.hl{
   gap: 8px;
   flex-wrap: wrap;
   }
-
-  /* Hide duplicate share button in subscription row */
-  .headerSub .shareRow {
-  display: none !important;
-}
   
   .headerInput {
     flex: 1 1 100%;
@@ -1082,10 +1072,6 @@ mark.hl{
     height: 40px;
     padding: 8px 12px;
     font-size: 13px;
-  }
-  
-  .shareRow {
-    flex: 0 0 auto;
   }
   
   /* Hide headerActions on index.html (not needed there) */
