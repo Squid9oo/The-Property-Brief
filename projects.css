@@ -1,56 +1,518 @@
 /* ========================================
-   PROJECTS PAGE - Specific Styles
-   - Ensures mobile menu works properly
+   PROJECTS PAGE - MASTER STYLES
 ======================================== */
 
-/* Force hamburger menu to show on mobile/tablet */
+/* --- 1. ADMIN HERO SLIDER (Multi-Device) --- */
+.hero-slider {
+    position: relative;
+    width: 100%;
+    height: 480px;
+    overflow: hidden;
+    background: #000;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* DEFAULT: Desktop Image */
+    background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)), var(--img-d);
+}
+
+/* TABLET: 960px and below */
+@media (max-width: 960px) {
+    .hero-slider { height: 400px; }
+    .hero-slide { background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)), var(--img-t); }
+}
+
+/* MOBILE: 600px and below */
+@media (max-width: 600px) {
+    .hero-slider { height: 340px; }
+    .hero-slide { background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)), var(--img-m); }
+}
+
+.hero-slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* --- 2. FADE-IN TEXT ANIMATION --- */
+.slide-caption h2 {
+    color: #F9D342; /* The Property Brief Yellow */
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    text-shadow: 2px 2px 20px rgba(0,0,0,0.8);
+    text-align: center;
+    padding: 0 20px;
+    
+    /* Animation: Slide Up & Fade In */
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.9s ease-out;
+    transition-delay: 0.5s; /* Wait for image fade to finish */
+}
+
+.hero-slide.active .slide-caption h2 {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- 3. SLIDER NAVIGATION --- */
+.slider-arrow { display: none; }
+
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.3);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 24px;
+    transition: background 0.3s;
+}
+.slider-arrow:hover { background: rgba(0,0,0,0.7); }
+.prev { left: 0; border-radius: 0 8px 8px 0; }
+.next { right: 0; border-radius: 8px 0 0 8px; }
+
+.slider-dots {
+    position: absolute;
+    bottom: 25px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    z-index: 10;
+}
+.dot {
+    width: 12px;
+    height: 12px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.dot.active { background: #F9D342; width: 30px; border-radius: 10px; } /* Stylish active dot */
+
+/* --- 4. FILTER BAR --- */
+.filter-bar {
+    background: #f8f9fa;
+    padding: 15px; /* Shrunk padding slightly to save space */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin: -50px auto 30px auto; /* Centers the bar and overlaps the hero */
+    position: relative;
+    z-index: 20;
+    
+    display: grid;
+    /* This creates 8 equal columns in 1 row */
+    grid-template-columns: repeat(8, 1fr); 
+    gap: 8px; /* Tightened the gap between boxes */
+    width: 95%; /* Makes the bar wide to match the hero */
+    max-width: 1300px; /* Adjust this to match your hero's width */
+    box-sizing: border-box;
+}
+
+/* Make the boxes look sleek and fit the tight row */
+.filter-bar select, 
+.filter-bar input, 
+.filter-bar button {
+    width: 100%;
+    padding: 8px 5px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px; /* Smaller text so it fits comfortably */
+    height: 40px;
+    box-sizing: border-box;
+    white-space: nowrap; /* Prevents text from wrapping inside buttons */
+}
+
+#btn-search {
+    background: #f9d100;
+    color: #0b0b0c;
+    border: 1px solid rgba(249, 209, 0, 0.35);
+    cursor: pointer;
+    font-weight: 800;
+    transition: all 0.2s ease;
+}
+
+#btn-search:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(249,209,0,0.35);
+}
+
+#btn-reset {
+    background: rgba(255,255,255,0.08);
+    color: #f3f4f6;
+    border: 1px solid rgba(255,255,255,0.14);
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+#btn-reset:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.24);
+}
+
+/* TABLET/MOBILE FIX: On small screens, let it wrap so it doesn't break */
+@media (max-width: 1000px) {
+    .filter-bar {
+        grid-template-columns: repeat(4, 1fr); /* 2 rows of 4 on tablets */
+    }
+}
+@media (max-width: 600px) {
+    .filter-bar {
+        grid-template-columns: repeat(2, 1fr); /* 4 rows of 2 on phones */
+    }
+}
+
+/* --- 5. PROPERTY GRID --- */
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 30px 0;
+}
+
+.property-card {
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.property-card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
+
+.property-card img { width: 100%; height: 220px; object-fit: cover; }
+.card-content h3 { margin: 15px; font-size: 1.25rem; color: #222; }
+.price { margin: 0 15px; color: #27ae60; font-weight: 800; font-size: 1.4rem; }
+.location { margin: 12px 15px; font-size: 0.9rem; color: #777; }
+.badge { margin: 0 15px 20px; display: inline-block; background: #f0f0f0; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+
+/* --- 6. MODAL STYLES --- */
+/* Modal overlay is hidden by default */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 10000;
+}
+
+/* Only visible when JS adds .open */
+.modalOverlay.open {
+  display: flex;
+}
+
+/* FORCE HIDE MODAL UNLESS OPEN */
+.modalOverlay {
+    display: none !important; /* This hides it by default */
+}
+
+.modalOverlay.open {
+    display: flex !important; /* This shows it only when clicked */
+}
+/* --- 7. POST FREE AD MODAL (Matches Main Theme) --- */
+.modalCard {
+  width: min(680px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 18px;
+  background: rgba(11,11,12,0.95);
+  backdrop-filter: blur(20px);
+  padding: 0;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  
+  color: #f3f4f6;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+.modalHeader {
+  position: relative;
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  background: linear-gradient(180deg, rgba(249,209,0,0.08), transparent);
+}
+
+.modalHeader h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: #f3f4f6;
+}
+
+.modalClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f3f4f6;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+}
+
+.modalClose:hover {
+  border-color: rgba(249, 209, 0, 0.45);
+  background: rgba(249, 209, 0, 0.12);
+  transform: rotate(90deg);
+}
+
+/* Form Content */
+.modalCard form {
+  padding: 24px;
+}
+
+.modalCard h3 {
+  margin: 0 0 20px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f9d100;
+  letter-spacing: 0.3px;
+}
+
+.modalCard label {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #a1a1aa;
+}
+
+.modalCard input[type="text"],
+.modalCard input[type="number"],
+.modalCard input[type="file"],
+.modalCard select,
+.modalCard textarea {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.35);
+  color: #f3f4f6;
+  outline: none;
+  
+  transition: all 0.2s ease;
+}
+
+.modalCard input::placeholder,
+.modalCard textarea::placeholder {
+  color: rgba(243,244,246,0.45);
+}
+
+.modalCard input:focus,
+.modalCard select:focus,
+.modalCard textarea:focus {
+  border-color: rgba(249, 209, 0, 0.55);
+  box-shadow: 0 0 0 4px rgba(249,209,0,0.12);
+  background: rgba(0,0,0,0.45);
+}
+
+.modalCard textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+/* File input styling */
+.modalCard input[type="file"] {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.modalCard input[type="file"]::file-selector-button {
+  padding: 8px 14px;
+  margin-right: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(249, 209, 0, 0.35);
+  background: rgba(249,209,0,0.15);
+  color: #f9d100;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modalCard input[type="file"]::file-selector-button:hover {
+  background: rgba(249,209,0,0.25);
+}
+
+/* Buttons */
+.modalCard button[type="button"],
+.modalCard button[type="submit"] {
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+/* Next button (yellow) */
+#form-next-btn,
+.modalCard button[type="submit"] {
+  width: 100%;
+  background: #f9d100;
+  color: #0b0b0c;
+  border-color: rgba(249, 209, 0, 0.35);
+}
+
+#form-next-btn:hover,
+.modalCard button[type="submit"]:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(249,209,0,0.35);
+}
+
+/* Form buttons container */
+.form-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+#form-back-btn {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  color: #f3f4f6;
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+#form-back-btn:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.24);
+}
+
+.form-buttons button[type="submit"] {
+  flex: 2;
+}
+
+/* Conditional field groups */
+#fields-apartment,
+#fields-house,
+#fields-commercial,
+#fields-land {
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 12px;
+  border: 1px solid rgba(249,209,0,0.20);
+  background: rgba(249,209,0,0.04);
+}
+
+/* Smooth scrollbar for modal */
+.modalCard::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modalCard::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.25);
+  border-radius: 10px;
+}
+
+.modalCard::-webkit-scrollbar-thumb {
+  background: rgba(249,209,0,0.35);
+  border-radius: 10px;
+}
+
+.modalCard::-webkit-scrollbar-thumb:hover {
+  background: rgba(249,209,0,0.55);
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .modalCard {
+    max-height: 90vh;
+    border-radius: 14px;
+  }
+  
+  .modalCard form {
+    padding: 18px;
+  }
+  
+  .modalHeader {
+    padding: 18px 18px 16px;
+  }
+  
+  .modalHeader h2 {
+    font-size: 20px;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+  }
+  
+  #form-back-btn,
+  .form-buttons button[type="submit"] {
+    width: 100%;
+  }
+}
+/* ---------- Mobile fixes for projects page ---------- */
 @media (max-width: 820px) {
+  /* FORCE hide the nav menu on projects page */
+  .nav {
+    display: none !important;
+  }
   
-  /* Make absolutely sure the nav dropdown shows when active */
-  #mainNavProjects.active,
-  .nav.active {
+  /* Remove all spacing gaps */
+  .hero-section {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  
+  .listings-section {
+    padding-top: 20px;
+  }
+  
+  /* Hide subscription form on projects page */
+  .headerSub {
+    display: none !important;
+  }
+  
+  /* Show Post Free Ad button */
+  .headerActions {
     display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateY(0) !important;
-    pointer-events: auto !important;
-    
-    /* Position */
-    position: absolute !important;
-    top: 100% !important;
-    left: 10px !important;
-    right: 10px !important;
-    
-    /* Styling */
-    background: #121214 !important;
-    border: 2px solid rgba(249, 209, 0, 0.4) !important; /* Yellow border so you can see it */
-    border-radius: 12px !important;
-    box-shadow: 0 10px 50px rgba(0,0,0,0.8) !important;
-    
-    /* Layout */
-    flex-direction: column !important;
-    padding: 10px 0 !important;
-    margin-top: 10px !important;
-    
-    /* Make it VERY visible */
-    z-index: 9999 !important;
-    min-height: 200px !important; /* Force minimum height */
+    order: 4;
+    margin-left: auto;
+    gap: 8px;
   }
   
-  /* Make sure links inside are visible */
-  #mainNavProjects.active a,
-  .nav.active a {
-    display: block !important;
-    padding: 14px 20px !important;
-    color: #f3f4f6 !important;
-    text-align: center !important;
-    font-size: 16px !important;
-    font-weight: 500 !important;
-  }
-  
-  #mainNavProjects.active a:hover,
-  .nav.active a:hover {
-    background: rgba(249, 209, 0, 0.2) !important;
-    color: #f9d100 !important;
+  .headerBtn {
+    height: 40px;
+    padding: 8px 12px;
+    font-size: 13px;
   }
 }
