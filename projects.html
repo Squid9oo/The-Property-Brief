@@ -572,6 +572,24 @@
     customAreaWrapper.style.display = (e.target.value === 'others') ? 'block' : 'none';
   });
 
+// 4. DISABLE HIDDEN FIELDS BEFORE SUBMITTING
+const form = document.querySelector('form[name="project-submit"]');
+
+form.addEventListener('submit', (e) => {
+  // Get all category-specific field containers
+  const sections = ['apartment', 'house', 'commercial', 'land'];
+  
+  sections.forEach(cat => {
+    const container = document.getElementById(`fields-${cat}`);
+    if (container && container.style.display === 'none') {
+      // Disable all inputs in hidden sections
+      container.querySelectorAll('input, select, textarea').forEach(field => {
+        field.disabled = true;
+      });
+    }
+  });
+});
+
 </script>
 </body>
 </html>
