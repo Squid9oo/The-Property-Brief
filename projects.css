@@ -314,6 +314,7 @@
     color: #777; 
 }
 
+/* Category Badge - FIXED with visible text */
 .badge { 
     margin: 12px 0 0;
     display: inline-block; 
@@ -321,7 +322,8 @@
     padding: 5px 12px; 
     border-radius: 20px; 
     font-size: 0.75rem; 
-    font-weight: 600; 
+    font-weight: 600;
+    color: #555; /* Dark text for visibility */
 }
 
 /* --- 6. PROPERTY DETAILS MODAL (COMPACT) --- */
