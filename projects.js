@@ -407,15 +407,15 @@ function renderCards(properties) {
     return;
   }
 
-  container.innerHTML = properties.map(item => `
+    container.innerHTML = properties.map(item => `
     <div class="property-card">
-      <img src="${item.photo1 || 'https://via.placeholder.com/300x200?text=No+Image'}" 
-           alt="${item.adTitle || 'Property'}" loading="lazy">
+      <img src="${item['Photo 1'] || 'https://via.placeholder.com/300x200?text=No+Image'}" 
+           alt="${item['Ad Title'] || 'Property'}" loading="lazy">
       <div class="card-content" style="padding:15px;">
-        <h3>${item.adTitle || 'Untitled'}</h3>
-        <p class="price">${item.priceFrom ? 'From ' : ''}RM ${parseInt(item.priceRm || 0).toLocaleString()}</p>
-        <p class="location">${item.state || 'Unknown'} &gt; ${item.district || 'Unknown'}</p>
-        <span class="badge">${item.category || 'Property'}</span>
+        <h3>${item['Ad Title'] || 'Untitled'}</h3>
+        <p class="price">${item.priceFrom ? 'From ' : ''}RM ${parseInt(item['Price(RM)'] || 0).toLocaleString()}</p>
+        <p class="location">${item['State'] || 'Unknown'} &gt; ${item['District'] || 'Unknown'}</p>
+        <span class="badge">${item['Category'] || 'Property'}</span>
       </div>
     </div>
   `).join('');
