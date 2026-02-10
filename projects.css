@@ -1,6 +1,6 @@
 /* ========================================
    PROJECTS PAGE - MASTER STYLES
-   Updated: 2026-02-10 with carousel, badges, and modal
+   Updated: 2026-02-10 with new category system
 ======================================== */
 
 /* --- 1. ADMIN HERO SLIDER (Multi-Device) --- */
@@ -845,9 +845,9 @@
   flex: 2;
 }
 
-/* Conditional field groups */
-#fields-apartment,
-#fields-house,
+/* Conditional field groups - UPDATED IDs */
+#fields-high-rise-residential,
+#fields-landed-residential,
 #fields-commercial,
 #fields-land {
   padding: 20px;
