@@ -324,7 +324,7 @@
     font-weight: 600; 
 }
 
-/* --- 6. PROPERTY DETAILS MODAL --- */
+/* --- 6. PROPERTY DETAILS MODAL (COMPACT) --- */
 #propertyModal {
     position: fixed;
     inset: 0;
@@ -343,10 +343,10 @@
 
 .modal-content {
     background: #ffffff;
-    border-radius: 20px;
-    max-width: 900px;
+    border-radius: 16px;
+    max-width: 850px;
     width: 100%;
-    max-height: 90vh;
+    max-height: 88vh;
     overflow-y: auto;
     position: relative;
     box-shadow: 0 20px 60px rgba(0,0,0,0.4);
@@ -354,15 +354,15 @@
 
 .modal-close {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 45px;
-    height: 45px;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: rgba(0,0,0,0.7);
     color: white;
     border: none;
-    font-size: 24px;
+    font-size: 22px;
     cursor: pointer;
     z-index: 10;
     transition: all 0.2s ease;
@@ -377,35 +377,46 @@
     transform: rotate(90deg);
 }
 
+/* COMPACT HEADER: Status badge + Title on same line */
 .modal-header {
-    padding: 30px 30px 20px;
+    padding: 20px 25px 15px;
     border-bottom: 2px solid #f0f0f0;
 }
 
-/* FIX: Add gap between status badge and title */
-.modal-header .status-badge {
-    margin-bottom: 15px;
+.modal-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
 }
 
-.modal-header h2 {
-    margin: 10px 0 15px;
-    font-size: 2rem;
+.modal-title-row .status-badge {
+    position: static;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.modal-title-row h2 {
+    margin: 0;
+    font-size: 1.6rem;
     color: #222;
     line-height: 1.3;
+    flex: 1;
 }
 
 .modal-price {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: #27ae60;
     font-weight: 800;
-    margin: 10px 0;
+    margin: 5px 0 0;
 }
 
-/* Modal Gallery */
+/* Modal Gallery - REDUCED HEIGHT */
 .modal-gallery {
     position: relative;
     width: 100%;
-    height: 450px;
+    height: 380px;
     background: #000;
     overflow: hidden;
 }
@@ -445,10 +456,10 @@
     background: rgba(0,0,0,0.5);
     color: white;
     border: none;
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
-    font-size: 28px;
+    font-size: 26px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -461,17 +472,17 @@
 
 .gallery-dots {
     position: absolute;
-    bottom: 20px;
+    bottom: 15px;
     width: 100%;
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     z-index: 5;
 }
 
 .gallery-dot {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: rgba(255,255,255,0.5);
     cursor: pointer;
@@ -480,45 +491,45 @@
 
 .gallery-dot.active {
     background: #f9d342;
-    width: 30px;
-    border-radius: 6px;
+    width: 24px;
+    border-radius: 5px;
 }
 
-/* Modal Body */
+/* COMPACT MODAL BODY - LESS PADDING */
 .modal-body {
-    padding: 30px;
+    padding: 20px 25px;
 }
 
 .modal-section {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .modal-section h3 {
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     color: #222;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
 .modal-section p {
     color: #555;
-    line-height: 1.7;
-    margin: 8px 0;
+    line-height: 1.6;
+    margin: 5px 0;
 }
 
 .details-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
     background: #f9f9f9;
-    padding: 20px;
-    border-radius: 12px;
+    padding: 15px;
+    border-radius: 10px;
 }
 
 .details-grid div {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #444;
 }
 
@@ -527,21 +538,30 @@
     font-weight: 700;
 }
 
+.contact-info {
+    font-size: 1rem;
+    color: #555;
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
 /* Contact Buttons */
 .contact-buttons {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
-    margin-top: 15px;
+    margin-top: 12px;
 }
 
 .contact-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-size: 0.95rem;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
     font-weight: 700;
     text-decoration: none;
     transition: all 0.2s ease;
@@ -591,15 +611,6 @@
     background: #c0392b;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
-}
-
-.contact-info {
-    font-size: 1rem;
-    color: #555;
-    background: #f9f9f9;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 10px;
 }
 
 /* --- 7. POST FREE AD MODAL (Matches Main Theme) --- */
@@ -883,27 +894,39 @@
   }
 
   .modal-gallery {
-    height: 300px;
+    height: 280px;
   }
 
   .modal-content {
     border-radius: 12px;
   }
 
-  .modal-header h2 {
-    font-size: 1.5rem;
+  .modal-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .modal-title-row h2 {
+    font-size: 1.3rem;
   }
 
   .modal-price {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
   }
 
   .modal-body {
-    padding: 20px;
+    padding: 15px 20px;
+  }
+
+  .modal-section {
+    margin-bottom: 15px;
   }
 
   .details-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px;
   }
 
   .contact-buttons {

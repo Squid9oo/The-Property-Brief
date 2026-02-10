@@ -12,6 +12,7 @@
    ✅ RICH CARD DISPLAY with status badges and specs
    ✅ CLICKABLE MODAL with full property details
    ✅ SMART CONTACT LINKS (WhatsApp, SMS, Call, Email)
+   ✅ COMPACT MODAL with badge+title inline
    Last updated: 2026-02-10
 ======================================== */
 
@@ -620,10 +621,12 @@ function openPropertyModal(property) {
       <button class="modal-close" id="closePropertyModal">✕</button>
       
       <div class="modal-header">
-        <div class="status-badge ${(property['Listing Type'] || '').toLowerCase().replace(/\s+/g, '-')}">
-          ${property['Listing Type'] || 'Property'}
+        <div class="modal-title-row">
+          <div class="status-badge ${(property['Listing Type'] || '').toLowerCase().replace(/\s+/g, '-')}">
+            ${property['Listing Type'] || 'Property'}
+          </div>
+          <h2>${property['Ad Title'] || 'Property Details'}</h2>
         </div>
-        <h2>${property['Ad Title'] || 'Property Details'}</h2>
         <p class="modal-price">RM ${parseInt(property['Price(RM)'] || 0).toLocaleString()}</p>
       </div>
 
