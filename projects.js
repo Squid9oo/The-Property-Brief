@@ -11,6 +11,7 @@
    ✅ AUTO-ROTATING CAROUSEL for property cards
    ✅ RICH CARD DISPLAY with status badges and specs
    ✅ CLICKABLE MODAL with full property details
+   ✅ SMART CONTACT LINKS (WhatsApp, SMS, Call, Email)
    Last updated: 2026-02-10
 ======================================== */
 
@@ -410,6 +411,57 @@ function getPropertyPhotos(item) {
 }
 
 /**
+ * Detect contact type and generate appropriate HTML
+ * @param {string} contact - Contact string
+ * @returns {string} - HTML for contact section
+ */
+function generateContactHTML(contact) {
+  if (!contact || contact.trim() === '') {
+    return '<p class="contact-info">Contact information not available</p>';
+  }
+
+  const trimmed = contact.trim();
+  
+  // Check if it's an email (contains @ and .)
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (emailPattern.test(trimmed)) {
+    return `
+      <p class="contact-info">${trimmed}</p>
+      <div class="contact-buttons">
+        <a href="mailto:${trimmed}" class="contact-btn email">
+          ✉️ Send Email
+        </a>
+      </div>
+    `;
+  }
+  
+  // Check if it contains phone number patterns (digits, +, -, spaces, ())
+  const phonePattern = /[\d\+\-\(\)\s]{7,}/;
+  if (phonePattern.test(trimmed)) {
+    // Clean the number for WhatsApp (remove spaces, dashes, parentheses)
+    const cleanNumber = trimmed.replace(/[\s\-\(\)]/g, '');
+    
+    return `
+      <p class="contact-info">${trimmed}</p>
+      <div class="contact-buttons">
+        <a href="https://wa.me/${cleanNumber}" target="_blank" rel="noopener noreferrer" class="contact-btn whatsapp">
+          💬 WhatsApp
+        </a>
+        <a href="tel:${cleanNumber}" class="contact-btn call">
+          📞 Call
+        </a>
+        <a href="sms:${cleanNumber}" class="contact-btn sms">
+          💬 SMS
+        </a>
+      </div>
+    `;
+  }
+  
+  // If not email or phone, just display as text
+  return `<p class="contact-info">${trimmed}</p>`;
+}
+
+/**
  * Initialize card carousel
  * @param {string} cardId - Card ID
  * @param {Array} photos - Array of photo URLs
@@ -619,7 +671,7 @@ function openPropertyModal(property) {
 
         <div class="modal-section">
           <h3>📞 Contact</h3>
-          <p class="contact-info">${property.Contact || 'Contact information not available'}</p>
+          ${generateContactHTML(property.Contact)}
         </div>
 
         ${property['Seller Type'] ? `
