@@ -83,8 +83,8 @@
 
           <select id="filter-category" aria-label="Filter property type">
             <option value="">All Types</option>
-            <option value="Apartment">Apartment</option>
-            <option value="House">House</option>
+            <option value="High Rise Residential">High Rise Residential</option>
+            <option value="Landed Residential">Landed Residential</option>
             <option value="Commercial">Commercial</option>
             <option value="Land">Land</option>
           </select>
@@ -146,8 +146,8 @@
             Category
             <select name="category" id="category" required>
               <option value="">Select</option>
-              <option value="Apartment">Apartment</option>
-              <option value="House">House</option>
+              <option value="High Rise Residential">High Rise Residential</option>
+              <option value="Landed Residential">Landed Residential</option>
               <option value="Commercial">Commercial</option>
               <option value="Land">Land</option>
             </select>
@@ -192,8 +192,17 @@
             </select>
           </label>
 
-          <!-- APARTMENT -->
-          <div id="fields-apartment" style="display:none;">
+          <!-- HIGH RISE RESIDENTIAL (formerly Apartment) -->
+          <div id="fields-high-rise-residential" style="display:none;">
+            <label>
+              Property Type
+              <select name="propertyType">
+                <option value="">Select</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Condominium">Condominium</option>
+              </select>
+            </label>
+
             <label>
               Title
               <select name="landTitle">
@@ -245,8 +254,8 @@
             </label>
           </div>
 
-          <!-- HOUSE -->
-          <div id="fields-house" style="display:none;">
+          <!-- LANDED RESIDENTIAL (formerly House) -->
+          <div id="fields-landed-residential" style="display:none;">
             <label>
               Property Type
               <select name="houseType">
@@ -482,12 +491,26 @@
     section1.style.display = 'block';
   });
 
-  // 2. Category Logic
+  // 2. Category Logic - UPDATED FOR NEW NAMES
   categorySelect.addEventListener('change', (e) => {
-    const val = e.target.value.toLowerCase();
-    ['apartment', 'house', 'commercial', 'land'].forEach(cat => {
-      document.getElementById(`fields-${cat}`).style.display = (val === cat) ? 'block' : 'none';
-    });
+    const val = e.target.value;
+    
+    // Hide all sections first
+    document.getElementById('fields-high-rise-residential').style.display = 'none';
+    document.getElementById('fields-landed-residential').style.display = 'none';
+    document.getElementById('fields-commercial').style.display = 'none';
+    document.getElementById('fields-land').style.display = 'none';
+    
+    // Show the selected section
+    if (val === 'High Rise Residential') {
+      document.getElementById('fields-high-rise-residential').style.display = 'block';
+    } else if (val === 'Landed Residential') {
+      document.getElementById('fields-landed-residential').style.display = 'block';
+    } else if (val === 'Commercial') {
+      document.getElementById('fields-commercial').style.display = 'block';
+    } else if (val === 'Land') {
+      document.getElementById('fields-land').style.display = 'block';
+    }
   });
 
   // 3. FETCHING THE DATA
@@ -580,7 +603,7 @@ const form = document.querySelector('form[name="project-submit"]');
 
 form.addEventListener('submit', (e) => {
   // Get all category-specific field containers
-  const sections = ['apartment', 'house', 'commercial', 'land'];
+  const sections = ['high-rise-residential', 'landed-residential', 'commercial', 'land'];
   
   sections.forEach(cat => {
     const container = document.getElementById(`fields-${cat}`);
