@@ -12,7 +12,8 @@
    ✅ RICH CARD DISPLAY with status badges and specs
    ✅ CLICKABLE MODAL with full property details
    ✅ SMART CONTACT LINKS (WhatsApp, SMS, Call, Email)
-   ✅ COMPACT MODAL with badge+title inline
+   ✅ COMPACT MODAL with badge+title+price inline
+   ✅ INLINE CONTACT BUTTONS (phone/email + buttons same line)
    Last updated: 2026-02-10
 ======================================== */
 
@@ -412,7 +413,7 @@ function getPropertyPhotos(item) {
 }
 
 /**
- * Detect contact type and generate appropriate HTML
+ * Detect contact type and generate appropriate HTML (INLINE)
  * @param {string} contact - Contact string
  * @returns {string} - HTML for contact section
  */
@@ -427,11 +428,13 @@ function generateContactHTML(contact) {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (emailPattern.test(trimmed)) {
     return `
-      <p class="contact-info">${trimmed}</p>
-      <div class="contact-buttons">
-        <a href="mailto:${trimmed}" class="contact-btn email">
-          ✉️ Send Email
-        </a>
+      <div class="contact-row">
+        <p class="contact-info">${trimmed}</p>
+        <div class="contact-buttons">
+          <a href="mailto:${trimmed}" class="contact-btn email">
+            ✉️ Email
+          </a>
+        </div>
       </div>
     `;
   }
@@ -443,17 +446,19 @@ function generateContactHTML(contact) {
     const cleanNumber = trimmed.replace(/[\s\-\(\)]/g, '');
     
     return `
-      <p class="contact-info">${trimmed}</p>
-      <div class="contact-buttons">
-        <a href="https://wa.me/${cleanNumber}" target="_blank" rel="noopener noreferrer" class="contact-btn whatsapp">
-          💬 WhatsApp
-        </a>
-        <a href="tel:${cleanNumber}" class="contact-btn call">
-          📞 Call
-        </a>
-        <a href="sms:${cleanNumber}" class="contact-btn sms">
-          💬 SMS
-        </a>
+      <div class="contact-row">
+        <p class="contact-info">${trimmed}</p>
+        <div class="contact-buttons">
+          <a href="https://wa.me/${cleanNumber}" target="_blank" rel="noopener noreferrer" class="contact-btn whatsapp">
+            💬 WhatsApp
+          </a>
+          <a href="tel:${cleanNumber}" class="contact-btn call">
+            📞 Call
+          </a>
+          <a href="sms:${cleanNumber}" class="contact-btn sms">
+            💬 SMS
+          </a>
+        </div>
       </div>
     `;
   }
@@ -626,8 +631,8 @@ function openPropertyModal(property) {
             ${property['Listing Type'] || 'Property'}
           </div>
           <h2>${property['Ad Title'] || 'Property Details'}</h2>
+          <p class="modal-price">RM ${parseInt(property['Price(RM)'] || 0).toLocaleString()}</p>
         </div>
-        <p class="modal-price">RM ${parseInt(property['Price(RM)'] || 0).toLocaleString()}</p>
       </div>
 
       <div class="modal-gallery">
