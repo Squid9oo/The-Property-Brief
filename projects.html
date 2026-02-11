@@ -478,25 +478,34 @@
     </div>
   </div>
 
-  <!-- MAP MODAL WITH SEARCH BOX -->
+  <!-- MAP MODAL WITH SEARCH BOX (GEOCODING API) -->
   <div id="map-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; padding:20px;">
     <div style="background:white; border-radius:8px; max-width:900px; margin:0 auto; height:90vh; display:flex; flex-direction:column;">
       <div style="padding:16px; border-bottom:1px solid #ddd;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <div>
             <h3 style="margin:0;">📍 Pin Your Property Location</h3>
-            <p style="margin:4px 0 0; font-size:14px; color:#666;">Search or click anywhere on the map</p>
+            <p style="margin:4px 0 0; font-size:14px; color:#666;">Type address and click Search, or click on map</p>
           </div>
           <button type="button" id="close-map-btn" style="background:none; border:none; font-size:24px; cursor:pointer;">✕</button>
         </div>
         
-        <!-- SEARCH BOX -->
-        <input 
-          type="text" 
-          id="map-search-box" 
-          placeholder="🔍 Type address (e.g., Bandar Sunway, Selangor)" 
-          style="width:100%; padding:12px; border:2px solid #007bff; border-radius:4px; font-size:14px;"
-        />
+        <!-- SEARCH BOX WITH BUTTON -->
+        <div style="display:flex; gap:8px;">
+          <input 
+            type="text" 
+            id="map-search-box" 
+            placeholder="🔍 Type address (e.g., Bandar Sunway, Selangor, Malaysia)" 
+            style="flex:1; padding:12px; border:2px solid #007bff; border-radius:4px; font-size:14px;"
+          />
+          <button 
+            type="button" 
+            id="search-location-btn" 
+            style="padding:12px 20px; background:#007bff; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold;"
+          >
+            Search
+          </button>
+        </div>
       </div>
       
       <div id="google-map" style="flex:1; width:100%;"></div>
@@ -656,10 +665,10 @@
   });
 
   // ============================================
-  // GOOGLE MAPS WITH SEARCH BOX
+  // GOOGLE MAPS WITH GEOCODING SEARCH
   // ============================================
 
-  let map, marker, selectedLocation, autocomplete;
+  let map, marker, selectedLocation, geocoder;
 
   document.getElementById('open-map-btn').addEventListener('click', () => {
     document.getElementById('map-modal').style.display = 'block';
@@ -682,27 +691,51 @@
       streetViewControl: false,
     });
     
+    geocoder = new google.maps.Geocoder();
+    
+    // Manual click on map
     map.addListener('click', (event) => {
       placeMarker(event.latLng);
     });
 
-    const searchBox = document.getElementById('map-search-box');
-    autocomplete = new google.maps.places.Autocomplete(searchBox, {
-      componentRestrictions: { country: 'my' },
-      fields: ['geometry', 'formatted_address', 'address_components']
-    });
-
-    autocomplete.addListener('place_changed', () => {
-      const place = autocomplete.getPlace();
-      
-      if (!place.geometry || !place.geometry.location) {
-        alert('No location found for that address');
-        return;
+    // Search button click
+    document.getElementById('search-location-btn').addEventListener('click', searchLocation);
+    
+    // Also search when Enter is pressed
+    document.getElementById('map-search-box').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        searchLocation();
       }
+    });
+  }
 
-      map.setCenter(place.geometry.location);
-      map.setZoom(15);
-      placeMarker(place.geometry.location);
+  function searchLocation() {
+    const searchBox = document.getElementById('map-search-box');
+    const address = searchBox.value.trim();
+    
+    if (!address) {
+      alert('Please type an address!');
+      return;
+    }
+
+    // Use Geocoder to find location
+    geocoder.geocode({ 
+      address: address,
+      componentRestrictions: { country: 'MY' } // Restrict to Malaysia
+    }, (results, status) => {
+      if (status === 'OK' && results[0]) {
+        const location = results[0].geometry.location;
+        
+        // Center map on found location
+        map.setCenter(location);
+        map.setZoom(15);
+        
+        // Place marker
+        placeMarker(location);
+      } else {
+        alert('Location not found! Try: "Bandar Sunway, Selangor" or "KLCC, Kuala Lumpur"');
+      }
     });
   }
 
@@ -721,7 +754,6 @@
       lng: location.lng()
     };
     
-    const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ location: location }, (results, status) => {
       if (status === 'OK' && results[0]) {
         parseAddress(results[0]);
@@ -735,7 +767,6 @@
         lng: newPos.lng()
       };
       
-      const geocoder = new google.maps.Geocoder();
       geocoder.geocode({ location: newPos }, (results, status) => {
         if (status === 'OK' && results[0]) {
           parseAddress(results[0]);
@@ -891,8 +922,8 @@
   }
   </style>
 
-  <!-- Google Maps API with Places library for autocomplete -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtHBA74KW3ZS8WE8OKUr6tWy2MHFHxGw8&libraries=places&callback=initMap"></script>
+  <!-- Google Maps API - NO PLACES LIBRARY NEEDED -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtHBA74KW3ZS8WE8OKUr6tWy2MHFHxGw8&callback=initMap"></script>
 
 </body>
 </html>
