@@ -111,7 +111,7 @@ h1,h2,h3{
   z-index: 50;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; /* CHANGED: Everything starts from left */
   align-items: center;
   gap: 12px;
 
@@ -267,12 +267,13 @@ h1,h2,h3{
 
 .headerBtn:hover{ opacity: 0.92; }
 
-/* Header actions container */
+/* Header actions container - PUSHES TO RIGHT */
 .headerActions {
   display: flex;
   gap: 10px;
   align-items: center;
   flex-wrap: nowrap;
+  margin-left: auto; /* IMPORTANT: This pushes it to the far right */
 }
 
 /* ---------- Hero ---------- */
