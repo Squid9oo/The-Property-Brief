@@ -12,20 +12,20 @@ summary: The courts delivered a developer-relevant decision that ends a bid to
 ---
 ## Federal Court: development order dispute ends
 
-The Federal Court (led by Chief Justice Wan Ahmad Farid) refused leave to appeal in the dispute involving Ong Hock Te and Kaisar Maxim. \[code:0] Ong was ordered to pay RM50,000 in costs, and the outcome clears the path for the 1,048-unit apartment project, with indicative pricing stated at RM600,000 to RM1 million per unit.
+The Federal Court (led by Chief Justice Wan Ahmad Farid) refused leave to appeal in the dispute involving Ong Hock Te and Kaisar Maxim. Ong was ordered to pay RM50,000 in costs, and the outcome clears the path for the 1,048-unit apartment project, with indicative pricing stated at RM600,000 to RM1 million per unit.
 
 **Key precedent for planning risk**
-The ruling confirms that the High Court has no jurisdiction to stay a development order issued by the Kuala Lumpur Datuk Bandar. \[code:0] For approved projects, this reduces a specific legal “stop-work” risk once a development order is in place.
+The ruling confirms that the High Court has no jurisdiction to stay a development order issued by the Kuala Lumpur Datuk Bandar. For approved projects, this reduces a specific legal “stop-work” risk once a development order is in place.
 
 ## Boustead: proposed BHIC privatisation at RM0.48/share
 
-Boustead Holdings Bhd (stated as a 72.38% owner) has proposed to privatise BHIC via a selective capital reduction. \[code:0] The proposed price is RM0.48 per share, implying an estimated deal value of about RM149.6 million, and is described as a 54.8% to 96.1% premium to recent trading prices.
+Boustead Holdings Bhd (stated as a 72.38% owner) has proposed to privatise BHIC via a selective capital reduction. The proposed price is RM0.48 per share, implying an estimated deal value of about RM149.6 million, and is described as a 54.8% to 96.1% premium to recent trading prices.
 
 A stated deadline for a board decision is 3 March 2026.
 
 ## Berjaya Land: Jesselton Courtyard sales gallery opens
 
-Berjaya Land Bhd has opened the sales gallery for Jesselton Courtyard at Jesselton Selatan, George Town. \[code:0] The project is described as 239 freehold units on 11.9 acres, with built-ups ranging from 2,734 to 6,649 sq ft, positioned as a low-density, landed-style gated community with completion targeted for end-2027.
+Berjaya Land Bhd has opened the sales gallery for Jesselton Courtyard at Jesselton Selatan, George Town. The project is described as 239 freehold units on 11.9 acres, with built-ups ranging from 2,734 to 6,649 sq ft, positioned as a low-density, landed-style gated community with completion targeted for end-2027.
 
 A roadshow is scheduled at Gurney Plaza from 14 February to 1 March.
 
