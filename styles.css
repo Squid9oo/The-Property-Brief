@@ -1142,7 +1142,13 @@ mark.hl{
     margin: 0;
   }
   
-  .headerActions { display: none !important; }
+  /* KEEP headerActions visible (for projects.html Post Free Ad button) */
+  .headerActions { 
+    order: 3;
+    margin-left: auto;
+    display: flex !important;
+  }
+  
   .container { padding-top: 20px !important; }
   .hero { padding-top: 10px !important; }
   .latestList{ grid-template-columns: 1fr; }
@@ -1155,12 +1161,12 @@ mark.hl{
     position: sticky !important;
     top: 0 !important;
     z-index: 100 !important;
-    padding: 12px 18px !important;
+    padding: 10px 16px !important;
     display: flex !important;
-    flex-wrap: wrap !important;
+    flex-wrap: nowrap !important;
     align-items: center !important;
     justify-content: flex-start !important; 
-    gap: 16px; 
+    gap: 12px; 
   }
 
   .hamburger {
@@ -1181,13 +1187,10 @@ mark.hl{
     position: relative;
   }
   
-  .logo { height: 38px !important; }
+  .logo { height: 36px !important; }
 
   .mobileShare {
-    display: inline-grid !important;
-    order: 3;
-    margin-left: auto;
-    z-index: 1001;
+    display: none !important;
   }
 
   .nav {
@@ -1260,31 +1263,29 @@ mark.hl{
   }
 
   .headerSub {
-    position: relative !important;
+    display: none !important;
+  }
+
+  /* KEEP headerActions visible in landscape (Post Free Ad + Share on projects.html) */
+  .headerActions { 
+    order: 3;
+    margin-left: auto;
     display: flex !important;
-    width: 100%;
-    margin: 12px 0 0 0 !important;
-    padding: 14px;
-    gap: 10px;
-    background: rgba(255,255,255,0.03); 
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 14px;
-    order: 4;
+    gap: 8px !important;
   }
-  
-  .headerSub .shareRow { display: none !important; }
-  
-  .headerInput {
-    flex: 1 1 100%;
-    width: 100% !important;
-  }
-  
+
+  /* Make buttons smaller in landscape */
   .headerBtn {
-    flex: 1 1 calc(50% - 6px); 
-    margin: 0;
+    height: 36px !important;
+    padding: 8px 12px !important;
+    font-size: 13px !important;
   }
-  
-  .headerActions { display: none !important; }
+
+  .shareIconBtn {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 14px !important;
+  }
 }
 
 /* Extra small screens */
