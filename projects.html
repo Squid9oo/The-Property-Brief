@@ -479,15 +479,25 @@
     </div>
   </div>
 
-  <!-- MAP MODAL -->
+  <!-- MAP MODAL WITH SEARCH BOX -->
   <div id="map-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; padding:20px;">
     <div style="background:white; border-radius:8px; max-width:900px; margin:0 auto; height:90vh; display:flex; flex-direction:column;">
-      <div style="padding:16px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between; align-items:center;">
-        <div>
-          <h3 style="margin:0;">📍 Pin Your Property Location</h3>
-          <p style="margin:4px 0 0; font-size:14px; color:#666;">Click anywhere on the map to mark your property</p>
+      <div style="padding:16px; border-bottom:1px solid #ddd;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <h3 style="margin:0;">📍 Pin Your Property Location</h3>
+            <p style="margin:4px 0 0; font-size:14px; color:#666;">Search or click anywhere on the map</p>
+          </div>
+          <button type="button" id="close-map-btn" style="background:none; border:none; font-size:24px; cursor:pointer;">✕</button>
         </div>
-        <button type="button" id="close-map-btn" style="background:none; border:none; font-size:24px; cursor:pointer;">✕</button>
+        
+        <!-- SEARCH BOX -->
+        <input 
+          type="text" 
+          id="map-search-box" 
+          placeholder="🔍 Type address (e.g., Bandar Sunway, Selangor)" 
+          style="width:100%; padding:12px; border:2px solid #007bff; border-radius:4px; font-size:14px;"
+        />
       </div>
       
       <div id="google-map" style="flex:1; width:100%;"></div>
@@ -524,7 +534,7 @@
   nextBtn.addEventListener('click', () => {
     section1.style.display = 'none';
     section2.style.display = 'block';
-    loadStates(); // Load states as soon as we move forward
+    loadStates();
   });
 
   backBtn.addEventListener('click', () => {
@@ -536,13 +546,11 @@
   categorySelect.addEventListener('change', (e) => {
     const val = e.target.value;
     
-    // Hide all sections first
     document.getElementById('fields-high-rise-residential').style.display = 'none';
     document.getElementById('fields-landed-residential').style.display = 'none';
     document.getElementById('fields-commercial').style.display = 'none';
     document.getElementById('fields-land').style.display = 'none';
     
-    // Show the selected section
     if (val === 'High Rise Residential') {
       document.getElementById('fields-high-rise-residential').style.display = 'block';
     } else if (val === 'Landed Residential') {
@@ -554,9 +562,8 @@
     }
   });
 
-  // 3. LOCATION DROPDOWN LOGIC (ORIGINAL)
+  // 3. LOCATION DROPDOWN LOGIC
   
-  // Step A: Load States
   async function loadStates() {
     try {
       const response = await fetch('/content/settings/locations/states.json');
@@ -572,7 +579,6 @@
     }
   }
 
-  // Step B: Load Districts when State changes
   stateSelect.addEventListener('change', async (e) => {
     const stateName = e.target.value;
     if (!stateName) {
@@ -599,7 +605,6 @@
     }
   });
 
-  // Step C: Load Areas when District changes
   districtSelect.addEventListener('change', async (e) => {
     const districtName = e.target.value;
     const stateName = stateSelect.value.toLowerCase().replace(/\s+/g, '-');
@@ -631,7 +636,6 @@
     }
   });
 
-  // Show custom input if "Others" is selected
   areaSelect.addEventListener('change', (e) => {
     customAreaWrapper.style.display = (e.target.value === 'others') ? 'block' : 'none';
   });
@@ -653,12 +657,11 @@
   });
 
   // ============================================
-  // GOOGLE MAPS LOCATION PICKER
+  // GOOGLE MAPS WITH SEARCH BOX
   // ============================================
 
-  let map, marker, selectedLocation;
+  let map, marker, selectedLocation, autocomplete;
 
-  // Open map modal
   document.getElementById('open-map-btn').addEventListener('click', () => {
     document.getElementById('map-modal').style.display = 'block';
     setTimeout(() => {
@@ -666,14 +669,12 @@
     }, 300);
   });
 
-  // Close map modal
   document.getElementById('close-map-btn').addEventListener('click', () => {
     document.getElementById('map-modal').style.display = 'none';
   });
 
-  // Initialize Google Map
   function initMap() {
-    const defaultCenter = { lat: 3.139, lng: 101.6869 }; // Kuala Lumpur
+    const defaultCenter = { lat: 3.139, lng: 101.6869 };
     
     map = new google.maps.Map(document.getElementById('google-map'), {
       center: defaultCenter,
@@ -682,12 +683,36 @@
       streetViewControl: false,
     });
     
+    // Add click listener for manual pin
     map.addListener('click', (event) => {
       placeMarker(event.latLng);
     });
+
+    // SETUP AUTOCOMPLETE SEARCH BOX
+    const searchBox = document.getElementById('map-search-box');
+    autocomplete = new google.maps.places.Autocomplete(searchBox, {
+      componentRestrictions: { country: 'my' }, // Restrict to Malaysia
+      fields: ['geometry', 'formatted_address', 'address_components']
+    });
+
+    // When user selects a place from search
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+      
+      if (!place.geometry || !place.geometry.location) {
+        alert('No location found for that address');
+        return;
+      }
+
+      // Center map on searched location
+      map.setCenter(place.geometry.location);
+      map.setZoom(15);
+
+      // Place marker at searched location
+      placeMarker(place.geometry.location);
+    });
   }
 
-  // Place marker and reverse geocode
   function placeMarker(location) {
     if (marker) marker.setMap(null);
     
@@ -695,6 +720,7 @@
       position: location,
       map: map,
       draggable: true,
+      animation: google.maps.Animation.DROP
     });
     
     selectedLocation = {
@@ -725,7 +751,6 @@
     });
   }
 
-  // Parse address components
   function parseAddress(result) {
     const components = result.address_components;
     let state = '', district = '', area = '';
@@ -748,50 +773,42 @@
     selectedLocation.fullAddress = result.formatted_address;
   }
 
-  // Confirm location selection - AUTO-FILL DROPDOWNS
   document.getElementById('confirm-location-btn').addEventListener('click', async () => {
     if (!selectedLocation) {
-      alert('Please click on the map to pin your location first!');
+      alert('Please pin a location on the map first!');
       return;
     }
     
-    // Store lat/long/full address in hidden fields
     document.getElementById('ad-latitude').value = selectedLocation.lat || '';
     document.getElementById('ad-longitude').value = selectedLocation.lng || '';
     document.getElementById('ad-locationFull').value = selectedLocation.fullAddress || '';
     
-    // Show confirmation
     document.getElementById('selected-location-display').style.display = 'block';
     document.getElementById('location-text').textContent = selectedLocation.fullAddress;
     
-    // AUTO-FILL STATE DROPDOWN
     if (selectedLocation.state) {
-      // Make sure states are loaded first
       if (stateSelect.options.length <= 1) {
         await loadStates();
       }
       
-      // Select the state
       for (let i = 0; i < stateSelect.options.length; i++) {
         if (stateSelect.options[i].value === selectedLocation.state) {
           stateSelect.selectedIndex = i;
-          stateSelect.dispatchEvent(new Event('change')); // Trigger district load
+          stateSelect.dispatchEvent(new Event('change'));
           break;
         }
       }
       
-      // Wait for districts to load, then select
       if (selectedLocation.district) {
         setTimeout(() => {
           for (let i = 0; i < districtSelect.options.length; i++) {
             if (districtSelect.options[i].value === selectedLocation.district) {
               districtSelect.selectedIndex = i;
-              districtSelect.dispatchEvent(new Event('change')); // Trigger area load
+              districtSelect.dispatchEvent(new Event('change'));
               break;
             }
           }
           
-          // Wait for areas to load, then select or use custom
           if (selectedLocation.area) {
             setTimeout(() => {
               let foundArea = false;
@@ -803,7 +820,6 @@
                 }
               }
               
-              // If area not in dropdown, use custom input
               if (!foundArea) {
                 areaSelect.value = 'others';
                 areaSelect.dispatchEvent(new Event('change'));
@@ -815,14 +831,13 @@
       }
     }
     
-    // Close modal
     document.getElementById('map-modal').style.display = 'none';
   });
 
   </script>
 
-  <!-- Google Maps API - IMPORTANT: Replace YOUR_API_KEY with your actual Google Maps API key -->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtHBA74KW3ZS8WE8OKUr6tWy2MHFHxGw8&callback=initMap"></script>
+  <!-- Google Maps API with Places library for autocomplete -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtHBA74KW3ZS8WE8OKUr6tWy2MHFHxGw8&libraries=places&callback=initMap"></script>
 
 </body>
 </html>
