@@ -1,7 +1,7 @@
 ---
 title: Boustead privatisation offer; Sunway Healthcare IPO banks confirmed
 date: 2026-02-11T08:11:00.000+08:00
-tag: Boustead Sunway Healthcare Khazanah Kaisar Maxim
+tag: Boustead • Sunway Healthcare • Khazanah • Kaisar Maxim
 summary: "BHIC received a 48 sen/share privatisation proposal (estimated
   RM149.6m exercise), while Sunway Healthcare signed its IPO underwriting with
   six banks ahead of a Main Market listing. Also in focus: Khazanah posted
