@@ -259,7 +259,7 @@
             </label>
           </div>
 
-          <!-- LANDED RESIDENTIAL -->
+          <!-- LANDED RESIDENTIAL - FIXED: Combined Link House -->
           <div id="fields-landed-residential" style="display:none;">
             <label>
               Property Type
@@ -268,8 +268,7 @@
                 <option value="Bungalow">Bungalow</option>
                 <option value="Semi Detached">Semi Detached</option>
                 <option value="Cluster">Cluster</option>
-                <option value="1-Storey Link">1-Storey Link</option>
-                <option value="2-Storey Link">2-Storey Link</option>
+                <option value="Link House">Link House</option>
                 <option value="Townhouse">Townhouse</option>
               </select>
             </label>
@@ -415,17 +414,17 @@
             <textarea name="description" rows="5" required></textarea>
           </label>
 
-          <!-- LOCATION SECTION - OPTION 1: KEEP DROPDOWNS + ADD MAP -->
-          <div style="padding: 16px; background: #f8f9fa; border-radius: 8px; margin: 16px 0;">
-            <h4 style="margin: 0 0 12px 0; color: #333;">📍 Property Location</h4>
+          <!-- LOCATION SECTION - STYLED TO MATCH THEME -->
+          <div class="location-section">
+            <h4>📍 Property Location</h4>
             
-            <button type="button" id="open-map-btn" style="width:100%; padding:12px; background:#007bff; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; margin-bottom:12px;">
+            <button type="button" id="open-map-btn" class="map-btn">
               🗺️ Pin Location on Map (Auto-fills below)
             </button>
 
-            <div id="selected-location-display" style="padding:12px; background:#d4edda; border-radius:4px; display:none; margin-bottom:12px;">
-              <p style="margin:0; font-weight:bold; color:#155724;">✓ Location Pinned:</p>
-              <p id="location-text" style="margin:8px 0 0; color:#155724;"></p>
+            <div id="selected-location-display" class="location-confirmed">
+              <p class="location-confirmed-label">✓ Location Pinned:</p>
+              <p id="location-text" class="location-confirmed-text"></p>
             </div>
 
             <label>
@@ -683,19 +682,16 @@
       streetViewControl: false,
     });
     
-    // Add click listener for manual pin
     map.addListener('click', (event) => {
       placeMarker(event.latLng);
     });
 
-    // SETUP AUTOCOMPLETE SEARCH BOX
     const searchBox = document.getElementById('map-search-box');
     autocomplete = new google.maps.places.Autocomplete(searchBox, {
-      componentRestrictions: { country: 'my' }, // Restrict to Malaysia
+      componentRestrictions: { country: 'my' },
       fields: ['geometry', 'formatted_address', 'address_components']
     });
 
-    // When user selects a place from search
     autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace();
       
@@ -704,11 +700,8 @@
         return;
       }
 
-      // Center map on searched location
       map.setCenter(place.geometry.location);
       map.setZoom(15);
-
-      // Place marker at searched location
       placeMarker(place.geometry.location);
     });
   }
@@ -835,6 +828,68 @@
   });
 
   </script>
+
+  <style>
+  /* LOCATION SECTION STYLING - MATCHES DARK THEME */
+  .location-section {
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 12px;
+    border: 1px solid rgba(249,209,0,0.20);
+    background: rgba(249,209,0,0.04);
+  }
+
+  .location-section h4 {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #f9d100;
+    letter-spacing: 0.3px;
+  }
+
+  .map-btn {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    background: rgba(249,209,0,0.15);
+    border: 1px solid rgba(249,209,0,0.35);
+    border-radius: 12px;
+    color: #f9d100;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .map-btn:hover {
+    background: rgba(249,209,0,0.25);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(249,209,0,0.2);
+  }
+
+  .location-confirmed {
+    display: none;
+    padding: 12px;
+    margin-bottom: 16px;
+    background: rgba(40, 167, 69, 0.15);
+    border: 1px solid rgba(40, 167, 69, 0.35);
+    border-radius: 8px;
+  }
+
+  .location-confirmed-label {
+    margin: 0;
+    font-weight: 700;
+    font-size: 13px;
+    color: #4ade80;
+  }
+
+  .location-confirmed-text {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: #a1a1aa;
+    line-height: 1.5;
+  }
+  </style>
 
   <!-- Google Maps API with Places library for autocomplete -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtHBA74KW3ZS8WE8OKUr6tWy2MHFHxGw8&libraries=places&callback=initMap"></script>
