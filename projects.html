@@ -415,27 +415,50 @@
             <textarea name="description" rows="5" required></textarea>
           </label>
 
-          <!-- GOOGLE MAPS LOCATION PICKER -->
-          <label>
-            📍 Pin Your Location on Map
-            <button type="button" id="open-map-btn" style="width:100%; padding:12px; background:#007bff; color:white; border:none; border-radius:4px; cursor:pointer; margin-top:8px;">
-              Click to Open Map & Pin Location
+          <!-- LOCATION SECTION - OPTION 1: KEEP DROPDOWNS + ADD MAP -->
+          <div style="padding: 16px; background: #f8f9fa; border-radius: 8px; margin: 16px 0;">
+            <h4 style="margin: 0 0 12px 0; color: #333;">📍 Property Location</h4>
+            
+            <button type="button" id="open-map-btn" style="width:100%; padding:12px; background:#007bff; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; margin-bottom:12px;">
+              🗺️ Pin Location on Map (Auto-fills below)
             </button>
-          </label>
 
-          <!-- Hidden fields to store location data -->
-          <input type="hidden" name="state" id="ad-state" />
-          <input type="hidden" name="district" id="ad-district" />
-          <input type="hidden" name="area" id="ad-area" />
-          <input type="hidden" name="locationFull" id="ad-locationFull" />
+            <div id="selected-location-display" style="padding:12px; background:#d4edda; border-radius:4px; display:none; margin-bottom:12px;">
+              <p style="margin:0; font-weight:bold; color:#155724;">✓ Location Pinned:</p>
+              <p id="location-text" style="margin:8px 0 0; color:#155724;"></p>
+            </div>
+
+            <label>
+              State
+              <select name="state" id="ad-state" required>
+                <option value="">Select state</option>
+              </select>
+            </label>
+
+            <label>
+              District
+              <select name="district" id="ad-district" required disabled>
+                <option value="">Select district</option>
+              </select>
+            </label>
+
+            <label>
+              Area / Township
+              <select name="area" id="ad-area" required disabled>
+                <option value="">Select area</option>
+              </select>
+            </label>
+
+            <label id="ad-area-custom-wrapper" style="display:none;">
+              Or type your location
+              <input type="text" name="areaCustom" id="ad-area-custom" placeholder="e.g., Taman Kinrara, Bandar Sunway" />
+            </label>
+          </div>
+
+          <!-- Hidden fields for precise location data -->
           <input type="hidden" name="latitude" id="ad-latitude" />
           <input type="hidden" name="longitude" id="ad-longitude" />
-
-          <!-- Display selected location -->
-          <div id="selected-location-display" style="margin-top:12px; padding:12px; background:#f0f0f0; border-radius:4px; display:none;">
-            <p style="margin:0; font-weight:bold;">Selected Location:</p>
-            <p id="location-text" style="margin:8px 0 0; color:#333;"></p>
-          </div>
+          <input type="hidden" name="locationFull" id="ad-locationFull" />
 
           <label>
             Price (RM)
@@ -460,14 +483,17 @@
   <div id="map-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; padding:20px;">
     <div style="background:white; border-radius:8px; max-width:900px; margin:0 auto; height:90vh; display:flex; flex-direction:column;">
       <div style="padding:16px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between; align-items:center;">
-        <h3 style="margin:0;">📍 Pin Your Property Location</h3>
+        <div>
+          <h3 style="margin:0;">📍 Pin Your Property Location</h3>
+          <p style="margin:4px 0 0; font-size:14px; color:#666;">Click anywhere on the map to mark your property</p>
+        </div>
         <button type="button" id="close-map-btn" style="background:none; border:none; font-size:24px; cursor:pointer;">✕</button>
       </div>
       
       <div id="google-map" style="flex:1; width:100%;"></div>
       
       <div style="padding:16px; border-top:1px solid #ddd; text-align:center;">
-        <button type="button" id="confirm-location-btn" style="padding:12px 32px; background:#28a745; color:white; border:none; border-radius:4px; cursor:pointer; font-size:16px;">
+        <button type="button" id="confirm-location-btn" style="padding:12px 32px; background:#28a745; color:white; border:none; border-radius:4px; cursor:pointer; font-size:16px; font-weight:bold;">
           ✓ Confirm This Location
         </button>
       </div>
@@ -488,10 +514,17 @@
   const section2 = document.getElementById('form-section-2');
   const categorySelect = document.getElementById('category');
 
+  // Location Elements
+  const stateSelect = document.getElementById('ad-state');
+  const districtSelect = document.getElementById('ad-district');
+  const areaSelect = document.getElementById('ad-area');
+  const customAreaWrapper = document.getElementById('ad-area-custom-wrapper');
+
   // 1. Navigation Logic
   nextBtn.addEventListener('click', () => {
     section1.style.display = 'none';
     section2.style.display = 'block';
+    loadStates(); // Load states as soon as we move forward
   });
 
   backBtn.addEventListener('click', () => {
@@ -521,24 +554,97 @@
     }
   });
 
-  // 3. DISABLE HIDDEN FIELDS BEFORE SUBMITTING
-  const form = document.querySelector('form[name="project-submit"]');
+  // 3. LOCATION DROPDOWN LOGIC (ORIGINAL)
+  
+  // Step A: Load States
+  async function loadStates() {
+    try {
+      const response = await fetch('/content/settings/locations/states.json');
+      const data = await response.json();
+      const states = data.states;
+      
+      stateSelect.innerHTML = '<option value="">Select state</option>';
+      states.forEach(stateName => {
+        stateSelect.innerHTML += `<option value="${stateName}">${stateName}</option>`;
+      });
+    } catch (err) {
+      console.error('Error loading states:', err);
+    }
+  }
 
-  form.addEventListener('submit', (e) => {
-    // Validate location is selected
-    if (!document.getElementById('ad-locationFull').value) {
-      e.preventDefault();
-      alert('Please pin your location on the map before submitting!');
+  // Step B: Load Districts when State changes
+  stateSelect.addEventListener('change', async (e) => {
+    const stateName = e.target.value;
+    if (!stateName) {
+      districtSelect.disabled = true;
+      areaSelect.disabled = true;
       return;
     }
 
-    // Get all category-specific field containers
+    try {
+      districtSelect.disabled = false;
+      const response = await fetch('/content/settings/locations/districts.json');
+      const data = await response.json();
+      const districts = data.districtsByState[stateName];
+      
+      districtSelect.innerHTML = '<option value="">Select district</option>';
+      districts.forEach(districtName => {
+        districtSelect.innerHTML += `<option value="${districtName}">${districtName}</option>`;
+      });
+      
+      areaSelect.innerHTML = '<option value="">Select area</option>';
+      areaSelect.disabled = true;
+    } catch (err) {
+      console.error('Error loading districts:', err);
+    }
+  });
+
+  // Step C: Load Areas when District changes
+  districtSelect.addEventListener('change', async (e) => {
+    const districtName = e.target.value;
+    const stateName = stateSelect.value.toLowerCase().replace(/\s+/g, '-');
+    
+    if (!districtName) {
+      areaSelect.disabled = true;
+      return;
+    }
+
+    try {
+      areaSelect.disabled = false;
+      const response = await fetch(`/content/settings/locations/areas/${stateName}.json`);
+      const data = await response.json();
+      
+      const districtObj = data.districts.find(d => d.name === districtName);
+      
+      if (districtObj && districtObj.areas) {
+        areaSelect.innerHTML = '<option value="">Select area</option>';
+        districtObj.areas.forEach(areaObj => {
+          areaSelect.innerHTML += `<option value="${areaObj.name}">${areaObj.name}</option>`;
+        });
+        areaSelect.innerHTML += `<option value="others">Others (Type manually)</option>`;
+      } else {
+        customAreaWrapper.style.display = 'block';
+      }
+    } catch (err) {
+      console.error('Error loading areas:', err);
+      customAreaWrapper.style.display = 'block';
+    }
+  });
+
+  // Show custom input if "Others" is selected
+  areaSelect.addEventListener('change', (e) => {
+    customAreaWrapper.style.display = (e.target.value === 'others') ? 'block' : 'none';
+  });
+
+  // 4. DISABLE HIDDEN FIELDS BEFORE SUBMITTING
+  const form = document.querySelector('form[name="project-submit"]');
+
+  form.addEventListener('submit', (e) => {
     const sections = ['high-rise-residential', 'landed-residential', 'commercial', 'land'];
     
     sections.forEach(cat => {
       const container = document.getElementById(`fields-${cat}`);
       if (container && container.style.display === 'none') {
-        // Disable all inputs in hidden sections
         container.querySelectorAll('input, select, textarea').forEach(field => {
           field.disabled = true;
         });
@@ -555,7 +661,9 @@
   // Open map modal
   document.getElementById('open-map-btn').addEventListener('click', () => {
     document.getElementById('map-modal').style.display = 'block';
-    setTimeout(() => initMap(), 500); // Delay to ensure modal is visible
+    setTimeout(() => {
+      if (!map) initMap();
+    }, 300);
   });
 
   // Close map modal
@@ -565,8 +673,7 @@
 
   // Initialize Google Map
   function initMap() {
-    // Default center: Kuala Lumpur
-    const defaultCenter = { lat: 3.139, lng: 101.6869 };
+    const defaultCenter = { lat: 3.139, lng: 101.6869 }; // Kuala Lumpur
     
     map = new google.maps.Map(document.getElementById('google-map'), {
       center: defaultCenter,
@@ -575,7 +682,6 @@
       streetViewControl: false,
     });
     
-    // Add marker on map click
     map.addListener('click', (event) => {
       placeMarker(event.latLng);
     });
@@ -583,23 +689,19 @@
 
   // Place marker and reverse geocode
   function placeMarker(location) {
-    // Remove existing marker
     if (marker) marker.setMap(null);
     
-    // Add new marker
     marker = new google.maps.Marker({
       position: location,
       map: map,
       draggable: true,
     });
     
-    // Store location
     selectedLocation = {
       lat: location.lat(),
       lng: location.lng()
     };
     
-    // Reverse geocode to get address
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ location: location }, (results, status) => {
       if (status === 'OK' && results[0]) {
@@ -607,7 +709,6 @@
       }
     });
     
-    // Update location if marker is dragged
     marker.addListener('dragend', () => {
       const newPos = marker.getPosition();
       selectedLocation = {
@@ -636,7 +737,7 @@
       if (comp.types.includes('administrative_area_level_2')) {
         district = comp.long_name;
       }
-      if (comp.types.includes('locality') || comp.types.includes('sublocality')) {
+      if (comp.types.includes('locality') || comp.types.includes('sublocality') || comp.types.includes('sublocality_level_1')) {
         area = comp.long_name;
       }
     });
@@ -647,24 +748,72 @@
     selectedLocation.fullAddress = result.formatted_address;
   }
 
-  // Confirm location selection
-  document.getElementById('confirm-location-btn').addEventListener('click', () => {
+  // Confirm location selection - AUTO-FILL DROPDOWNS
+  document.getElementById('confirm-location-btn').addEventListener('click', async () => {
     if (!selectedLocation) {
       alert('Please click on the map to pin your location first!');
       return;
     }
     
-    // Fill hidden form fields
-    document.getElementById('ad-state').value = selectedLocation.state || '';
-    document.getElementById('ad-district').value = selectedLocation.district || '';
-    document.getElementById('ad-area').value = selectedLocation.area || '';
-    document.getElementById('ad-locationFull').value = selectedLocation.fullAddress || '';
+    // Store lat/long/full address in hidden fields
     document.getElementById('ad-latitude').value = selectedLocation.lat || '';
     document.getElementById('ad-longitude').value = selectedLocation.lng || '';
+    document.getElementById('ad-locationFull').value = selectedLocation.fullAddress || '';
     
-    // Show selected location
+    // Show confirmation
     document.getElementById('selected-location-display').style.display = 'block';
     document.getElementById('location-text').textContent = selectedLocation.fullAddress;
+    
+    // AUTO-FILL STATE DROPDOWN
+    if (selectedLocation.state) {
+      // Make sure states are loaded first
+      if (stateSelect.options.length <= 1) {
+        await loadStates();
+      }
+      
+      // Select the state
+      for (let i = 0; i < stateSelect.options.length; i++) {
+        if (stateSelect.options[i].value === selectedLocation.state) {
+          stateSelect.selectedIndex = i;
+          stateSelect.dispatchEvent(new Event('change')); // Trigger district load
+          break;
+        }
+      }
+      
+      // Wait for districts to load, then select
+      if (selectedLocation.district) {
+        setTimeout(() => {
+          for (let i = 0; i < districtSelect.options.length; i++) {
+            if (districtSelect.options[i].value === selectedLocation.district) {
+              districtSelect.selectedIndex = i;
+              districtSelect.dispatchEvent(new Event('change')); // Trigger area load
+              break;
+            }
+          }
+          
+          // Wait for areas to load, then select or use custom
+          if (selectedLocation.area) {
+            setTimeout(() => {
+              let foundArea = false;
+              for (let i = 0; i < areaSelect.options.length; i++) {
+                if (areaSelect.options[i].value === selectedLocation.area) {
+                  areaSelect.selectedIndex = i;
+                  foundArea = true;
+                  break;
+                }
+              }
+              
+              // If area not in dropdown, use custom input
+              if (!foundArea) {
+                areaSelect.value = 'others';
+                areaSelect.dispatchEvent(new Event('change'));
+                document.getElementById('ad-area-custom').value = selectedLocation.area;
+              }
+            }, 500);
+          }
+        }, 500);
+      }
+    }
     
     // Close modal
     document.getElementById('map-modal').style.display = 'none';
