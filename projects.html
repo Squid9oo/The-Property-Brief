@@ -127,6 +127,7 @@
       >
         <!-- Netlify needs this hidden field to match the form name -->
         <input type="hidden" name="form-name" value="project-submit" />
+        <input type="hidden" name="propertyType" id="propertyType" />
 
         <!-- SECTION 1 (visible first) -->
         <div id="form-section-1">
@@ -552,23 +553,32 @@
 
   // 2. Category Logic
   categorySelect.addEventListener('change', (e) => {
-    const val = e.target.value;
-    
-    document.getElementById('fields-high-rise-residential').style.display = 'none';
-    document.getElementById('fields-landed-residential').style.display = 'none';
-    document.getElementById('fields-commercial').style.display = 'none';
-    document.getElementById('fields-land').style.display = 'none';
-    
-    if (val === 'High Rise Residential') {
-      document.getElementById('fields-high-rise-residential').style.display = 'block';
-    } else if (val === 'Landed Residential') {
-      document.getElementById('fields-landed-residential').style.display = 'block';
-    } else if (val === 'Commercial') {
-      document.getElementById('fields-commercial').style.display = 'block';
-    } else if (val === 'Land') {
-      document.getElementById('fields-land').style.display = 'block';
-    }
+  const val = e.target.value;
+  
+  // Hide all property type sections
+  document.getElementById('fields-high-rise-residential').style.display = 'none';
+  document.getElementById('fields-landed-residential').style.display = 'none';
+  document.getElementById('fields-commercial').style.display = 'none';
+  document.getElementById('fields-land').style.display = 'none';
+  
+  // Show relevant section
+  if (val === 'High Rise Residential') {
+    document.getElementById('fields-high-rise-residential').style.display = 'block';
+  } else if (val === 'Landed Residential') {
+    document.getElementById('fields-landed-residential').style.display = 'block';
+  } else if (val === 'Commercial') {
+    document.getElementById('fields-commercial').style.display = 'block';
+  } else if (val === 'Land') {
+    document.getElementById('fields-land').style.display = 'block';
+  }
+});
+
+// NEW CODE: Sync property type fields to hidden field
+document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="commercialType"], [name="landType"]').forEach(select => {
+  select.addEventListener('change', (e) => {
+    document.getElementById('propertyType').value = e.target.value;
   });
+});
 
   // 3. LOCATION DROPDOWN LOGIC
   
