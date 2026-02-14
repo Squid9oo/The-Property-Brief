@@ -2,9 +2,8 @@
 title: GDB Holdings Enters Property Development with RM700M Kuching Project as
   Berjaya Land Completes Rebranding
 date: 2026-02-14T07:07:00.000+08:00
-tag: GDB Holdings, Berjaya Land, Berjaya Property, S P Setia, UEM Sunrise,
-  Gamuda Land, PR1MA, MBSB Investment Bank, Wawasan Dengkil, ISF Group, KSK
-  Land, Kaisar Maxim
+tag: GDB Holdings • Berjaya Property • S P Setia • UEM Sunrise • Gamuda Land •
+  PR1MA • MBSB • Wawasan Dengkil • ISF Group • KSK Land • Kaisar Maxim
 summary: GDB Holdings is pivoting from pure construction into property
   development with a RM700 million mixed-use project in Kuching, while
   separately securing a RM102 million court win over the troubled 8 Conlay
