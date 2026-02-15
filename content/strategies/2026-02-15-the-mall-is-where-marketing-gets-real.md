@@ -1,11 +1,7 @@
 ---
 title: The Mall Is Where Marketing Gets Real
 date: 2026-02-15T09:04:00.000+08:00
-tag: Property marketing  Real estate sales  Sales & marketing leadership  CEO
-  mindset  Brand differentiation  Retail safari  Cross-industry
-  benchmarking  Visual merchandising  Mall advertising  Customer
-  attention  Sales gallery design  Experiential marketing  Out-of-home
-  advertising  Malaysia property industry  Creative strategy
+tag: Property marketing
 summary: If your marketing looks like your competitor’s marketing, you’re paying
   to be ignored. The fastest way to break that pattern is simple, stop
   benchmarking only within property, and start learning from retailers who fight
