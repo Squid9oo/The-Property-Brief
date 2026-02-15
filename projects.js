@@ -652,6 +652,8 @@ function openPropertyModal(property) {
         <div class="modal-section">
           <h3>📍 Location</h3>
           <p>${property['Location Full'] || `${property.State || 'Unknown'}, ${property.District || 'Unknown'}`}</p>
+          <!-- Google Map Container -->
+          <div id="project-map" style="width: 100%; height: 300px; border-radius: 8px; margin-top: 12px; border: 1px solid #ddd;"></div>
         </div>
 
         <div class="modal-section">
@@ -692,6 +694,15 @@ function openPropertyModal(property) {
   `;
 
   modal.classList.add('open');
+    
+  // Initialize Google Map
+  setTimeout(() => {
+    initProjectMap(
+      property['Location Full'] || `${property.State}, ${property.District}`,
+      property.Latitude || property.latitude,
+      property.Longitude || property.longitude
+    );
+  }, 300);
 
   // Gallery navigation
   let currentPhotoIndex = 0;
@@ -760,6 +771,58 @@ function openPropertyModal(property) {
       modal.classList.remove('open');
     }
   });
+}
+
+// ============ GOOGLE MAPS ============
+
+/**
+ * Initialize Google Map in property modal
+ * @param {string} location - Full location string
+ * @param {string} latitude - Latitude (if available)
+ * @param {string} longitude - Longitude (if available)
+ */
+function initProjectMap(location, latitude, longitude) {
+  const mapContainer = document.getElementById('project-map');
+  if (!mapContainer) return;
+
+  // Default center (Malaysia)
+  let lat = 3.1390;
+  let lng = 101.6869;
+
+  // Use provided coordinates if available
+  if (latitude && longitude && latitude !== '' && longitude !== '') {
+    lat = parseFloat(latitude);
+    lng = parseFloat(longitude);
+  }
+
+  // Create map
+  const map = new google.maps.Map(mapContainer, {
+    zoom: 15,
+    center: { lat, lng },
+    mapTypeControl: true,
+    streetViewControl: true,
+    fullscreenControl: true
+  });
+
+  // Add marker
+  const marker = new google.maps.Marker({
+    position: { lat, lng },
+    map: map,
+    title: location,
+    animation: google.maps.Animation.DROP
+  });
+
+  // If no coordinates provided, geocode the address
+  if (!latitude || !longitude || latitude === '' || longitude === '') {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: location + ', Malaysia' }, function(results, status) {
+      if (status === 'OK' && results[0]) {
+        const location = results[0].geometry.location;
+        map.setCenter(location);
+        marker.setPosition(location);
+      }
+    });
+  }
 }
 
 // ============ AD MODAL ============
