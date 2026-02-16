@@ -56,9 +56,9 @@ const CONFIG = {
   API: {
     POSTS_JSON: 'posts.json',
 
-    // Permanent listings endpoint: your site domain -> Netlify Function -> Apps Script JSON.
-    // This avoids browser CORS issues and keeps one stable URL in the frontend.
-    PROJECTS_JSON: '/.netlify/functions/listings',
+    // LIVE GOOGLE SHEET ENDPOINT (Your new Backend)
+    // This handles both LOADING listings (GET) and SUBMITTING ads (POST)
+    PROJECTS_JSON: 'https://script.google.com/macros/s/AKfycbz5ok2RE-YFLkCASmlBDtPnc8WnKpnHjlFvDdFa0XqWJv_BGiaPN0B84Lo66GMwmXjo/exec',
 
     PROJECTS_HERO_JSON: 'content/settings/projects-hero.json',
     STATES_JSON: '/content/settings/locations/states.json',
@@ -68,6 +68,8 @@ const CONFIG = {
 
   // Cache Settings
   CACHE: {
+    // Google Scripts don't support 'no-store' well, so we use default
+    DEFAULT: {}, 
     NO_STORE: { cache: 'no-store' },
   },
 

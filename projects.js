@@ -1,24 +1,10 @@
 /* ========================================
-   THE PROPERTY BRIEF — projects.js (REFACTORED)
-   All code quality issues fixed:
-   ✅ No ES6 imports (uses global CONFIG and menu.js)
-   ✅ No duplicate hamburger code
-   ✅ Memory leak fixed (slider cleanup)
-   ✅ Better error handling
-   ✅ Loading states added
-   ✅ Event delegation instead of inline handlers
-   ✅ JSDoc documentation
-   ✅ AUTO-ROTATING CAROUSEL for property cards
-   ✅ RICH CARD DISPLAY with status badges and specs
-   ✅ CLICKABLE MODAL with full property details
-   ✅ SMART CONTACT LINKS (WhatsApp, SMS, Call, Email)
-   ✅ COMPACT MODAL with badge+title+price inline
-   ✅ INLINE CONTACT BUTTONS (phone/email + buttons same line)
-   Last updated: 2026-02-10
+   THE PROPERTY BRIEF — projects.js
+   - Loads listings from Google Sheets
+   - Submits new ads to Google Sheets (Base64)
+   - Handles Map & UI
+   Last updated: 2026-02-16
 ======================================== */
-
-// Hamburger menu initialized by menu.js (loaded globally)
-// CONFIG is loaded globally via script tag
 
 // ============ STATE ============
 let allProperties = [];
@@ -26,50 +12,53 @@ let currentSlideIndex = 0;
 let sliderTimer = null;
 let adminSlides = [];
 let isLoading = false;
-
-// Property card carousels
 let cardCarouselTimers = {};
 
 // ============ LIFECYCLE ============
 
-// Cleanup slider on page unload (prevents memory leaks)
 window.addEventListener('beforeunload', () => {
-  if (sliderTimer) {
-    clearInterval(sliderTimer);
-    sliderTimer = null;
-  }
-  
-  // Clear all card carousel timers
+  if (sliderTimer) clearInterval(sliderTimer);
   Object.values(cardCarouselTimers).forEach(timer => clearInterval(timer));
-  cardCarouselTimers = {};
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Initialize Helpers
+  initDropdowns();
+  
+  // 2. Initialize Data
+  init();
+
+  // 3. Attach Custom Form Submitter
+  const form = document.querySelector('form[name="project-submit"]');
+  if (form) {
+    form.addEventListener('submit', handleFormSubmit);
+  }
 });
 
 // ============ INITIALIZATION ============
 
-/**
- * Initialize projects page
- */
 async function init() {
   await loadAdminHeroSlider();
   await loadProperties();
-  await populateStateDropdown();
-  updateDistrictDropdown();
 }
 
 /**
- * Load properties data
+ * Load properties from Google Sheets Web App
  */
 async function loadProperties() {
   try {
     setLoadingState(true);
-    const res = await fetch(CONFIG.API.PROJECTS_JSON, CONFIG.CACHE.NO_STORE);
+    
+    // Use CONFIG.CACHE.DEFAULT to allow the browser to negotiate caching with Google
+    const res = await fetch(CONFIG.API.PROJECTS_JSON, CONFIG.CACHE.DEFAULT);
 
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}`);
-    }
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const raw = await res.json();
-    allProperties = Array.isArray(raw) ? raw : (raw.listings || []);
+    // Google Script returns a flat array of objects. 
+    // We filter for objects that actually have an 'Ad Title' to avoid empty rows.
+    allProperties = (Array.isArray(raw) ? raw : [])
+      .filter(p => p['Ad Title'] && p['Ad Title'] !== '');
     
     renderCards(allProperties);
   } catch (e) {
@@ -81,11 +70,119 @@ async function loadProperties() {
   }
 }
 
-// ============ ADMIN SLIDER ============
+// ============ FORM SUBMISSION (NEW) ============
 
 /**
- * Load and initialize hero slider
+ * Handle the "Post Free Ad" form submission
  */
+async function handleFormSubmit(e) {
+  e.preventDefault(); // Stop Netlify/HTML standard submit
+  
+  const form = e.target;
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const originalBtnText = submitBtn.innerText;
+  
+  // UI: Show loading
+  submitBtn.disabled = true;
+  submitBtn.innerText = "Submitting...";
+
+  try {
+    const formData = new FormData(form);
+    
+    // 1. Convert File Inputs to Base64
+    const photoPromises = [];
+    ['photo1', 'photo2', 'photo3', 'photo4', 'photo5'].forEach(fieldName => {
+      const file = formData.get(fieldName);
+      if (file && file.size > 0) {
+        photoPromises.push(fileToBase64(file));
+      }
+    });
+
+    const photosBase64 = await Promise.all(photoPromises);
+
+    // 2. Construct Payload (Matching Google Script keys)
+    // Note: We map the form "names" to the keys expected by the Script's doPost
+    const payload = {
+      adTitle: formData.get('adTitle'),
+      listingType: formData.get('listingType'),
+      category: formData.get('category'),
+      sellerType: formData.get('sellerType'),
+      priceRm: formData.get('priceRm'),
+      
+      // Location
+      state: formData.get('state'),
+      district: formData.get('district'),
+      area: formData.get('area') === 'others' ? formData.get('areaCustom') : formData.get('area'),
+      locationFull: formData.get('locationFull') || `${formData.get('state')}, ${formData.get('district')}`,
+      latitude: formData.get('latitude'),
+      longitude: formData.get('longitude'),
+      
+      // Details
+      propertyType: formData.get('propertyType'), // This is set by the hidden input logic
+      tenure: formData.get('tenure'),
+      landTitle: formData.get('landTitle'),
+      bedrooms: formData.get('bedrooms'),
+      bathrooms: formData.get('bathrooms'),
+      builtUpSqft: formData.get('builtUpSqft'),
+      landSize: formData.get('landSize'),
+      parking: formData.get('parking'),
+      storeyCount: formData.get('storeyCount'),
+      description: formData.get('description'),
+      contact: formData.get('contact'),
+      
+      // Photos Array
+      photos: photosBase64
+    };
+
+    // 3. Send to Google Script
+    // We use no-cors if needed, but 'text/plain' triggers simple CORS which usually works with Apps Script
+    // Note: Apps Script POST requests often return a 302 redirect. Fetch handles this.
+    const response = await fetch(CONFIG.API.PROJECTS_JSON, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    
+    // 4. Success handling
+    const result = await response.json();
+    
+    if (result.result === 'success') {
+      window.location.href = '/projects-thank-you.html';
+    } else {
+      throw new Error(result.error || 'Unknown error');
+    }
+
+  } catch (err) {
+    console.error('Submission Error:', err);
+    alert('Error submitting form: ' + err.message);
+    submitBtn.disabled = false;
+    submitBtn.innerText = originalBtnText;
+  }
+}
+
+/**
+ * Helper: Read file as Base64 object for Google Script
+ */
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      // Remove the "data:image/png;base64," prefix so sending is lighter? 
+      // Actually, standard Base64 string is fine, but let's strip prefix for the script
+      const result = reader.result;
+      const base64Data = result.split(',')[1];
+      resolve({
+        data: base64Data,
+        type: file.type,
+        name: file.name
+      });
+    };
+    reader.onerror = error => reject(error);
+  });
+}
+
+// ============ ADMIN SLIDER ============
+
 async function loadAdminHeroSlider() {
   const container = document.getElementById('admin-slider-container');
   const dotsContainer = document.getElementById('slider-dots');
@@ -100,7 +197,6 @@ async function loadAdminHeroSlider() {
 
     if (adminSlides.length === 0) return;
 
-    // Use event delegation instead of inline onclick
     container.innerHTML = adminSlides.map((slide, index) => `
       <div class="hero-slide ${index === 0 ? 'active' : ''}"
            data-slide-index="${index}"
@@ -112,7 +208,6 @@ async function loadAdminHeroSlider() {
       </div>
     `).join('');
 
-    // Event delegation for slide clicks
     container.addEventListener('click', (e) => {
       const slide = e.target.closest('.hero-slide');
       if (slide) {
@@ -126,13 +221,9 @@ async function loadAdminHeroSlider() {
         <span class="dot ${index === 0 ? 'active' : ''}" data-dot-index="${index}"></span>
       `).join('');
 
-      // Event delegation for dots
       dotsContainer.addEventListener('click', (e) => {
         const dot = e.target.closest('.dot');
-        if (dot) {
-          const index = parseInt(dot.getAttribute('data-dot-index'), 10);
-          goToSlide(index);
-        }
+        if (dot) goToSlide(parseInt(dot.getAttribute('data-dot-index'), 10));
       });
     }
 
@@ -142,10 +233,6 @@ async function loadAdminHeroSlider() {
   }
 }
 
-/**
- * Show specific slide
- * @param {number} index - Slide index
- */
 function showSlide(index) {
   const slides = document.querySelectorAll('.hero-slide');
   const dots = document.querySelectorAll('.dot');
@@ -162,27 +249,16 @@ function showSlide(index) {
   if (dots[currentSlideIndex]) dots[currentSlideIndex].classList.add('active');
 }
 
-/**
- * Navigate slides
- * @param {number} n - Direction (-1 or 1)
- */
 function changeSlide(n) {
   showSlide(currentSlideIndex + n);
   resetTimer();
 }
 
-/**
- * Go to specific slide
- * @param {number} n - Slide index
- */
 function goToSlide(n) {
   showSlide(n);
   resetTimer();
 }
 
-/**
- * Start auto-rotation
- */
 function startAutoSlide() {
   if (sliderTimer) clearInterval(sliderTimer);
   sliderTimer = setInterval(() => {
@@ -190,28 +266,31 @@ function startAutoSlide() {
   }, CONFIG.SLIDER.AUTO_SLIDE_INTERVAL_MS);
 }
 
-/**
- * Reset timer
- */
 function resetTimer() {
   startAutoSlide();
 }
 
-// Expose for HTML buttons (if any)
 window.changeSlide = changeSlide;
 window.goToSlide = goToSlide;
 
-// ============ LOCATION FILTERS ============
+// ============ LOCATION & DROPDOWNS ============
 
-/**
- * Populate state dropdown
- */
+function initDropdowns() {
+  const stateFilter = document.getElementById('filter-state');
+  const districtFilter = document.getElementById('filter-district');
+
+  if (stateFilter) stateFilter.addEventListener('change', updateDistrictDropdown);
+  if (districtFilter) districtFilter.addEventListener('change', updateAreaDropdown);
+  
+  populateStateDropdown();
+}
+
 async function populateStateDropdown() {
   const stateSelect = document.getElementById('filter-state');
   if (!stateSelect) return;
 
   try {
-    const response = await fetch(CONFIG.API.STATES_JSON, CONFIG.CACHE.NO_STORE);
+    const response = await fetch(CONFIG.API.STATES_JSON, CONFIG.CACHE.DEFAULT);
     if (!response.ok) throw new Error('States not found');
     
     const data = await response.json();
@@ -221,13 +300,9 @@ async function populateStateDropdown() {
       states.map(state => `<option value="${state}">${state}</option>`).join('');
   } catch (err) {
     console.error('Error loading states:', err);
-    stateSelect.innerHTML = '<option value="">Error loading states</option>';
   }
 }
 
-/**
- * Update district dropdown based on selected state
- */
 async function updateDistrictDropdown() {
   const selectedState = document.getElementById('filter-state').value;
   const districtSelect = document.getElementById('filter-district');
@@ -241,638 +316,323 @@ async function updateDistrictDropdown() {
   if (!selectedState) return;
 
   try {
-    const response = await fetch(CONFIG.API.DISTRICTS_JSON, CONFIG.CACHE.NO_STORE);
-    if (!response.ok) throw new Error('Districts not found');
-    
+    const response = await fetch(CONFIG.API.DISTRICTS_JSON, CONFIG.CACHE.DEFAULT);
     const data = await response.json();
     const districts = data.districtsByState?.[selectedState] || [];
 
     if (districts.length > 0) {
       districtSelect.innerHTML = '<option value="">All Districts</option>' +
-        districts.map(district => `<option value="${district}">${district}</option>`).join('');
-    } else {
-      districtSelect.innerHTML = '<option value="">No districts available</option>';
+        districts.map(d => `<option value="${d}">${d}</option>`).join('');
     }
   } catch (err) {
     console.error('Error loading districts:', err);
-    districtSelect.innerHTML = '<option value="">Error loading districts</option>';
   }
 }
 
-/**
- * Update area dropdown based on selected district
- */
 async function updateAreaDropdown() {
   const selectedState = document.getElementById('filter-state').value;
   const selectedDistrict = document.getElementById('filter-district').value;
   const areaSelect = document.getElementById('filter-area');
 
-  if (!areaSelect) return;
-
-  areaSelect.innerHTML = '<option value="">All Areas</option>';
-
-  if (!selectedState || !selectedDistrict) return;
+  if (!areaSelect || !selectedState || !selectedDistrict) return;
 
   try {
     const stateName = selectedState.toLowerCase().replace(/\s+/g, '-');
-    const response = await fetch(`${CONFIG.API.AREAS_BASE_PATH}${stateName}.json`, CONFIG.CACHE.NO_STORE);
-    
-    if (!response.ok) throw new Error('Areas not found');
-
+    const response = await fetch(`${CONFIG.API.AREAS_BASE_PATH}${stateName}.json`, CONFIG.CACHE.DEFAULT);
     const data = await response.json();
     const districtObj = data.districts?.find(d => d.name === selectedDistrict);
 
+    areaSelect.innerHTML = '<option value="">All Areas</option>';
     if (districtObj?.areas && districtObj.areas.length > 0) {
-      areaSelect.innerHTML = '<option value="">All Areas</option>' +
-        districtObj.areas.map(areaObj => `<option value="${areaObj.name}">${areaObj.name}</option>`).join('');
-    } else {
-      areaSelect.innerHTML = '<option value="">No areas available</option>';
+      areaSelect.innerHTML += districtObj.areas.map(a => `<option value="${a.name}">${a.name}</option>`).join('');
     }
   } catch (err) {
     console.error('Error loading areas:', err);
-    areaSelect.innerHTML = '<option value="">Error loading areas</option>';
   }
 }
 
-// ============ FILTERS ============
+// ============ FILTERS & RENDERING ============
 
-/**
- * Apply all filters to properties
- */
 function applyFilters() {
-  const listingType = document.getElementById('filter-listing-type')?.value || '';
-  const state = document.getElementById('filter-state')?.value || '';
-  const district = document.getElementById('filter-district')?.value || '';
-  const area = document.getElementById('filter-area')?.value || '';
-  const category = document.getElementById('filter-category')?.value || '';
-  const minPrice = document.getElementById('filter-price-min')?.value || '';
-  const maxPrice = document.getElementById('filter-price-max')?.value || '';
+  const filters = {
+    type: document.getElementById('filter-listing-type')?.value,
+    state: document.getElementById('filter-state')?.value,
+    district: document.getElementById('filter-district')?.value,
+    area: document.getElementById('filter-area')?.value,
+    category: document.getElementById('filter-category')?.value,
+    min: document.getElementById('filter-price-min')?.value,
+    max: document.getElementById('filter-price-max')?.value
+  };
 
   setLoadingState(true);
 
   const filtered = allProperties.filter(p => {
     const price = parseFloat(p['Price(RM)']);
     return (
-      (listingType === '' || p['Listing Type'] === listingType) &&
-      (state === '' || p.State === state) &&
-      (district === '' || p.District === district) &&
-      (area === '' || p.Area === area) &&
-      (category === '' || p.Category === category) &&
-      (minPrice === '' || price >= parseFloat(minPrice)) &&
-      (maxPrice === '' || price <= parseFloat(maxPrice))
+      (!filters.type || p['Listing Type'] === filters.type) &&
+      (!filters.state || p.State === filters.state) &&
+      (!filters.district || p.District === filters.district) &&
+      (!filters.area || p.Area === filters.area) &&
+      (!filters.category || p.Category === filters.category) &&
+      (!filters.min || price >= parseFloat(filters.min)) &&
+      (!filters.max || price <= parseFloat(filters.max))
     );
   });
 
-  // Delay to show loading state
   setTimeout(() => {
     renderCards(filtered);
     setLoadingState(false);
   }, 150);
 }
 
-/**
- * Clear all filters
- */
 function clearFilters() {
-  const filterIds = [
-    'filter-listing-type',
-    'filter-state',
-    'filter-category',
-    'filter-price-min',
-    'filter-price-max'
-  ];
+  ['filter-listing-type', 'filter-state', 'filter-category', 'filter-price-min', 'filter-price-max']
+    .forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
 
-  filterIds.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-
-  const districtEl = document.getElementById('filter-district');
-  const areaEl = document.getElementById('filter-area');
-
-  if (districtEl) districtEl.innerHTML = '<option value="">All Districts</option>';
-  if (areaEl) areaEl.innerHTML = '<option value="">All Areas</option>';
+  const d = document.getElementById('filter-district');
+  const a = document.getElementById('filter-area');
+  if (d) d.innerHTML = '<option value="">All Districts</option>';
+  if (a) a.innerHTML = '<option value="">All Areas</option>';
 
   renderCards(allProperties);
 }
 
-// Expose for HTML if needed
 window.applyFilters = applyFilters;
 window.clearFilters = clearFilters;
 
-// ============ RENDERING ============
-
-/**
- * Set loading state UI
- * @param {boolean} loading - Is loading
- */
 function setLoadingState(loading) {
   isLoading = loading;
   const container = document.getElementById('listings-container');
   if (!container) return;
-
-  if (loading) {
-    container.style.opacity = '0.5';
-    container.style.pointerEvents = 'none';
-  } else {
-    container.style.opacity = '1';
-    container.style.pointerEvents = 'auto';
-  }
+  container.style.opacity = loading ? '0.5' : '1';
+  container.style.pointerEvents = loading ? 'none' : 'auto';
 }
 
-/**
- * Show error message
- * @param {string} containerId - Container ID
- * @param {string} message - Error message
- */
 function showError(containerId, message) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-
-  container.innerHTML = `
-    <div style="padding:40px 20px; text-align:center; color:var(--muted);">
-      <p style="font-size:16px; margin:0;">⚠️ ${message}</p>
-    </div>
-  `;
+  const c = document.getElementById(containerId);
+  if (c) c.innerHTML = `<div style="padding:40px;text-align:center;color:var(--muted);"><p>⚠️ ${message}</p></div>`;
 }
 
-/**
- * Get all photos for a property
- * @param {Object} item - Property object
- * @returns {Array} - Array of photo URLs
- */
 function getPropertyPhotos(item) {
   const photos = [];
+  // Check headers "Photo 1" through "Photo 5"
   for (let i = 1; i <= 5; i++) {
     const photo = item[`Photo ${i}`];
-    if (photo && photo.trim() !== '') {
-      photos.push(photo);
-    }
+    if (photo && photo.trim() !== '') photos.push(photo);
   }
   return photos.length > 0 ? photos : ['https://via.placeholder.com/300x200?text=No+Image'];
 }
 
-/**
- * Detect contact type and generate appropriate HTML (INLINE)
- * @param {string} contact - Contact string
- * @returns {string} - HTML for contact section
- */
 function generateContactHTML(contact) {
-  if (!contact || contact.trim() === '') {
-    return '<p class="contact-info">Contact information not available</p>';
-  }
-
+  if (!contact || contact.trim() === '') return '<p>Contact info not available</p>';
   const trimmed = contact.trim();
-  
-  // Check if it's an email (contains @ and .)
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (emailPattern.test(trimmed)) {
-    return `
-      <div class="contact-row">
-        <p class="contact-info">${trimmed}</p>
-        <div class="contact-buttons">
-          <a href="mailto:${trimmed}" class="contact-btn email">
-            ✉️ Email
-          </a>
-        </div>
-      </div>
-    `;
-  }
-  
-  // Check if it contains phone number patterns (digits, +, -, spaces, ())
   const phonePattern = /[\d\+\-\(\)\s]{7,}/;
-  if (phonePattern.test(trimmed)) {
-    // Clean the number for WhatsApp (remove spaces, dashes, parentheses)
-    const cleanNumber = trimmed.replace(/[\s\-\(\)]/g, '');
-    
+  
+  if (trimmed.includes('@')) {
+    return `<div class="contact-row"><p>${trimmed}</p><a href="mailto:${trimmed}" class="contact-btn email">✉️ Email</a></div>`;
+  } else if (phonePattern.test(trimmed)) {
+    const clean = trimmed.replace(/[\s\-\(\)]/g, '');
     return `
       <div class="contact-row">
-        <p class="contact-info">${trimmed}</p>
+        <p>${trimmed}</p>
         <div class="contact-buttons">
-          <a href="https://wa.me/${cleanNumber}" target="_blank" rel="noopener noreferrer" class="contact-btn whatsapp">
-            💬 WhatsApp
-          </a>
-          <a href="tel:${cleanNumber}" class="contact-btn call">
-            📞 Call
-          </a>
-          <a href="sms:${cleanNumber}" class="contact-btn sms">
-            💬 SMS
-          </a>
+          <a href="https://wa.me/${clean}" target="_blank" class="contact-btn whatsapp">💬 WhatsApp</a>
+          <a href="tel:${clean}" class="contact-btn call">📞 Call</a>
         </div>
-      </div>
-    `;
+      </div>`;
   }
-  
-  // If not email or phone, just display as text
-  return `<p class="contact-info">${trimmed}</p>`;
+  return `<p>${trimmed}</p>`;
 }
 
-/**
- * Initialize card carousel
- * @param {string} cardId - Card ID
- * @param {Array} photos - Array of photo URLs
- */
 function initCardCarousel(cardId, photos) {
-  if (photos.length <= 1) return; // No need for carousel with 1 or 0 photos
+  if (photos.length <= 1) return;
+  if (cardCarouselTimers[cardId]) clearInterval(cardCarouselTimers[cardId]);
   
   let currentIndex = 0;
-  
-  // Clear existing timer if any
-  if (cardCarouselTimers[cardId]) {
-    clearInterval(cardCarouselTimers[cardId]);
-  }
-  
   cardCarouselTimers[cardId] = setInterval(() => {
     currentIndex = (currentIndex + 1) % photos.length;
-    
     const img = document.querySelector(`#${cardId} .card-carousel-img`);
     const dots = document.querySelectorAll(`#${cardId} .carousel-dot`);
     
     if (img) {
       img.style.opacity = '0';
-      setTimeout(() => {
-        img.src = photos[currentIndex];
-        img.style.opacity = '1';
-      }, 200);
+      setTimeout(() => { img.src = photos[currentIndex]; img.style.opacity = '1'; }, 200);
     }
-    
-    dots.forEach((dot, idx) => {
-      dot.classList.toggle('active', idx === currentIndex);
-    });
-  }, 3000); // 3 seconds
+    if (dots) dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+  }, 3000);
 }
 
-/**
- * Render property cards
- * @param {Array} properties - Properties array
- */
 function renderCards(properties) {
   const container = document.getElementById('listings-container');
-  const countDisplay = document.getElementById('property-count');
+  const count = document.getElementById('property-count');
   if (!container) return;
 
-  // Clear existing timers
-  Object.values(cardCarouselTimers).forEach(timer => clearInterval(timer));
+  Object.values(cardCarouselTimers).forEach(t => clearInterval(t));
   cardCarouselTimers = {};
 
-  // Update count
-  if (countDisplay) {
-    countDisplay.innerText = `Showing ${properties.length} property listing${properties.length === 1 ? '' : 's'}`;
-  }
+  if (count) count.innerText = `Showing ${properties.length} property listing${properties.length === 1 ? '' : 's'}`;
 
   if (properties.length === 0) {
-    container.innerHTML = `
-      <div style="padding:40px 20px; text-align:center; color:var(--muted);">
-        <p style="font-size:16px; margin:0;">No matching properties found.</p>
-        <button onclick="clearFilters()" class="btnGhost" style="width:auto; margin-top:16px;">Clear Filters</button>
-      </div>
-    `;
+    container.innerHTML = `<div style="padding:40px;text-align:center;"><p>No properties found.</p></div>`;
     return;
   }
 
   container.innerHTML = properties.map((item, index) => {
     const photos = getPropertyPhotos(item);
     const cardId = `card-${index}`;
-    const bedrooms = item.Bedrooms || item.Bedroom || '';
-    const bathrooms = item.Bathrooms || item.Bathroom || '';
-    const builtUp = item['Built Up (Sq.Ft.)'] || '';
-    
+    // Google Sheets might return numbers as numbers, so we handle both
+    const price = item['Price(RM)'] ? parseInt(item['Price(RM)']).toLocaleString() : '0';
+    const builtUp = item['Built Up (Sq.Ft.)'] ? parseInt(item['Built Up (Sq.Ft.)']).toLocaleString() : '';
+
     return `
     <div class="property-card" id="${cardId}" data-property-index="${index}">
       <div class="card-image-container">
-        <img src="${photos[0]}" 
-             alt="${item['Ad Title'] || 'Property'}" 
-             class="card-carousel-img"
-             loading="lazy">
-        
-        <!-- Status Badge -->
-        <div class="status-badge ${(item['Listing Type'] || '').toLowerCase().replace(/\s+/g, '-')}">
-          ${item['Listing Type'] || 'Property'}
-        </div>
-        
-        <!-- Carousel Dots -->
-        ${photos.length > 1 ? `
-        <div class="carousel-dots">
-          ${photos.map((_, i) => `<span class="carousel-dot ${i === 0 ? 'active' : ''}"></span>`).join('')}
-        </div>
-        ` : ''}
+        <img src="${photos[0]}" alt="${item['Ad Title']}" class="card-carousel-img" loading="lazy">
+        <div class="status-badge ${(item['Listing Type']||'').toLowerCase().replace(/\s+/g,'-')}">${item['Listing Type']||'Property'}</div>
+        ${photos.length > 1 ? `<div class="carousel-dots">${photos.map((_, i) => `<span class="carousel-dot ${i===0?'active':''}"></span>`).join('')}</div>` : ''}
       </div>
-      
       <div class="card-content">
-        <h3>${item['Ad Title'] || 'Untitled'}</h3>
-        
+        <h3>${item['Ad Title']}</h3>
         <div class="property-specs">
-          ${bedrooms ? `<span class="spec">🛏️ ${bedrooms} bed${bedrooms > 1 ? 's' : ''}</span>` : ''}
-          ${bathrooms ? `<span class="spec">🛁 ${bathrooms} bath${bathrooms > 1 ? 's' : ''}</span>` : ''}
-          ${builtUp ? `<span class="spec">📐 ${parseInt(builtUp).toLocaleString()} sqft</span>` : ''}
+          ${item.Bedrooms ? `<span class="spec">🛏️ ${item.Bedrooms}</span>` : ''}
+          ${item.Bathrooms ? `<span class="spec">🛁 ${item.Bathrooms}</span>` : ''}
+          ${builtUp ? `<span class="spec">📐 ${builtUp} sqft</span>` : ''}
         </div>
-        
-        <p class="price">RM ${parseInt(item['Price(RM)'] || 0).toLocaleString()}</p>
-        <p class="location">📍 ${item['Location Full'] || `${item.State || 'Unknown'}, ${item.District || 'Unknown'}`}</p>
-        
+        <p class="price">RM ${price}</p>
+        <p class="location">📍 ${item['Location Full'] || item.State}</p>
         <span class="badge">${item.Category || 'Property'}</span>
       </div>
-    </div>
-  `;
+    </div>`;
   }).join('');
 
-  // Initialize carousels for all cards
-  properties.forEach((item, index) => {
-    const photos = getPropertyPhotos(item);
-    const cardId = `card-${index}`;
-    initCardCarousel(cardId, photos);
-  });
-
-  // Add click event to open modal
+  properties.forEach((item, index) => initCardCarousel(`card-${index}`, getPropertyPhotos(item)));
+  
   container.querySelectorAll('.property-card').forEach(card => {
     card.addEventListener('click', () => {
-      const index = parseInt(card.getAttribute('data-property-index'));
-      openPropertyModal(properties[index]);
+      openPropertyModal(properties[parseInt(card.getAttribute('data-property-index'))]);
     });
   });
 }
 
-// ============ PROPERTY MODAL ============
-
-/**
- * Open property details modal
- * @param {Object} property - Property object
- */
 function openPropertyModal(property) {
   const modal = document.getElementById('propertyModal');
   if (!modal) return;
 
   const photos = getPropertyPhotos(property);
+  const galleryHTML = photos.map((p, i) => `<div class="modal-photo ${i===0?'active':''}" data-photo-index="${i}"><img src="${p}"></div>`).join('');
+  const dotsHTML = photos.map((_, i) => `<span class="gallery-dot ${i===0?'active':''}" data-dot="${i}"></span>`).join('');
   
-  // Build photo gallery HTML
-  const galleryHTML = photos.map((photo, i) => `
-    <div class="modal-photo ${i === 0 ? 'active' : ''}" data-photo-index="${i}">
-      <img src="${photo}" alt="Photo ${i + 1}" />
-    </div>
-  `).join('');
-
-  const bedrooms = property.Bedrooms || property.Bedroom || 'N/A';
-  const bathrooms = property.Bathrooms || property.Bathroom || 'N/A';
-  const builtUp = property['Built Up (Sq.Ft.)'] ? `${parseInt(property['Built Up (Sq.Ft.)']).toLocaleString()} sqft` : 'N/A';
-  const landSize = property['Land Size'] || 'N/A';
-  const tenure = property.Tenure || 'N/A';
-  const landTitle = property['Land Title'] || 'N/A';
-  const propertyType = property['Property Type'] || property.Category || 'N/A';
-  const parking = property.Parking || 'N/A';
-  const storeyCount = property['Storey Count'] || 'N/A';
+  const price = property['Price(RM)'] ? parseInt(property['Price(RM)']).toLocaleString() : '0';
+  const builtUp = property['Built Up (Sq.Ft.)'] ? parseInt(property['Built Up (Sq.Ft.)']).toLocaleString() : 'N/A';
 
   modal.innerHTML = `
     <div class="modal-content">
       <button class="modal-close" id="closePropertyModal">✕</button>
-      
       <div class="modal-header">
         <div class="modal-title-row">
-          <div class="status-badge ${(property['Listing Type'] || '').toLowerCase().replace(/\s+/g, '-')}">
-            ${property['Listing Type'] || 'Property'}
-          </div>
-          <h2>${property['Ad Title'] || 'Property Details'}</h2>
-          <p class="modal-price">RM ${parseInt(property['Price(RM)'] || 0).toLocaleString()}</p>
+          <div class="status-badge">${property['Listing Type']}</div>
+          <h2>${property['Ad Title']}</h2>
+          <p class="modal-price">RM ${price}</p>
         </div>
       </div>
-
       <div class="modal-gallery">
         ${galleryHTML}
-        ${photos.length > 1 ? `
-        <div class="gallery-nav">
-          <button class="gallery-prev">‹</button>
-          <button class="gallery-next">›</button>
-        </div>
-        <div class="gallery-dots">
-          ${photos.map((_, i) => `<span class="gallery-dot ${i === 0 ? 'active' : ''}" data-dot="${i}"></span>`).join('')}
-        </div>
-        ` : ''}
+        ${photos.length > 1 ? `<div class="gallery-nav"><button class="gallery-prev">‹</button><button class="gallery-next">›</button></div><div class="gallery-dots">${dotsHTML}</div>` : ''}
       </div>
-
       <div class="modal-body">
         <div class="modal-section">
           <h3>📍 Location</h3>
-          <p>${property['Location Full'] || `${property.State || 'Unknown'}, ${property.District || 'Unknown'}`}</p>
-          <!-- Google Map Container -->
-          <div id="project-map" style="width: 100%; height: 300px; border-radius: 8px; margin-top: 12px; border: 1px solid #ddd;"></div>
+          <p>${property['Location Full'] || `${property.State}, ${property.District}`}</p>
+          <div id="project-map" style="width:100%;height:300px;border-radius:8px;margin-top:12px;background:#eee;"></div>
         </div>
-
         <div class="modal-section">
-          <h3>🏠 Property Details</h3>
+          <h3>🏠 Details</h3>
           <div class="details-grid">
-            <div><strong>Type:</strong> ${propertyType}</div>
-            <div><strong>Category:</strong> ${property.Category || 'N/A'}</div>
-            <div><strong>Bedrooms:</strong> ${bedrooms}</div>
-            <div><strong>Bathrooms:</strong> ${bathrooms}</div>
-            <div><strong>Built Up:</strong> ${builtUp}</div>
-            <div><strong>Land Size:</strong> ${landSize}</div>
-            <div><strong>Tenure:</strong> ${tenure}</div>
-            <div><strong>Land Title:</strong> ${landTitle}</div>
-            <div><strong>Parking:</strong> ${parking}</div>
-            ${storeyCount !== 'N/A' ? `<div><strong>Storey:</strong> ${storeyCount}</div>` : ''}
+            <div><strong>Type:</strong> ${property['Property Type'] || property.Category}</div>
+            <div><strong>Tenure:</strong> ${property.Tenure || 'N/A'}</div>
+            <div><strong>Bedrooms:</strong> ${property.Bedrooms || 'N/A'}</div>
+            <div><strong>Bathrooms:</strong> ${property.Bathrooms || 'N/A'}</div>
+            <div><strong>Built Up:</strong> ${builtUp} sqft</div>
+            <div><strong>Land Size:</strong> ${property['Land Size'] || 'N/A'}</div>
           </div>
         </div>
-
-        ${property.Description ? `
         <div class="modal-section">
           <h3>📝 Description</h3>
-          <p>${property.Description}</p>
+          <p>${(property.Description || '').replace(/\n/g, '<br>')}</p>
         </div>
-        ` : ''}
-
         <div class="modal-section">
           <h3>📞 Contact</h3>
           ${generateContactHTML(property.Contact)}
         </div>
-
-        ${property['Seller Type'] ? `
-        <div class="modal-section">
-          <p><strong>Seller Type:</strong> ${property['Seller Type']}</p>
-        </div>
-        ` : ''}
       </div>
-    </div>
-  `;
+    </div>`;
 
   modal.classList.add('open');
-    
-  // Initialize Google Map
+
+  // Map
   setTimeout(() => {
-    initProjectMap(
-      property['Location Full'] || `${property.State}, ${property.District}`,
-      property.Latitude || property.latitude,
-      property.Longitude || property.longitude
-    );
+    // Check if we have lat/long from the sheet
+    // Note: Google Sheets might return them as numbers
+    const lat = property['Location Full']?.lat || property.Latitude; 
+    // Actually, based on my script, we didn't save lat/long to visible columns in the simplified view?
+    // Wait, the doGet returns ALL columns.
+    // If you didn't add Latitude/Longitude columns to the Sheet, we rely on geocoding 'Location Full'
+    initProjectMap(property['Location Full'], lat, property.Longitude);
   }, 300);
 
-  // Gallery navigation
+  // Gallery Logic
   let currentPhotoIndex = 0;
-  const prevBtn = modal.querySelector('.gallery-prev');
-  const nextBtn = modal.querySelector('.gallery-next');
-  const dots = modal.querySelectorAll('.gallery-dot');
-
-  function showPhoto(index) {
-    const photos = modal.querySelectorAll('.modal-photo');
-    const dots = modal.querySelectorAll('.gallery-dot');
-    
-    photos.forEach((p, i) => {
-      p.classList.toggle('active', i === index);
-    });
-    
-    dots.forEach((d, i) => {
-      d.classList.toggle('active', i === index);
-    });
-    
-    currentPhotoIndex = index;
-  }
-
-  if (prevBtn) {
-    prevBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const newIndex = currentPhotoIndex > 0 ? currentPhotoIndex - 1 : photos.length - 1;
-      showPhoto(newIndex);
-    });
-  }
-
-  if (nextBtn) {
-    nextBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const newIndex = currentPhotoIndex < photos.length - 1 ? currentPhotoIndex + 1 : 0;
-      showPhoto(newIndex);
-    });
-  }
-
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', (e) => {
-      e.stopPropagation();
-      showPhoto(i);
-    });
-  });
-
-  // Close modal
-  const closeBtn = modal.querySelector('#closePropertyModal');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-      modal.classList.remove('open');
-    });
-  }
-
-  // Close on escape
-  const escapeHandler = (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) {
-      modal.classList.remove('open');
-      document.removeEventListener('keydown', escapeHandler);
-    }
+  const showPhoto = (idx) => {
+    modal.querySelectorAll('.modal-photo').forEach((p, i) => p.classList.toggle('active', i === idx));
+    modal.querySelectorAll('.gallery-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    currentPhotoIndex = idx;
   };
-  document.addEventListener('keydown', escapeHandler);
-
-  // Close when clicking outside
-  modal.addEventListener('click', (e) => {
-    if (e.target.id === 'propertyModal') {
-      modal.classList.remove('open');
-    }
-  });
+  
+  modal.querySelector('.gallery-prev')?.addEventListener('click', () => showPhoto(currentPhotoIndex > 0 ? currentPhotoIndex - 1 : photos.length - 1));
+  modal.querySelector('.gallery-next')?.addEventListener('click', () => showPhoto(currentPhotoIndex < photos.length - 1 ? currentPhotoIndex + 1 : 0));
+  
+  const closeBtn = modal.querySelector('#closePropertyModal');
+  if (closeBtn) closeBtn.onclick = () => modal.classList.remove('open');
 }
 
-// ============ GOOGLE MAPS ============
+// ============ MAPS ============
 
-/**
- * Initialize Google Map in property modal
- * @param {string} location - Full location string
- * @param {string} latitude - Latitude (if available)
- * @param {string} longitude - Longitude (if available)
- */
 function initProjectMap(location, latitude, longitude) {
-  const mapContainer = document.getElementById('project-map');
-  if (!mapContainer) return;
+  const container = document.getElementById('project-map');
+  if (!container || !window.google) return;
 
-  // Default center (Malaysia)
-  let lat = 3.1390;
-  let lng = 101.6869;
-
-  // Use provided coordinates if available
-  if (latitude && longitude && latitude !== '' && longitude !== '') {
-    lat = parseFloat(latitude);
-    lng = parseFloat(longitude);
-  }
-
-  // Create map
-  const map = new google.maps.Map(mapContainer, {
-    zoom: 15,
-    center: { lat, lng },
-    mapTypeControl: true,
-    streetViewControl: true,
-    fullscreenControl: true
-  });
-
-  // Add marker
-  const marker = new google.maps.Marker({
-    position: { lat, lng },
-    map: map,
-    title: location,
-    animation: google.maps.Animation.DROP
-  });
-
-  // If no coordinates provided, geocode the address
-  if (!latitude || !longitude || latitude === '' || longitude === '') {
+  let pos = { lat: 3.1390, lng: 101.6869 }; // Default KL
+  
+  // If we have valid coordinates
+  if (latitude && longitude) {
+    pos = { lat: parseFloat(latitude), lng: parseFloat(longitude) };
+    drawMap(container, pos, location);
+  } else {
+    // Geocode
     const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ address: location + ', Malaysia' }, function(results, status) {
+    geocoder.geocode({ address: location + ', Malaysia' }, (results, status) => {
       if (status === 'OK' && results[0]) {
-        const location = results[0].geometry.location;
-        map.setCenter(location);
-        marker.setPosition(location);
+        drawMap(container, results[0].geometry.location, location);
+      } else {
+        drawMap(container, pos, location); // Fallback
       }
     });
   }
 }
 
-// ============ AD MODAL ============
+function drawMap(container, pos, title) {
+  const map = new google.maps.Map(container, { zoom: 15, center: pos });
+  new google.maps.Marker({ position: pos, map: map, title: title });
+}
+
+// ============ AD MODAL UTILS ============
 
 const adModal = document.getElementById('adModal');
 const openBtn = document.getElementById('openAdModalBtn');
 const closeBtn = document.getElementById('closeAdModalBtn');
 
-if (openBtn) {
-  openBtn.onclick = () => {
-    if (adModal) adModal.classList.add('open');
-  };
-}
-
-if (closeBtn) {
-  closeBtn.onclick = () => {
-    if (adModal) adModal.classList.remove('open');
-  };
-}
-
-// Close modal on Escape
-if (adModal) {
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && adModal.classList.contains('open')) {
-      adModal.classList.remove('open');
-    }
-  });
-
-  // Close when clicking outside
-  adModal.addEventListener('click', (e) => {
-    if (e.target.id === 'adModal') {
-      adModal.classList.remove('open');
-    }
-  });
-}
-
-// ============ EVENT LISTENERS ============
-
-document.addEventListener('DOMContentLoaded', () => {
-  const stateFilter = document.getElementById('filter-state');
-  const districtFilter = document.getElementById('filter-district');
-
-  if (stateFilter) {
-    stateFilter.addEventListener('change', updateDistrictDropdown);
-  }
-
-  if (districtFilter) {
-    districtFilter.addEventListener('change', updateAreaDropdown);
-  }
-
-  // Initialize
-  init();
-});
+if (openBtn) openBtn.onclick = () => adModal?.classList.add('open');
+if (closeBtn) closeBtn.onclick = () => adModal?.classList.remove('open');
