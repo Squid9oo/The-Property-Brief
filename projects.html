@@ -15,8 +15,6 @@
 
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="projects.css" />
-  <!-- Google Maps API -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtHBA74KW3ZS8WE8OKUr6tWy2MHFHxGw8&libraries=places" defer></script>
 
 </head>
 
@@ -935,7 +933,7 @@ document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="co
   }
   </style>
 
-  <!-- Google Maps API - NO PLACES LIBRARY NEEDED -->
+  <!-- Google Maps API - loaded once (callback initializes map) -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtHBA74KW3ZS8WE8OKUr6tWy2MHFHxGw8&callback=initMap"></script>
 
 </body>
