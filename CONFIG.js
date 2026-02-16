@@ -2,7 +2,7 @@
  * THE PROPERTY BRIEF - Configuration Constants
  * All magic numbers and configuration in one place
  * Loaded globally via <script> tag in HTML
- * Last updated: 2026-02-09
+ * Last updated: 2026-02-16
  */
 
 const CONFIG = {
@@ -55,7 +55,11 @@ const CONFIG = {
   // API Endpoints
   API: {
     POSTS_JSON: 'posts.json',
-    PROJECTS_JSON: 'data/projects.json',
+
+    // Permanent listings endpoint: your site domain -> Netlify Function -> Apps Script JSON.
+    // This avoids browser CORS issues and keeps one stable URL in the frontend.
+    PROJECTS_JSON: '/.netlify/functions/listings',
+
     PROJECTS_HERO_JSON: 'content/settings/projects-hero.json',
     STATES_JSON: '/content/settings/locations/states.json',
     DISTRICTS_JSON: '/content/settings/locations/districts.json',
