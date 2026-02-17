@@ -3,7 +3,7 @@
    - Loads listings from Google Sheets
    - Submits new ads to Google Sheets (Base64)
    - Handles Map & UI
-   Last updated: 2026-02-16
+   - "Crash-Proof" Modal (Updated Feb 17 2026)
 ======================================== */
 
 // ============ STATE ============
@@ -70,7 +70,7 @@ async function loadProperties() {
   }
 }
 
-// ============ FORM SUBMISSION (NEW) ============
+// ============ FORM SUBMISSION ============
 
 /**
  * Handle the "Post Free Ad" form submission
@@ -101,7 +101,6 @@ async function handleFormSubmit(e) {
     const photosBase64 = await Promise.all(photoPromises);
 
     // 2. Construct Payload (Matching Google Script keys)
-    // Note: We map the form "names" to the keys expected by the Script's doPost
     const payload = {
       adTitle: formData.get('adTitle'),
       listingType: formData.get('listingType'),
@@ -118,7 +117,7 @@ async function handleFormSubmit(e) {
       longitude: formData.get('longitude'),
       
       // Details
-      propertyType: formData.get('propertyType'), // This is set by the hidden input logic
+      propertyType: formData.get('propertyType'),
       tenure: formData.get('tenure'),
       landTitle: formData.get('landTitle'),
       bedrooms: formData.get('bedrooms'),
@@ -135,8 +134,6 @@ async function handleFormSubmit(e) {
     };
 
     // 3. Send to Google Script
-    // We use no-cors if needed, but 'text/plain' triggers simple CORS which usually works with Apps Script
-    // Note: Apps Script POST requests often return a 302 redirect. Fetch handles this.
     const response = await fetch(CONFIG.API.PROJECTS_JSON, {
       method: 'POST',
       body: JSON.stringify(payload)
@@ -167,8 +164,6 @@ function fileToBase64(file) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      // Remove the "data:image/png;base64," prefix so sending is lighter? 
-      // Actually, standard Base64 string is fine, but let's strip prefix for the script
       const result = reader.result;
       const base64Data = result.split(',')[1];
       resolve({
@@ -517,52 +512,105 @@ function renderCards(properties) {
   });
 }
 
+// ============ PROPERTY MODAL (SAFE VERSION) ============
+
+/**
+ * Open property details modal (Safe Version)
+ * Fixes "dead click" issues by handling missing data gracefully.
+ */
 function openPropertyModal(property) {
   const modal = document.getElementById('propertyModal');
   if (!modal) return;
 
-  const photos = getPropertyPhotos(property);
-  const galleryHTML = photos.map((p, i) => `<div class="modal-photo ${i===0?'active':''}" data-photo-index="${i}"><img src="${p}"></div>`).join('');
-  const dotsHTML = photos.map((_, i) => `<span class="gallery-dot ${i===0?'active':''}" data-dot="${i}"></span>`).join('');
-  
-  const price = property['Price(RM)'] ? parseInt(property['Price(RM)']).toLocaleString() : '0';
-  const builtUp = property['Built Up (Sq.Ft.)'] ? parseInt(property['Built Up (Sq.Ft.)']).toLocaleString() : 'N/A';
+  // --- 1. SAFE DATA EXTRACTION (Prevents Crashes) ---
+  const safeText = (text) => (text ? String(text) : '');
+  const formatPrice = (p) => p ? parseInt(String(p).replace(/,/g, '')).toLocaleString() : '0';
 
+  // Get photos or fallback
+  const photos = getPropertyPhotos(property);
+  
+  // Get text fields with fallbacks
+  const title = safeText(property['Ad Title'] || 'Untitled Property');
+  const price = formatPrice(property['Price(RM)']);
+  const listingType = safeText(property['Listing Type'] || 'Property');
+  const category = safeText(property.Category || 'Property');
+  
+  // Handle description safely (replace newlines with <br>)
+  const desc = property.Description 
+    ? String(property.Description).replace(/\n/g, '<br>') 
+    : 'No description provided.';
+  
+  // Safe Location Logic
+  const location = safeText(property['Location Full']) || 
+                   `${safeText(property.State)}, ${safeText(property.District)}`;
+
+  // Safe Specs Logic
+  const builtUp = property['Built Up (Sq.Ft.)'] ? parseInt(property['Built Up (Sq.Ft.)']).toLocaleString() : 'N/A';
+  const landSize = safeText(property['Land Size'] || 'N/A');
+  const bedrooms = safeText(property.Bedrooms || 'N/A');
+  const bathrooms = safeText(property.Bathrooms || 'N/A');
+  const tenure = safeText(property.Tenure || 'N/A');
+  const propType = safeText(property['Property Type'] || category);
+
+  // --- 2. BUILD GALLERY HTML ---
+  const galleryHTML = photos.map((p, i) => 
+    `<div class="modal-photo ${i===0?'active':''}" data-photo-index="${i}"><img src="${p}"></div>`
+  ).join('');
+  
+  const dotsHTML = photos.map((_, i) => 
+    `<span class="gallery-dot ${i===0?'active':''}" data-dot="${i}"></span>`
+  ).join('');
+
+  // --- 3. RENDER MODAL CONTENT ---
   modal.innerHTML = `
     <div class="modal-content">
       <button class="modal-close" id="closePropertyModal">✕</button>
+      
       <div class="modal-header">
         <div class="modal-title-row">
-          <div class="status-badge">${property['Listing Type']}</div>
-          <h2>${property['Ad Title']}</h2>
+          <div class="status-badge ${listingType.toLowerCase().replace(/\s+/g,'-')}">
+            ${listingType}
+          </div>
+          <h2>${title}</h2>
           <p class="modal-price">RM ${price}</p>
         </div>
       </div>
+
       <div class="modal-gallery">
         ${galleryHTML}
-        ${photos.length > 1 ? `<div class="gallery-nav"><button class="gallery-prev">‹</button><button class="gallery-next">›</button></div><div class="gallery-dots">${dotsHTML}</div>` : ''}
+        ${photos.length > 1 ? `
+          <div class="gallery-nav">
+            <button class="gallery-prev">‹</button>
+            <button class="gallery-next">›</button>
+          </div>
+          <div class="gallery-dots">${dotsHTML}</div>
+        ` : ''}
       </div>
+
       <div class="modal-body">
         <div class="modal-section">
           <h3>📍 Location</h3>
-          <p>${property['Location Full'] || `${property.State}, ${property.District}`}</p>
+          <p>${location}</p>
           <div id="project-map" style="width:100%;height:300px;border-radius:8px;margin-top:12px;background:#eee;"></div>
         </div>
+
         <div class="modal-section">
           <h3>🏠 Details</h3>
           <div class="details-grid">
-            <div><strong>Type:</strong> ${property['Property Type'] || property.Category}</div>
-            <div><strong>Tenure:</strong> ${property.Tenure || 'N/A'}</div>
-            <div><strong>Bedrooms:</strong> ${property.Bedrooms || 'N/A'}</div>
-            <div><strong>Bathrooms:</strong> ${property.Bathrooms || 'N/A'}</div>
+            <div><strong>Type:</strong> ${propType}</div>
+            <div><strong>Tenure:</strong> ${tenure}</div>
+            <div><strong>Bedrooms:</strong> ${bedrooms}</div>
+            <div><strong>Bathrooms:</strong> ${bathrooms}</div>
             <div><strong>Built Up:</strong> ${builtUp} sqft</div>
-            <div><strong>Land Size:</strong> ${property['Land Size'] || 'N/A'}</div>
+            <div><strong>Land Size:</strong> ${landSize}</div>
           </div>
         </div>
+
         <div class="modal-section">
           <h3>📝 Description</h3>
-          <p>${(property.Description || '').replace(/\n/g, '<br>')}</p>
+          <p>${desc}</p>
         </div>
+
         <div class="modal-section">
           <h3>📞 Contact</h3>
           ${generateContactHTML(property.Contact)}
@@ -570,32 +618,49 @@ function openPropertyModal(property) {
       </div>
     </div>`;
 
+  // --- 4. SHOW MODAL ---
   modal.classList.add('open');
 
-  // Map
-  setTimeout(() => {
-    // Check if we have lat/long from the sheet
-    // Note: Google Sheets might return them as numbers
-    const lat = property['Location Full']?.lat || property.Latitude; 
-    // Actually, based on my script, we didn't save lat/long to visible columns in the simplified view?
-    // Wait, the doGet returns ALL columns.
-    // If you didn't add Latitude/Longitude columns to the Sheet, we rely on geocoding 'Location Full'
-    initProjectMap(property['Location Full'], lat, property.Longitude);
-  }, 300);
-
-  // Gallery Logic
-  let currentPhotoIndex = 0;
-  const showPhoto = (idx) => {
-    modal.querySelectorAll('.modal-photo').forEach((p, i) => p.classList.toggle('active', i === idx));
-    modal.querySelectorAll('.gallery-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
-    currentPhotoIndex = idx;
-  };
+  // --- 5. INITIALIZE INTERACTIVE ELEMENTS ---
   
-  modal.querySelector('.gallery-prev')?.addEventListener('click', () => showPhoto(currentPhotoIndex > 0 ? currentPhotoIndex - 1 : photos.length - 1));
-  modal.querySelector('.gallery-next')?.addEventListener('click', () => showPhoto(currentPhotoIndex < photos.length - 1 ? currentPhotoIndex + 1 : 0));
-  
+  // Close Button Logic
   const closeBtn = modal.querySelector('#closePropertyModal');
   if (closeBtn) closeBtn.onclick = () => modal.classList.remove('open');
+  
+  // Click Outside to Close
+  modal.onclick = (e) => {
+    if (e.target.id === 'propertyModal') modal.classList.remove('open');
+  }
+
+  // Gallery Navigation Logic
+  if (photos.length > 1) {
+    let currentPhotoIndex = 0;
+    const showPhoto = (idx) => {
+      modal.querySelectorAll('.modal-photo').forEach((p, i) => p.classList.toggle('active', i === idx));
+      modal.querySelectorAll('.gallery-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+      currentPhotoIndex = idx;
+    };
+    
+    const prevBtn = modal.querySelector('.gallery-prev');
+    const nextBtn = modal.querySelector('.gallery-next');
+
+    if (prevBtn) prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showPhoto(currentPhotoIndex > 0 ? currentPhotoIndex - 1 : photos.length - 1);
+    });
+    
+    if (nextBtn) nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showPhoto(currentPhotoIndex < photos.length - 1 ? currentPhotoIndex + 1 : 0);
+    });
+  }
+
+  // Map Logic (Delayed to allow modal render)
+  setTimeout(() => {
+    const lat = property.Latitude || property.latitude;
+    const lng = property.Longitude || property.longitude;
+    initProjectMap(location, lat, lng);
+  }, 300);
 }
 
 // ============ MAPS ============
