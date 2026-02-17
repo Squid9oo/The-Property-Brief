@@ -3,7 +3,7 @@
    - Loads listings from Google Sheets
    - Submits new ads to Google Sheets (Base64)
    - Handles Map & UI
-   Last updated: 2026-02-16
+   Last updated: 2026-02-18
 ======================================== */
 
 // ============ STATE ============
@@ -577,12 +577,7 @@ function openPropertyModal(property) {
 
   // Map
   setTimeout(() => {
-    // Check if we have lat/long from the sheet
-    // Note: Google Sheets might return them as numbers
     const lat = property['Location Full']?.lat || property.Latitude; 
-    // Actually, based on my script, we didn't save lat/long to visible columns in the simplified view?
-    // Wait, the doGet returns ALL columns.
-    // If you didn't add Latitude/Longitude columns to the Sheet, we rely on geocoding 'Location Full'
     initProjectMap(property['Location Full'], lat, property.Longitude);
   }, 300);
 
@@ -631,11 +626,29 @@ function drawMap(container, pos, title) {
   new google.maps.Marker({ position: pos, map: map, title: title });
 }
 
-// ============ AD MODAL UTILS ============
+// ============ AD MODAL WITH AUTHENTICATION ============
 
 const adModal = document.getElementById('adModal');
 const openBtn = document.getElementById('openAdModalBtn');
 const closeBtn = document.getElementById('closeAdModalBtn');
 
-if (openBtn) openBtn.onclick = () => adModal?.classList.add('open');
+// NEW: Require authentication before opening modal
+if (openBtn) {
+  openBtn.onclick = async () => {
+    // Check if Auth is available and require login
+    if (window.Auth && typeof window.Auth.requireLogin === 'function') {
+      const isLoggedIn = await window.Auth.requireLogin();
+      // If requireLogin returns true, user is already logged in, open modal
+      // If it returns false, it will trigger redirect to login
+      if (isLoggedIn && adModal) {
+        adModal.classList.add('open');
+      }
+    } else {
+      // Fallback if auth not loaded yet
+      console.warn('Auth not ready yet');
+      setTimeout(() => openBtn.click(), 500);
+    }
+  };
+}
+
 if (closeBtn) closeBtn.onclick = () => adModal?.classList.remove('open');
