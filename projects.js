@@ -427,8 +427,11 @@ function getPropertyPhotos(item) {
 }
 
 function generateContactHTML(contact) {
-  if (!contact || contact.trim() === '') return '<p>Contact info not available</p>';
-  const trimmed = contact.trim();
+  // Convert to string first to handle numbers from Google Sheets
+  if (!contact) return '<p>Contact info not available</p>';
+  const contactStr = String(contact);
+  if (contactStr.trim() === '') return '<p>Contact info not available</p>';
+  const trimmed = contactStr.trim();
   const phonePattern = /[\d\+\-\(\)\s]{7,}/;
   
   if (trimmed.includes('@')) {
