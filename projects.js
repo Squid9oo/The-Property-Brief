@@ -536,7 +536,7 @@ function openPropertyModal(property) {
       <button class="modal-close" id="closePropertyModal">✕</button>
       <div class="modal-header">
         <div class="modal-title-row">
-          <div class="status-badge">${property['Listing Type']}</div>
+          <div class="status-badge ${(property['Listing Type']||'').toLowerCase().replace(/\s+/g,'-')}">${property['Listing Type']}</div>
           <h2>${property['Ad Title']}</h2>
           <p class="modal-price">RM ${price}</p>
         </div>
