@@ -2,7 +2,7 @@
 title: Industrial ESG spotlight on Tropicana’s Johor data-centre hub, as Gamuda
   Land pushes ‘Money Mari Home’ and EPF doubles down on IJM
 date: 2026-02-16T12:47:00.000+08:00
-tag: Tropicana Corp Bhd,Gamuda Bhd,Employees Provident Fund,IJM Corporation Bhd
+tag: Tropicana • Gamuda • Employees Provident Fund • IJM
 summary: Dust and late‑night construction at a Johor data‑centre site have
   pushed Tropicana’s industrial project into the ESG spotlight, with residents
   pressing the developer and local council for tougher controls and
