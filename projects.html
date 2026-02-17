@@ -41,6 +41,14 @@
   </nav>
 
   <div class="headerActions">
+    <!-- AUTH UI: Shows Login or User Profile -->
+    <div id="auth-ui" style="display: flex; align-items: center; gap: 8px;">
+      <button class="headerBtn" id="loginBtn" type="button" style="display: none;">Login</button>
+      <div id="userProfile" style="display: none; align-items: center; gap: 8px;">
+        <span id="userName" style="color: #f9d100; font-size: 14px; font-weight: 600;"></span>
+        <button class="headerBtn" id="logoutBtn" type="button" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">Logout</button>
+      </div>
+    </div>
     <button class="headerBtn" id="openAdModalBtn" type="button">Post Free Ad</button>
     <button class="shareIconBtn" id="sharePageBtn" type="button" aria-label="Share this page">↗</button>
   </div>
@@ -261,7 +269,7 @@
             </label>
           </div>
 
-          <!-- LANDED RESIDENTIAL - FIXED: Combined Link House -->
+          <!-- LANDED RESIDENTIAL -->
           <div id="fields-landed-residential" style="display:none;">
             <label>
               Property Type
@@ -416,7 +424,7 @@
             <textarea name="description" rows="5" required></textarea>
           </label>
 
-          <!-- LOCATION SECTION - STYLED TO MATCH THEME -->
+          <!-- LOCATION SECTION -->
           <div class="location-section">
             <h4>📍 Property Location</h4>
             
@@ -456,7 +464,6 @@
             </label>
           </div>
 
-          <!-- Hidden fields for precise location data -->
           <input type="hidden" name="latitude" id="ad-latitude" />
           <input type="hidden" name="longitude" id="ad-longitude" />
           <input type="hidden" name="locationFull" id="ad-locationFull" />
@@ -480,7 +487,7 @@
     </div>
   </div>
 
-  <!-- MAP MODAL WITH SEARCH BOX (GEOCODING API) -->
+  <!-- MAP MODAL -->
   <div id="map-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; padding:20px;">
     <div style="background:white; border-radius:8px; max-width:900px; margin:0 auto; height:90vh; display:flex; flex-direction:column;">
       <div style="padding:16px; border-bottom:1px solid #ddd;">
@@ -492,7 +499,6 @@
           <button type="button" id="close-map-btn" style="background:none; border:none; font-size:24px; cursor:pointer;">✕</button>
         </div>
         
-        <!-- SEARCH BOX WITH BUTTON -->
         <div style="display:flex; gap:8px;">
           <input 
             type="text" 
@@ -520,12 +526,12 @@
     </div>
   </div>
 
-  <!-- Scripts: Load in correct order with defer -->
+  <!-- Scripts -->
   <script src="CONFIG.js"></script>
   <script defer src="menu.js"></script>
-  <script defer src="projects.js"></script>
   <script defer src="https://cdn.auth0.com/js/auth0-spa-js/2.5/auth0-spa-js.production.js"></script>
   <script defer src="auth.js"></script>
+  <script defer src="projects.js"></script>
 
   <script>
   const nextBtn = document.getElementById('form-next-btn');
@@ -533,14 +539,11 @@
   const section1 = document.getElementById('form-section-1');
   const section2 = document.getElementById('form-section-2');
   const categorySelect = document.getElementById('category');
-
-  // Location Elements
   const stateSelect = document.getElementById('ad-state');
   const districtSelect = document.getElementById('ad-district');
   const areaSelect = document.getElementById('ad-area');
   const customAreaWrapper = document.getElementById('ad-area-custom-wrapper');
 
-  // 1. Navigation Logic
   nextBtn.addEventListener('click', () => {
     section1.style.display = 'none';
     section2.style.display = 'block';
@@ -552,43 +555,35 @@
     section1.style.display = 'block';
   });
 
-  // 2. Category Logic
   categorySelect.addEventListener('change', (e) => {
-  const val = e.target.value;
-  
-  // Hide all property type sections
-  document.getElementById('fields-high-rise-residential').style.display = 'none';
-  document.getElementById('fields-landed-residential').style.display = 'none';
-  document.getElementById('fields-commercial').style.display = 'none';
-  document.getElementById('fields-land').style.display = 'none';
-  
-  // Show relevant section
-  if (val === 'High Rise Residential') {
-    document.getElementById('fields-high-rise-residential').style.display = 'block';
-  } else if (val === 'Landed Residential') {
-    document.getElementById('fields-landed-residential').style.display = 'block';
-  } else if (val === 'Commercial') {
-    document.getElementById('fields-commercial').style.display = 'block';
-  } else if (val === 'Land') {
-    document.getElementById('fields-land').style.display = 'block';
-  }
-});
-
-// NEW CODE: Sync property type fields to hidden field
-document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="commercialType"], [name="landType"]').forEach(select => {
-  select.addEventListener('change', (e) => {
-    document.getElementById('propertyType').value = e.target.value;
+    const val = e.target.value;
+    document.getElementById('fields-high-rise-residential').style.display = 'none';
+    document.getElementById('fields-landed-residential').style.display = 'none';
+    document.getElementById('fields-commercial').style.display = 'none';
+    document.getElementById('fields-land').style.display = 'none';
+    
+    if (val === 'High Rise Residential') {
+      document.getElementById('fields-high-rise-residential').style.display = 'block';
+    } else if (val === 'Landed Residential') {
+      document.getElementById('fields-landed-residential').style.display = 'block';
+    } else if (val === 'Commercial') {
+      document.getElementById('fields-commercial').style.display = 'block';
+    } else if (val === 'Land') {
+      document.getElementById('fields-land').style.display = 'block';
+    }
   });
-});
 
-  // 3. LOCATION DROPDOWN LOGIC
-  
+  document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="commercialType"], [name="landType"]').forEach(select => {
+    select.addEventListener('change', (e) => {
+      document.getElementById('propertyType').value = e.target.value;
+    });
+  });
+
   async function loadStates() {
     try {
       const response = await fetch('/content/settings/locations/states.json');
       const data = await response.json();
       const states = data.states;
-      
       stateSelect.innerHTML = '<option value="">Select state</option>';
       states.forEach(stateName => {
         stateSelect.innerHTML += `<option value="${stateName}">${stateName}</option>`;
@@ -605,18 +600,15 @@ document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="co
       areaSelect.disabled = true;
       return;
     }
-
     try {
       districtSelect.disabled = false;
       const response = await fetch('/content/settings/locations/districts.json');
       const data = await response.json();
       const districts = data.districtsByState[stateName];
-      
       districtSelect.innerHTML = '<option value="">Select district</option>';
       districts.forEach(districtName => {
         districtSelect.innerHTML += `<option value="${districtName}">${districtName}</option>`;
       });
-      
       areaSelect.innerHTML = '<option value="">Select area</option>';
       areaSelect.disabled = true;
     } catch (err) {
@@ -627,19 +619,15 @@ document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="co
   districtSelect.addEventListener('change', async (e) => {
     const districtName = e.target.value;
     const stateName = stateSelect.value.toLowerCase().replace(/\s+/g, '-');
-    
     if (!districtName) {
       areaSelect.disabled = true;
       return;
     }
-
     try {
       areaSelect.disabled = false;
       const response = await fetch(`/content/settings/locations/areas/${stateName}.json`);
       const data = await response.json();
-      
       const districtObj = data.districts.find(d => d.name === districtName);
-      
       if (districtObj && districtObj.areas) {
         areaSelect.innerHTML = '<option value="">Select area</option>';
         districtObj.areas.forEach(areaObj => {
@@ -659,12 +647,9 @@ document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="co
     customAreaWrapper.style.display = (e.target.value === 'others') ? 'block' : 'none';
   });
 
-  // 4. DISABLE HIDDEN FIELDS BEFORE SUBMITTING
   const form = document.querySelector('form[name="project-submit"]');
-
   form.addEventListener('submit', (e) => {
     const sections = ['high-rise-residential', 'landed-residential', 'commercial', 'land'];
-    
     sections.forEach(cat => {
       const container = document.getElementById(`fields-${cat}`);
       if (container && container.style.display === 'none') {
@@ -675,17 +660,11 @@ document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="co
     });
   });
 
-  // ============================================
-  // GOOGLE MAPS WITH GEOCODING SEARCH
-  // ============================================
-
   let map, marker, selectedLocation, geocoder;
 
   document.getElementById('open-map-btn').addEventListener('click', () => {
     document.getElementById('map-modal').style.display = 'block';
-    setTimeout(() => {
-      if (!map) initMap();
-    }, 300);
+    setTimeout(() => { if (!map) initMap(); }, 300);
   });
 
   document.getElementById('close-map-btn').addEventListener('click', () => {
@@ -694,55 +673,29 @@ document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="co
 
   function initMap() {
     const defaultCenter = { lat: 3.139, lng: 101.6869 };
-    
     map = new google.maps.Map(document.getElementById('google-map'), {
       center: defaultCenter,
       zoom: 12,
       mapTypeControl: true,
       streetViewControl: false,
     });
-    
     geocoder = new google.maps.Geocoder();
-    
-    // Manual click on map
-    map.addListener('click', (event) => {
-      placeMarker(event.latLng);
-    });
-
-    // Search button click
+    map.addListener('click', (event) => { placeMarker(event.latLng); });
     document.getElementById('search-location-btn').addEventListener('click', searchLocation);
-    
-    // Also search when Enter is pressed
     document.getElementById('map-search-box').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        searchLocation();
-      }
+      if (e.key === 'Enter') { e.preventDefault(); searchLocation(); }
     });
   }
 
   function searchLocation() {
     const searchBox = document.getElementById('map-search-box');
     const address = searchBox.value.trim();
-    
-    if (!address) {
-      alert('Please type an address!');
-      return;
-    }
-
-    // Use Geocoder to find location
-    geocoder.geocode({ 
-      address: address,
-      componentRestrictions: { country: 'MY' } // Restrict to Malaysia
-    }, (results, status) => {
+    if (!address) { alert('Please type an address!'); return; }
+    geocoder.geocode({ address: address, componentRestrictions: { country: 'MY' } }, (results, status) => {
       if (status === 'OK' && results[0]) {
         const location = results[0].geometry.location;
-        
-        // Center map on found location
         map.setCenter(location);
         map.setZoom(15);
-        
-        // Place marker
         placeMarker(location);
       } else {
         alert('Location not found! Try: "Bandar Sunway, Selangor" or "KLCC, Kuala Lumpur"');
@@ -752,36 +705,16 @@ document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="co
 
   function placeMarker(location) {
     if (marker) marker.setMap(null);
-    
-    marker = new google.maps.Marker({
-      position: location,
-      map: map,
-      draggable: true,
-      animation: google.maps.Animation.DROP
-    });
-    
-    selectedLocation = {
-      lat: location.lat(),
-      lng: location.lng()
-    };
-    
+    marker = new google.maps.Marker({ position: location, map: map, draggable: true, animation: google.maps.Animation.DROP });
+    selectedLocation = { lat: location.lat(), lng: location.lng() };
     geocoder.geocode({ location: location }, (results, status) => {
-      if (status === 'OK' && results[0]) {
-        parseAddress(results[0]);
-      }
+      if (status === 'OK' && results[0]) parseAddress(results[0]);
     });
-    
     marker.addListener('dragend', () => {
       const newPos = marker.getPosition();
-      selectedLocation = {
-        lat: newPos.lat(),
-        lng: newPos.lng()
-      };
-      
+      selectedLocation = { lat: newPos.lat(), lng: newPos.lng() };
       geocoder.geocode({ location: newPos }, (results, status) => {
-        if (status === 'OK' && results[0]) {
-          parseAddress(results[0]);
-        }
+        if (status === 'OK' && results[0]) parseAddress(results[0]);
       });
     });
   }
@@ -789,19 +722,11 @@ document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="co
   function parseAddress(result) {
     const components = result.address_components;
     let state = '', district = '', area = '';
-    
     components.forEach(comp => {
-      if (comp.types.includes('administrative_area_level_1')) {
-        state = comp.long_name;
-      }
-      if (comp.types.includes('administrative_area_level_2')) {
-        district = comp.long_name;
-      }
-      if (comp.types.includes('locality') || comp.types.includes('sublocality') || comp.types.includes('sublocality_level_1')) {
-        area = comp.long_name;
-      }
+      if (comp.types.includes('administrative_area_level_1')) state = comp.long_name;
+      if (comp.types.includes('administrative_area_level_2')) district = comp.long_name;
+      if (comp.types.includes('locality') || comp.types.includes('sublocality') || comp.types.includes('sublocality_level_1')) area = comp.long_name;
     });
-    
     selectedLocation.state = state;
     selectedLocation.district = district;
     selectedLocation.area = area;
@@ -809,23 +734,15 @@ document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="co
   }
 
   document.getElementById('confirm-location-btn').addEventListener('click', async () => {
-    if (!selectedLocation) {
-      alert('Please pin a location on the map first!');
-      return;
-    }
-    
+    if (!selectedLocation) { alert('Please pin a location on the map first!'); return; }
     document.getElementById('ad-latitude').value = selectedLocation.lat || '';
     document.getElementById('ad-longitude').value = selectedLocation.lng || '';
     document.getElementById('ad-locationFull').value = selectedLocation.fullAddress || '';
-    
     document.getElementById('selected-location-display').style.display = 'block';
     document.getElementById('location-text').textContent = selectedLocation.fullAddress;
     
     if (selectedLocation.state) {
-      if (stateSelect.options.length <= 1) {
-        await loadStates();
-      }
-      
+      if (stateSelect.options.length <= 1) await loadStates();
       for (let i = 0; i < stateSelect.options.length; i++) {
         if (stateSelect.options[i].value === selectedLocation.state) {
           stateSelect.selectedIndex = i;
@@ -833,7 +750,6 @@ document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="co
           break;
         }
       }
-      
       if (selectedLocation.district) {
         setTimeout(() => {
           for (let i = 0; i < districtSelect.options.length; i++) {
@@ -843,7 +759,6 @@ document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="co
               break;
             }
           }
-          
           if (selectedLocation.area) {
             setTimeout(() => {
               let foundArea = false;
@@ -854,7 +769,6 @@ document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="co
                   break;
                 }
               }
-              
               if (!foundArea) {
                 areaSelect.value = 'others';
                 areaSelect.dispatchEvent(new Event('change'));
@@ -865,76 +779,20 @@ document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="co
         }, 500);
       }
     }
-    
     document.getElementById('map-modal').style.display = 'none';
   });
-
   </script>
 
   <style>
-  /* LOCATION SECTION STYLING - MATCHES DARK THEME */
-  .location-section {
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 12px;
-    border: 1px solid rgba(249,209,0,0.20);
-    background: rgba(249,209,0,0.04);
-  }
-
-  .location-section h4 {
-    margin: 0 0 16px 0;
-    font-size: 16px;
-    font-weight: 700;
-    color: #f9d100;
-    letter-spacing: 0.3px;
-  }
-
-  .map-btn {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 16px;
-    background: rgba(249,209,0,0.15);
-    border: 1px solid rgba(249,209,0,0.35);
-    border-radius: 12px;
-    color: #f9d100;
-    font-size: 14px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .map-btn:hover {
-    background: rgba(249,209,0,0.25);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(249,209,0,0.2);
-  }
-
-  .location-confirmed {
-    display: none;
-    padding: 12px;
-    margin-bottom: 16px;
-    background: rgba(40, 167, 69, 0.15);
-    border: 1px solid rgba(40, 167, 69, 0.35);
-    border-radius: 8px;
-  }
-
-  .location-confirmed-label {
-    margin: 0;
-    font-weight: 700;
-    font-size: 13px;
-    color: #4ade80;
-  }
-
-  .location-confirmed-text {
-    margin: 6px 0 0;
-    font-size: 13px;
-    color: #a1a1aa;
-    line-height: 1.5;
-  }
+  .location-section { padding: 20px; margin: 20px 0; border-radius: 12px; border: 1px solid rgba(249,209,0,0.20); background: rgba(249,209,0,0.04); }
+  .location-section h4 { margin: 0 0 16px 0; font-size: 16px; font-weight: 700; color: #f9d100; letter-spacing: 0.3px; }
+  .map-btn { width: 100%; padding: 12px; margin-bottom: 16px; background: rgba(249,209,0,0.15); border: 1px solid rgba(249,209,0,0.35); border-radius: 12px; color: #f9d100; font-size: 14px; font-weight: 800; cursor: pointer; transition: all 0.2s ease; }
+  .map-btn:hover { background: rgba(249,209,0,0.25); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(249,209,0,0.2); }
+  .location-confirmed { display: none; padding: 12px; margin-bottom: 16px; background: rgba(40, 167, 69, 0.15); border: 1px solid rgba(40, 167, 69, 0.35); border-radius: 8px; }
+  .location-confirmed-label { margin: 0; font-weight: 700; font-size: 13px; color: #4ade80; }
+  .location-confirmed-text { margin: 6px 0 0; font-size: 13px; color: #a1a1aa; line-height: 1.5; }
   </style>
 
-  <!-- Google Maps API - loaded once (callback initializes map) -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtHBA74KW3ZS8WE8OKUr6tWy2MHFHxGw8&callback=initMap"></script>
-
 </body>
 </html>
