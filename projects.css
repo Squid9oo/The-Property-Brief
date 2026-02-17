@@ -340,7 +340,7 @@
 }
 
 #propertyModal.open {
-    display: flex;
+    display: flex !important;
 }
 
 .modal-content {
@@ -643,15 +643,6 @@
 /* Only visible when JS adds .open */
 .modalOverlay.open {
   display: flex;
-}
-
-/* FORCE HIDE MODAL UNLESS OPEN */
-.modalOverlay {
-    display: none !important; /* This hides it by default */
-}
-
-.modalOverlay.open {
-    display: flex !important; /* This shows it only when clicked */
 }
 
 .modalCard {
