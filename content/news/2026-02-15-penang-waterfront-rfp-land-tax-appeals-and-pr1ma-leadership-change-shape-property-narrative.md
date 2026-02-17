@@ -2,7 +2,7 @@
 title: Penang Waterfront RFP, Land Tax Appeals and PR1MA Leadership Change Shape
   Property Narrative
 date: 2026-02-15T14:05:00.000+08:00
-tag: Penang Development Corporation, PR1MA Corporation Malaysia, S P Setia Berhad
+tag: Penang Development Corporation • PR1MA Corporation Malaysia • S P Setia Berhad
 summary: Penang has opened bidding for a landmark Weld Quay waterfront project
   just as new land tax rates and an appeals channel kick in. At the federal
   level, PR1MA brings in a new CEO while MM2H numbers underline foreign demand.
