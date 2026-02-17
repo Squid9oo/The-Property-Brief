@@ -17,9 +17,7 @@ The site fronts the channel facing the mainland and links directly to the Tun Dr
 
 Source:
 https://www.penangpropertytalk.com/2026/02/weld-quay-waterfront-development-rfp-officially-launched/
-, 
 https://www.bernama.com/en/general/news.php?id=2524416
-,
 https://www.bernama.com/en/news.php?id=2524416
 
 Commentary:
