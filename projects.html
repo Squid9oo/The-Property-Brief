@@ -101,7 +101,6 @@
           <input type="number" id="filter-price-min" placeholder="Min Price (RM)" aria-label="Min price" />
           <input type="number" id="filter-price-max" placeholder="Max Price (RM)" aria-label="Max price" />
 
-          <!-- Important: explicit type="button" avoids accidental form submits -->
           <button id="btn-search" type="button" onclick="applyFilters()">Search</button>
           <button id="btn-reset" type="button" onclick="clearFilters()">Reset</button>
         </div>
@@ -134,11 +133,10 @@
         action="/projects-thank-you.html"
         enctype="multipart/form-data"
       >
-        <!-- Netlify needs this hidden field to match the form name -->
         <input type="hidden" name="form-name" value="project-submit" />
         <input type="hidden" name="propertyType" id="propertyType" />
 
-        <!-- SECTION 1 (visible first) -->
+        <!-- SECTION 1 -->
         <div id="form-section-1">
           <h3>Section 1 - Basic Info</h3>
 
@@ -175,18 +173,31 @@
           <button type="button" id="form-next-btn">Next</button>
         </div>
 
-        <!-- SECTION 2 (hidden initially) -->
+        <!-- SECTION 2 -->
         <div id="form-section-2" style="display:none;">
           <h3>Section 2 - Property Details</h3>
 
-          <label>
-            Photos (up to 5 images)
-            <input name="photo1" type="file" accept="image/*" />
-            <input name="photo2" type="file" accept="image/*" />
-            <input name="photo3" type="file" accept="image/*" />
-            <input name="photo4" type="file" accept="image/*" />
-            <input name="photo5" type="file" accept="image/*" />
-          </label>
+          <div style="margin-bottom: 20px;">
+            <label style="margin-bottom: 8px;">
+              📷 Photos (up to 5 images)
+            </label>
+            <div style="padding: 12px; background: rgba(249,209,0,0.08); border: 1px solid rgba(249,209,0,0.2); border-radius: 8px; margin-bottom: 12px;">
+              <p style="margin: 0 0 6px; font-size: 13px; color: #666; line-height: 1.5;">
+                <strong>✨ Best Quality:</strong> 4:3 ratio (e.g., 1200×900px or 1600×1200px)<br>
+                <strong>💾 Max Size:</strong> 2 MB per image | <strong>📄 Format:</strong> JPEG/JPG recommended
+              </p>
+            </div>
+            <input name="photo1" type="file" accept="image/*" class="photo-input" data-photo-num="1" style="margin-bottom: 8px;" />
+            <div id="photo1-info" class="photo-info"></div>
+            <input name="photo2" type="file" accept="image/*" class="photo-input" data-photo-num="2" style="margin-bottom: 8px;" />
+            <div id="photo2-info" class="photo-info"></div>
+            <input name="photo3" type="file" accept="image/*" class="photo-input" data-photo-num="3" style="margin-bottom: 8px;" />
+            <div id="photo3-info" class="photo-info"></div>
+            <input name="photo4" type="file" accept="image/*" class="photo-input" data-photo-num="4" style="margin-bottom: 8px;" />
+            <div id="photo4-info" class="photo-info"></div>
+            <input name="photo5" type="file" accept="image/*" class="photo-input" data-photo-num="5" style="margin-bottom: 8px;" />
+            <div id="photo5-info" class="photo-info"></div>
+          </div>
 
           <label>
             Ad Title
@@ -212,7 +223,6 @@
                 <option value="Condominium">Condominium</option>
               </select>
             </label>
-
             <label>
               Title
               <select name="landTitle">
@@ -221,7 +231,6 @@
                 <option value="Non-bumi">Non-bumi</option>
               </select>
             </label>
-
             <label>
               Bedrooms
               <select name="bedrooms">
@@ -233,7 +242,6 @@
                 <option value="5">5</option>
               </select>
             </label>
-
             <label>
               Bathrooms
               <select name="bathrooms">
@@ -245,12 +253,10 @@
                 <option value="5">5</option>
               </select>
             </label>
-
             <label>
               Built Up (sq.ft.)
               <input name="builtUpSqft" type="number" placeholder="e.g., 1200" />
             </label>
-
             <label>
               Parking Lot
               <select name="parking">
@@ -262,7 +268,6 @@
                 <option value="5">5</option>
               </select>
             </label>
-
             <label>
               No. Of Storey
               <input name="storeyCount" type="number" min="1" max="100" placeholder="e.g., 15" />
@@ -282,7 +287,6 @@
                 <option value="Townhouse">Townhouse</option>
               </select>
             </label>
-
             <label>
               Land Title
               <select name="landTitle">
@@ -292,7 +296,6 @@
                 <option value="Malay Reserved">Malay Reserved</option>
               </select>
             </label>
-
             <label>
               Bedrooms
               <select name="bedrooms">
@@ -309,7 +312,6 @@
                 <option value="10">10</option>
               </select>
             </label>
-
             <label>
               Bathrooms
               <select name="bathrooms">
@@ -326,12 +328,10 @@
                 <option value="10">10</option>
               </select>
             </label>
-
             <label>
               Built Up (sq.ft.)
               <input name="builtUpSqft" type="number" placeholder="e.g., 2400" />
             </label>
-
             <label>
               Parking Lot
               <select name="parking">
@@ -348,7 +348,6 @@
                 <option value="10">10</option>
               </select>
             </label>
-
             <label>
               No. Of Storey
               <input name="storeyCount" type="number" min="1" max="10" placeholder="e.g., 2" />
@@ -366,7 +365,6 @@
                 <option value="Factory">Factory</option>
               </select>
             </label>
-
             <label>
               Land Title
               <select name="landTitle">
@@ -376,12 +374,10 @@
                 <option value="Malay Reserved">Malay Reserved</option>
               </select>
             </label>
-
             <label>
               Built Up (sq.ft.)
               <input name="builtUpSqft" type="number" placeholder="e.g., 3000" />
             </label>
-
             <label>
               No. Of Storey
               <input name="storeyCount" type="number" min="1" max="50" placeholder="e.g., 3" />
@@ -402,7 +398,6 @@
                 <option value="Others">Others</option>
               </select>
             </label>
-
             <label>
               Land Title
               <select name="landTitle">
@@ -412,7 +407,6 @@
                 <option value="Malay Reserved">Malay Reserved</option>
               </select>
             </label>
-
             <label>
               Land Size (acres / sq.ft)
               <input name="landSize" type="text" placeholder="e.g., 5 acres or 50000 sq.ft" />
@@ -480,7 +474,7 @@
 
           <div class="form-buttons">
             <button type="button" id="form-back-btn">Back</button>
-            <button type="submit">Submit</button>
+            <button type="submit" id="form-submit-btn">Submit</button>
           </div>
         </div>
       </form>
@@ -534,6 +528,83 @@
   <script defer src="projects.js"></script>
 
   <script>
+  const MAX_FILE_SIZE_MB = 2;
+  const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
+  // Photo validation
+  document.querySelectorAll('.photo-input').forEach(input => {
+    input.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      const photoNum = this.getAttribute('data-photo-num');
+      const infoDiv = document.getElementById(`photo${photoNum}-info`);
+      
+      if (!file) {
+        infoDiv.innerHTML = '';
+        return;
+      }
+
+      // Check file size
+      const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+      const isTooBig = file.size > MAX_FILE_SIZE_BYTES;
+
+      if (isTooBig) {
+        infoDiv.innerHTML = `<div style="padding: 8px; background: #fee; border: 1px solid #fcc; border-radius: 6px; margin-top: 4px; font-size: 13px; color: #c33;">❌ <strong>File too large:</strong> ${sizeMB} MB (max ${MAX_FILE_SIZE_MB} MB). Please compress or choose a smaller image.</div>`;
+        this.value = '';
+        return;
+      }
+
+      // Read image dimensions
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          const width = img.width;
+          const height = img.height;
+          const ratio = (width / height).toFixed(2);
+          
+          // Check aspect ratio (4:3 = 1.33, 3:2 = 1.5)
+          const is4by3 = Math.abs(ratio - 1.33) < 0.1;
+          const is3by2 = Math.abs(ratio - 1.5) < 0.1;
+          const isGoodRatio = is4by3 || is3by2;
+
+          let ratioMsg = '';
+          if (!isGoodRatio) {
+            ratioMsg = `<div style="padding: 6px; background: #fffbea; border: 1px solid #ffd700; border-radius: 6px; margin-top: 4px; font-size: 12px; color: #996600;">⚠️ Aspect ratio ${ratio}:1 (${width}×${height}px). Recommended: 4:3 (1.33:1) or 3:2 (1.5:1) for best display.</div>`;
+          }
+
+          infoDiv.innerHTML = `<div style="padding: 8px; background: #e8f5e9; border: 1px solid #4caf50; border-radius: 6px; margin-top: 4px; font-size: 13px; color: #2e7d32;">✓ ${sizeMB} MB | ${width}×${height}px${isGoodRatio ? ' | Great ratio!' : ''}</div>${ratioMsg}`;
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  // Form submission validation
+  const form = document.querySelector('form[name="project-submit"]');
+  form.addEventListener('submit', (e) => {
+    // Check if any oversized files
+    const photoInputs = document.querySelectorAll('.photo-input');
+    for (let input of photoInputs) {
+      if (input.files[0] && input.files[0].size > MAX_FILE_SIZE_BYTES) {
+        e.preventDefault();
+        alert('Please remove or compress images larger than 2 MB before submitting.');
+        return;
+      }
+    }
+
+    // Disable non-selected category fields
+    const sections = ['high-rise-residential', 'landed-residential', 'commercial', 'land'];
+    sections.forEach(cat => {
+      const container = document.getElementById(`fields-${cat}`);
+      if (container && container.style.display === 'none') {
+        container.querySelectorAll('input, select, textarea').forEach(field => {
+          field.disabled = true;
+        });
+      }
+    });
+  });
+
   const nextBtn = document.getElementById('form-next-btn');
   const backBtn = document.getElementById('form-back-btn');
   const section1 = document.getElementById('form-section-1');
@@ -645,19 +716,6 @@
 
   areaSelect.addEventListener('change', (e) => {
     customAreaWrapper.style.display = (e.target.value === 'others') ? 'block' : 'none';
-  });
-
-  const form = document.querySelector('form[name="project-submit"]');
-  form.addEventListener('submit', (e) => {
-    const sections = ['high-rise-residential', 'landed-residential', 'commercial', 'land'];
-    sections.forEach(cat => {
-      const container = document.getElementById(`fields-${cat}`);
-      if (container && container.style.display === 'none') {
-        container.querySelectorAll('input, select, textarea').forEach(field => {
-          field.disabled = true;
-        });
-      }
-    });
   });
 
   let map, marker, selectedLocation, geocoder;
@@ -791,6 +849,7 @@
   .location-confirmed { display: none; padding: 12px; margin-bottom: 16px; background: rgba(40, 167, 69, 0.15); border: 1px solid rgba(40, 167, 69, 0.35); border-radius: 8px; }
   .location-confirmed-label { margin: 0; font-weight: 700; font-size: 13px; color: #4ade80; }
   .location-confirmed-text { margin: 6px 0 0; font-size: 13px; color: #a1a1aa; line-height: 1.5; }
+  .photo-info { min-height: 20px; }
   </style>
 
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtHBA74KW3ZS8WE8OKUr6tWy2MHFHxGw8&callback=initMap"></script>
