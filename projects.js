@@ -101,7 +101,6 @@ async function handleFormSubmit(e) {
     const photosBase64 = await Promise.all(photoPromises);
 
     // 2. Construct Payload (Matching Google Script keys)
-    // Note: We map the form "names" to the keys expected by the Script's doPost
     const payload = {
       adTitle: formData.get('adTitle'),
       listingType: formData.get('listingType'),
@@ -118,7 +117,7 @@ async function handleFormSubmit(e) {
       longitude: formData.get('longitude'),
       
       // Details
-      propertyType: formData.get('propertyType'), // This is set by the hidden input logic
+      propertyType: formData.get('propertyType'),
       tenure: formData.get('tenure'),
       landTitle: formData.get('landTitle'),
       bedrooms: formData.get('bedrooms'),
@@ -135,8 +134,6 @@ async function handleFormSubmit(e) {
     };
 
     // 3. Send to Google Script
-    // We use no-cors if needed, but 'text/plain' triggers simple CORS which usually works with Apps Script
-    // Note: Apps Script POST requests often return a 302 redirect. Fetch handles this.
     const response = await fetch(CONFIG.API.PROJECTS_JSON, {
       method: 'POST',
       body: JSON.stringify(payload)
@@ -167,8 +164,6 @@ function fileToBase64(file) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      // Remove the "data:image/png;base64," prefix so sending is lighter? 
-      // Actually, standard Base64 string is fine, but let's strip prefix for the script
       const result = reader.result;
       const base64Data = result.split(',')[1];
       resolve({
@@ -418,7 +413,6 @@ function showError(containerId, message) {
 
 function getPropertyPhotos(item) {
   const photos = [];
-  // Check headers "Photo 1" through "Photo 5"
   for (let i = 1; i <= 5; i++) {
     const photo = item[`Photo ${i}`];
     if (photo && photo.trim() !== '') photos.push(photo);
@@ -427,7 +421,6 @@ function getPropertyPhotos(item) {
 }
 
 function generateContactHTML(contact) {
-  // Convert to string first to handle numbers from Google Sheets
   if (!contact) return '<p>Contact info not available</p>';
   const contactStr = String(contact);
   if (contactStr.trim() === '') return '<p>Contact info not available</p>';
@@ -448,6 +441,85 @@ function generateContactHTML(contact) {
       </div>`;
   }
   return `<p>${trimmed}</p>`;
+}
+
+// ============ SHARE FUNCTIONALITY ============
+
+function generateListingSlug(title, index) {
+  // Create URL-friendly slug from title
+  const slug = title.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .substring(0, 50);
+  return `${slug}-${index}`;
+}
+
+function generateListingURL(property, index) {
+  const slug = generateListingSlug(property['Ad Title'], index);
+  return `${window.location.origin}/projects.html?listing=${slug}`;
+}
+
+async function shareProperty(property, index) {
+  const url = generateListingURL(property, index);
+  const title = property['Ad Title'];
+  const text = `Check out this property: ${title} - RM ${parseInt(property['Price(RM)']).toLocaleString()}`;
+
+  // Try Web Share API first (mobile + some desktop browsers)
+  if (navigator.share) {
+    try {
+      await navigator.share({ title, text, url });
+      return;
+    } catch (err) {
+      // User cancelled or share failed
+      if (err.name !== 'AbortError') {
+        console.log('Share failed:', err);
+      }
+    }
+  }
+
+  // Fallback: Copy to clipboard
+  try {
+    await navigator.clipboard.writeText(url);
+    showToast('✓ Link copied to clipboard!');
+  } catch (err) {
+    // Final fallback: Show URL in prompt
+    prompt('Copy this link:', url);
+  }
+}
+
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.textContent = message;
+  toast.style.cssText = `
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 99999;
+    animation: fadeInOut 2.5s ease-in-out;
+  `;
+  
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+
+// Add CSS animation for toast
+if (!document.getElementById('toast-styles')) {
+  const style = document.createElement('style');
+  style.id = 'toast-styles';
+  style.textContent = `
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      10%, 90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+  `;
+  document.head.appendChild(style);
 }
 
 function initCardCarousel(cardId, photos) {
@@ -486,7 +558,6 @@ function renderCards(properties) {
   container.innerHTML = properties.map((item, index) => {
     const photos = getPropertyPhotos(item);
     const cardId = `card-${index}`;
-    // Google Sheets might return numbers as numbers, so we handle both
     const price = item['Price(RM)'] ? parseInt(item['Price(RM)']).toLocaleString() : '0';
     const builtUp = item['Built Up (Sq.Ft.)'] ? parseInt(item['Built Up (Sq.Ft.)']).toLocaleString() : '';
 
@@ -515,12 +586,12 @@ function renderCards(properties) {
   
   container.querySelectorAll('.property-card').forEach(card => {
     card.addEventListener('click', () => {
-      openPropertyModal(properties[parseInt(card.getAttribute('data-property-index'))]);
+      openPropertyModal(properties[parseInt(card.getAttribute('data-property-index'))], parseInt(card.getAttribute('data-property-index')));
     });
   });
 }
 
-function openPropertyModal(property) {
+function openPropertyModal(property, index) {
   const modal = document.getElementById('propertyModal');
   if (!modal) return;
 
@@ -570,6 +641,25 @@ function openPropertyModal(property) {
           <h3>📞 Contact</h3>
           ${generateContactHTML(property.Contact)}
         </div>
+        <div class="modal-section" style="text-align: center; padding: 20px 0;">
+          <button id="sharePropertyBtn" class="share-property-btn" style="
+            background: linear-gradient(135deg, #f9d100 0%, #e6c200 100%);
+            color: #000;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(249, 209, 0, 0.3);
+          " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(249, 209, 0, 0.4)';" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 12px rgba(249, 209, 0, 0.3)';">
+            <span style="font-size: 20px;">↗</span> Share Listing
+          </button>
+        </div>
       </div>
     </div>`;
 
@@ -592,6 +682,13 @@ function openPropertyModal(property) {
   modal.querySelector('.gallery-prev')?.addEventListener('click', () => showPhoto(currentPhotoIndex > 0 ? currentPhotoIndex - 1 : photos.length - 1));
   modal.querySelector('.gallery-next')?.addEventListener('click', () => showPhoto(currentPhotoIndex < photos.length - 1 ? currentPhotoIndex + 1 : 0));
   
+  // Share Button
+  const shareBtn = modal.querySelector('#sharePropertyBtn');
+  if (shareBtn) {
+    shareBtn.onclick = () => shareProperty(property, index);
+  }
+  
+  // Close Button
   const closeBtn = modal.querySelector('#closePropertyModal');
   if (closeBtn) closeBtn.onclick = () => modal.classList.remove('open');
 }
@@ -602,20 +699,18 @@ function initProjectMap(location, latitude, longitude) {
   const container = document.getElementById('project-map');
   if (!container || !window.google) return;
 
-  let pos = { lat: 3.1390, lng: 101.6869 }; // Default KL
+  let pos = { lat: 3.1390, lng: 101.6869 };
   
-  // If we have valid coordinates
   if (latitude && longitude) {
     pos = { lat: parseFloat(latitude), lng: parseFloat(longitude) };
     drawMap(container, pos, location);
   } else {
-    // Geocode
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ address: location + ', Malaysia' }, (results, status) => {
       if (status === 'OK' && results[0]) {
         drawMap(container, results[0].geometry.location, location);
       } else {
-        drawMap(container, pos, location); // Fallback
+        drawMap(container, pos, location);
       }
     });
   }
@@ -632,19 +727,14 @@ const adModal = document.getElementById('adModal');
 const openBtn = document.getElementById('openAdModalBtn');
 const closeBtn = document.getElementById('closeAdModalBtn');
 
-// NEW: Require authentication before opening modal
 if (openBtn) {
   openBtn.onclick = async () => {
-    // Check if Auth is available and require login
     if (window.Auth && typeof window.Auth.requireLogin === 'function') {
       const isLoggedIn = await window.Auth.requireLogin();
-      // If requireLogin returns true, user is already logged in, open modal
-      // If it returns false, it will trigger redirect to login
       if (isLoggedIn && adModal) {
         adModal.classList.add('open');
       }
     } else {
-      // Fallback if auth not loaded yet
       console.warn('Auth not ready yet');
       setTimeout(() => openBtn.click(), 500);
     }
