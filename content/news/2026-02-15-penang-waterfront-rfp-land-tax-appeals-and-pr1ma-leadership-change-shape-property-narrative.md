@@ -25,9 +25,7 @@ Penang has confirmed that landowners can appeal recently revised land tax (quit 
 ​
 Under the revised schedule, industrial land is charged RM3.25 per square metre statewide, residential buildings RM0.70 per square metre in urban areas and RM0.50 in rural areas, while commercial properties face RM3.25 per square metre in urban areas and RM2.80 in rural areas. Out of 370,000 land titles, about 230,000 are First Grade, many of which had been paying low agricultural rates despite being used for residential, commercial or industrial purposes. The state is offering rebates of up to 50% in 2026 to ease the transition, and appeals can be escalated beyond district level for larger amounts.
 
-Source \[TheStar](<https://www.thestar.com.my/news/nation/2026/02/15/penang-landowners-given-avenue-to-appeal-new-land-tax-rates
-
-> ): Penang landowners given avenue to appeal new land tax rates
+Source [TheStar](https://www.thestar.com.my/news/nation/2026/02/15/penang-landowners-given-avenue-to-appeal-new-land-tax-rates): Penang landowners given avenue to appeal new land tax rates
 
 Commentary:
 For developers and land bankers, especially those holding old First Grade titles, this change lifts carrying costs and could push some to accelerate project timelines or divest non-core plots. The existence of rebates and an appeal process softens the immediate shock, but the direction of travel is clear: Penang is re-aligning land taxation with actual land use, which will matter in feasibility assumptions.
