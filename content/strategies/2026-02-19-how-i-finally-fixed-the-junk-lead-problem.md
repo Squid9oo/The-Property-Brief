@@ -9,6 +9,7 @@ summary: In my previous employment, I spent years frustrated by "phantom leads"
   and slow response times that killed our conversion rates. By switching to
   NextProperty's WABA system, we slashed our response lag by 76% and turned a
   broken manual process into a high-performance booking machine.
+image: /assets/uploads/img_5385.png
 ---
 **The Nightmare of the "Phantom Lead"**
 
@@ -35,3 +36,5 @@ For me, the biggest win was the backend visibility. I could finally monitor conv
 **Closing Insight**
 
 If your sales team is complaining about "junk leads," the problem usually isn't the marketing—it's the friction in your follow-up. When you eliminate phantom leads by making the customer initiate the chat and then respond in under two minutes, the "junk" miraculously starts turning into bookings.
+
+{{IMAGE}}
