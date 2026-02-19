@@ -266,8 +266,15 @@ if (window.pdfjsLib) {
    * @param {string} postId - Post ID
    * @returns {string}
    */
-  function getPostShareUrl(postId) {
-    return getSiteUrl() + '#post=' + encodeURIComponent(postId || '');
+  
+  function getPostShareUrl(postId, sectionType) {
+    const slug = (postId || '')
+      .replace(/[\u2018\u2019\u201C\u201D''""]/g, '')
+      .replace(/[\u2014\u2013\u2014\u2013—–]/g, '-')
+      .replace(/[^a-zA-Z0-9-]/g, '-')
+      .replace(/-{2,}/g, '-')
+      .replace(/^-|-$/g, '');
+    return 'https://thepropertybrief.org/' + (sectionType || 'strategies') + '/' + slug;
   }
 
   /**
@@ -1019,11 +1026,13 @@ function renderCards(items, sectionType) {
       if (type === 'post') {
         const postId = shareBtn.getAttribute('data-post-id') || '';
         const post = [...allNews, ...allStrategies].find(x => x.id === postId);
+        const sectionType = allNews.find(x => x.id === postId) ? 'news' : 'strategies';
+
 
         nativeShare({
           title: post?.title || 'THE PROPERTY BRIEF',
           text: post?.summary || 'Read this post on The Property Brief.',
-          url: getPostShareUrl(postId),
+          url: getPostShareUrl(postId, sectionType),
         });
         return;
       }
