@@ -135,9 +135,8 @@ htmlBody = htmlBody.replace('XXTPBPDFTOKENXX', pdfHtml);
   <meta property="og:url" content="${url}" />
   <meta property="og:title" content="${safeTitle}" />
   <meta property="og:description" content="${description}" />
-  <meta property="og:image" content="${ogImage}" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+    <meta property="og:image" content="${ogImage}" />
+  ${post.image ? '' : '<meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" />'}
   <meta property="og:locale" content="en_MY" />
 
   <meta name="twitter:card" content="summary_large_image" />
