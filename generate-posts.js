@@ -83,15 +83,15 @@ const pdfHtml = post.pdf
 
 // Swap {{placeholders}} with safe tokens so marked never sees raw HTML
 let body = (post.body || '')
-  .replace('{{VIDEO}}', '__VIDEO_TOKEN__')
-  .replace('{{IMAGE}}', '__IMAGE_TOKEN__')
-  .replace('{{PDF}}', '__PDF_TOKEN__');
+  .replace('{{VIDEO}}', 'XXTPBVIDEOTOKENXX')
+  .replace('{{IMAGE}}', 'XXTPBIMAGETOKENXX')
+  .replace('{{PDF}}', 'XXTPBPDFTOKENXX');
 
 // Parse markdown FIRST, then inject media HTML into the result
 let htmlBody = marked.parse(body);
-htmlBody = htmlBody.replace('__VIDEO_TOKEN__', videoHtml);
-htmlBody = htmlBody.replace('__IMAGE_TOKEN__', imgHtml);
-htmlBody = htmlBody.replace('__PDF_TOKEN__', pdfHtml);
+htmlBody = htmlBody.replace('XXTPBVIDEOTOKENXX', videoHtml);
+htmlBody = htmlBody.replace('XXTPBIMAGETOKENXX', imgHtml);
+htmlBody = htmlBody.replace('XXTPBPDFTOKENXX', pdfHtml);
 
   const jsonLd = JSON.stringify({
     "@context": "https://schema.org",
