@@ -56,6 +56,16 @@ if (window.pdfjsLib) {
    * @param {*} str - String to escape
    * @returns {string}
    */
+  
+  function slugify(str) {
+  return str
+    .replace(/[\u2018\u2019\u201C\u201D''""]/g, '')
+    .replace(/[\u2014\u2013—–]/g, '-')
+    .replace(/[^a-zA-Z0-9-]/g, '-')
+    .replace(/-{2,}/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
   function escapeHtml(str) {
     return (str || '')
       .toString()
@@ -316,11 +326,16 @@ if (window.pdfjsLib) {
    * @param {Array} items - Posts array
    * @returns {string} HTML string
    */
-  function renderCards(items) {
+function renderCards(items, sectionType) {
     return items
       .map(p => `
         <article class="postCard">
-          <h3>${escapeHtml(p.title || 'Untitled')}</h3>
+  <h3>
+    <a href="/${sectionType === 'news' ? 'news' : 'strategies'}/${slugify(p.id || '')}"
+       class="cardTitleLink">
+      ${escapeHtml(p.title || 'Untitled')}
+    </a>
+  </h3>
 
           <p class="postMeta">
             <span class="tagPill">${escapeHtml(p.tag || 'Update')}</span>
@@ -350,7 +365,7 @@ if (window.pdfjsLib) {
     const hasMore = (posts || []).length > limit;
 
     container.innerHTML =
-      renderCards(postsToShow) +
+  renderCards(postsToShow, sectionType) +
       (hasMore
         ? `<button class="btnLoadMore" data-section="${sectionType}" data-shown="${limit}">Load More</button>`
         : '');

@@ -1298,3 +1298,12 @@ mark.hl{
     width: min(240px, 60vw) !important;
   }
 }
+
+/* Article title links on homepage cards */
+.cardTitleLink {
+  color: inherit;
+  text-decoration: none;
+}
+.cardTitleLink:hover {
+  text-decoration: underline;
+}
