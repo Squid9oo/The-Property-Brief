@@ -231,7 +231,8 @@ const today = new Date().toISOString().split('T')[0];
 
 const staticUrls = [
   { url: 'https://thepropertybrief.org/', changefreq: 'daily', priority: '1.0', date: today },
-  { url: 'https://thepropertybrief.org/projects.html', changefreq: 'weekly', priority: '0.8', date: today },
+  { url: 'https://thepropertybrief.org/about.html', changefreq: 'monthly', priority: '0.8', date: today },
+  { url: 'https://thepropertybrief.org/projects.html', changefreq: 'weekly', priority: '0.7', date: today },
 ];
 
 const articleUrlEntries = allArticleUrls.map(({ url, date }) => `  <url>
