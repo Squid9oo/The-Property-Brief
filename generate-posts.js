@@ -54,8 +54,8 @@ console.log('   Strategies:', posts.strategies.length);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 });
 
-function buildArticleHTML(post, type) {
-  const url = `https://thepropertybrief.org/${type}/${post.id}`;
+function buildArticleHTML(post, type, slug) {
+  const url = `https://thepropertybrief.org/${type}/${slug}`;
   const ogImage = post.image
     ? `https://thepropertybrief.org${post.image}`
     : 'https://thepropertybrief.org/og-image.jpg';
@@ -183,16 +183,26 @@ ${jsonLd}
 </html>`;
 }
 
+function slugify(str) {
+  return str
+    .replace(/[\u2018\u2019\u201C\u201D''""]/g, '') // remove curly quotes & apostrophes
+    .replace(/[\u2014\u2013—–]/g, '-')               // em/en dashes to hyphen
+    .replace(/[^a-zA-Z0-9-]/g, '-')                  // anything else to hyphen
+    .replace(/-{2,}/g, '-')                           // collapse double hyphens
+    .replace(/^-|-$/g, '');                           // trim leading/trailing hyphens
+}
+
 let articleCount = 0;
 const allArticleUrls = [];
 
 ['news', 'strategies'].forEach(type => {
   posts[type].forEach(post => {
     if (post.active === false) return;
-    const html = buildArticleHTML(post, type);
-    const outPath = path.join(__dirname, type, `${post.id}.html`);
+    const slug = slugify(post.id);
+    const html = buildArticleHTML(post, type, slug);
+    const outPath = path.join(__dirname, type, `${slug}.html`);
     fs.writeFileSync(outPath, html);
-    allArticleUrls.push({ url: `https://thepropertybrief.org/${type}/${post.id}`, date: post.date });
+    allArticleUrls.push({ url: `https://thepropertybrief.org/${type}/${slug}`, date: post.date });
     articleCount++;
   });
 });
