@@ -46,3 +46,35 @@ fs.writeFileSync('posts.json', JSON.stringify(posts, null, 2));
 console.log('✅ Generated posts.json');
 console.log('   News:', posts.news.length);
 console.log('   Strategies:', posts.strategies.length);
+
+// ── Generate robots.txt ──────────────────────────────────────
+const robotsTxt = `User-agent: *
+Allow: /
+Sitemap: https://thepropertybrief.org/sitemap.xml`;
+
+fs.writeFileSync('robots.txt', robotsTxt);
+console.log('✅ Generated robots.txt');
+
+// ── Generate sitemap.xml ─────────────────────────────────────
+const today = new Date().toISOString().split('T')[0];
+
+const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://thepropertybrief.org/</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://thepropertybrief.org/projects.html</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>`;
+
+fs.writeFileSync('sitemap.xml', sitemapXml);
+console.log('✅ Generated sitemap.xml');
+
+
