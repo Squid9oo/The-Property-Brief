@@ -284,6 +284,20 @@
   <script defer src="app.js"></script>
 
   <script>
+  // Scroll to section after returning from article page
+  window.addEventListener('load', () => {
+    const target = sessionStorage.getItem('scrollTo');
+    if (target) {
+      sessionStorage.removeItem('scrollTo');
+      setTimeout(() => {
+        const el = document.getElementById(target);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 800);
+    }
+  });
+  </script>
+
+  <script>
   if (window.netlifyIdentity) {
     window.netlifyIdentity.on("init", user => {
       if (!user) {

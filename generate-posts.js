@@ -167,7 +167,9 @@ ${jsonLd}
 
   <main class="container" style="padding-top:2rem;padding-bottom:3rem;">
     <div class="maincol">
-      <a href="/#${backHash}" style="display:inline-block;margin-bottom:1.5rem;color:inherit;font-size:0.9rem;opacity:0.7;">← Back to ${backLabel}</a>
+  <a href="/#${backHash}" 
+   onclick="sessionStorage.setItem('scrollTo','${backHash}');return true;"
+   style="display:inline-block;margin-bottom:1.5rem;color:inherit;font-size:0.9rem;opacity:0.7;">← Back to ${backLabel}</a>
       <article>
         <p class="tag" style="margin-bottom:0.5rem;">${post.tag || ''}</p>
         <h1 style="margin-bottom:0.5rem;">${post.title}</h1>
