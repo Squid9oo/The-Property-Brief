@@ -69,19 +69,29 @@ function buildArticleHTML(post, type, slug) {
     year: 'numeric', month: 'long', day: 'numeric'
   });
 
-  // Replace placeholders before Markdown rendering
-  let body = post.body || '';
-  body = body.replace('{{VIDEO}}', post.videoId
-    ? `<div class="videoWrap" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:1.5rem 0;"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/${post.videoId}" frameborder="0" allowfullscreen></iframe></div>`
-    : '');
-  body = body.replace('{{IMAGE}}', post.image
-    ? `<img src="${post.image}" alt="${post.alt || post.title}" style="max-width:100%;border-radius:8px;margin:1rem 0;" loading="lazy">`
-    : '');
-  body = body.replace('{{PDF}}', post.pdf
-    ? `<a href="${post.pdf}" target="_blank" rel="noopener" style="display:inline-block;padding:10px 20px;background:#f5c800;color:#000;border-radius:6px;font-weight:700;text-decoration:none;margin:1rem 0;">📄 View PDF</a>`
-    : '');
+  // Build media HTML strings
+const videoHtml = post.videoId
+  ? `<div class="videoWrap" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:1.5rem 0;"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/${post.videoId}" frameborder="0" allowfullscreen></iframe></div>`
+  : '';
+const safeAlt = (post.alt || post.title || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const imgHtml = post.image
+  ? `<img src="${post.image}" alt="${safeAlt}" style="max-width:100%;border-radius:8px;margin:1rem 0;" loading="lazy">`
+  : '';
+const pdfHtml = post.pdf
+  ? `<a href="${post.pdf}" target="_blank" rel="noopener" style="display:inline-block;padding:10px 20px;background:#f5c800;color:#000;border-radius:6px;font-weight:700;text-decoration:none;margin:1rem 0;">📄 View PDF</a>`
+  : '';
 
-  const htmlBody = marked.parse(body);
+// Swap {{placeholders}} with safe tokens so marked never sees raw HTML
+let body = (post.body || '')
+  .replace('{{VIDEO}}', '__VIDEO_TOKEN__')
+  .replace('{{IMAGE}}', '__IMAGE_TOKEN__')
+  .replace('{{PDF}}', '__PDF_TOKEN__');
+
+// Parse markdown FIRST, then inject media HTML into the result
+let htmlBody = marked.parse(body);
+htmlBody = htmlBody.replace('__VIDEO_TOKEN__', videoHtml);
+htmlBody = htmlBody.replace('__IMAGE_TOKEN__', imgHtml);
+htmlBody = htmlBody.replace('__PDF_TOKEN__', pdfHtml);
 
   const jsonLd = JSON.stringify({
     "@context": "https://schema.org",
