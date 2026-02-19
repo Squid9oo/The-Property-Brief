@@ -56,9 +56,7 @@ console.log('   Strategies:', posts.strategies.length);
 
 function buildArticleHTML(post, type, slug) {
   const url = `https://thepropertybrief.org/${type}/${slug}`;
-  const ogImage = post.image
-    ? `https://thepropertybrief.org${post.image}`
-    : 'https://thepropertybrief.org/og-image.jpg';
+  const ogImage = 'https://thepropertybrief.org/og-image.jpg';
   const description = (post.summary || post.description || '').slice(0, 160)
     .replace(/"/g, '&quot;');
   const safeTitle = (post.title || '').replace(/"/g, '&quot;');
