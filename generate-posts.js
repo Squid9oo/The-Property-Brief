@@ -150,17 +150,22 @@ ${jsonLd}
   </script>
 </head>
 <body>
+
   <header class="topbar">
     <div class="brand">
       <a href="/" aria-label="The Property Brief Home">
         <img src="/assets/Logo TPB White.png" alt="The Property Brief" class="logo" />
       </a>
     </div>
-    <nav class="nav">
+    <button class="hamburger" id="hamburger" type="button" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav" id="mainNav">
       <a href="/">Home</a>
       <a href="/#latest">News</a>
       <a href="/#strategies">Strategies</a>
-      <a href="/#about">About</a>
+      <a href="/#search">Search</a>
+      <a href="/about.html">About</a>
       <a href="/projects.html">Listings</a>
     </nav>
   </header>
@@ -188,6 +193,8 @@ ${jsonLd}
   <footer class="footer">
     <small>© ${new Date().getFullYear()} THE PROPERTY BRIEF</small>
   </footer>
+  <script src="/CONFIG.js"></script>
+  <script src="/menu.js"></script>
 </body>
 </html>`;
 }
