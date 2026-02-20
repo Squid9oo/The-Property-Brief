@@ -2,8 +2,8 @@
 title: L&G outlines Selangor industrial push; Radium completes RM45m Ampang land
   buy; broker note flags possible shift at Seal’s Penang reclamation project
 date: 2026-02-20T11:15:00.000+08:00
-tag: Land & General Bhd, Radium Development Bhd, Seal Incorporated Bhd, GSD Land
-  Sdn Bhd
+tag: Land & General Bhd • Radium Development Bhd • Seal Incorporated Bhd • GSD
+  Land Sdn Bhd
 summary: Land & General is pitching a step-change in its earnings mix via a
   large industrial park plan in Selangor, while keeping its residential launches
   moving. Separately, Radium has closed its RM45m Ampang land acquisition, and a
