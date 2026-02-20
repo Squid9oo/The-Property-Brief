@@ -257,15 +257,8 @@ async function run() {
     process.exit(0);
   }
 
-  // Filter: Approved + not expired
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const listings = (Array.isArray(raw) ? raw : []).filter(p => {
-    if (!p['Ad Title'])           return false;
-    if (p['Status'] !== 'Approved') return false;
-    const expiry = parseExpiry(p['Expiry Date']);
-    return expiry && expiry >= today;
+    const listings = (Array.isArray(raw) ? raw : []).filter(p => {
+    return p['Ad Title'] && p['Ad Title'] !== '';
   });
 
   console.log(`   Found ${listings.length} approved active listing(s).`);
