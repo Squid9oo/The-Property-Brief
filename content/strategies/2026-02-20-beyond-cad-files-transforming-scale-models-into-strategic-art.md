@@ -14,13 +14,13 @@ summary: Stop treating your scale model as a technical requirement and start
 gallery:
   - image: /assets/uploads/retail-inspired-boxed-scale-model-malaysia.jpg
     alt: retail-inspired-boxed-scale-model-malaysia
-    caption: retail-inspired-boxed-scale-model-malaysia
+    caption: ""
   - image: /assets/uploads/wood-layered-township-contour-model.jpg
     alt: wood-layered-township-contour-model
-    caption: wood-layered-township-contour-model
+    caption: ""
   - image: /assets/uploads/master-plan-model-competitor-copy-malaysia.jpg
     alt: master-plan-model-competitor-copy-malaysia
-    caption: master-plan-model-competitor-copy-malaysia
+    caption: ""
 ---
 ## The Trap of the "Administrative" Marketer
 
