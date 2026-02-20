@@ -11,6 +11,16 @@ summary: Stop treating your scale model as a technical requirement and start
   treating it as a high-stakes visual hook. This article explores how moving
   beyond "CAD-to-Vendor" workflows and taking calculated creative risks can
   significantly increase your exhibition foot traffic and brand recall.
+gallery:
+  - image: /assets/uploads/retail-inspired-boxed-scale-model-malaysia.jpg
+    alt: retail-inspired-boxed-scale-model-malaysia
+    caption: retail-inspired-boxed-scale-model-malaysia
+  - image: /assets/uploads/wood-layered-township-contour-model.jpg
+    alt: wood-layered-township-contour-model
+    caption: wood-layered-township-contour-model
+  - image: /assets/uploads/master-plan-model-competitor-copy-malaysia.jpg
+    alt: master-plan-model-competitor-copy-malaysia
+    caption: master-plan-model-competitor-copy-malaysia
 ---
 ## The Trap of the "Administrative" Marketer
 
