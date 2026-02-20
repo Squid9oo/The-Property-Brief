@@ -24,7 +24,7 @@ collections:
         name: "tags"
         widget: "list"
         required: false
-        hint: "Type a keyword and press Enter to add. Used for SEO."
+        hint: "Click 'Add tags' below to add each keyword separately. One keyword per box."
       - { label: "Author", name: "author", widget: "string", default: "The Property Brief", required: false }
       - { label: "Pin to Top of Feed", name: "featured", widget: "boolean", default: false, required: false, hint: "Pinned articles show first in the News section" }
       - { label: "Summary", name: "summary", widget: "text", hint: "Shown as article intro and on homepage card. Aim for 120–155 characters." }
