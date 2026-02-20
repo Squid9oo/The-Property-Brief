@@ -20,11 +20,11 @@ collections:
         required: false
         options: ["Market News", "Investment Strategy", "Developer Spotlight", "Government & Policy", "ASEAN Markets", "First-Time Buyer", "Rental Market", "Commercial Property"]
       - { label: "Tag (short label)", name: "tag", widget: "string", required: false, hint: "Short label e.g. KL, Johor, Budget 2026" }
-      - label: "Tags (Keywords)"
+            - label: "Tags (Keywords)"
         name: "tags"
-        widget: "list"
+        widget: "string"
         required: false
-        hint: "Click 'Add tags' below to add each keyword separately. One keyword per box."
+        hint: "Separate keywords with commas e.g. KL Property, Investment, Budget 2026"
       - { label: "Author", name: "author", widget: "string", default: "The Property Brief", required: false }
       - { label: "Pin to Top of Feed", name: "featured", widget: "boolean", default: false, required: false, hint: "Pinned articles show first in the News section" }
       - { label: "Summary", name: "summary", widget: "text", hint: "Shown as article intro and on homepage card. Aim for 120–155 characters." }
@@ -65,11 +65,11 @@ collections:
         required: false
         options: ["Market News", "Investment Strategy", "Developer Spotlight", "Government & Policy", "ASEAN Markets", "First-Time Buyer", "Rental Market", "Commercial Property"]
       - { label: "Tag (short label)", name: "tag", widget: "string", required: false, hint: "Short label e.g. KL, Johor, Budget 2026" }
-      - label: "Tags (Keywords)"
+            - label: "Tags (Keywords)"
         name: "tags"
-        widget: "list"
+        widget: "string"
         required: false
-        hint: "Click 'Add tags (keywords)' below to add each keyword separately. One per box."
+        hint: "Separate keywords with commas e.g. KL Property, Investment, Budget 2026"
       - { label: "Author", name: "author", widget: "string", default: "The Property Brief", required: false }
       - { label: "Pin to Top of Feed", name: "featured", widget: "boolean", default: false, required: false, hint: "Pinned articles show first in the Strategies section" }
       - { label: "Summary", name: "summary", widget: "text", hint: "Shown as article intro and on homepage card. Aim for 120–155 characters." }

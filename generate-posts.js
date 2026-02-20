@@ -37,7 +37,11 @@ function getPosts(folder) {
       seoTitle: data.seoTitle || null,
       seoDescription: data.seoDescription || null,
       category: data.category || '',
-      tags: Array.isArray(data.tags) ? data.tags : [],
+      tags: Array.isArray(data.tags)
+        ? data.tags
+        : typeof data.tags === 'string' && data.tags.trim()
+          ? data.tags.split(',').map(t => t.trim()).filter(Boolean)
+          : [],
       author: data.author || 'The Property Brief',
       featured: data.featured || false,
       ctaText: data.ctaText || null,
@@ -312,7 +316,6 @@ ${jsonLd}
         ${tagLineHtml}
         <h1 style="margin-bottom:0.5rem;">${post.title}</h1>
         <p class="muted" style="font-size:0.85rem;margin-bottom:1.5rem;">${dateFormatted} · By ${post.author || 'The Property Brief'}</p>
-        <p class="sub" style="margin-bottom:2rem;">${displaySummary}</p>
         ${gallery.html}
         <div class="articleBody">
           ${htmlBody}
