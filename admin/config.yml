@@ -14,13 +14,42 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Publish Date", name: "date", widget: "datetime" }
-      - { label: "Tag", name: "tag", widget: "string", default: "Strategy" }
-      - { label: "Summary", name: "summary", widget: "text" }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        required: false
+        options: ["Market News", "Investment Strategy", "Developer Spotlight", "Government & Policy", "ASEAN Markets", "First-Time Buyer", "Rental Market", "Commercial Property"]
+      - { label: "Tag (short label)", name: "tag", widget: "string", required: false, hint: "Short label e.g. KL, Johor, Budget 2026" }
+      - label: "Tags (Keywords)"
+        name: "tags"
+        widget: "list"
+        required: false
+        hint: "Type a keyword and press Enter to add. Used for SEO."
+      - { label: "Author", name: "author", widget: "string", default: "The Property Brief", required: false }
+      - { label: "Pin to Top of Feed", name: "featured", widget: "boolean", default: false, required: false, hint: "Pinned articles show first in the News section" }
+      - { label: "Summary", name: "summary", widget: "text", hint: "Shown as article intro and on homepage card. Aim for 120–155 characters." }
+      - label: "Image Gallery (Slideshow)"
+        name: "gallery"
+        widget: "list"
+        required: false
+        max: 10
+        summary: "{{fields.alt}}"
+        hint: "Up to 10 images shown as a slideshow after the title. Recommended: 1200×675px (16:9), max 500KB each. Compress free at squoosh.app before uploading."
+        fields:
+          - { label: "Image", name: "image", widget: "image" }
+          - { label: "Alt Text", name: "alt", widget: "string", required: false, hint: "Describe the image — used for accessibility and Google image search" }
+          - { label: "Caption", name: "caption", widget: "string", required: false, hint: "Optional text shown at the bottom of the image" }
+      - { label: "Featured Image (Thumbnail Only)", name: "image", widget: "image", required: false, hint: "Used for homepage card thumbnail and social sharing. 1200×675px (16:9), max 300KB. If you have a gallery, the first gallery image is used for social sharing instead." }
       - { label: "Body", name: "body", widget: "markdown" }
-      - { label: "Featured Image", name: "image", widget: "image", required: false }
-      - { label: "Video ID (YouTube)", name: "videoId", widget: "string", required: false }
-      - { label: "PDF Attachment", name: "pdf", widget: "file", required: false }
-      - { label: "PDF Preview Image", name: "pdfPreview", widget: "image", required: false, hint: "Screenshot of PDF pages (optional)" }
+      - { label: "CTA Button Label", name: "ctaText", widget: "string", required: false, hint: "e.g. 'Download Report' or 'Contact Us' — appears as a yellow button at the end of the article" }
+      - { label: "CTA Button URL", name: "ctaUrl", widget: "string", required: false, hint: "The link the CTA button points to" }
+      - { label: "Video ID (YouTube)", name: "videoId", widget: "string", required: false, hint: "Paste only the video ID e.g. dQw4w9WgXcQ — not the full URL. Use {{VIDEO}} in the body to position it." }
+      - { label: "PDF Title", name: "pdfTitle", widget: "string", required: false, hint: "e.g. Q1 2026 Malaysia Property Market Report" }
+      - { label: "PDF Description", name: "pdfDescription", widget: "string", required: false, hint: "Short text shown below the PDF download button" }
+      - { label: "PDF Attachment", name: "pdf", widget: "file", required: false, hint: "Max 5MB. Aim for under 2MB for fast mobile loading. Use {{PDF}} in the body to position it." }
+      - { label: "PDF Preview Image", name: "pdfPreview", widget: "image", required: false, hint: "Screenshot of the PDF cover page. 800×1131px (A4 ratio), max 200KB." }
+      - { label: "SEO Title Override", name: "seoTitle", widget: "string", required: false, hint: "Custom title shown in Google and browser tab. Max 60 characters. Leave blank to use the article title." }
+      - { label: "SEO Description Override", name: "seoDescription", widget: "text", required: false, hint: "Custom Google snippet. Max 155 characters. Leave blank to use Summary." }
 
   - name: "strategies"
     label: "Strategies"
@@ -30,14 +59,43 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Publish Date", name: "date", widget: "datetime" }
-      - { label: "Tag", name: "tag", widget: "string", default: "Strategy" }
-      - { label: "Summary", name: "summary", widget: "text" }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        required: false
+        options: ["Market News", "Investment Strategy", "Developer Spotlight", "Government & Policy", "ASEAN Markets", "First-Time Buyer", "Rental Market", "Commercial Property"]
+      - { label: "Tag (short label)", name: "tag", widget: "string", required: false, hint: "Short label e.g. KL, Johor, Budget 2026" }
+      - label: "Tags (Keywords)"
+        name: "tags"
+        widget: "list"
+        required: false
+        hint: "Type a keyword and press Enter to add. Used for SEO."
+      - { label: "Author", name: "author", widget: "string", default: "The Property Brief", required: false }
+      - { label: "Pin to Top of Feed", name: "featured", widget: "boolean", default: false, required: false, hint: "Pinned articles show first in the Strategies section" }
+      - { label: "Summary", name: "summary", widget: "text", hint: "Shown as article intro and on homepage card. Aim for 120–155 characters." }
+      - label: "Image Gallery (Slideshow)"
+        name: "gallery"
+        widget: "list"
+        required: false
+        max: 10
+        summary: "{{fields.alt}}"
+        hint: "Up to 10 images shown as a slideshow after the title. Recommended: 1200×675px (16:9), max 500KB each. Compress free at squoosh.app before uploading."
+        fields:
+          - { label: "Image", name: "image", widget: "image" }
+          - { label: "Alt Text", name: "alt", widget: "string", required: false, hint: "Describe the image — used for accessibility and Google image search" }
+          - { label: "Caption", name: "caption", widget: "string", required: false, hint: "Optional text shown at the bottom of the image" }
+      - { label: "Featured Image (Thumbnail Only)", name: "image", widget: "image", required: false, hint: "Used for homepage card thumbnail and social sharing. 1200×675px (16:9), max 300KB. If you have a gallery, the first gallery image is used for social sharing instead." }
       - { label: "Body", name: "body", widget: "markdown" }
-      - { label: "Featured Image", name: "image", widget: "image", required: false }
-      - { label: "Video ID (YouTube)", name: "videoId", widget: "string", required: false }
-      - { label: "PDF Attachment", name: "pdf", widget: "file", required: false }
-      - { label: "PDF Preview Image", name: "pdfPreview", widget: "image", required: false, hint: "Screenshot of PDF pages (optional)" }
-  
+      - { label: "CTA Button Label", name: "ctaText", widget: "string", required: false, hint: "e.g. 'Download Report' or 'Contact Us' — appears as a yellow button at the end of the article" }
+      - { label: "CTA Button URL", name: "ctaUrl", widget: "string", required: false, hint: "The link the CTA button points to" }
+      - { label: "Video ID (YouTube)", name: "videoId", widget: "string", required: false, hint: "Paste only the video ID e.g. dQw4w9WgXcQ — not the full URL. Use {{VIDEO}} in the body to position it." }
+      - { label: "PDF Title", name: "pdfTitle", widget: "string", required: false, hint: "e.g. Q1 2026 Malaysia Property Market Report" }
+      - { label: "PDF Description", name: "pdfDescription", widget: "string", required: false, hint: "Short text shown below the PDF download button" }
+      - { label: "PDF Attachment", name: "pdf", widget: "file", required: false, hint: "Max 5MB. Aim for under 2MB for fast mobile loading. Use {{PDF}} in the body to position it." }
+      - { label: "PDF Preview Image", name: "pdfPreview", widget: "image", required: false, hint: "Screenshot of the PDF cover page. 800×1131px (A4 ratio), max 200KB." }
+      - { label: "SEO Title Override", name: "seoTitle", widget: "string", required: false, hint: "Custom title shown in Google and browser tab. Max 60 characters. Leave blank to use the article title." }
+      - { label: "SEO Description Override", name: "seoDescription", widget: "text", required: false, hint: "Custom Google snippet. Max 155 characters. Leave blank to use Summary." }
+
   - name: "sponsored"
     label: "Sponsored Ads"
     folder: "content/sponsored"
@@ -52,7 +110,7 @@ collections:
       - { label: "Description (shown under banner)", name: "description", widget: "string", required: false }
       - { label: "Alt text (optional)", name: "alt", widget: "string", required: false }
       - { label: "Active?", name: "active", widget: "boolean", default: true }
-  
+
   - name: "settings"
     label: "Settings"
     files:
