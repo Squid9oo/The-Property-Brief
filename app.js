@@ -19,6 +19,29 @@ if (window.pdfjsLib) {
   window.pdfjsLib.GlobalWorkerOptions.workerSrc = CONFIG.PDF.WORKER_URL;
 }
 
+// Gallery slideshow controls (global — used by onclick in gallery HTML)
+window.tpbNav = function(btn, dir) {
+  var g = btn.closest('.tpb-gallery'),
+      sl = g.querySelectorAll('.tpb-slide'),
+      dt = g.querySelectorAll('.tpb-dot'),
+      ct = g.querySelector('.tpb-counter'), cur = 0;
+  for (var i = 0; i < sl.length; i++) { if (sl[i].classList.contains('active')) { cur = i; break; } }
+  sl[cur].classList.remove('active'); if (dt[cur]) dt[cur].classList.remove('active');
+  cur = (cur + dir + sl.length) % sl.length;
+  sl[cur].classList.add('active'); if (dt[cur]) dt[cur].classList.add('active');
+  if (ct) ct.textContent = (cur + 1) + '\u00a0/\u00a0' + sl.length;
+};
+window.tpbGoto = function(dot, idx) {
+  var g = dot.closest('.tpb-gallery'),
+      sl = g.querySelectorAll('.tpb-slide'),
+      dt = g.querySelectorAll('.tpb-dot'),
+      ct = g.querySelector('.tpb-counter');
+  sl.forEach(function(s) { s.classList.remove('active'); });
+  dt.forEach(function(d) { d.classList.remove('active'); });
+  sl[idx].classList.add('active'); if (dt[idx]) dt[idx].classList.add('active');
+  if (ct) ct.textContent = (idx + 1) + '\u00a0/\u00a0' + sl.length;
+};
+
 (() => {
   // ============ STATE ============
   let allNews = [];
@@ -425,6 +448,35 @@ function renderCards(items, sectionType) {
       showAd(activeAds[i]);
     }, CONFIG.SPONSORED.ROTATION_INTERVAL_MS);
   }
+  // ============ GALLERY ============
+
+  function buildModalGallery(gallery) {
+    if (!Array.isArray(gallery) || gallery.length === 0) return '';
+    const count = gallery.length;
+    const slides = gallery.map((item, i) => {
+      const safeAlt = escapeHtml(item.alt || '');
+      const captionHtml = item.caption
+        ? `\n      <p class="tpb-caption">${escapeHtml(item.caption)}</p>`
+        : '';
+      return `    <div class="tpb-slide${i === 0 ? ' active' : ''}" role="group" aria-label="Image ${i + 1} of ${count}">
+      <img src="${escapeHtml(item.image || '')}" alt="${safeAlt}" loading="${i === 0 ? 'eager' : 'lazy'}">${captionHtml}
+    </div>`;
+    }).join('\n');
+    const dots = count > 1
+      ? gallery.map((_, i) =>
+          `<button class="tpb-dot${i === 0 ? ' active' : ''}" onclick="tpbGoto(this,${i})" aria-label="Go to image ${i + 1}"></button>`
+        ).join('')
+      : '';
+    const controls = count > 1
+      ? `\n  <button class="tpb-prev" onclick="tpbNav(this,-1)" aria-label="Previous image">&#8249;</button>
+  <button class="tpb-next" onclick="tpbNav(this,1)" aria-label="Next image">&#8250;</button>
+  <div class="tpb-dots">${dots}</div>
+  <span class="tpb-counter">1\u00a0/\u00a0${count}</span>`
+      : '';
+    return `<div class="tpb-gallery" data-count="${count}" role="region" aria-label="Article image gallery">
+${slides}${controls}
+</div>`;
+  }
 
   // ============ POST FORMATTING ============
 
@@ -494,7 +546,8 @@ function renderCards(items, sectionType) {
       .replace(/\{\{IMAGE_PLACEHOLDER\}\}/g, imageHtml)
       .replace(/\{\{PDF_PLACEHOLDER\}\}/g, pdfHtml);
 
-    return html;
+    const galleryHtml = buildModalGallery(post.gallery);
+    return galleryHtml + html;
   }
 
   // ============ PDF VIEWER (OPTIMIZED) ============
