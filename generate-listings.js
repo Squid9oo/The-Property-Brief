@@ -99,7 +99,7 @@ function buildListingHTML(listing, slug) {
     </table>`;
 
   // WhatsApp CTA
-  const waNum = contact.replace(/\D/g, '').replace(/^0/, '');
+  const waNum = String(contact || '').replace(/\D/g, '').replace(/^0/, '');
   const waMsg = encodeURIComponent(`Hi, I'm interested in your listing: ${title} (${url})`);
   const ctaHtml = waNum ? `
     <a href="https://wa.me/60${waNum}?text=${waMsg}"
