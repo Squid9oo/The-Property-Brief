@@ -20,7 +20,7 @@ collections:
         required: false
         options: ["Market News", "Investment Strategy", "Developer Spotlight", "Government & Policy", "ASEAN Markets", "First-Time Buyer", "Rental Market", "Commercial Property"]
       - { label: "Tag (short label)", name: "tag", widget: "string", required: false, hint: "Short label e.g. KL, Johor, Budget 2026" }
-            - label: "Tags (Keywords)"
+      - label: "Tags (Keywords)"
         name: "tags"
         widget: "string"
         required: false
@@ -65,7 +65,7 @@ collections:
         required: false
         options: ["Market News", "Investment Strategy", "Developer Spotlight", "Government & Policy", "ASEAN Markets", "First-Time Buyer", "Rental Market", "Commercial Property"]
       - { label: "Tag (short label)", name: "tag", widget: "string", required: false, hint: "Short label e.g. KL, Johor, Budget 2026" }
-            - label: "Tags (Keywords)"
+      - label: "Tags (Keywords)"
         name: "tags"
         widget: "string"
         required: false
