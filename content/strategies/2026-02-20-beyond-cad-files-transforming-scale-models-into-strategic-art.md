@@ -22,8 +22,6 @@ gallery:
     alt: master-plan-model-competitor-copy-malaysia
     caption: master-plan-model-competitor-copy-malaysia
 ---
-## {{IMAGE}}
-
 ## The Trap of the "Administrative" Marketer
 
 Most property marketing departments have fallen into a dangerous comfort zone. When it comes time for a new launch, the process for the scale model is almost entirely administrative where you send the CAD files to the vendor, compare three quotes, and award the job to the one who is cheapest.
@@ -39,6 +37,8 @@ When every developer uses the same white plastic and green moss, the human eye "
 ## The Power of Cross-Industry Observation
 
 My best ideas rarely come from looking at other property brochures; they come from observing how other industries solve problems.
+
+{{IMAGE}}
 
 ### 1. The "Hanging Box" Inspiration
 
