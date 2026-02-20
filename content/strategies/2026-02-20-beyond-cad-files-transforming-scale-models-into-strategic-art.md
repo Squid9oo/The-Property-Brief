@@ -22,6 +22,8 @@ gallery:
     alt: master-plan-model-competitor-copy-malaysia
     caption: master-plan-model-competitor-copy-malaysia
 ---
+## {{IMAGE}}
+
 ## The Trap of the "Administrative" Marketer
 
 Most property marketing departments have fallen into a dangerous comfort zone. When it comes time for a new launch, the process for the scale model is almost entirely administrative where you send the CAD files to the vendor, compare three quotes, and award the job to the one who is cheapest.
