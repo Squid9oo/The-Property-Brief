@@ -1,3 +1,9 @@
 {
-  "ads": []
+  "ads": [
+    {
+      "img": "/assets/uploads/gamuda-money-mari-home.jpg",
+      "url": "https://www.gamudaland.com.my/campaigns/moneymarihome",
+      "alt": "Gamuda - Money Mari Home CNY Campaign 2026"
+    }
+  ]
 }
