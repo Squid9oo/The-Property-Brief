@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malaysia Property Finance Calculator | The Property Brief</title>
+  <meta name="description" content="Free comprehensive Malaysia property calculator — mortgage, EPF withdrawal analysis, true monthly costs, stamp duty, legal fees and amortization table." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0d0d0d;
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+    a { color: #f5c800; }
+    /* ===== HEADER ===== */
+    .site-header {
+      background: #111;
+      border-bottom: 2px solid #f5c800;
+      padding: 18px 24px;
+      text-align: center;
+    }
+    .site-header .brand {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #f5c800;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+    }
+    .site-header p {
+      font-size: 0.82rem;
+      color: #888;
+      margin-top: 4px;
+    }
+    /* ===== AD BANNER ===== */
+    .ad-banner-wrap {
+      max-width: 900px;
+      margin: 24px auto 0;
+      padding: 0 16px;
+    }
+    .ad-label {
+      font-size: 0.68rem;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 5px;
+    }
+    .ad-banner {
+      width: 100%;
+      height: 90px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+    .ad-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0; left: 0;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .ad-banner img.active { opacity: 1; }
+    .ad-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #444;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+    }
+    /* ===== MAIN CONTAINER ===== */
+    .container {
+      max-width: 900px;
+      margin: 32px auto 0;
+      padding: 0 16px;
+    }
+    h1.calc-title {
+      font-size: 1.7rem;
+      color: #f5c800;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .calc-subtitle {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 28px;
+    }
+    /* ===== CARDS ===== */
+    .card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #f5c800;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title .step-badge {
+      background: #f5c800;
+      color: #000;
+      font-size: 0.72rem;
+      font-weight: 800;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    /* ===== FORM GRID ===== */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; }
+      h1.calc-title { font-size: 1.3rem; }
+    }
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field.full { grid-column: 1 / -1; }
+    label {
+      font-size: 0.78rem;
+      color: #aaa;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    input[type="number"], input[type="text"], select {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.92rem;
+      padding: 9px 12px;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input[type="number"]:focus, select:focus {
+      border-color: #f5c800;
+    }
+    select option { background: #1a1a1a; }
+    .hint {
+      font-size: 0.71rem;
+      color: #555;
+      margin-top: 2px;
+    }
+    /* ===== RADIO GROUP ===== */
+    .radio-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: #ccc;
+      font-weight: 400;
+    }
+    .radio-group input[type="radio"] { accent-color: #f5c800; width: 16px; height: 16px; }
+    /* ===== CALCULATE BUTTON ===== */
+    .btn-calculate {
+      background: #f5c800;
+      color: #000;
+      font-size: 1rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 32px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+      letter-spacing: 0.03em;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-calculate:hover { background: #ffd700; transform: translateY(-1px); }
+    .btn-calculate:active { transform: translateY(0); }
+    /* ===== RESULTS ===== */
+    #results { display: none; }
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 600px) { .result-grid { grid-template-columns: 1fr; } }
+    .result-item {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .result-item .r-label {
+      font-size: 0.72rem;
+      color: #777;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .result-item .r-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .result-item .r-value.highlight { color: #f5c800; }
+    .result-item .r-value.green { color: #4caf50; }
+    .result-item .r-value.red { color: #f44336; }
+    .result-item .r-value.amber { color: #ff9800; }
+    .result-total {
+      background: #f5c800;
+      color: #000;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+    }
+    .result-total .t-label { font-size: 0.85rem; }
+    .result-total .t-value { font-size: 1.3rem; }
+    /* ===== EPF VERDICT BOX ===== */
+    .verdict-box {
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-top: 14px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+    .verdict-box.good { background: #0d2a0d; border: 1px solid #2e7d2e; color: #81c784; }
+    .verdict-box.warn { background: #2a1f00; border: 1px solid #7d5a00; color: #ffa726; }
+    .verdict-box.info { background: #0d1f2a; border: 1px solid #1565c0; color: #64b5f6; }
+    .verdict-box strong { display: block; font-size: 1rem; margin-bottom: 4px; }
+    /* ===== COST TABLE ===== */
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .cost-table tr { border-bottom: 1px solid #222; }
+    .cost-table tr:last-child { border-bottom: none; }
+    .cost-table td { padding: 9px 4px; }
+    .cost-table td:last-child { text-align: right; font-weight: 600; color: #fff; }
+    .cost-table .section-head td {
+      color: #f5c800;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding-top: 16px;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .cost-table .total-row td {
+      font-weight: 800;
+      font-size: 1rem;
+      color: #f5c800;
+      padding-top: 12px;
+    }
+    /* ===== DSR INDICATOR ===== */
+    .dsr-bar-wrap { margin-top: 14px; }
+    .dsr-bar-label { font-size: 0.78rem; color: #888; margin-bottom: 6px; }
+    .dsr-bar-track {
+      background: #222;
+      border-radius: 20px;
+      height: 10px;
+      overflow: hidden;
+    }
+    .dsr-bar-fill {
+      height: 100%;
+      border-radius: 20px;
+      background: #4caf50;
+      transition: width 0.6s ease;
+    }
+    .dsr-note { font-size: 0.75rem; color: #777; margin-top: 6px; }
+    /* ===== AMORTIZATION ===== */
+    .amort-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 600px) { .amort-compare { grid-template-columns: 1fr; } }
+    .amort-box {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .amort-box h4 { font-size: 0.78rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+    .amort-box .big { font-size: 1.5rem; font-weight: 800; color: #fff; }
+    .amort-box .sub { font-size: 0.78rem; color: #666; margin-top: 4px; }
+    .amort-box.better { border-color: #4caf50; }
+    .amort-box.better .big { color: #4caf50; }
+    .savings-callout {
+      background: #1a2a1a;
+      border: 1px solid #2e7d2e;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      color: #81c784;
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+    .savings-callout strong { color: #a5d6a7; }
+    .amort-table-wrap {
+      overflow-x: auto;
+      max-height: 380px;
+      overflow-y: auto;
+      border: 1px solid #222;
+      border-radius: 8px;
+    }
+    .amort-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+    .amort-table th {
+      background: #111;
+      color: #f5c800;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 10px 12px;
+      text-align: right;
+      position: sticky;
+      top: 0;
+    }
+    .amort-table th:first-child { text-align: left; }
+    .amort-table td {
+      padding: 8px 12px;
+      text-align: right;
+      border-bottom: 1px solid #1a1a1a;
+      color: #ccc;
+    }
+    .amort-table td:first-child { text-align: left; color: #777; }
+    .amort-table tr:hover td { background: #1f1f1f; }
+    /* ===== PRINT BUTTON ===== */
+    .btn-print {
+      background: transparent;
+      color: #f5c800;
+      border: 2px solid #f5c800;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 12px 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-print:hover { background: #f5c800; color: #000; }
+    .print-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .print-note { font-size: 0.75rem; color: #555; }
+    /* ===== DISCLAIMER ===== */
+    .disclaimer {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 10px;
+      padding: 18px 20px;
+      font-size: 0.75rem;
+      color: #555;
+      line-height: 1.7;
+      margin-top: 28px;
+    }
+    .disclaimer strong { color: #777; }
+    /* ===== FOOTER ===== */
+    .site-footer {
+      text-align: center;
+      padding: 32px 16px 16px;
+      font-size: 0.75rem;
+      color: #444;
+    }
+    .site-footer a { color: #f5c800; text-decoration: none; }
+    /* ===== PRINT STYLES ===== */
+    @media print {
+      body { background: #fff !important; color: #000 !important; padding: 0; }
+      .site-header { background: #fff !important; border-bottom: 2px solid #000 !important; }
+      .site-header .brand { color: #000 !important; }
+      .site-header p { color: #555 !important; }
+      .ad-banner-wrap, .btn-calculate, .btn-print, .print-row { display: none !important; }
+      .card { background: #fff !important; border: 1px solid #ccc !important; page-break-inside: avoid; }
+      .card-title { color: #b8960a !important; }
+      .result-item { background: #f9f9f9 !important; border: 1px solid #ddd !important; }
+      .result-item .r-value { color: #000 !important; }
+      .result-item .r-value.highlight { color: #b8960a !important; }
+      .result-total { background: #f5c800 !important; color: #000 !important; }
+      .amort-table-wrap { max-height: none !important; overflow: visible !important; }
+      input, select { border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; }
+      .disclaimer { border: 1px solid #ccc !important; background: #f9f9f9 !important; color: #555 !important; }
+      .disclaimer strong { color: #000 !important; }
+      #results { display: block !important; }
+      .amort-table th { background: #f5c800 !important; color: #000 !important; }
+      .cost-table .section-head td { color: #b8960a !important; }
+      .cost-table .total-row td { color: #b8960a !important; }
+      .verdict-box.good { background: #e8f5e9 !important; color: #2e7d32 !important; border-color: #a5d6a7 !important; }
+      .verdict-box.warn { background: #fff8e1 !important; color: #f57f17 !important; border-color: #ffe082 !important; }
+      .verdict-box.info { background: #e3f2fd !important; color: #1565c0 !important; border-color: #90caf9 !important; }
+      .savings-callout { background: #e8f5e9 !important; color: #2e7d32 !important; border-color: #a5d6a7 !important; }
+      .amort-box { background: #f9f9f9 !important; border: 1px solid #ddd !important; }
+      .amort-box .big { color: #000 !important; }
+      .amort-box.better .big { color: #2e7d32 !important; }
+      .print-brand {
+        display: block !important;
+        text-align: center;
+        font-size: 0.8rem;
+        color: #888;
+        margin-bottom: 12px;
+      }
+    }
+    .print-brand { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a href="https://thepropertybrief.org" class="brand">THE PROPERTY BRIEF</a>
+  <p>Malaysia &amp; ASEAN Property Market Insights</p>
+</header>
+
+<!-- AD BANNER TOP -->
+<div class="ad-banner-wrap">
+  <div class="ad-label">Advertisement</div>
+  <div class="ad-banner" id="adBanner" onclick="adClick()">
+    <div class="ad-placeholder" id="adPlaceholder">YOUR AD HERE &nbsp;|&nbsp; Contact us to advertise</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+  <div class="print-brand">thepropertybrief.org | Malaysia Property Finance Calculator</div>
+
+  <h1 class="calc-title">🏠 Malaysia Property Finance Calculator</h1>
+  <p class="calc-subtitle">A comprehensive tool to understand the true cost of buying property in Malaysia — beyond just the monthly instalment.</p>
+
+  <!-- ===== SECTION 1: INPUTS ===== -->
+  <div class="card">
+    <div class="card-title"><span class="step-badge">1</span> Property &amp; Financing Details</div>
+    <div class="form-grid">
+
+      <div class="field">
+        <label>Property Price (RM)</label>
+        <input type="number" id="propPrice" value="600000" min="50000" step="1000" />
+      </div>
+
+      <div class="field">
+        <label>Down Payment (%)</label>
+        <input type="number" id="downPct" value="10" min="1" max="50" step="0.5" />
+        <span class="hint">Minimum 10% for most bank loans</span>
+      </div>
+
+      <div class="field">
+        <label>Loan Interest Rate (% p.a.)</label>
+        <input type="number" id="interestRate" value="4.0" min="1" max="12" step="0.05" />
+      </div>
+
+      <div class="field">
+        <label>Loan Tenure (Years)</label>
+        <input type="number" id="tenure" value="30" min="5" max="35" step="1" />
+      </div>
+
+      <div class="field">
+        <label>Property Type</label>
+        <div class="radio-group">
+          <label><input type="radio" name="propType" value="developer" checked /> New from Developer</label>
+          <label><input type="radio" name="propType" value="subsale" /> Sub-Sale (Secondary Market)</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Is this a Stratified Property?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="stratified" value="yes" checked /> Yes (Condo / Apartment / Serviced Residence)</label>
+          <label><input type="radio" name="stratified" value="no" /> No (Landed)</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Built-up Area (sq ft)</label>
+        <input type="number" id="builtUp" value="1000" min="300" max="10000" step="50" />
+        <span class="hint">Used to estimate maintenance fee for stratified properties</span>
+      </div>
+
+      <div class="field">
+        <label>First Property Purchase?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="firstBuyer" value="yes" checked /> Yes</label>
+          <label><input type="radio" name="firstBuyer" value="no" /> No</label>
+        </div>
+      </div>
+
+      <div class="field full">
+        <label>Down Payment Source</label>
+        <div class="radio-group">
+          <label><input type="radio" name="dpSource" value="savings" checked onchange="toggleEPF()" /> Own Savings</label>
+          <label><input type="radio" name="dpSource" value="epf" onchange="toggleEPF()" /> EPF (Akaun Sejahtera) Withdrawal</label>
+          <label><input type="radio" name="dpSource" value="mix" onchange="toggleEPF()" /> Mix (Part Savings + Part EPF)</label>
+        </div>
+      </div>
+
+      <div class="field" id="epfFields" style="display:none; grid-column: 1 / -1;">
+        <div class="form-grid">
+          <div class="field">
+            <label>EPF Akaun Sejahtera Balance (RM)</label>
+            <input type="number" id="epfSejahtera" value="80000" min="0" step="1000" />
+            <span class="hint">Account 2 equivalent — 15% of monthly contributions since 2024</span>
+          </div>
+          <div class="field">
+            <label>EPF Akaun Persaraan Balance (RM)</label>
+            <input type="number" id="epfPersaraan" value="200000" min="0" step="1000" />
+            <span class="hint">If this exceeds RM1.1 million, excess may be withdrawn anytime</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly Costs -->
+      <div class="field full" style="margin-top:8px;">
+        <div class="card-title" style="margin-bottom:12px; font-size:0.85rem;">⚙️ Adjust Monthly Running Cost Estimates</div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Quit Rent / Year (RM)</label>
+            <input type="number" id="quitRent" value="100" min="0" step="10" />
+            <span class="hint">Cukai tanah — varies by state &amp; land area</span>
+          </div>
+          <div class="field">
+            <label>Assessment Tax / Year (RM)</label>
+            <input type="number" id="assessment" value="600" min="0" step="50" />
+            <span class="hint">Cukai taksiran — ~0.1% of property value/year</span>
+          </div>
+          <div class="field">
+            <label>Security Fee / Month (RM)</label>
+            <input type="number" id="security" value="100" min="0" step="10" />
+          </div>
+          <div class="field">
+            <label>Water Bill / Month (RM)</label>
+            <input type="number" id="water" value="50" min="0" step="5" />
+          </div>
+          <div class="field">
+            <label>Electricity Bill / Month (RM)</label>
+            <input type="number" id="electricity" value="180" min="0" step="10" />
+          </div>
+          <div class="field">
+            <label>Internet / Month (RM)</label>
+            <input type="number" id="internet" value="99" min="0" step="1" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <button class="btn-calculate" onclick="calculate()">Calculate My Property Finances →</button>
+  </div>
+
+  <!-- ===== RESULTS ===== -->
+  <div id="results">
+
+    <!-- AD BANNER MID -->
+    <div class="ad-banner-wrap" style="padding:0; margin-bottom:24px;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-banner" id="adBannerMid" onclick="adClick()">
+        <div class="ad-placeholder">YOUR AD HERE &nbsp;|&nbsp; Contact us to advertise</div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: UPFRONT COSTS -->
+    <div class="card">
+      <div class="card-title"><span class="step-badge">2</span> Upfront Cash Needed on Day 1</div>
+      <table class="cost-table" id="upfrontTable"></table>
+    </div>
+
+    <!-- SECTION 3: EPF ANALYSIS -->
+    <div class="card" id="epfSection">
+      <div class="card-title"><span class="step-badge">3</span> EPF Withdrawal Analysis</div>
+      <div id="epfAnalysis"></div>
+    </div>
+
+    <!-- SECTION 4: TRUE MONTHLY COSTS -->
+    <div class="card">
+      <div class="card-title"><span class="step-badge">4</span> True Monthly Cost Simulation</div>
+      <table class="cost-table" id="monthlyTable"></table>
+      <div id="dsrBlock"></div>
+    </div>
+
+    <!-- SECTION 5: AMORTIZATION -->
+    <div class="card">
+      <div class="card-title"><span class="step-badge">5</span> Loan Amortisation &amp; Extra Payment Impact</div>
+      <div class="amort-compare" id="amortCompare"></div>
+      <div class="savings-callout" id="savingsCallout"></div>
+      <p style="font-size:0.78rem;color:#666;margin-bottom:10px;">Amortisation table — scroll to view all months</p>
+      <div class="amort-table-wrap">
+        <table class="amort-table">
+          <thead>
+            <tr>
+              <th style="text-align:left;">Month</th>
+              <th>Payment (RM)</th>
+              <th>Principal (RM)</th>
+              <th>Interest (RM)</th>
+              <th>Balance (RM)</th>
+            </tr>
+          </thead>
+          <tbody id="amortBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PRINT / SAVE -->
+    <div class="card">
+      <div class="card-title">📄 Save or Print This Report</div>
+      <div class="print-row">
+        <button class="btn-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
+        <span class="print-note">Choose "Save as PDF" in your browser's print dialog to save a copy for your records.</span>
+      </div>
+    </div>
+
+    <!-- DISCLAIMER -->
+    <div class="disclaimer">
+      <strong>⚠️ Disclaimer &amp; Important Notes</strong><br/>
+      This calculator is provided by <strong>The Property Brief</strong> as a free educational tool for general information purposes only. All figures are <strong>estimates</strong> and are not financial, legal, or investment advice.<br/><br/>
+      Legal fees, stamp duty, EPF withdrawal eligibility, and government incentives are subject to change. Stamp duty exemptions for first-time buyers are subject to government gazette and may have conditions including income ceilings and property price caps. EPF withdrawal rules, account structures, and dividend rates may change — always verify directly with <strong>KWSP/EPF Malaysia</strong> at kwsp.gov.my.<br/><br/>
+      Actual loan approval, interest rates, and terms are subject to your bank's assessment, credit score, and Debt Service Ratio (DSR). Please consult a licensed financial advisor, property lawyer, and your preferred bank before making any financial decisions.
+      <br/><br/>
+      <strong>© 2026 The Property Brief | thepropertybrief.org</strong> — All rights reserved. Tool may be shared freely with attribution.
+    </div>
+
+  </div><!-- /results -->
+</div><!-- /container -->
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <p>© 2026 <a href="https://thepropertybrief.org">The Property Brief</a> — Malaysia &amp; ASEAN Property Market Insights</p>
+  <p style="margin-top:6px;">Free tools for property buyers. Not financial advice.</p>
+</footer>
+
+<script>
+// ===== AD ROTATOR =====
+const ads = [
+  // { img: 'assets/ads/ad1.jpg', url: 'https://example.com' },
+  // Add your ads here in the format above
+];
+let adIndex = 0;
+
+function initAds() {
+  if (ads.length === 0) return;
+  const banner = document.getElementById('adBanner');
+  const bannerMid = document.getElementById('adBannerMid');
+  document.getElementById('adPlaceholder').style.display = 'none';
+
+  [banner, bannerMid].forEach(b => {
+    if (!b) return;
+    b.innerHTML = '';
+    ads.forEach((ad, i) => {
+      const img = document.createElement('img');
+      img.src = ad.img;
+      img.alt = 'Advertisement';
+      if (i === 0) img.classList.add('active');
+      b.appendChild(img);
+    });
+  });
+
+  setInterval(() => {
+    adIndex = (adIndex + 1) % ads.length;
+    [banner, bannerMid].forEach(b => {
+      if (!b) return;
+      b.querySelectorAll('img').forEach((img, i) => {
+        img.classList.toggle('active', i === adIndex);
+      });
+    });
+  }, 5000);
+}
+
+function adClick() {
+  if (ads.length === 0) {
+    window.open('mailto:hello@thepropertybrief.org?subject=Advertise on The Property Brief Calculator', '_blank');
+    return;
+  }
+  window.open(ads[adIndex].url, '_blank');
+}
+
+// ===== UI HELPERS =====
+function toggleEPF() {
+  const src = document.querySelector('input[name="dpSource"]:checked').value;
+  document.getElementById('epfFields').style.display = (src === 'epf' || src === 'mix') ? 'grid' : 'none';
+}
+
+function fmt(n) {
+  return 'RM ' + Math.round(n).toLocaleString('en-MY');
+}
+function fmtN(n) {
+  return Math.round(n).toLocaleString('en-MY');
+}
+
+// ===== STAMP DUTY (MOT) =====
+function stampDutyMOT(price, firstBuyer) {
+  // First buyer exemption: 100% on MOT for properties up to RM500,000
+  if (firstBuyer && price <= 500000) return 0;
+  let duty = 0;
+  if (price <= 100000) duty = price * 0.01;
+  else if (price <= 500000) duty = 1000 + (price - 100000) * 0.02;
+  else if (price <= 1000000) duty = 9000 + (price - 500000) * 0.03;
+  else duty = 24000 + (price - 1000000) * 0.04;
+  return duty;
+}
+
+// ===== STAMP DUTY (LOAN AGREEMENT) =====
+function stampDutyLoan(loanAmt) {
+  return loanAmt * 0.005;
+}
+
+// ===== LEGAL FEES =====
+function legalFeeSPA(price) {
+  // Scale of Charges (First Schedule, Solicitors Remuneration Order 2023 — estimate)
+  let fee = 0;
+  if (price <= 500000) fee = price * 0.01;
+  else if (price <= 7500000) fee = 5000 + (price - 500000) * 0.008;
+  else fee = 5000 + 56000 + (price - 7500000) * 0.005;
+  return Math.max(fee, 500); // min RM500
+}
+
+function legalFeeLoan(loanAmt) {
+  // Typically 50-75% of SPA fee scale
+  let fee = 0;
+  if (loanAmt <= 500000) fee = loanAmt * 0.01;
+  else fee = 5000 + (loanAmt - 500000) * 0.008;
+  return Math.max(fee * 0.6, 500);
+}
+
+// ===== MONTHLY INSTALMENT =====
+function calcInstalment(principal, annualRate, years) {
+  const r = annualRate / 100 / 12;
+  const n = years * 12;
+  if (r === 0) return principal / n;
+  return principal * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+}
+
+// ===== AMORTIZATION TABLE =====
+function buildAmort(principal, annualRate, years, extraPct) {
+  const r = annualRate / 100 / 12;
+  const n = years * 12;
+  const base = calcInstalment(principal, annualRate, years);
+  const payment = base * (1 + extraPct / 100);
+  let bal = principal;
+  let rows = [];
+  let totalInterest = 0;
+  let month = 0;
+
+  while (bal > 0.01 && month < n * 2) {
+    month++;
+    const interest = bal * r;
+    let principal_paid = payment - interest;
+    if (principal_paid > bal) principal_paid = bal;
+    bal -= principal_paid;
+    if (bal < 0) bal = 0;
+    totalInterest += interest;
+    rows.push({
+      month,
+      payment: principal_paid + interest,
+      principal: principal_paid,
+      interest,
+      balance: bal,
+    });
+    if (bal === 0) break;
+  }
+  return { rows, totalInterest, months: month };
+}
+
+// ===== MAIN CALCULATE =====
+function calculate() {
+  const price = parseFloat(document.getElementById('propPrice').value) || 0;
+  const downPct = parseFloat(document.getElementById('downPct').value) || 10;
+  const rate = parseFloat(document.getElementById('interestRate').value) || 4;
+  const tenureYears = parseInt(document.getElementById('tenure').value) || 30;
+  const builtUp = parseFloat(document.getElementById('builtUp').value) || 1000;
+  const propType = document.querySelector('input[name="propType"]:checked').value;
+  const stratified = document.querySelector('input[name="stratified"]:checked').value === 'yes';
+  const firstBuyer = document.querySelector('input[name="firstBuyer"]:checked').value === 'yes';
+  const dpSource = document.querySelector('input[name="dpSource"]:checked').value;
+  const epfSejahtera = parseFloat(document.getElementById('epfSejahtera').value) || 0;
+  const epfPersaraan = parseFloat(document.getElementById('epfPersaraan').value) || 0;
+  const quitRent = parseFloat(document.getElementById('quitRent').value) || 0;
+  const assessment = parseFloat(document.getElementById('assessment').value) || 0;
+  const security = parseFloat(document.getElementById('security').value) || 0;
+  const water = parseFloat(document.getElementById('water').value) || 0;
+  const electricity = parseFloat(document.getElementById('electricity').value) || 0;
+  const internet = parseFloat(document.getElementById('internet').value) || 0;
+
+  const downAmt = price * downPct / 100;
+  const loanAmt = price - downAmt;
+  const instalment = calcInstalment(loanAmt, rate, tenureYears);
+
+  // ----- SECTION 2: UPFRONT -----
+  const sdMOT = stampDutyMOT(price, firstBuyer);
+  const sdLoan = stampDutyLoan(loanAmt);
+  const feeSPA = legalFeeSPA(price);
+  const feeLoan = legalFeeLoan(loanAmt);
+  const valFee = Math.min(Math.max(price * 0.0025, 500), 2000);
+  const devAbsorb = propType === 'developer';
+
+  let upfrontRows = `
+    <tr class="section-head"><td colspan="2">Down Payment</td></tr>
+    <tr><td>Down Payment (${downPct}%)</td><td>${fmt(downAmt)}</td></tr>
+    <tr class="section-head"><td colspan="2">Stamp Duty</td></tr>
+    <tr><td>Stamp Duty — Memorandum of Transfer (MOT)${firstBuyer && price <= 500000 ? ' <span style="color:#4caf50;font-size:0.75rem;">[First Buyer Exemption Applied]</span>' : ''}</td><td>${fmt(sdMOT)}</td></tr>
+    <tr><td>Stamp Duty — Loan Agreement (0.5% of loan)</td><td>${fmt(sdLoan)}</td></tr>
+    <tr class="section-head"><td colspan="2">Legal Fees${devAbsorb ? ' <span style="color:#ffa726;font-size:0.75rem;">[Developer may absorb — confirm before signing]</span>' : ''}</td></tr>
+    <tr><td>Legal Fee — Sale &amp; Purchase Agreement (SPA)</td><td>${devAbsorb ? '<span style="color:#ffa726;">TBC with developer</span>' : fmt(feeSPA)}</td></tr>
+    <tr><td>Legal Fee — Loan Agreement</td><td>${fmt(feeLoan)}</td></tr>
+    <tr class="section-head"><td colspan="2">Other</td></tr>
+    <tr><td>Valuation Fee (estimate)</td><td>${fmt(valFee)}</td></tr>
+  `;
+
+  const upfrontTotal = downAmt + sdMOT + sdLoan + (devAbsorb ? 0 : feeSPA) + feeLoan + valFee;
+  const upfrontTotalDisplay = devAbsorb ? upfrontTotal : upfrontTotal;
+
+  upfrontRows += `
+    <tr class="total-row">
+      <td>Total Upfront Cash Required${devAbsorb ? ' (excl. SPA fee if developer absorbs)' : ''}</td>
+      <td>${fmt(upfrontTotal)}</td>
+    </tr>
+  `;
+  document.getElementById('upfrontTable').innerHTML = upfrontRows;
+
+  // ----- SECTION 3: EPF -----
+  const epfSection = document.getElementById('epfSection');
+  const epfAnalysis = document.getElementById('epfAnalysis');
+
+  if (dpSource === 'savings') {
+    epfSection.style.display = 'none';
+  } else {
+    epfSection.style.display = 'block';
+    const withdrawAmt = Math.min(epfSejahtera, downAmt);
+    const epfDividendRate = 0.06;
+    const years10 = 10;
+    // Opportunity cost: what EPF would grow to in 10 years
+    const epfFutureValue = withdrawAmt * Math.pow(1 + epfDividendRate, years10);
+    const epfOpportunityCost = epfFutureValue - withdrawAmt;
+    // Interest saved by reducing loan (if used as down payment — actually loan is already calculated based on 10% down;
+    // EPF analysis: if they use EPF to cover the down payment instead of additional lump sum
+    // Simpler: Total interest over loan vs if they put extra as lump sum reduction
+    const totalInterestBase = (instalment * tenureYears * 12) - loanAmt;
+    const reducedLoan = loanAmt - 0; // loan stays same; EPF covers down payment
+    // Benefit: Not having to liquidate savings (keep savings liquid)
+    const epfCanWithdraw = epfSejahtera >= downAmt;
+    const epfExcess = epfPersaraan > 1100000;
+
+    let html = `
+      <div class="result-grid">
+        <div class="result-item">
+          <div class="r-label">EPF Akaun Sejahtera Balance</div>
+          <div class="r-value">${fmt(epfSejahtera)}</div>
+        </div>
+        <div class="result-item">
+          <div class="r-label">Down Payment Required</div>
+          <div class="r-value highlight">${fmt(downAmt)}</div>
+        </div>
+        <div class="result-item">
+          <div class="r-label">Withdrawal Amount (estimated)</div>
+          <div class="r-value">${fmt(withdrawAmt)}</div>
+        </div>
+        <div class="result-item">
+          <div class="r-label">EPF Dividend Foregone (10 yrs @ 6%)</div>
+          <div class="r-value red">${fmt(epfOpportunityCost)}</div>
+        </div>
+        <div class="result-item">
+          <div class="r-label">Sufficient in Akaun Sejahtera?</div>
+          <div class="r-value ${epfCanWithdraw ? 'green' : 'red'}">${epfCanWithdraw ? '✅ Yes — sufficient' : '⚠️ Insufficient — need top-up from savings'}</div>
+        </div>
+        <div class="result-item">
+          <div class="r-label">Total Interest on Mortgage (full tenure)</div>
+          <div class="r-value">${fmt(totalInterestBase)}</div>
+        </div>
+      </div>
+    `;
+
+    // Verdict
+    if (epfOpportunityCost > totalInterestBase * 0.3) {
+      html += `<div class="verdict-box warn">
+        <strong>⚠️ Consider Keeping EPF in Akaun Sejahtera</strong>
+        By withdrawing ${fmt(withdrawAmt)}, you forgo approximately ${fmt(epfOpportunityCost)} in EPF dividends over 10 years (at 6%/yr). EPF's dividend rate (typically 5.5–6.5%) is higher than most housing loan rates (~4%). If you have alternative savings for the down payment, consider keeping EPF to compound and use savings instead.
+      </div>`;
+    } else {
+      html += `<div class="verdict-box good">
+        <strong>✅ EPF Withdrawal is Reasonable for Your Case</strong>
+        The dividend opportunity cost of ${fmt(epfOpportunityCost)} over 10 years is manageable relative to your mortgage cost. Withdrawing from Akaun Sejahtera for the down payment is a practical option — just ensure you rebuild your EPF contributions after purchase.
+      </div>`;
+    }
+
+    if (epfExcess) {
+      html += `<div class="verdict-box info" style="margin-top:10px;">
+        <strong>ℹ️ Akaun Persaraan Excess Withdrawal May Be Available</strong>
+        Your Akaun Persaraan balance exceeds RM1.1 million. Under EPF rules, the excess above RM1.1M may be withdrawn at any time — not just for housing. Verify your eligibility directly with EPF at <a href="https://kwsp.gov.my" target="_blank">kwsp.gov.my</a>.
+      </div>`;
+    }
+
+    html += `<p style="font-size:0.72rem;color:#555;margin-top:12px;">Note: EPF housing withdrawal is from <strong>Akaun Sejahtera</strong> (formerly Account 2). Withdrawal rules, amounts, and eligibility are subject to EPF guidelines. Verify at kwsp.gov.my before making decisions.</p>`;
+    epfAnalysis.innerHTML = html;
+  }
+
+  // ----- SECTION 4: TRUE MONTHLY COSTS -----
+  const maintFee = stratified ? builtUp * 0.30 : 0;
+  const sinkingFund = stratified ? maintFee * 0.10 : 0;
+  const acServicing = 50;
+  const repairBuffer = price * 0.01 / 12;
+  const totalMonthly = instalment + (quitRent / 12) + (assessment / 12) + maintFee + sinkingFund + security + water + electricity + internet + acServicing + repairBuffer;
+  const incomeNeeded = totalMonthly / 0.33;
+
+  let monthlyRows = `
+    <tr class="section-head"><td colspan="2">Loan</td></tr>
+    <tr><td>Monthly Loan Instalment</td><td>${fmt(instalment)}</td></tr>
+    <tr class="section-head"><td colspan="2">Government Charges</td></tr>
+    <tr><td>Quit Rent / Cukai Tanah (monthly equiv.)</td><td>${fmt(quitRent / 12)}</td></tr>
+    <tr><td>Assessment Tax / Cukai Taksiran (monthly equiv.)</td><td>${fmt(assessment / 12)}</td></tr>
+  `;
+  if (stratified) {
+    monthlyRows += `
+      <tr class="section-head"><td colspan="2">Strata Charges</td></tr>
+      <tr><td>Maintenance Fee (${builtUp.toLocaleString()} sqft × RM0.30/sqft)</td><td>${fmt(maintFee)}</td></tr>
+      <tr><td>Sinking Fund (10% of maintenance)</td><td>${fmt(sinkingFund)}</td></tr>
+    `;
+  }
+  monthlyRows += `
+    <tr class="section-head"><td colspan="2">Utilities &amp; Services</td></tr>
+    <tr><td>Security Fee</td><td>${fmt(security)}</td></tr>
+    <tr><td>Water Bill</td><td>${fmt(water)}</td></tr>
+    <tr><td>Electricity Bill</td><td>${fmt(electricity)}</td></tr>
+    <tr><td>Internet</td><td>${fmt(internet)}</td></tr>
+    <tr class="section-head"><td colspan="2">Upkeep Buffer</td></tr>
+    <tr><td>Air-Conditioner Servicing (monthly equiv.)</td><td>${fmt(acServicing)}</td></tr>
+    <tr><td>Repair &amp; Upkeep Buffer (1% property value ÷ 12)</td><td>${fmt(repairBuffer)}</td></tr>
+    <tr class="total-row"><td>Total Monthly Outflow</td><td>${fmt(totalMonthly)}</td></tr>
+    <tr><td style="color:#888;font-size:0.82rem;">Gross Monthly Income Recommended (33% DSR)</td><td style="color:#f5c800;font-weight:700;">${fmt(incomeNeeded)}</td></tr>
+  `;
+  document.getElementById('monthlyTable').innerHTML = monthlyRows;
+
+  // DSR Bar
+  const dsrPct = Math.min((instalment / incomeNeeded) * 100, 100);
+  const dsrColor = dsrPct < 30 ? '#4caf50' : dsrPct < 45 ? '#ff9800' : '#f44336';
+  document.getElementById('dsrBlock').innerHTML = `
+    <div class="dsr-bar-wrap">
+      <div class="dsr-bar-label">Loan Instalment as % of Recommended Income (Debt Service Ratio indicator)</div>
+      <div class="dsr-bar-track"><div class="dsr-bar-fill" style="width:${dsrPct.toFixed(1)}%;background:${dsrColor};"></div></div>
+      <div class="dsr-note">Instalment is ${((instalment/incomeNeeded)*100).toFixed(1)}% of recommended income. Banks typically allow up to 60–70% DSR — but keeping below 40% is advisable for financial comfort.</div>
+    </div>
+  `;
+
+  // ----- SECTION 5: AMORTIZATION -----
+  const amortBase = buildAmort(loanAmt, rate, tenureYears, 0);
+  const amortExtra = buildAmort(loanAmt, rate, tenureYears, 10);
+
+  const yearsBase = (amortBase.months / 12).toFixed(1);
+  const yearsExtra = (amortExtra.months / 12).toFixed(1);
+  const yearsSaved = (amortBase.months - amortExtra.months) / 12;
+  const interestSaved = amortBase.totalInterest - amortExtra.totalInterest;
+  const extraAmt = instalment * 0.10;
+
+  document.getElementById('amortCompare').innerHTML = `
+    <div class="amort-box">
+      <h4>Standard Repayment</h4>
+      <div class="big">${yearsBase} years</div>
+      <div class="sub">Total Interest: ${fmt(amortBase.totalInterest)}</div>
+      <div class="sub">Total Paid: ${fmt(loanAmt + amortBase.totalInterest)}</div>
+    </div>
+    <div class="amort-box better">
+      <h4>+10% Extra Monthly Payment</h4>
+      <div class="big">${yearsExtra} years</div>
+      <div class="sub">Total Interest: ${fmt(amortExtra.totalInterest)}</div>
+      <div class="sub">Total Paid: ${fmt(loanAmt + amortExtra.totalInterest)}</div>
+    </div>
+  `;
+
+  document.getElementById('savingsCallout').innerHTML = `
+    By paying an extra <strong>${fmt(extraAmt)}/month</strong> (10% on top of your instalment of ${fmt(instalment)}), you save <strong>${yearsSaved.toFixed(1)} years</strong> off your loan and <strong>${fmt(interestSaved)} in total interest</strong>. That extra ${fmt(extraAmt)} per month is one of the best financial decisions a homeowner can make.
+  `;
+
+  // Amort table — show all rows but cap render for performance
+  const rows = amortBase.rows;
+  let tbody = '';
+  rows.forEach((r, i) => {
+    tbody += `<tr>
+      <td>${r.month}</td>
+      <td>${fmtN(r.payment)}</td>
+      <td>${fmtN(r.principal)}</td>
+      <td>${fmtN(r.interest)}</td>
+      <td>${fmtN(r.balance)}</td>
+    </tr>`;
+  });
+  document.getElementById('amortBody').innerHTML = tbody;
+
+  // Show results
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  initAds();
+});
+</script>
+</body>
+</html>
