@@ -10,10 +10,26 @@
     body { font-family: 'Segoe UI', Arial, sans-serif; background: #0d0d0d; color: #e0e0e0; min-height: 100vh; padding: 0 0 60px; }
     a { color: #f5c800; }
 
-    .site-header { background: #111; border-bottom: 2px solid #f5c800; padding: 14px 24px; text-align: center; }
-    .site-header a.brand { display: inline-block; text-decoration: none; }
+    .site-header { background: #111; border-bottom: 2px solid #f5c800; padding: 14px 24px; }
+    .site-header-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .site-header-center { display: flex; flex-direction: column; align-items: center; flex: 1; }
+    .site-header a.brand { display: inline-block; text-decoration: none; transition: opacity 0.2s; }
+    .site-header a.brand:hover { opacity: 0.75; }
     .header-logo { height: 48px; width: auto; display: block; margin: 0 auto; }
-    .site-header p { font-size: 0.82rem; color: #888; margin-top: 6px; }
+    .site-header p { font-size: 0.82rem; color: #888; margin-top: 5px; text-align: center; }
+    .calc-back-link { width: 100px; flex-shrink: 0; }
+    .calc-back-link a { display: inline-flex; align-items: center; gap: 4px; color: #666; text-decoration: none; font-size: 0.78rem; transition: color 0.2s; }
+    .calc-back-link a:hover { color: #f5c800; }
+    .calc-share-side { width: 100px; display: flex; justify-content: flex-end; flex-shrink: 0; }
+    .calc-share-btn { display: inline-flex; align-items: center; gap: 5px; background: transparent; border: 1px solid rgba(245,200,0,0.30); color: #f5c800; border-radius: 999px; padding: 7px 13px; font-size: 0.78rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.2s, border-color 0.2s; }
+    .calc-share-btn:hover { background: rgba(245,200,0,0.10); border-color: rgba(245,200,0,0.60); }
+    @media (max-width: 480px) {
+      .calc-back-link { width: auto; }
+      .calc-share-side { width: auto; }
+      .calc-back-link a { font-size: 0.72rem; }
+      .calc-share-btn { font-size: 0.72rem; padding: 6px 10px; }
+      .header-logo { height: 36px; }
+    }
 
     .ad-banner-wrap { max-width: 900px; margin: 24px auto 0; padding: 0 16px; }
     .ad-label { font-size: 0.68rem; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
@@ -152,7 +168,7 @@
     @media print {
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
       body { background: #fff !important; color: #000 !important; padding: 0 !important; font-size: 11pt; }
-      .site-header, .ad-banner-wrap, .btn-calculate, .btn-print, .print-row, #section1-card, .site-footer { display: none !important; }
+            .site-header, .ad-banner-wrap, .btn-calculate, .calc-share-btn, .btn-print, .print-row, #section1-card, .site-footer { display: none !important; }
 
       .print-header { display: block !important; text-align: center; border-bottom: 2px solid #b8960a; padding: 0 0 12px; margin-bottom: 18px; }
       .print-header img { height: 40px; width: auto; display: block; margin: 0 auto 8px; }
@@ -235,12 +251,24 @@
 <body>
 
 <header class="site-header">
-  <a href="https://thepropertybrief.org" class="brand">
-    <img src="assets/Logo%20TPB%20White.png" alt="The Property Brief" class="header-logo"
-         onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" />
-    <span style="display:none;font-size:1.3rem;font-weight:700;color:#f5c800;letter-spacing:0.03em;">THE PROPERTY BRIEF</span>
-  </a>
-  <p>Malaysia &amp; ASEAN Property Market Insights</p>
+  <div class="site-header-inner">
+    <div class="calc-back-link">
+      <a href="https://thepropertybrief.org" aria-label="Back to homepage">← Home</a>
+    </div>
+    <div class="site-header-center">
+      <a href="https://thepropertybrief.org" class="brand" aria-label="The Property Brief — back to homepage">
+        <img src="assets/Logo%20TPB%20White.png" alt="The Property Brief" class="header-logo"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" />
+        <span style="display:none;font-size:1.3rem;font-weight:700;color:#f5c800;letter-spacing:0.03em;">THE PROPERTY BRIEF</span>
+      </a>
+      <p>Malaysia &amp; ASEAN Property Market Insights</p>
+    </div>
+    <div class="calc-share-side">
+      <button class="calc-share-btn" id="calcShareBtn" type="button" aria-label="Share this tool">
+        ↗ Share Tool
+      </button>
+    </div>
+  </div>
 </header>
 
 <div class="print-header">
@@ -833,6 +861,30 @@ function calculate() {
 }
 
 document.addEventListener('DOMContentLoaded', () => { initAds(); toggleStratified(); });
+</script>
+<script>
+(function() {
+  const btn = document.getElementById('calcShareBtn');
+  if (!btn) return;
+  btn.addEventListener('click', async () => {
+    const shareData = {
+      title: 'Malaysia Property Finance Calculator',
+      text: 'Free comprehensive Malaysia mortgage & DSR calculator — by The Property Brief',
+      url: window.location.href
+    };
+    if (navigator.share) {
+      try { await navigator.share(shareData); } catch(e) {}
+    } else {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        btn.textContent = '✓ Link copied!';
+        setTimeout(() => { btn.innerHTML = '↗ Share Tool'; }, 2500);
+      } catch(e) {
+        prompt('Copy this link to share:', window.location.href);
+      }
+    }
+  });
+})();
 </script>
 </body>
 </html>
