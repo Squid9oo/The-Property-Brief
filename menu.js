@@ -57,6 +57,44 @@
       }
     });
   }
+  /**
+   * Initialize Tools dropdown toggle (works on all pages)
+   */
+  function initToolsDropdown() {
+    const dropdowns = document.querySelectorAll('.toolsDropdown');
+    if (!dropdowns.length) return;
+
+    dropdowns.forEach(dropdown => {
+      const btn = dropdown.querySelector('.toolsBtn');
+      if (!btn) return;
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(isOpen));
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      dropdowns.forEach(dropdown => {
+        if (!dropdown.contains(e.target) && dropdown.classList.contains('open')) {
+          dropdown.classList.remove('open');
+          dropdown.querySelector('.toolsBtn')?.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        dropdowns.forEach(dropdown => {
+          if (dropdown.classList.contains('open')) {
+            dropdown.classList.remove('open');
+            dropdown.querySelector('.toolsBtn')?.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+  }
 
   /**
    * Initialize all menus
@@ -69,6 +107,7 @@
     
     // Projects page menu
     initHamburgerMenu('hamburgerProjects', 'mainNavProjects');
+    initToolsDropdown();
   }
 
   // Wait for DOM to be fully ready
