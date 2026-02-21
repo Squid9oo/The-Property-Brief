@@ -3,8 +3,7 @@ title: Johor Unleashes Sweeping Housing Grants as Penang Overhauls Quit Rent
   After 32 Years
 date: 2026-02-21T14:36:00.000+08:00
 category: Market News
-tag: Perbadanan Kemajuan Perumahan Negeri Johor, FBG Holdings Bhd, IGB Bhd, IOI
-  Properties Group Bhd, Think City Sdn Bhd, Econpile Holdings Bhd
+tag: Perbadanan Kemajuan Perumahan Negeri Johor • FBG Holdings Bhd • IGB Bhd
 tags: Perbadanan Kemajuan Perumahan Negeri Johor, FBG Holdings Bhd, IGB Bhd, IOI
   Properties Group Bhd, Think City Sdn Bhd, Econpile Holdings Bhd
 author: The Property Brief
