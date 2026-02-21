@@ -143,10 +143,14 @@
 
     .ad-banner-wrap { max-width: 900px; margin: 24px auto 0; padding: 0 16px; }
     .ad-label { font-size: 0.68rem; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
-    .ad-banner { width: 100%; height: 90px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; overflow: hidden; cursor: pointer; position: relative; }
+    .ad-banner { width: 100%; height: 120px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; overflow: hidden; cursor: pointer; position: relative; }
     .ad-banner img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.6s ease; }
     .ad-banner img.active { opacity: 1; }
     .ad-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #444; font-size: 0.8rem; letter-spacing: 0.06em; }
+    @media (max-width: 600px) {
+      .ad-banner { height: 100px; }
+      .ad-banner img { object-fit: contain; }
+    }
 
     .container { max-width: 900px; margin: 32px auto 0; padding: 0 16px; }
     h1.calc-title { font-size: 1.7rem; color: #f5c800; font-weight: 700; margin-bottom: 6px; }
@@ -284,7 +288,13 @@
     @media print {
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
       body { background: #fff !important; color: #000 !important; padding: 0 !important; font-size: 11pt; }
-            .site-header, .ad-banner-wrap, .btn-calculate, .calc-share-btn, .btn-print, .print-row, #section1-card, .site-footer { display: none !important; }
+      .site-header, .btn-calculate, .calc-share-btn, .btn-print, .print-row, #section1-card, .site-footer { display: none !important; }
+      .ad-banner-wrap { max-width: 100% !important; padding: 0 !important; margin: 0 0 12px !important; }
+      .ad-label { color: #999 !important; font-size: 7pt !important; margin-bottom: 3px !important; }
+      .ad-banner { height: auto !important; border: 1px solid #ddd !important; background: #fff !important; border-radius: 4px !important; }
+      .ad-banner img { display: none !important; position: static !important; width: 100% !important; height: auto !important; object-fit: contain !important; }
+      .ad-banner img.active { display: block !important; opacity: 1 !important; }
+      .ad-placeholder { display: none !important; }
 
       .print-header { display: block !important; text-align: center; border-bottom: 2px solid #b8960a; padding: 0 0 12px; margin-bottom: 18px; }
       .print-header img { height: 40px; width: auto; display: block; margin: 0 auto 8px; }
@@ -396,8 +406,8 @@
 
 <div class="ad-banner-wrap">
   <div class="ad-label">Advertisement</div>
-  <div class="ad-banner" id="adBanner" onclick="adClick()">
-    <div class="ad-placeholder" id="adPlaceholder">YOUR AD HERE &nbsp;|&nbsp; Contact us to advertise</div>
+  <div class="ad-banner" id="adBannerTop" onclick="adClickTop()">
+    <div class="ad-placeholder" id="adPlaceholderTop">YOUR AD HERE &nbsp;|&nbsp; Contact us to advertise</div>
   </div>
 </div>
 
@@ -602,8 +612,8 @@
 
     <div class="ad-banner-wrap" style="padding:0;margin-bottom:24px;">
       <div class="ad-label">Advertisement</div>
-      <div class="ad-banner" id="adBannerMid" onclick="adClick()">
-        <div class="ad-placeholder">YOUR AD HERE &nbsp;|&nbsp; Contact us to advertise</div>
+      <div class="ad-banner" id="adBannerMid" onclick="adClickMid()">
+        <div class="ad-placeholder" id="adPlaceholderMid">YOUR AD HERE &nbsp;|&nbsp; Contact us to advertise</div>
       </div>
     </div>
 
@@ -676,21 +686,76 @@
 </footer>
 
 <script>
-let ads = [];
-let adIndex = 0;
-function initAds() {
-  if (!ads.length) return;
-  [document.getElementById('adBanner'), document.getElementById('adBannerMid')].forEach(b => {
-    if (!b) return; b.innerHTML = '';
-    ads.forEach((ad,i) => { const img=document.createElement('img'); img.src=ad.img; img.alt='Ad'; if(i===0)img.classList.add('active'); b.appendChild(img); });
+// ─── AD BANNERS: TOP & MID (independent) ────────────────────────────────────
+const AD_INTERVAL = 5000;
+let adsTop = [], adIndexTop = 0;
+let adsMid = [], adIndexMid = 0;
+
+function isMobileView() { return window.innerWidth <= 600; }
+function getAdSrc(ad) { return (isMobileView() && ad.imgMobile) ? ad.imgMobile : ad.img; }
+
+function initBannerTop(adList) {
+  const banner = document.getElementById('adBannerTop');
+  const ph = document.getElementById('adPlaceholderTop');
+  if (!adList || !adList.length) return;
+  if (ph) ph.style.display = 'none';
+  adList.forEach((ad, i) => {
+    const img = document.createElement('img');
+    img.src = getAdSrc(ad);
+    img.alt = ad.alt || 'Advertisement';
+    if (i === 0) img.classList.add('active');
+    banner.appendChild(img);
   });
-  if (document.getElementById('adPlaceholder')) document.getElementById('adPlaceholder').style.display='none';
-  setInterval(() => {
-    adIndex=(adIndex+1)%ads.length;
-    [document.getElementById('adBanner'),document.getElementById('adBannerMid')].forEach(b=>{ if(!b)return; b.querySelectorAll('img').forEach((img,i)=>img.classList.toggle('active',i===adIndex)); });
-  }, 5000);
+  if (adList.length > 1) {
+    setInterval(() => {
+      const imgs = banner.querySelectorAll('img');
+      imgs[adIndexTop].classList.remove('active');
+      adIndexTop = (adIndexTop + 1) % imgs.length;
+      imgs[adIndexTop].classList.add('active');
+    }, AD_INTERVAL);
+  }
 }
-function adClick() { window.open(ads.length?ads[adIndex].url:'mailto:hello@thepropertybrief.org?subject=Advertise on The Property Brief Calculator','_blank'); }
+
+function initBannerMid(adList) {
+  const banner = document.getElementById('adBannerMid');
+  const ph = document.getElementById('adPlaceholderMid');
+  if (!adList || !adList.length) return;
+  if (ph) ph.style.display = 'none';
+  adList.forEach((ad, i) => {
+    const img = document.createElement('img');
+    img.src = getAdSrc(ad);
+    img.alt = ad.alt || 'Advertisement';
+    if (i === 0) img.classList.add('active');
+    banner.appendChild(img);
+  });
+  if (adList.length > 1) {
+    setInterval(() => {
+      const imgs = banner.querySelectorAll('img');
+      imgs[adIndexMid].classList.remove('active');
+      adIndexMid = (adIndexMid + 1) % imgs.length;
+      imgs[adIndexMid].classList.add('active');
+    }, AD_INTERVAL);
+  }
+}
+
+function adClickTop() {
+  if (adsTop[adIndexTop] && adsTop[adIndexTop].url)
+    window.open(adsTop[adIndexTop].url, '_blank', 'noopener');
+}
+function adClickMid() {
+  if (adsMid[adIndexMid] && adsMid[adIndexMid].url)
+    window.open(adsMid[adIndexMid].url, '_blank', 'noopener');
+}
+
+fetch('/data/calculator-ads-top.json')
+  .then(r => r.json())
+  .then(data => { adsTop = data.ads || []; initBannerTop(adsTop); })
+  .catch(() => {});
+
+fetch('/data/calculator-ads-mid.json')
+  .then(r => r.json())
+  .then(data => { adsMid = data.ads || []; initBannerMid(adsMid); })
+  .catch(() => {});
 
 function toggleEPF() {
   const v=document.querySelector('input[name="dpSource"]:checked').value;
