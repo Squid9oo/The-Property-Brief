@@ -670,7 +670,7 @@
 </footer>
 
 <script>
-const ads = [];
+let ads = [];
 let adIndex = 0;
 function initAds() {
   if (!ads.length) return;
@@ -970,7 +970,14 @@ function calculate() {
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-document.addEventListener('DOMContentLoaded', () => { initAds(); toggleStratified(); });
+document.addEventListener('DOMContentLoaded', () => {
+  toggleStratified();
+  fetch('/data/calculator-ads.json')
+    .then(r => r.json())
+    .then(data => { if (data.ads && data.ads.length) { ads = data.ads; initAds(); } })
+    .catch(() => {});
+});
+
 </script>
 <script>
 (function() {

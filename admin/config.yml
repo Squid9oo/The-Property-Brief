@@ -114,6 +114,21 @@ collections:
   - name: "settings"
     label: "Settings"
     files:
+      - name: "calculatorAds"
+        label: "Calculator Banner Ads"
+        file: "data/calculator-ads.json"
+        format: "json"
+        fields:
+          - label: "Ads"
+            name: "ads"
+            widget: "list"
+            summary: "{{fields.alt}}"
+            hint: "Each ad rotates every 5 seconds. Recommended: 1200×90px leaderboard banner, max 300KB per image. Compress at squoosh.app before uploading."
+            fields:
+              - { label: "Banner Image", name: "img", widget: "image", hint: "1200×90px desktop leaderboard, max 300KB" }
+              - { label: "Click URL", name: "url", widget: "string", hint: "Where the user goes when they click the ad" }
+              - { label: "Alt Text", name: "alt", widget: "string", required: false, hint: "Describe the ad — used for accessibility" }
+
       - name: "projectsHero"
         label: "Projects Hero Slider"
         file: "content/settings/projects-hero.json"
