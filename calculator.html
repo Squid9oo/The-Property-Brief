@@ -265,7 +265,7 @@
     </div>
     <div class="calc-share-side">
       <button class="calc-share-btn" id="calcShareBtn" type="button" aria-label="Share this tool">
-        ↗ Share Tool
+        ↗ Share
       </button>
     </div>
   </div>
@@ -878,7 +878,7 @@ document.addEventListener('DOMContentLoaded', () => { initAds(); toggleStratifie
       try {
         await navigator.clipboard.writeText(window.location.href);
         btn.textContent = '✓ Link copied!';
-        setTimeout(() => { btn.innerHTML = '↗ Share Tool'; }, 2500);
+        setTimeout(() => { btn.innerHTML = '↗ Share'; }, 2500);
       } catch(e) {
         prompt('Copy this link to share:', window.location.href);
       }
