@@ -240,6 +240,12 @@
     .cost-table .section-head td { color: #f5c800; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; padding-top: 16px; border-bottom: 1px solid #2a2a2a; }
     .cost-table .total-row td { font-weight: 800; font-size: 1rem; color: #f5c800; padding-top: 12px; }
     .rate-hint { font-size: 0.69rem; color: #4a4a4a; margin-top: 3px; line-height: 1.5; }
+    @media (max-width: 600px) {
+      .cost-table { table-layout: fixed; width: 100%; }
+      .cost-table td:first-child { width: 68%; word-break: break-word; white-space: normal; }
+      .cost-table td:last-child { width: 32%; white-space: normal; word-break: break-word; text-align: right; }
+      .rate-hint { font-size: 0.63rem; }
+    }
 
     .amort-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
     @media (max-width: 600px) { .amort-compare { grid-template-columns: 1fr; } }
