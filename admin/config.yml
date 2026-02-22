@@ -97,22 +97,22 @@ collections:
       - { label: "SEO Description Override", name: "seoDescription", widget: "text", required: false, hint: "Custom Google snippet. Max 155 characters. Leave blank to use Summary." }
 
   - name: "sponsored"
-    label: "Sponsored Ads"
+    label: "Main Page Banner Ads"
     folder: "content/sponsored"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
       - { label: "Advertiser Name", name: "title", widget: "string" }
       - { label: "Publish Date", name: "date", widget: "datetime" }
-      - { label: "Banner Image", name: "image", widget: "image" }
-      - { label: "Mobile Banner (Square)", name: "imageMobile", widget: "image", required: false, hint: "Square 1:1 image for phones" }
+      - { label: "Banner Image", name: "image", widget: "image", hint: "1200×260px (~4.6:1 ratio), max 300KB. Full-width desktop banner — height is fixed at 260px, image crops top/bottom if taller. Compress at squoosh.app." }
+      - { label: "Mobile Banner Image", name: "imageMobile", widget: "image", required: false, hint: "750×260px (~2.9:1 ratio), max 150KB. Used on phones. On tablets the full image is shown without cropping. If blank, desktop image is used on all screens. Compress at squoosh.app." }
       - { label: "Click Link (URL)", name: "link", widget: "string" }
       - { label: "Description (shown under banner)", name: "description", widget: "string", required: false }
       - { label: "Alt text (optional)", name: "alt", widget: "string", required: false }
       - { label: "Active?", name: "active", widget: "boolean", default: true }
 
   - name: "settings"
-    label: "Settings"
+    label: "Listing Banner Ad"
     files:
 
       - name: "projectsHero"
@@ -127,9 +127,9 @@ collections:
             fields:
               - { label: "Slide Title", name: "title", widget: "string", required: false }
               - { label: "Click Link (URL)", name: "link", widget: "string", required: false }
-              - { label: "Desktop Image", name: "desktop", widget: "image" }
-              - { label: "Tablet Image", name: "tablet", widget: "image" }
-              - { label: "Mobile Image", name: "mobile", widget: "image" }
+              - { label: "Desktop Image", name: "desktop", widget: "image", hint: "1440×480px (3:1 ratio), max 400KB. Full-width banner for screens wider than 960px. Compress at squoosh.app." }
+              - { label: "Tablet Image", name: "tablet", widget: "image", hint: "1024×400px (2.6:1 ratio), max 250KB. Used on screens 601px–960px wide (iPad, small laptop). Compress at squoosh.app." }
+              - { label: "Mobile Image", name: "mobile", widget: "image", hint: "750×340px (2.2:1 ratio), max 150KB. Used on phones up to 600px wide. Keep key content centred. Compress at squoosh.app." }
 
   - name: "calculatorBanners"
     label: "Calculator Ad Banners"
@@ -146,7 +146,7 @@ collections:
             hint: "Top banner — shown above the calculator form. Desktop: 900×120px, max 200KB. Ads rotate every 5 seconds. Compress at squoosh.app."
             fields:
               - { label: "Desktop Banner Image", name: "img", widget: "image", hint: "900×120px desktop banner, max 200KB." }
-              - { label: "Mobile Banner Image (Optional)", name: "imgMobile", widget: "image", required: false, hint: "Optional. 600×100px for phones. If blank, desktop image is used (may crop on small screens)." }
+              - { label: "Mobile Banner Image", name: "imgMobile", widget: "image", required: false, hint: "Recommended: 600×100px (6:1 ratio), max 100KB. If blank, desktop image is used on all screens." }
               - { label: "Click URL", name: "url", widget: "string", hint: "Where the user goes when they click the ad" }
               - { label: "Alt Text", name: "alt", widget: "string", required: false, hint: "Describe the ad — used for accessibility" }
 
@@ -162,6 +162,6 @@ collections:
             hint: "Mid banner — shown after clicking Calculate. Desktop: 900×120px, max 200KB. Ads rotate every 5 seconds. Compress at squoosh.app."
             fields:
               - { label: "Desktop Banner Image", name: "img", widget: "image", hint: "900×120px desktop banner, max 200KB." }
-              - { label: "Mobile Banner Image (Optional)", name: "imgMobile", widget: "image", required: false, hint: "Optional. 600×100px for phones. If blank, desktop image is used (may crop on small screens)." }
+              - { label: "Mobile Banner Image", name: "imgMobile", widget: "image", required: false, hint: "Recommended: 600×100px (6:1 ratio), max 100KB. If blank, desktop image is used on all screens." }
               - { label: "Click URL", name: "url", widget: "string", hint: "Where the user goes when they click the ad" }
               - { label: "Alt Text", name: "alt", widget: "string", required: false, hint: "Describe the ad — used for accessibility" }
