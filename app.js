@@ -1116,7 +1116,16 @@ ${slides}${controls}
     if (btn) {
       const id = btn.getAttribute('data-id');
       const post = [...allNews, ...allStrategies].find(x => x.id === id);
-      if (post) openModal(post.title || '', formatPostBody(post), post.id);
+      if (post) {
+        const type = allNews.find(x => x.id === id) ? 'news' : 'strategies';
+        if (typeof gtag === 'function') {
+          gtag('event', 'page_view', {
+            page_title: post.title || '',
+            page_location: 'https://thepropertybrief.org/' + type + '/' + id
+          });
+        }
+        openModal(post.title || '', formatPostBody(post), post.id);
+      }
     }
   });
 
