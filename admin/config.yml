@@ -112,7 +112,7 @@ collections:
       - { label: "Active?", name: "active", widget: "boolean", default: true }
 
   - name: "settings"
-    label: "Listing Banner Ad"
+    label: "Listing Banner Ads"
     files:
 
       - name: "projectsHero"
@@ -132,7 +132,7 @@ collections:
               - { label: "Mobile Image", name: "mobile", widget: "image", hint: "750×340px (2.2:1 ratio), max 150KB. Used on phones up to 600px wide. Keep key content centred. Compress at squoosh.app." }
 
   - name: "calculatorBanners"
-    label: "Calculator Ad Banners"
+    label: "Calculator Banner Ads"
     files:
       - name: "calculatorAdsTop"
         label: "Calculator Banner — Top"
