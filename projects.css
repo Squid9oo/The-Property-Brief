@@ -723,6 +723,7 @@
 
 .modalCard input[type="text"],
 .modalCard input[type="number"],
+.modalCard input[type="email"],
 .modalCard input[type="file"],
 .modalCard select,
 .modalCard textarea {
@@ -741,11 +742,13 @@
 }
 
 .modalCard input::placeholder,
-.modalCard textarea::placeholder {
+.modalCard textarea::placeholder,
+.modalCard input[type="email"]::placeholder {
   color: rgba(243,244,246,0.45);
 }
 
 .modalCard input:focus,
+.modalCard input[type="email"]:focus,
 .modalCard select:focus,
 .modalCard textarea:focus {
   border-color: rgba(249, 209, 0, 0.55);
