@@ -37,7 +37,7 @@ function formatPrice(val) {
 }
 
 function safeAttr(str) {
-  return (str || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+return String(str == null ? '' : str).replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 // ── Build HTML ───────────────────────────────────────────────
