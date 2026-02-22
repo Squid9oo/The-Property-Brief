@@ -174,8 +174,17 @@ function buildListingHTML(listing, slug) {
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="stylesheet" href="/styles.css" />
 
-  <script type="application/ld+json">
-${jsonLd}
+    <script type="application/ld+json">
+  ${jsonLd}
+  </script>
+
+  <!-- Google Analytics GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CR7KQDF1JX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CR7KQDF1JX');
   </script>
 </head>
 <body>

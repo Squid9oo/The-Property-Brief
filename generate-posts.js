@@ -283,7 +283,16 @@ function buildArticleHTML(post, type, slug) {
   ${gallery.css}
 
   <script type="application/ld+json">
-${jsonLd}
+  ${jsonLd}
+  </script>
+
+  <!-- Google Analytics GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CR7KQDF1JX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CR7KQDF1JX');
   </script>
 </head>
 <body>
