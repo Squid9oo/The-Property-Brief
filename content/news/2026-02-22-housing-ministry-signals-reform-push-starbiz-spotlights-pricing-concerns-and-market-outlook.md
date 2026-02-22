@@ -3,7 +3,7 @@ title: Housing Ministry Signals Reform Push, StarBiz Spotlights Pricing Concerns
   and Market Outlook
 date: 2026-02-23T07:27:00.000+08:00
 category: Market News
-tag: KPKT . MRT Corp
+tag: KPKT • MRT Corp
 author: The Property Brief
 featured: false
 summary: A quiet Sunday dominated by policy signals and market analysis rather
