@@ -190,6 +190,7 @@
       >
         <input type="hidden" name="form-name" value="project-submit" />
         <input type="hidden" name="propertyType" id="propertyType" />
+        <input type="hidden" name="editToken" id="editToken" />
 
         <!-- SECTION 1 -->
         <div id="form-section-1">
@@ -225,6 +226,11 @@
             </select>
           </label>
 
+          <label>
+          Your Email
+          <input name="email" id="submitterEmail" type="email" placeholder="e.g., yourname@email.com" required />
+          <small style="opacity:0.6;font-size:0.8rem;">We'll send you a confirmation and edit link here.</small>
+          </label>
           <button type="button" id="form-next-btn">Next</button>
         </div>
 

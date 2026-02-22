@@ -102,6 +102,8 @@ async function handleFormSubmit(e) {
 
     // 2. Construct Payload (Matching Google Script keys)
     const payload = {
+      email: formData.get('email'),
+      editToken: formData.get('editToken'),
       adTitle: formData.get('adTitle'),
       listingType: formData.get('listingType'),
       category: formData.get('category'),
@@ -267,6 +269,65 @@ function resetTimer() {
 
 window.changeSlide = changeSlide;
 window.goToSlide = goToSlide;
+// ── TOKEN PRE-FILL (edit listing via ?token=) ─────────────────
+async function checkEditToken() {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+  if (!token) return;
+
+  try {
+    const res = await fetch(CONFIG.API.PROJECTS_JSON + '?token=' + token);
+    const data = await res.json();
+    if (!data.found || !data.listing) return;
+
+    const l = data.listing;
+
+    // Store token in hidden field
+    const tokenField = document.getElementById('editToken');
+    if (tokenField) tokenField.value = token;
+
+    // Pre-fill email
+    const emailField = document.getElementById('submitterEmail');
+    if (emailField && l['Email']) {
+      emailField.value = l['Email'];
+    }
+
+    // Scroll to form and open it
+    const formSection = document.getElementById('form-section-1');
+    if (formSection) {
+      formSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Pre-fill Section 1 fields
+    const setVal = (name, val) => {
+      const el = document.querySelector(`[name="${name}"]`);
+      if (el && val) el.value = val;
+    };
+
+    setVal('listingType', l['Listing Type']);
+    setVal('category', l['Category']);
+    setVal('sellerType', l['Seller Type']);
+
+    // Show edit notice banner
+    const form = document.querySelector('form[name="project-submit"]');
+    if (form) {
+      const banner = document.createElement('div');
+      banner.style.cssText = 'background:rgba(245,200,0,0.12);border-left:3px solid #f5c800;padding:12px 16px;border-radius:0 6px 6px 0;margin-bottom:1.5rem;font-size:0.9rem;';
+      banner.innerHTML = '✏️ <strong>Editing your listing:</strong> ' + (l['Ad Title'] || '') + '<br><small style="opacity:0.7;">Resubmitting will reset your listing to Pending and restart the 30-day period upon re-approval.</small>';
+      form.insertBefore(banner, form.firstChild);
+    }
+
+    // Change submit button label
+    const submitBtn = document.getElementById('form-submit-btn');
+    if (submitBtn) submitBtn.textContent = 'Resubmit Listing';
+
+  } catch (err) {
+    console.error('Edit token error:', err);
+  }
+}
+
+// Run on page load
+document.addEventListener('DOMContentLoaded', checkEditToken);
 
 // ============ LOCATION & DROPDOWNS ============
 
