@@ -1566,3 +1566,37 @@ a.toolsItem:hover {
     border-bottom: none !important;
   }
 }
+/* ── Article Body — Markdown Table Styles ─────────────────── */
+.articleBody table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+  overflow-x: auto;
+  display: block;
+}
+.articleBody th,
+.articleBody td {
+  padding: 0.6rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: left;
+  vertical-align: top;
+}
+.articleBody th {
+  background: rgba(245, 200, 0, 0.12);
+  color: #f5c800;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.articleBody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.03);
+}
+@media (max-width: 600px) {
+  .articleBody table {
+    font-size: 0.82rem;
+  }
+  .articleBody th,
+  .articleBody td {
+    padding: 0.45rem 0.6rem;
+  }
+}
