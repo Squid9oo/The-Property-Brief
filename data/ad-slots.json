@@ -1,0 +1,11 @@
+{
+  "slots": [
+    {
+      "status": "Available",
+      "name": "Homepage Banner",
+      "location": "index.html",
+      "dimensions": "1200x260",
+      "price": "RM100"
+    }
+  ]
+}
