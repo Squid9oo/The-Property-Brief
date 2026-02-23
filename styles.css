@@ -469,14 +469,11 @@ h1,h2,h3{
 
 .modalTop{
   position: relative;
-  padding: 10px 44px 10px 0;
+  padding: 10px 86px 10px 0;
   border-bottom: 1px solid var(--line);
 }
 
 .modalX{
-  position: absolute;
-  top: 6px;
-  right: 6px;
   width: 36px;
   height: 36px;
   border-radius: 12px;
@@ -486,11 +483,80 @@ h1,h2,h3{
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .modalX:hover{
   border-color: rgba(249, 209, 0, 0.35);
   background: rgba(255,255,255,0.05);
+}
+
+/* --- Modal action buttons (expand + close group) --- */
+.modalActions{
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.modalExpandBtn{
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.03);
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modalExpandBtn:hover{
+  border-color: rgba(249,209,0,0.35);
+  background: rgba(255,255,255,0.05);
+}
+
+/* --- Desktop fullscreen toggle --- */
+.modalOverlay.isFullscreen{
+  padding: 0;
+}
+
+.modal.isFullscreen{
+  width: 100%;
+  max-width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  border-radius: 0;
+}
+
+/* --- Mobile + Tablet: always fullscreen (≤768px) --- */
+@media (max-width: 768px){
+  .modalOverlay{
+    padding: 0;
+  }
+  .modal{
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    border-radius: 0;
+  }
+  .modalExpandBtn{
+    display: none;
+  }
 }
 
 .modalBody{

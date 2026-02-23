@@ -732,9 +732,12 @@ ${slides}${controls}
       <div class="modal">
         <div class="modalTop">
           <h3 style="margin:0;">${escapeHtml(title || '')}</h3>
-          <button class="modalX" type="button" aria-label="Close" data-close="1">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <div class="modalActions">
+            <button class="modalExpandBtn" type="button" aria-label="Expand to full screen" data-expand="1">⛶</button>
+            <button class="modalX" type="button" aria-label="Close" data-close="1">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
         </div>
         <div class="modalBody">
           ${shareBtnHtml}
@@ -745,6 +748,18 @@ ${slides}${controls}
     document.body.appendChild(modal);
 
     initPdfFlip(modal);
+
+    const expandBtn = modal.querySelector('[data-expand="1"]');
+    if (expandBtn) {
+      expandBtn.addEventListener('click', () => {
+        const modalEl = modal.querySelector('.modal');
+        const isNowFull = modalEl.classList.toggle('isFullscreen');
+        modal.classList.toggle('isFullscreen', isNowFull);
+        expandBtn.setAttribute('aria-label',
+          isNowFull ? 'Exit full screen' : 'Expand to full screen'
+        );
+      });
+    }
 
     const closeModal = () => {
       if (typeof modal._pdfCleanup === 'function') {
