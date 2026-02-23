@@ -59,6 +59,9 @@ const CONFIG = {
     // LIVE GOOGLE SHEET ENDPOINT (Your new Backend)
     // This handles both LOADING listings (GET) and SUBMITTING ads (POST)
     PROJECTS_JSON: 'https://script.google.com/macros/s/AKfycbz5ok2RE-YFLkCASmlBDtPnc8WnKpnHjlFvDdFa0XqWJv_BGiaPN0B84Lo66GMwmXjo/exec',
+    
+    // AD BIDDING ENDPOINT (Separate Sheet for security)
+    AD_BID_URL: 'https://script.google.com/macros/s/AKfycbxImoegOMJ4tuL6IQNpMVprW30f8LrtNCO5LSgveXEZOAXyAqAt1-dVsK3cfo2PbEwIDQ/exec',
 
     PROJECTS_HERO_JSON: 'content/settings/projects-hero.json',
     STATES_JSON: '/content/settings/locations/states.json',
