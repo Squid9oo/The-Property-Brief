@@ -165,3 +165,28 @@ collections:
               - { label: "Mobile Banner Image", name: "imgMobile", widget: "image", required: false, hint: "Recommended: 600×100px (6:1 ratio), max 100KB. If blank, desktop image is used on all screens." }
               - { label: "Click URL", name: "url", widget: "string", hint: "Where the user goes when they click the ad" }
               - { label: "Alt Text", name: "alt", widget: "string", required: false, hint: "Describe the ad — used for accessibility" }
+
+  - name: "adInventory"
+    label: "Ad Slot Inventory"
+    files:
+      - name: "inventoryList"
+        label: "Manage Ad Slots"
+        file: "data/ad-slots.json"
+        format: "json"
+        fields:
+          - label: "Ad Slots"
+            name: "slots"
+            widget: "list"
+            summary: "{{fields.name}} — {{fields.status}}"
+            hint: "Manage the slots shown on your Media Kit. Drag to reorder."
+            fields:
+              - { label: "Slot Name", name: "name", widget: "string", hint: "e.g. Homepage Hero — Desktop, Calculator Site Takeover, Advertorial" }
+              - { label: "Location", name: "location", widget: "string", hint: "e.g. index.html, calculator.html, Sitewide" }
+              - { label: "Dimensions / Format", name: "dimensions", widget: "string", hint: "e.g. 1200 × 260px, Full Page, Article Format" }
+              - { label: "Base Price / Starting Bid", name: "price", widget: "string", hint: "e.g. RM 150 / 2wks, RM 500 / month" }
+              - label: "Availability Status"
+                name: "status"
+                widget: "select"
+                options: ["Available", "Bidding Open", "Occupied"]
+                default: "Available"
+                hint: "Available = Green badge. Bidding Open = Amber badge. Occupied = Grey badge."
