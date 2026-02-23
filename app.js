@@ -759,14 +759,11 @@ ${slides}${controls}
     initPdfFlip(modal);
 
     const expandBtn = modal.querySelector('[data-expand="1"]');
-    if (expandBtn) {
+    if (expandBtn && postId) {
+      const sectionType = allNews.find(x => x.id === postId) ? 'news' : 'strategies';
+      const articleUrl = getPostShareUrl(postId, sectionType);
       expandBtn.addEventListener('click', () => {
-        const modalEl = modal.querySelector('.modal');
-        const isNowFull = modalEl.classList.toggle('isFullscreen');
-        modal.classList.toggle('isFullscreen', isNowFull);
-        expandBtn.setAttribute('aria-label',
-          isNowFull ? 'Exit full screen' : 'Expand to full screen'
-        );
+        window.open(articleUrl, '_blank', 'noopener');
       });
     }
 
