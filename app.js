@@ -546,8 +546,17 @@ ${slides}${controls}
       .replace(/\{\{IMAGE_PLACEHOLDER\}\}/g, imageHtml)
       .replace(/\{\{PDF_PLACEHOLDER\}\}/g, pdfHtml);
 
+    const ctaHtml = (post.ctaText && post.ctaUrl)
+      ? `<div style="margin-top:24px;">
+           <a href="${escapeHtml(post.ctaUrl)}" target="_blank" rel="noopener"
+              class="btnPrimary" style="display:inline-block; width:auto;">
+             ${escapeHtml(post.ctaText)}
+           </a>
+         </div>`
+      : '';
+
     const galleryHtml = buildModalGallery(post.gallery);
-    return galleryHtml + html;
+    return galleryHtml + html + ctaHtml;
   }
 
   // ============ PDF VIEWER (OPTIMIZED) ============

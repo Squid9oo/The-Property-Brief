@@ -32,6 +32,8 @@ function getPosts(folder) {
       description: data.description || '',
       alt: data.alt || '',
       active: data.active !== undefined ? data.active : true,
+      ctaText: data.ctaText || null,
+      ctaUrl: data.ctaUrl || null,
       // ── New fields ──────────────────────────────────────────
       gallery: Array.isArray(data.gallery) ? data.gallery : [],
       seoTitle: data.seoTitle || null,
