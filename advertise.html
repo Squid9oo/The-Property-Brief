@@ -4,65 +4,139 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Advertise on The Property Brief — Malaysia Property Audience</title>
-  <meta name="description" content="Reach an engaged audience of Malaysia property buyers, investors, and industry professionals. View our live traffic data and available ad slots." />
+  <title>Advertise on The Property Brief — Reach Malaysia's Property Audience</title>
+  <meta name="description" content="The only Malaysian property platform with live, transparent GA4 audience data and an open ad-bidding system. Reach property buyers, investors, and industry professionals. View real traffic data and place your bid." />
+  <meta name="keywords" content="advertise property Malaysia, real estate advertising Malaysia, property media kit Malaysia, Malaysian property audience, property digital advertising, advertise property platform Malaysia" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://thepropertybrief.org/advertise.html" />
 
+  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://thepropertybrief.org/advertise.html" />
-  <meta property="og:title" content="Advertise on The Property Brief" />
-  <meta property="og:description" content="Reach an engaged audience of Malaysia property buyers, investors, and industry professionals. View live traffic data and book your ad slot." />
+  <meta property="og:title" content="Advertise on The Property Brief — Live Data. Open Bidding." />
+  <meta property="og:description" content="The only Malaysian property platform with live, transparent GA4 audience data and an open ad-bidding system. See the real audience before you bid." />
   <meta property="og:image" content="https://thepropertybrief.org/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:locale" content="en_MY" />
 
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Advertise on The Property Brief — Live Data. Open Bidding." />
+  <meta name="twitter:description" content="Malaysia's only property platform with live GA4 audience data and transparent ad bidding. See the real numbers before you spend." />
+  <meta name="twitter:image" content="https://thepropertybrief.org/og-image.jpg" />
+
+  <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
+  <!-- Stylesheet -->
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
-    /* Stats Grid */
+    /* Stats Grid — UNCHANGED */
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 24px; }
     .stat-card { background: #111; border: 1px solid #2a2a2a; border-radius: 12px; padding: 20px; text-align: center; }
     .stat-label { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
     .stat-value { font-size: 2rem; font-weight: 800; color: #f5c800; line-height: 1.1; }
 
-    /* Responsive Iframe container */
+    /* Responsive Iframe — UNCHANGED */
     .iframe-container { position: relative; width: 100%; overflow: hidden; border-radius: 12px; border: 1px solid #2a2a2a; background: #111; margin-top: 24px; }
     .iframe-container iframe { width: 100%; height: 600px; border: none; }
 
-    /* Ad Slots Table */
+    /* Ad Slots Table — UNCHANGED */
     .table-responsive { overflow-x: auto; margin-top: 24px; border-radius: 12px; border: 1px solid #2a2a2a; }
     .ad-table { width: 100%; border-collapse: collapse; min-width: 700px; font-size: 0.9rem; }
     .ad-table th { background: #111; color: #f5c800; text-align: left; padding: 14px 16px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #2a2a2a; }
     .ad-table td { padding: 14px 16px; border-bottom: 1px solid #2a2a2a; color: #ddd; vertical-align: middle; }
     .ad-table tr:last-child td { border-bottom: none; }
     .ad-table tr:hover td { background: rgba(255,255,255,0.02); }
-    
-    /* Badges */
+
+    /* Badges — UNCHANGED */
     .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
     .badge.available { background: #0d2a0d; border: 1px solid #2e7d2e; color: #81c784; }
     .badge.bidding { background: #2a1f00; border: 1px solid #7d5a00; color: #ffa726; }
     .badge.occupied { background: #1a1a1a; border: 1px solid #333; color: #777; }
-    
-    /* Form */
+
+    /* Form — UNCHANGED */
     .ad-form { background: #111; padding: 24px; border-radius: 12px; border: 1px solid #2a2a2a; margin-top: 24px; }
     .form-group { margin-bottom: 16px; }
     .form-label { display: block; font-size: 0.85rem; color: #aaa; margin-bottom: 6px; font-weight: 600; }
     .form-input { width: 100%; background: #0b0b0c; border: 1px solid #333; border-radius: 8px; color: #fff; padding: 12px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
     .form-input:focus { border-color: #f5c800; }
+
+    /* Why Advertise cards — NEW */
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 1.5rem; }
+    .why-card { background: rgba(255,255,255,0.03); border: 1px solid #2a2a2a; border-radius: 12px; padding: 1.25rem 1.5rem; }
+    .why-card h3 { font-size: 0.95rem; margin: 0 0 0.5rem; color: #f5c800; }
+    .why-card p { font-size: 0.88rem; color: #aaa; margin: 0; line-height: 1.7; }
+
+    /* How It Works steps — NEW */
+    .steps { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+    .step { display: flex; gap: 1rem; align-items: flex-start; }
+    .step-num { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: #f5c800; color: #000; font-weight: 800; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+    .step-body h3 { font-size: 0.95rem; margin: 0 0 0.3rem; color: #fff; }
+    .step-body p { font-size: 0.88rem; color: #aaa; margin: 0; line-height: 1.7; }
   </style>
 
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Advertise on The Property Brief",
-    "url": "https://thepropertybrief.org/advertise.html",
-    "description": "Media kit and ad slot bidding for The Property Brief. Reach an engaged Malaysian property audience."
-  }
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Advertise on The Property Brief",
+      "url": "https://thepropertybrief.org/advertise.html",
+      "description": "Media kit and transparent ad slot bidding page for The Property Brief — Malaysia's only property platform with live GA4 audience data and an open bidding system.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "The Property Brief",
+        "url": "https://thepropertybrief.org",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://thepropertybrief.org/android-chrome-512x512.png"
+        }
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I advertise on The Property Brief?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "To advertise on The Property Brief, browse the live audience data on this page, review the available ad slot inventory, and submit a bid using the form at the bottom of the page. We reply within 1 business day to confirm availability and next steps."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What ad formats are available on The Property Brief?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Property Brief offers five ad placements: Homepage Hero Banner (desktop 1200x260px and mobile 750x260px), Calculator Top Banner (900x120px, above the finance simulator form), Calculator Mid Banner (900x120px, after the Calculate button), and Listing Hero Slider (1440x480px on the projects page). All placements run on a 2-week duration with rotating slots supporting up to 5 advertisers per placement."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does the ad bidding system work on The Property Brief?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Property Brief uses an open, transparent bidding system. Each ad slot supports up to 5 rotating advertisers on a 14-day cycle. When slots are available, advertisers can book directly. When a slot is full, a queue bidding system activates — the current highest bid is visible to all, and the highest bidder in the queue is automatically notified 24 hours before the next slot opens."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What audience does The Property Brief reach?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Property Brief reaches Malaysian property buyers, investors, real estate agents, and industry professionals. The full audience breakdown — including total users, sessions, session duration, device type, and top cities — is published live on the advertising page via an embedded Google Analytics dashboard, updated daily."
+          }
+        }
+      ]
+    }
+  ]
   </script>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-CR7KQDF1JX"></script>
@@ -143,12 +217,60 @@
     <div class="maincol">
 
       <section style="margin-bottom:3rem;">
-        <p class="kicker">Media Kit</p>
+        <p class="kicker">Transparent by Design</p>
         <h1 style="margin-bottom:1rem; color:#f5c800;">Reach Malaysia's Property Audience</h1>
         <p class="sub">
-          The Property Brief is read by highly-engaged homebuyers, seasoned investors, and real estate professionals. Partner with us to put your brand, project, or service directly in front of an audience actively researching the market.
+          The only Malaysian property platform that shows you the real audience data before you spend a single ringgit. No polished PDFs. No inflated numbers. Just live GA4 traffic — and an open bidding system where every advertiser starts on equal footing.
         </p>
+      </section>
 
+      <!-- Why Advertise Here -->
+      <section style="margin-bottom:3rem;">
+        <h2>Why Advertise Here</h2>
+        <p class="muted">Three things that make The Property Brief different from every other Malaysian property media platform.</p>
+        <div class="why-grid">
+          <div class="why-card">
+            <h3>An Informed Audience</h3>
+            <p>Our readers are not casual scrollers. They are actively researching property purchases, tracking market movements, or making professional decisions. Your ad reaches people at the moment of intent.</p>
+          </div>
+          <div class="why-card">
+            <h3>Total Transparency</h3>
+            <p>We publish our full GA4 traffic data live on this page — unedited, directly from Google Analytics. You see exactly what we see before committing to a single ringgit. No other Malaysian property platform does this.</p>
+          </div>
+          <div class="why-card">
+            <h3>Open &amp; Fair Bidding</h3>
+            <p>No opaque media kits. No fixed, inflated rate cards. Every ad slot is open to competitive bidding — prices are set by the market. Small developers and large agencies compete on equal terms.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- How It Works -->
+      <section style="margin-bottom:3rem;">
+        <h2>How It Works</h2>
+        <p class="muted">Three steps from browsing to going live.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h3>Browse the live data</h3>
+              <p>Scroll down to the Live Audience Data section. Review real, unedited GA4 traffic for the last 30 days — total users, sessions, top cities, device breakdown, and top pages.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h3>Pick your slot</h3>
+              <p>Review the Ad Slot Inventory table — slot name, page location, banner dimensions, and current availability. Each slot supports up to 5 rotating advertisers on a 14-day cycle.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h3>Submit your bid</h3>
+              <p>Fill in the form with your name, contact, preferred slot, and bid amount. We reply within 1 business day to confirm availability, payment, and your go-live date.</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section style="margin-bottom:3rem;">
@@ -186,35 +308,35 @@
                 <td><strong>Homepage Hero — Desktop</strong></td>
                 <td>index.html</td>
                 <td>1200 × 260px</td>
-                <td>RM [TBC] / 2wks</td>
+                <td>Open Bidding</td>
                 <td><span class="badge available">Available</span></td>
               </tr>
               <tr>
                 <td><strong>Homepage Hero — Mobile</strong></td>
                 <td>index.html</td>
                 <td>750 × 260px</td>
-                <td>RM [TBC] / 2wks</td>
+                <td>Open Bidding</td>
                 <td><span class="badge available">Available</span></td>
               </tr>
               <tr>
                 <td><strong>Calculator Top Banner</strong></td>
                 <td>calculator.html</td>
                 <td>900 × 120px</td>
-                <td>RM [TBC] / 2wks</td>
+                <td>Open Bidding</td>
                 <td><span class="badge available">Available</span></td>
               </tr>
               <tr>
                 <td><strong>Calculator Mid Banner</strong></td>
                 <td>calculator.html</td>
                 <td>900 × 120px</td>
-                <td>RM [TBC] / 2wks</td>
+                <td>Open Bidding</td>
                 <td><span class="badge available">Available</span></td>
               </tr>
               <tr>
                 <td><strong>Listing Hero Slider</strong></td>
                 <td>projects.html</td>
                 <td>1440 × 480px</td>
-                <td>RM [TBC] / 2wks</td>
+                <td>Open Bidding</td>
                 <td><span class="badge available">Available</span></td>
               </tr>
             </tbody>
@@ -223,26 +345,26 @@
       </section>
 
       <section style="margin-bottom:3rem;">
-        <h2>Secure Your Slot</h2>
-        <p class="muted">Use the form below to enquire about a slot or place a bid. We will reply within 1 business day.</p>
-        
+        <h2>Place Your Bid</h2>
+        <p class="muted">Fill in the form below to enquire or bid on a slot. All bids are logged securely and we reply within 1 business day.</p>
+
         <div class="ad-form">
           <form id="adBidForm">
             <div class="stats-grid" style="margin-top:0;">
               <div class="form-group">
-                <label class="form-label">Your Name *</label>
-                <input type="text" name="name" class="form-input" required placeholder="John Doe">
+                <label class="form-label" for="fieldName">Your Name *</label>
+                <input type="text" id="fieldName" name="name" class="form-input" required placeholder="e.g. Ahmad or Sara">
               </div>
               <div class="form-group">
-                <label class="form-label">Email / WhatsApp *</label>
-                <input type="text" name="contact" class="form-input" required placeholder="name@company.com">
+                <label class="form-label" for="fieldContact">Email / WhatsApp *</label>
+                <input type="text" id="fieldContact" name="contact" class="form-input" required placeholder="name@company.com">
               </div>
             </div>
 
             <div class="stats-grid" style="margin-top:0;">
               <div class="form-group">
-                <label class="form-label">Which Slot? *</label>
-                <select name="slot_interest" class="form-input" required>
+                <label class="form-label" for="fieldSlot">Which Slot? *</label>
+                <select id="fieldSlot" name="slot_interest" class="form-input" required>
                   <option value="" disabled selected>Select an ad slot...</option>
                   <option>Homepage Hero — Desktop</option>
                   <option>Homepage Hero — Mobile</option>
@@ -253,14 +375,14 @@
                 </select>
               </div>
               <div class="form-group">
-                <label class="form-label">Your Bid / Budget (RM) *</label>
-                <input type="number" name="bid_amount" class="form-input" required placeholder="e.g. 150">
+                <label class="form-label" for="fieldBid">Your Bid / Budget (RM) *</label>
+                <input type="number" id="fieldBid" name="bid_amount" class="form-input" required placeholder="e.g. 150">
               </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label">Brand / URL / Additional Notes</label>
-              <textarea name="message" class="form-input" style="height: 100px; resize: vertical;" placeholder="What are you promoting?"></textarea>
+              <label class="form-label" for="fieldMessage">Brand / URL / Additional Notes</label>
+              <textarea id="fieldMessage" name="message" class="form-input" style="height: 100px; resize: vertical;" placeholder="What are you promoting?"></textarea>
             </div>
 
             <button type="submit" id="submitBidBtn" style="background: #f5c800; color: #000; font-weight: 800; border: none; border-radius: 8px; padding: 14px 32px; cursor: pointer; font-size: 1rem; margin-top: 10px; transition: background 0.2s;">Submit Enquiry / Bid</button>
@@ -276,7 +398,7 @@
     </div>
   </main>
 
-  <footer class="footer" style="text-align:center; padding: 32px 16px; font-size: 0.75rem; color: #444; border-top: 1px solid #1a1a1a;">
+    <footer class="footer">
     <small>© <span id="year"></span> THE PROPERTY BRIEF</small>
   </footer>
 
