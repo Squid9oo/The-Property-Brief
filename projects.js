@@ -196,11 +196,11 @@ async function loadAdminHeroSlider() {
 
     // Map ad objects → slider slide format
     adminSlides = ads.map(ad => ({
-      desktop: ad.imageUrl,
-      tablet: ad.imageUrl, // you can later extend API to include tablet-specific images
-      mobile: ad.imageUrl,
-      link: ad.adUrl,
-      title: ad.altText || '',
+      desktop: ad.imageDesktop || '',
+      tablet:  ad.imageTablet  || ad.imageDesktop || '',
+      mobile:  ad.imageMobile  || ad.imageTablet  || ad.imageDesktop || '',
+      link:    ad.adUrl,
+      title:   ad.altText || '',
     }));
 
   if (adminSlides.length === 0) {

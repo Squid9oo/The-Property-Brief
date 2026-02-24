@@ -502,17 +502,17 @@ function renderCards(items, sectionType) {
   }
 
   function initHomepageHeroAds() {
-    // Desktop
-    initSlotRotator('hero-desktop', {
+    // Both containers use hero-home slot
+    // Desktop container (visible ≥601px): getResponsiveImageUrl returns desktop or tablet image
+    // Mobile container (visible ≤600px): getResponsiveImageUrl returns mobile image
+    initSlotRotator('hero-home', {
       linkEl: document.getElementById('sponsoredAdLinkDesktop'),
-      imgEl: document.getElementById('sponsoredAdImgDesktop'),
+      imgEl:  document.getElementById('sponsoredAdImgDesktop'),
       titleEl: document.getElementById('sponsoredAdTitleDesktop'),
     });
-
-    // Mobile
-    initSlotRotator('hero-mobile', {
+    initSlotRotator('hero-home', {
       linkEl: document.getElementById('sponsoredAdLinkMobile'),
-      imgEl: document.getElementById('sponsoredAdImgMobile'),
+      imgEl:  document.getElementById('sponsoredAdImgMobile'),
       titleEl: document.getElementById('sponsoredAdTitleMobile'),
     });
   }
