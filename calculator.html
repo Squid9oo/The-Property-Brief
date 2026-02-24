@@ -415,7 +415,10 @@
 <div class="ad-banner-wrap">
   <div class="ad-label">Advertisement</div>
   <div class="ad-banner" id="adBannerTop" onclick="adClickTop()">
-    <div class="ad-placeholder" id="adPlaceholderTop">YOUR AD HERE &nbsp;|&nbsp; Contact us to advertise</div>
+    <a class="ad-cta-banner ad-cta-banner--compact" id="adPlaceholderTop" href="/advertise.html" target="_blank" rel="noopener">
+      <span class="ad-cta-headline">Advertise here — Reach property buyers &amp; investors across Malaysia</span>
+      <span class="ad-cta-btn">Advertise →</span>
+    </a>
   </div>
 </div>
 
@@ -621,7 +624,10 @@
     <div class="ad-banner-wrap" style="padding:0;margin-bottom:24px;">
       <div class="ad-label">Advertisement</div>
       <div class="ad-banner" id="adBannerMid" onclick="adClickMid()">
-        <div class="ad-placeholder" id="adPlaceholderMid">YOUR AD HERE &nbsp;|&nbsp; Contact us to advertise</div>
+        <a class="ad-cta-banner ad-cta-banner--compact" id="adPlaceholderMid" href="/advertise.html" target="_blank" rel="noopener">
+          <span class="ad-cta-headline">Advertise here — Reach property buyers &amp; investors across Malaysia</span>
+          <span class="ad-cta-btn">Advertise →</span>
+        </a>
       </div>
     </div>
 
@@ -747,13 +753,17 @@ function initBannerMid(adList) {
 }
 
 function adClickTop() {
-  if (adsTop[adIndexTop] && adsTop[adIndexTop].url)
+  if (adsTop.length && adsTop[adIndexTop] && adsTop[adIndexTop].url)
     window.open(adsTop[adIndexTop].url, '_blank', 'noopener');
-
+  else
+    window.open('/advertise.html', '_blank', 'noopener');
 }
+
 function adClickMid() {
-  if (adsMid[adIndexMid] && adsMid[adIndexMid].url)
+  if (adsMid.length && adsMid[adIndexMid] && adsMid[adIndexMid].url)
     window.open(adsMid[adIndexMid].url, '_blank', 'noopener');
+  else
+    window.open('/advertise.html', '_blank', 'noopener');
 }
 
 function mapAdsFromSlot(slotAds) {

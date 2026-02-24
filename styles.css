@@ -1700,3 +1700,116 @@ a.toolsItem:hover {
     padding: 0.45rem 0.6rem;
   }
 }
+/* ---------- Ad CTA Banner (fallback when no paid ads) ---------- */
+.ad-cta-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 28px 20px;
+  border-radius: 14px;
+  border: 1px dashed rgba(249, 209, 0, 0.30);
+  background: linear-gradient(135deg, rgba(249,209,0,0.06) 0%, rgba(249,209,0,0.02) 100%);
+  text-align: center;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 200ms ease, background 200ms ease;
+  cursor: pointer;
+}
+
+.ad-cta-banner:hover {
+  border-color: rgba(249, 209, 0, 0.60);
+  background: linear-gradient(135deg, rgba(249,209,0,0.10) 0%, rgba(249,209,0,0.04) 100%);
+}
+
+.ad-cta-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.ad-cta-headline {
+  font-size: clamp(14px, 2vw, 17px);
+  font-weight: 800;
+  color: var(--text);
+  max-width: 520px;
+  line-height: 1.35;
+}
+
+.ad-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(249,209,0,0.45);
+  background: rgba(249,209,0,0.10);
+  color: var(--yellow);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+
+.ad-cta-banner:hover .ad-cta-btn {
+  background: var(--yellow);
+  color: #0b0b0c;
+  border-color: var(--yellow);
+}
+
+/* Compact variant — calculator banners */
+.ad-cta-banner--compact {
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 14px 20px;
+  gap: 14px;
+  border-radius: 8px;
+}
+
+.ad-cta-banner--compact .ad-cta-headline {
+  font-size: 13px;
+  text-align: left;
+  max-width: none;
+  flex: 1;
+}
+
+.ad-cta-banner--compact .ad-cta-label {
+  display: none;
+}
+
+.ad-cta-banner--compact .ad-cta-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Hero variant — projects slider */
+.ad-cta-banner--hero {
+  min-height: 200px;
+  border-radius: 12px;
+  padding: 40px 24px;
+  gap: 14px;
+}
+
+.ad-cta-banner--hero .ad-cta-headline {
+  font-size: clamp(16px, 2.5vw, 22px);
+  max-width: 600px;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ad-cta-banner,
+  .ad-cta-btn { transition: none; }
+}
+
+/* Mobile tweaks */
+@media (max-width: 600px) {
+  .ad-cta-banner--compact {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

@@ -203,7 +203,15 @@ async function loadAdminHeroSlider() {
       title: ad.altText || '',
     }));
 
-    if (adminSlides.length === 0) return;
+  if (adminSlides.length === 0) {
+      container.innerHTML = `
+        <a class="ad-cta-banner ad-cta-banner--hero" href="/advertise.html" target="_blank" rel="noopener">
+          <span class="ad-cta-label">Advertisement</span>
+          <span class="ad-cta-headline">Book This Hero Slot — Showcase your project to property buyers &amp; investors across Malaysia</span>
+          <span class="ad-cta-btn">Book This Slot →</span>
+        </a>`;
+      return;
+    }
 
     container.innerHTML = adminSlides.map((slide, index) => `
       <div class="hero-slide ${index === 0 ? 'active' : ''}"

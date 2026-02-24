@@ -429,11 +429,22 @@ function renderCards(items, sectionType) {
         ads = rawAds.filter(a => a && a.imageUrl && a.adUrl);
         index = 0;
 
-        if (!ads.length) {
-          // No active ads for this slot
+      if (!ads.length) {
+          // No active ads — show branded CTA banner
           titleEl.textContent = 'Sponsored';
           imgEl.style.display = 'none';
-          linkEl.href = 'https://thepropertybrief.org/advertise.html';
+          const ctaWrap = linkEl.parentElement;
+          if (ctaWrap) {
+            ctaWrap.style.display = 'block';
+            linkEl.style.display = 'block';
+            linkEl.href = '/advertise.html';
+            linkEl.innerHTML = `
+              <div class="ad-cta-banner">
+                <span class="ad-cta-label">Advertisement</span>
+                <span class="ad-cta-headline">Advertise on The Property Brief — Reach property buyers, investors &amp; developers across Malaysia</span>
+                <span class="ad-cta-btn">Get Featured →</span>
+              </div>`;
+          }
           return;
         }
 
