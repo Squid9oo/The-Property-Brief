@@ -264,29 +264,43 @@
       <!-- How It Works -->
       <section style="margin-bottom:3rem;">
         <h2>How It Works</h2>
-        <p class="muted">Three steps from browsing to going live.</p>
+        <p class="muted">Two steps are always the same. Step 3 depends on whether the slot is available right now or full.</p>
         <div class="steps">
+
           <div class="step">
             <div class="step-num">1</div>
             <div class="step-body">
-              <h3>Browse the live data</h3>
-              <p>Scroll down to the Live Audience Data section. Review real, unedited GA4 traffic for the last 30 days — total users, sessions, top cities, device breakdown, and top pages.</p>
+              <h3>Browse the live audience data</h3>
+              <p>Scroll down to the Live Audience Data section. Review real, unedited GA4 traffic for the last 30 days — total users, sessions, top cities, device breakdown, and top pages. What you see is exactly what we see.</p>
             </div>
           </div>
+
           <div class="step">
             <div class="step-num">2</div>
             <div class="step-body">
-              <h3>Pick your slot</h3>
-              <p>Review the Ad Slot Inventory table — slot name, page location, banner dimensions, and current availability. Each slot supports up to 5 rotating advertisers on a 14-day cycle.</p>
+              <h3>Find your slot in the inventory table</h3>
+              <p>Check the Ad Slot Inventory below. Each slot shows its page location, banner dimensions, current fill count (out of 5), and live status. Then follow the path that matches your slot's status.</p>
             </div>
           </div>
+
+          <!-- Path A -->
           <div class="step">
-            <div class="step-num">3</div>
+            <div class="step-num" style="background:#81c784; color:#000;">A</div>
             <div class="step-body">
-              <h3>Submit your bid</h3>
-              <p>Fill in the form with your name, contact, preferred slot, and bid amount. We reply within 1 business day to confirm availability, payment, and your go-live date.</p>
+              <h3>Slot is <span style="color:#81c784;">Available</span> — Book it now at the base price</h3>
+              <p>Click <strong>Book Now</strong>. Choose your preferred start date, upload your banner image, enter your destination URL, and pay the fixed base price. No bidding, no waiting. Your ad goes live on your chosen date and runs for exactly 14 days. We confirm and collect payment within 1 business day.</p>
             </div>
           </div>
+
+          <!-- Path B -->
+          <div class="step">
+            <div class="step-num" style="background:#ffa726; color:#000;">B</div>
+            <div class="step-body">
+              <h3>Slot is <span style="color:#ffa726;">Bidding Open</span> — Join the queue</h3>
+              <p>Click <strong>Place Bid</strong>. The slot is currently full with 5 active advertisers. You are bidding for the next rotation — upload your banner image now, enter a bid higher than the current highest bid shown, and submit. The highest bidder is automatically selected 24 hours before a slot opens. If selected, you will receive an email with payment instructions. Once payment is confirmed, your ad goes live immediately when the previous ad expires — zero downtime.</p>
+            </div>
+          </div>
+
         </div>
       </section>
 
