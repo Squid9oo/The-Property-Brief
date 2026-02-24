@@ -4,7 +4,7 @@ title: Kerjaya Prospek Bags RM502m E&O Reclamation Deal; IOI Properties CEO's
   Closure
 date: 2026-02-24T10:11:00.000+08:00
 category: Market News
-tag: Kerjaya, E&O, IOI, SDB, Citaglobal, S P Setia, Sime Darby, LTAT
+tag: Kerjaya | E&O | IOI | SDB | Citaglobal | S P Setia | Sime Darby | LTAT
 author: The Property Brief
 featured: false
 summary: "A busy Monday for Malaysia property: Kerjaya Prospek locked in a
