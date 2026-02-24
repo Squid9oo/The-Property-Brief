@@ -108,6 +108,21 @@ window.tpbGoto = function(dot, idx) {
     return (str || '').toString().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
+  /**
+   * Return correct image URL based on current screen width
+   * Desktop ≥1025px → imageDesktop
+   * Tablet 601–1024px → imageTablet (fallback: imageDesktop)
+   * Mobile ≤600px → imageMobile (fallback: imageTablet → imageDesktop)
+   * @param {Object} ad - Ad object with imageDesktop/imageTablet/imageMobile
+   * @returns {string}
+   */
+  function getResponsiveImageUrl(ad) {
+    const w = window.innerWidth;
+    if (w <= 600) return ad.imageMobile || ad.imageTablet || ad.imageDesktop || '';
+    if (w <= 1024) return ad.imageTablet || ad.imageDesktop || '';
+    return ad.imageDesktop || '';
+  }
+
   // ============ TEXT PROCESSING ============
 
   /**
@@ -426,7 +441,7 @@ function renderCards(items, sectionType) {
         const slotData = data[slotId] || {};
         const rawAds = slotData.ads || [];
 
-        ads = rawAds.filter(a => a && a.imageUrl && a.adUrl);
+    ads = rawAds.filter(a => a && a.imageDesktop && a.adUrl);
         index = 0;
 
       if (!ads.length) {
@@ -448,6 +463,13 @@ function renderCards(items, sectionType) {
         titleEl.textContent = 'Sponsored';
         showCurrentAd();
         setupRotation();
+
+        // Swap image src when user crosses a breakpoint (e.g. rotates device)
+        const mqTablet = window.matchMedia('(max-width: 1024px)');
+        const mqMobile = window.matchMedia('(max-width: 600px)');
+        const onBreakpoint = () => showCurrentAd();
+        mqTablet.addEventListener('change', onBreakpoint);
+        mqMobile.addEventListener('change', onBreakpoint);
       } catch (err) {
         console.error(`Ad load error for slot ${slotId}:`, err);
         // Fallback: hide img, point to advertise page
@@ -461,7 +483,7 @@ function renderCards(items, sectionType) {
       if (!ads.length) return;
       const ad = ads[index];
       linkEl.href = ad.adUrl;
-      imgEl.src = ad.imageUrl;
+      imgEl.src = getResponsiveImageUrl(ad);
       imgEl.alt = ad.altText || 'Sponsored ad';
     }
 

@@ -736,8 +736,12 @@ const AD_INTERVAL = 5000;
 let adsTop = [], adIndexTop = 0;
 let adsMid = [], adIndexMid = 0;
 
-function isMobileView() { return window.innerWidth <= 600; }
-function getAdSrc(ad) { return (isMobileView() && ad.imgMobile) ? ad.imgMobile : ad.img; }
+function getAdSrc(ad) {
+  const w = window.innerWidth;
+  if (w <= 480) return ad.imgMobile  || ad.imgTablet || ad.img;
+  if (w <= 600) return ad.imgTablet  || ad.img;
+  return ad.img;
+}
 
 function initBannerTop(adList) {
   const banner = document.getElementById('adBannerTop');
@@ -798,12 +802,12 @@ function adClickMid() {
 }
 
 function mapAdsFromSlot(slotAds) {
-  // Map API shape → existing calculator ad shape
   return (slotAds || []).map(ad => ({
-    img: ad.imageUrl,
-    imgMobile: ad.imageUrl, // if you later add separate mobile URLs, wire them here
-    alt: ad.altText || 'Advertisement',
-    url: ad.adUrl,
+    img:       ad.imageDesktop || '',
+    imgTablet: ad.imageTablet  || ad.imageDesktop || '',
+    imgMobile: ad.imageMobile  || ad.imageTablet  || ad.imageDesktop || '',
+    alt:       ad.altText || 'Advertisement',
+    url:       ad.adUrl,
   }));
 }
 
@@ -831,6 +835,27 @@ function mapAdsFromSlot(slotAds) {
       // Silent fail: placeholders remain visible
     });
 })();
+
+// Refresh calculator banner images when user crosses a breakpoint
+function refreshCalcBannerImages() {
+  const topBanner = document.getElementById('adBannerTop');
+  const midBanner = document.getElementById('adBannerMid');
+  if (topBanner && adsTop.length) {
+    topBanner.querySelectorAll('img').forEach((img, i) => {
+      if (adsTop[i]) img.src = getAdSrc(adsTop[i]);
+    });
+  }
+  if (midBanner && adsMid.length) {
+    midBanner.querySelectorAll('img').forEach((img, i) => {
+      if (adsMid[i]) img.src = getAdSrc(adsMid[i]);
+    });
+  }
+}
+let _calcResizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(_calcResizeTimer);
+  _calcResizeTimer = setTimeout(refreshCalcBannerImages, 150);
+});
 
 function toggleEPF() {
   const v=document.querySelector('input[name="dpSource"]:checked').value;
