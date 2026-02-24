@@ -1708,20 +1708,20 @@ a.toolsItem:hover {
   justify-content: center;
   gap: 10px;
   width: 100%;
-  padding: 28px 20px;
+  padding: 32px 24px;
   border-radius: 14px;
-  border: 1px dashed rgba(249, 209, 0, 0.30);
-  background: linear-gradient(135deg, rgba(249,209,0,0.06) 0%, rgba(249,209,0,0.02) 100%);
+  border: none;
+  background: var(--yellow);
   text-align: center;
   text-decoration: none;
-  color: var(--text);
-  transition: border-color 200ms ease, background 200ms ease;
+  color: #0b0b0c;
+  transition: opacity 200ms ease, transform 200ms ease;
   cursor: pointer;
 }
 
 .ad-cta-banner:hover {
-  border-color: rgba(249, 209, 0, 0.60);
-  background: linear-gradient(135deg, rgba(249,209,0,0.10) 0%, rgba(249,209,0,0.04) 100%);
+  opacity: 0.92;
+  transform: translateY(-1px);
 }
 
 .ad-cta-label {
@@ -1729,14 +1729,14 @@ a.toolsItem:hover {
   font-weight: 700;
   letter-spacing: 0.10em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: rgba(11,11,12,0.55);
 }
 
 .ad-cta-headline {
-  font-size: clamp(14px, 2vw, 17px);
+  font-size: clamp(14px, 2vw, 18px);
   font-weight: 800;
-  color: var(--text);
-  max-width: 520px;
+  color: #0b0b0c;
+  max-width: 560px;
   line-height: 1.35;
 }
 
@@ -1744,11 +1744,11 @@ a.toolsItem:hover {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 9px 20px;
+  padding: 9px 22px;
   border-radius: 999px;
-  border: 1px solid rgba(249,209,0,0.45);
-  background: rgba(249,209,0,0.10);
-  color: var(--yellow);
+  border: 2px solid rgba(11,11,12,0.25);
+  background: rgba(11,11,12,0.10);
+  color: #0b0b0c;
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.03em;
@@ -1756,16 +1756,15 @@ a.toolsItem:hover {
 }
 
 .ad-cta-banner:hover .ad-cta-btn {
-  background: var(--yellow);
-  color: #0b0b0c;
-  border-color: var(--yellow);
+  background: rgba(11,11,12,0.18);
+  border-color: rgba(11,11,12,0.40);
 }
 
 /* Compact variant — calculator banners */
 .ad-cta-banner--compact {
   flex-direction: row;
   justify-content: space-between;
-  padding: 14px 20px;
+  padding: 16px 24px;
   gap: 14px;
   border-radius: 8px;
 }
@@ -1788,15 +1787,15 @@ a.toolsItem:hover {
 
 /* Hero variant — projects slider */
 .ad-cta-banner--hero {
-  min-height: 200px;
+  min-height: 320px;
   border-radius: 12px;
-  padding: 40px 24px;
-  gap: 14px;
+  padding: 48px 24px;
+  gap: 16px;
 }
 
 .ad-cta-banner--hero .ad-cta-headline {
-  font-size: clamp(16px, 2.5vw, 22px);
-  max-width: 600px;
+  font-size: clamp(18px, 2.5vw, 26px);
+  max-width: 640px;
 }
 
 /* Respect reduced motion */
@@ -1811,5 +1810,9 @@ a.toolsItem:hover {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+  }
+
+  .ad-cta-banner--hero {
+    min-height: 220px;
   }
 }
