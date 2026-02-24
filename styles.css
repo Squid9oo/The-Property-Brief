@@ -301,14 +301,51 @@ h1,h2,h3{
   line-height: 1.7;
 }
 
+/* Hero ad container — aspect-ratio locks size, image fills with cover */
 .hero-ad {
   margin-bottom: 12px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 14px;
 }
 
+/* Desktop: 3:1 (1200×400px) */
+.hero-ad-desktop {
+  aspect-ratio: 3 / 1;
+}
+
+/* Mobile: 1.8:1 (720×400px) */
+.hero-ad-mobile {
+  aspect-ratio: 9 / 5;
+}
+
+/* Tablet: 2.5:1 (1000×400px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .hero-ad-desktop {
+    aspect-ratio: 5 / 2;
+  }
+}
+
+/* Link wrapper must fill container height */
+.hero-ad > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Image fills container exactly — no black gaps, crops from centre */
 .hero-ad img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
+}
+
+/* CTA banner fills hero container when no paid ad is active */
+.hero-ad .ad-cta-banner {
+  height: 100%;
+  border-radius: 0;
+  min-height: unset;
 }
 
 /* Show desktop hero on ≥ 601px, mobile hero on ≤ 600px */
@@ -758,32 +795,7 @@ h1,h2,h3{
   display: none;
 }
 
-#sponsoredAdImg{
-  width: 100%;
-  height: 260px;
-  object-fit: cover;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.04);
-  display: none;
-}
-
-/* Mobile landscape: ALWAYS show full banner (no crop) */
-@media (orientation: landscape) and (max-height: 600px){
-  #sponsoredAdImg{
-    height: auto;
-    max-height: 55vh;
-    object-fit: contain;
-    background: #000;
-  }
-}
-
-/* iPad / tablet: show full sponsored banner (no crop) */
-@media (min-width: 601px) and (max-width: 1024px){
-  #sponsoredAdImg{
-    object-fit: contain;
-    background: #000;
-  }
-}
+/* #sponsoredAdImg removed — homepage hero now uses .hero-ad img (see above) */
 
 #sponsoredAdNote{
   margin-top: 12px;
@@ -799,25 +811,7 @@ h1,h2,h3{
   display: none;
 }
 
-@media (max-width: 600px){
-  #sponsoredAdImg{
-    height: auto;
-    aspect-ratio: 1 / 1;
-    object-fit: contain;
-    background: rgba(255,255,255,0.04);
-  }
-
-  /* Phone landscape: show full banner (no crop) */
-  @media (orientation: landscape) and (max-height: 500px){
-    #sponsoredAdImg{
-      height: 180px;
-      object-fit: contain;
-      background: #000;
-    }
-  }
-
-  .sponsorRotateHint{ display: block; }
-}
+/* hero-ad-mobile aspect-ratio handles mobile sizing — see .hero-ad section above */
 
 /* ---------- Search (matches index.html structure) ---------- */
 .searchBlock{
@@ -1711,7 +1705,8 @@ a.toolsItem:hover {
   padding: 32px 24px;
   border-radius: 14px;
   border: none;
-  background: var(--yellow);
+  background: rgba(249, 209, 0, 0.82); /* semi-transparent yellow */
+  backdrop-filter: blur(4px);
   text-align: center;
   text-decoration: none;
   color: #0b0b0c;
@@ -1785,10 +1780,12 @@ a.toolsItem:hover {
   white-space: nowrap;
 }
 
-/* Hero variant — projects slider */
+/* Hero variant — projects slider
+   min-height removed: aspect-ratio on .hero-slider controls height */
 .ad-cta-banner--hero {
-  min-height: 320px;
-  border-radius: 12px;
+  height: 100%;
+  min-height: unset;
+  border-radius: 0;
   padding: 48px 24px;
   gap: 16px;
 }
@@ -1812,7 +1809,5 @@ a.toolsItem:hover {
     gap: 10px;
   }
 
-  .ad-cta-banner--hero {
-    min-height: 220px;
-  }
+  /* hero variant height controlled by .hero-slider aspect-ratio in projects.css */
 }

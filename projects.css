@@ -7,7 +7,8 @@
 .hero-slider {
     position: relative;
     width: 100%;
-    height: 480px;
+    /* Desktop: 4:1 (1920×480px) */
+    aspect-ratio: 4 / 1;
     overflow: hidden;
     background: #000;
 }
@@ -31,15 +32,15 @@
     background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)), var(--img-d);
 }
 
-/* TABLET: 960px and below */
+/* TABLET: 960px and below — 2.5:1 (1000×400px) */
 @media (max-width: 960px) {
-    .hero-slider { height: 400px; }
+    .hero-slider { aspect-ratio: 5 / 2; }
     .hero-slide { background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)), var(--img-t); }
 }
 
-/* MOBILE: 600px and below */
+/* MOBILE: 600px and below — 1.8:1 (720×400px) */
 @media (max-width: 600px) {
-    .hero-slider { height: 340px; }
+    .hero-slider { aspect-ratio: 9 / 5; }
     .hero-slide { background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)), var(--img-m); }
 }
 
