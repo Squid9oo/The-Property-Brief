@@ -186,11 +186,22 @@ async function loadAdminHeroSlider() {
   if (!container) return;
 
   try {
-    const res = await fetch(CONFIG.API.PROJECTS_HERO_JSON, CONFIG.CACHE.NO_STORE);
+    const url = `${CONFIG.API.AD_BID_URL}?slotId=listing-hero`;
+    const res = await fetch(url, CONFIG.CACHE.NO_STORE);
     if (!res.ok) return;
-    
+
     const data = await res.json();
-    adminSlides = data.slides || [];
+    const slotData = data['listing-hero'] || {};
+    const ads = slotData.ads || [];
+
+    // Map ad objects → slider slide format
+    adminSlides = ads.map(ad => ({
+      desktop: ad.imageUrl,
+      tablet: ad.imageUrl, // you can later extend API to include tablet-specific images
+      mobile: ad.imageUrl,
+      link: ad.adUrl,
+      title: ad.altText || '',
+    }));
 
     if (adminSlides.length === 0) return;
 

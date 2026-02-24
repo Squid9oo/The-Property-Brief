@@ -749,21 +749,47 @@ function initBannerMid(adList) {
 function adClickTop() {
   if (adsTop[adIndexTop] && adsTop[adIndexTop].url)
     window.open(adsTop[adIndexTop].url, '_blank', 'noopener');
+
 }
 function adClickMid() {
   if (adsMid[adIndexMid] && adsMid[adIndexMid].url)
     window.open(adsMid[adIndexMid].url, '_blank', 'noopener');
 }
 
-fetch('/data/calculator-ads-top.json')
-  .then(r => r.json())
-  .then(data => { adsTop = data.ads || []; initBannerTop(adsTop); })
-  .catch(() => {});
+function mapAdsFromSlot(slotAds) {
+  // Map API shape → existing calculator ad shape
+  return (slotAds || []).map(ad => ({
+    img: ad.imageUrl,
+    imgMobile: ad.imageUrl, // if you later add separate mobile URLs, wire them here
+    alt: ad.altText || 'Advertisement',
+    url: ad.adUrl,
+  }));
+}
 
-fetch('/data/calculator-ads-mid.json')
-  .then(r => r.json())
-  .then(data => { adsMid = data.ads || []; initBannerMid(adsMid); })
-  .catch(() => {});
+// Load ads for both calculator slots from Google Sheets ad system
+(function loadCalculatorAds() {
+  const url = `${CONFIG.API.AD_BID_URL}?slotId=calc-top&slotId=calc-mid`;
+
+  fetch(url)
+    .then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    })
+    .then(data => {
+      const topSlot = data['calc-top'] || {};
+      const midSlot = data['calc-mid'] || {};
+
+      adsTop = mapAdsFromSlot(topSlot.ads || []);
+      adsMid = mapAdsFromSlot(midSlot.ads || []);
+
+      if (adsTop.length) initBannerTop(adsTop);
+      if (adsMid.length) initBannerMid(adsMid);
+    })
+    .catch(err => {
+      console.error('Calculator ads load error:', err);
+      // Silent fail: placeholders remain visible
+    });
+})();
 
 function toggleEPF() {
   const v=document.querySelector('input[name="dpSource"]:checked').value;

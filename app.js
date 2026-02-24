@@ -401,53 +401,93 @@ function renderCards(items, sectionType) {
         : '');
   }
 
-  // ============ SPONSORED ROTATOR ============
+    // ============ SPONSORED ROTATOR (Ad System v2) ============
 
   /**
-   * Initialize sponsored ad carousel
-   * @param {Array} ads - Sponsored ads array
+   * Generic rotator for a single ad slot using Google Sheets API
+   * @param {string} slotId - e.g. 'hero-desktop'
+   * @param {Object} els - { linkEl, imgEl, titleEl }
    */
-  function initSponsoredRotator(ads) {
-    const linkEl = document.getElementById('sponsoredAdLink');
-    const imgEl = document.getElementById('sponsoredAdImg');
-    const titleEl = document.getElementById('sponsoredAdTitle');
-    const noteEl = document.getElementById('sponsoredAdNote');
+  function initSlotRotator(slotId, els) {
+    const { linkEl, imgEl, titleEl } = els;
     if (!linkEl || !imgEl || !titleEl) return;
 
-    const activeAds = (ads || []).filter(
-      a => a && a.active !== false && a.image && a.link
-    );
+    let ads = [];
+    let index = 0;
+    let timer = null;
 
-    if (activeAds.length === 0) {
-      titleEl.textContent = 'Your banner here';
-      imgEl.style.display = 'none';
-      linkEl.href = 'mailto:thianlong@gmail.com';
-      if (noteEl) noteEl.textContent = 'No sponsored ads yet (add some via /admin).';
-      return;
+    async function loadAds() {
+      try {
+        const url = `${CONFIG.API.AD_BID_URL}?slotId=${encodeURIComponent(slotId)}`;
+        const res = await fetch(url, CONFIG.CACHE.NO_STORE);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const data = await res.json();
+        const slotData = data[slotId] || {};
+        const rawAds = slotData.ads || [];
+
+        ads = rawAds.filter(a => a && a.imageUrl && a.adUrl);
+        index = 0;
+
+        if (!ads.length) {
+          // No active ads for this slot
+          titleEl.textContent = 'Sponsored';
+          imgEl.style.display = 'none';
+          linkEl.href = 'https://thepropertybrief.org/advertise.html';
+          return;
+        }
+
+        imgEl.style.display = 'block';
+        titleEl.textContent = 'Sponsored';
+        showCurrentAd();
+        setupRotation();
+      } catch (err) {
+        console.error(`Ad load error for slot ${slotId}:`, err);
+        // Fallback: hide img, point to advertise page
+        imgEl.style.display = 'none';
+        titleEl.textContent = 'Sponsored';
+        linkEl.href = 'https://thepropertybrief.org/advertise.html';
+      }
     }
 
-    let i = 0;
-
-    function showAd(ad) {
-      linkEl.href = ad.link;
-      titleEl.textContent = ad.title || 'Sponsored';
-
-      const isMobile = window.matchMedia('(max-width: 600px)').matches;
-      imgEl.src = (isMobile && ad.imageMobile) ? ad.imageMobile : ad.image;
-      imgEl.alt = ad.alt || ad.title || 'Sponsored ad';
-      imgEl.style.display = 'block';
-      if (noteEl) noteEl.textContent = ad.description || 'Tap/click to learn more.';
+    function showCurrentAd() {
+      if (!ads.length) return;
+      const ad = ads[index];
+      linkEl.href = ad.adUrl;
+      imgEl.src = ad.imageUrl;
+      imgEl.alt = ad.altText || 'Sponsored ad';
     }
 
-    showAd(activeAds[i]);
-    window.addEventListener('resize', () => showAd(activeAds[i]));
+    function setupRotation() {
+      if (timer) clearInterval(timer);
+      if (ads.length <= 1) return;
 
-    if (sponsoredTimer) clearInterval(sponsoredTimer);
-    sponsoredTimer = setInterval(() => {
-      i = (i + 1) % activeAds.length;
-      showAd(activeAds[i]);
-    }, CONFIG.SPONSORED.ROTATION_INTERVAL_MS);
+      timer = setInterval(() => {
+        index = (index + 1) % ads.length;
+        showCurrentAd();
+      }, CONFIG.SPONSORED.ROTATION_INTERVAL_MS || 5000);
+    }
+
+    // Initial load
+    loadAds();
   }
+
+  function initHomepageHeroAds() {
+    // Desktop
+    initSlotRotator('hero-desktop', {
+      linkEl: document.getElementById('sponsoredAdLinkDesktop'),
+      imgEl: document.getElementById('sponsoredAdImgDesktop'),
+      titleEl: document.getElementById('sponsoredAdTitleDesktop'),
+    });
+
+    // Mobile
+    initSlotRotator('hero-mobile', {
+      linkEl: document.getElementById('sponsoredAdLinkMobile'),
+      imgEl: document.getElementById('sponsoredAdImgMobile'),
+      titleEl: document.getElementById('sponsoredAdTitleMobile'),
+    });
+  }
+
   // ============ GALLERY ============
 
   function buildModalGallery(gallery) {
@@ -1167,9 +1207,8 @@ ${slides}${controls}
 
       allNews = data.news || [];
       allStrategies = data.strategies || [];
-      allSponsored = data.sponsored || [];
 
-      initSponsoredRotator(allSponsored);
+      initHomepageHeroAds();
       renderSection('latestList', allNews, CONFIG.POSTS.INITIAL_LOAD, 'news');
       renderSection('strategiesList', allStrategies, CONFIG.POSTS.INITIAL_LOAD, 'strategies');
       initSearch();

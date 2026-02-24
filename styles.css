@@ -301,6 +301,35 @@ h1,h2,h3{
   line-height: 1.7;
 }
 
+.hero-ad {
+  margin-bottom: 12px;
+}
+
+.hero-ad img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Show desktop hero on ≥ 601px, mobile hero on ≤ 600px */
+.hero-ad-desktop {
+  display: none;
+}
+
+.hero-ad-mobile {
+  display: block;
+}
+
+@media (min-width: 601px) {
+  .hero-ad-desktop {
+    display: block;
+  }
+
+  .hero-ad-mobile {
+    display: none;
+  }
+}
+
 /* ---------- Cards grid ---------- */
 .latestList{
   display: grid;
