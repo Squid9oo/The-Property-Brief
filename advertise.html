@@ -669,13 +669,16 @@ const specs = SLOT_SPECS[slotId] || { desktop: '—', tablet: '—', mobile: '�
         if (res.ok) {
           document.getElementById('adBidForm').style.display = 'none';
           successMsg.style.display = 'block';
+          // Refresh slot table immediately so bidder can see updated highest bid
+          loadSlotData();
           setTimeout(() => {
             document.getElementById('formSection').style.display = 'none';
             successMsg.style.display = 'none';
             document.getElementById('adBidForm').reset();
             document.getElementById('adBidForm').style.display = 'block';
           }, 6000);
-        } else {
+        } 
+        else {
           throw new Error('Server error');
         }
       } catch (err) {
