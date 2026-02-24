@@ -78,6 +78,23 @@
     .step-num { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: #f5c800; color: #000; font-weight: 800; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
     .step-body h3 { font-size: 0.95rem; margin: 0 0 0.3rem; color: #fff; }
     .step-body p { font-size: 0.88rem; color: #aaa; margin: 0; line-height: 1.7; }
+
+    /* Action button in table — NEW */
+    .btnAction { background: #f5c800; color: #000; font-weight: 800; border: none; border-radius: 6px; padding: 8px 18px; cursor: pointer; font-size: 0.82rem; white-space: nowrap; transition: opacity 0.2s; }
+    .btnAction:hover { opacity: 0.85; }
+    .btnAction.bid { background: transparent; color: #ffa726; border: 1px solid #ffa726; }
+    .btnAction.bid:hover { background: rgba(255,167,38,0.08); }
+    .btnAction:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    /* Form section toggle — NEW */
+    #formSection { scroll-margin-top: 80px; }
+    .form-section-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 1rem; flex-wrap: wrap; }
+    .slot-chip { display: inline-block; background: rgba(245,200,0,0.1); border: 1px solid rgba(245,200,0,0.3); color: #f5c800; border-radius: 20px; padding: 4px 14px; font-size: 0.8rem; font-weight: 700; white-space: nowrap; }
+    #cancelFormBtn { background: transparent; color: #666; font-weight: 600; border: 1px solid #2a2a2a; border-radius: 8px; padding: 10px 20px; cursor: pointer; font-size: 0.9rem; transition: border-color 0.2s; }
+    #cancelFormBtn:hover { border-color: #555; color: #aaa; }
+    .image-hint { color: #555; font-size: 0.78rem; margin-top: 5px; display: block; line-height: 1.5; }
+    input[type="date"].form-input::-webkit-calendar-picker-indicator { filter: invert(0.5); cursor: pointer; }
+
   </style>
 
   <script type="application/ld+json">
@@ -290,107 +307,101 @@
 
       <section style="margin-bottom:3rem;">
         <h2>Ad Slot Inventory</h2>
-        <p class="muted">Review our available premium placements. All banners run on a 2-week duration.</p>
+        <p class="muted">All placements run for 14 days. Click <strong style="color:#81c784;">Book Now</strong> to buy at the base price, or <strong style="color:#ffa726;">Place Bid</strong> to join the queue for the next available slot.</p>
         
         <div class="table-responsive">
           <table class="ad-table">
             <thead>
               <tr>
-                <th>Slot Name</th>
+                <th>Slot</th>
                 <th>Location</th>
                 <th>Dimensions</th>
-                <th>Base Price</th>
+                <th>Price</th>
                 <th>Status</th>
+                <th></th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td><strong>Homepage Hero — Desktop</strong></td>
-                <td>index.html</td>
-                <td>1200 × 260px</td>
-                <td>Open Bidding</td>
-                <td><span class="badge available">Available</span></td>
-              </tr>
-              <tr>
-                <td><strong>Homepage Hero — Mobile</strong></td>
-                <td>index.html</td>
-                <td>750 × 260px</td>
-                <td>Open Bidding</td>
-                <td><span class="badge available">Available</span></td>
-              </tr>
-              <tr>
-                <td><strong>Calculator Top Banner</strong></td>
-                <td>calculator.html</td>
-                <td>900 × 120px</td>
-                <td>Open Bidding</td>
-                <td><span class="badge available">Available</span></td>
-              </tr>
-              <tr>
-                <td><strong>Calculator Mid Banner</strong></td>
-                <td>calculator.html</td>
-                <td>900 × 120px</td>
-                <td>Open Bidding</td>
-                <td><span class="badge available">Available</span></td>
-              </tr>
-              <tr>
-                <td><strong>Listing Hero Slider</strong></td>
-                <td>projects.html</td>
-                <td>1440 × 480px</td>
-                <td>Open Bidding</td>
-                <td><span class="badge available">Available</span></td>
-              </tr>
+            <tbody id="slotTableBody">
+              <tr><td colspan="6" style="text-align:center;color:#555;padding:32px 16px;">Loading live slot data…</td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      <section style="margin-bottom:3rem;">
-        <h2>Place Your Bid</h2>
-        <p class="muted">Fill in the form below to enquire or bid on a slot. All bids are logged securely and we reply within 1 business day.</p>
+            <section id="formSection" style="display:none; margin-bottom:3rem;">
+        <div class="form-section-header">
+          <div>
+            <h2 id="formTitle" style="margin-bottom:0.4rem;">Book This Slot</h2>
+            <span class="slot-chip" id="slotChip"></span>
+          </div>
+          <button type="button" id="cancelFormBtn">✕ Cancel</button>
+        </div>
+        <p class="muted" id="formSubtitle" style="margin-bottom:1.5rem;"></p>
 
         <div class="ad-form">
           <form id="adBidForm">
+            <input type="hidden" id="fieldSlotId" name="slot_id" />
+            <input type="hidden" id="fieldFormType" name="form_type" value="direct" />
+
+            <!-- Row 1: Name + Email -->
             <div class="stats-grid" style="margin-top:0;">
               <div class="form-group">
                 <label class="form-label" for="fieldName">Your Name *</label>
-                <input type="text" id="fieldName" name="name" class="form-input" required placeholder="e.g. Ahmad or Sara">
+                <input type="text" id="fieldName" name="name" class="form-input" required placeholder="Ahmad or Sara" />
               </div>
               <div class="form-group">
-                <label class="form-label" for="fieldContact">Email / WhatsApp *</label>
-                <input type="text" id="fieldContact" name="contact" class="form-input" required placeholder="name@company.com">
+                <label class="form-label" for="fieldEmail">Email *</label>
+                <input type="email" id="fieldEmail" name="email" class="form-input" required placeholder="you@company.com" />
               </div>
             </div>
 
+            <!-- Row 2: WhatsApp + Bid Amount -->
             <div class="stats-grid" style="margin-top:0;">
               <div class="form-group">
-                <label class="form-label" for="fieldSlot">Which Slot? *</label>
-                <select id="fieldSlot" name="slot_interest" class="form-input" required>
-                  <option value="" disabled selected>Select an ad slot...</option>
-                  <option>Homepage Hero — Desktop</option>
-                  <option>Homepage Hero — Mobile</option>
-                  <option>Calculator Top Banner</option>
-                  <option>Calculator Mid Banner</option>
-                  <option>Listing Hero Slider</option>
-                  <option>General Sponsorship Enquiry</option>
-                </select>
+                <label class="form-label" for="fieldWhatsApp">WhatsApp Number *</label>
+                <input type="text" id="fieldWhatsApp" name="whatsapp" class="form-input" required placeholder="e.g. 60123456789" />
               </div>
               <div class="form-group">
-                <label class="form-label" for="fieldBid">Your Bid / Budget (RM) *</label>
-                <input type="number" id="fieldBid" name="bid_amount" class="form-input" required placeholder="e.g. 150">
+                <label class="form-label" id="bidLabel" for="fieldBid">Amount (RM) *</label>
+                <input type="number" id="fieldBid" name="bid_amount" class="form-input" required placeholder="e.g. 150" />
               </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label" for="fieldMessage">Brand / URL / Additional Notes</label>
-              <textarea id="fieldMessage" name="message" class="form-input" style="height: 100px; resize: vertical;" placeholder="What are you promoting?"></textarea>
+            <!-- Direct Buy only: start date -->
+            <div class="form-group" id="dateGroup" style="display:none;">
+              <label class="form-label" for="fieldStartDate">Preferred Start Date *</label>
+              <input type="date" id="fieldStartDate" name="start_date" class="form-input" />
+              <small class="image-hint">Your ad will run for exactly 14 days from this date.</small>
             </div>
 
-            <button type="submit" id="submitBidBtn" style="background: #f5c800; color: #000; font-weight: 800; border: none; border-radius: 8px; padding: 14px 32px; cursor: pointer; font-size: 1rem; margin-top: 10px; transition: background 0.2s;">Submit Enquiry / Bid</button>
+            <!-- Image upload -->
+            <div class="form-group">
+              <label class="form-label" for="fieldImage">Banner Image *</label>
+              <input type="file" id="fieldImage" name="image" class="form-input" accept="image/*" required style="padding:10px;" />
+              <small class="image-hint" id="imageSizeHint">Upload your banner image. We will compress it automatically before sending.</small>
+            </div>
+
+            <!-- Row 3: Ad URL + Alt Text -->
+            <div class="stats-grid" style="margin-top:0;">
+              <div class="form-group">
+                <label class="form-label" for="fieldAdUrl">Destination URL *</label>
+                <input type="url" id="fieldAdUrl" name="ad_url" class="form-input" required placeholder="https://yourproject.com" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="fieldAltText">Alt Text / Caption</label>
+                <input type="text" id="fieldAltText" name="alt_text" class="form-input" placeholder="Short description of your ad" />
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;">
+              <button type="submit" id="submitBidBtn" style="background:#f5c800;color:#000;font-weight:800;border:none;border-radius:8px;padding:14px 32px;cursor:pointer;font-size:1rem;transition:opacity 0.2s;">Submit</button>
+              <button type="button" id="cancelFormBtn2" style="background:transparent;color:#666;font-weight:600;border:1px solid #2a2a2a;border-radius:8px;padding:14px 24px;cursor:pointer;font-size:1rem;">Cancel</button>
+            </div>
           </form>
 
-          <div id="bidSuccess" style="display:none; margin-top:24px; padding:20px 24px; background:#1a1a1a; border-left:4px solid #f5c800; border-radius:8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-            <strong style="color:#fff; display:block; font-size:1.1rem; margin-bottom:6px; letter-spacing:0.02em;">Enquiry Sent Successfully</strong>
-            <span style="color:#aaa; font-size:0.9rem; line-height:1.5; display:block;">Thank you for your interest. Your bid has been securely logged, and our team will contact you soonest possible.</span>
+          <div id="bidSuccess" style="display:none;margin-top:24px;padding:20px 24px;background:#1a1a1a;border-left:4px solid #f5c800;border-radius:8px;">
+            <strong style="color:#fff;display:block;font-size:1.1rem;margin-bottom:6px;">Sent Successfully</strong>
+            <span style="color:#aaa;font-size:0.9rem;line-height:1.6;display:block;">Thank you. A confirmation email is on its way to you. Our admin will follow up within 1 business day.</span>
           </div>
         </div>
       </section>
@@ -404,57 +415,210 @@
 
   <script src="/CONFIG.js"></script>
   <script src="/menu.js"></script>
-  <script>
+    <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Handle form submission to Google Apps Script
-    document.getElementById('adBidForm').addEventListener('submit', async (e) => {
+    // ── Globals ──────────────────────────────────────────────
+    let slotData = {};
+
+    // ── On page load: fetch live slot data ───────────────────
+    document.addEventListener('DOMContentLoaded', loadSlotData);
+
+    async function loadSlotData() {
+      try {
+        const res = await fetch(CONFIG.API.AD_BID_URL);
+        slotData = await res.json();
+        renderTable(slotData);
+      } catch (err) {
+        document.getElementById('slotTableBody').innerHTML =
+          '<tr><td colspan="6" style="text-align:center;color:#888;padding:32px;">Could not load slot data — please refresh the page.</td></tr>';
+      }
+    }
+
+    // ── Render table rows from live data ─────────────────────
+    function renderTable(data) {
+      const tbody = document.getElementById('slotTableBody');
+      tbody.innerHTML = '';
+
+      Object.values(data).forEach(slot => {
+        const tr = document.createElement('tr');
+
+        // Status badge
+        let badge, action;
+        if (slot.status === 'paused') {
+          badge  = '<span class="badge occupied">Direct Deal</span>';
+          action = '<span style="color:#444;font-size:0.8rem;">Unavailable</span>';
+        } else if (slot.status === 'bidding') {
+          badge  = '<span class="badge bidding">Bidding Open</span>';
+          action = `<button class="btnAction bid" data-slot="${slot.slotId}" data-type="bid">Place Bid</button>`;
+        } else {
+          badge  = '<span class="badge available">Available</span>';
+          action = `<button class="btnAction" data-slot="${slot.slotId}" data-type="direct">Book Now</button>`;
+        }
+
+        // Price cell
+        let priceCell;
+        if (slot.status === 'paused') {
+          priceCell = '<span style="color:#444;">—</span>';
+        } else if (slot.status === 'bidding') {
+          priceCell = slot.highestBid > 0
+            ? `<span style="color:#ffa726;font-weight:700;">Highest: RM ${slot.highestBid}</span><br><small style="color:#555;">Base RM ${slot.basePrice}</small>`
+            : `<span style="color:#888;">No bids yet</span><br><small style="color:#555;">Base RM ${slot.basePrice}</small>`;
+        } else {
+          priceCell = `<span style="color:#81c784;font-weight:700;">RM ${slot.basePrice}</span>`;
+        }
+
+        tr.innerHTML = `
+          <td>
+            <strong>${slot.slotName}</strong>
+            <br><small style="color:#444;">${slot.activeCount}/5 filled</small>
+          </td>
+          <td style="color:#666;">${slot.location}</td>
+          <td style="color:#666;">${slot.dimensions}</td>
+          <td>${priceCell}</td>
+          <td>${badge}</td>
+          <td>${action}</td>`;
+        tbody.appendChild(tr);
+      });
+
+      // Attach button listeners
+      tbody.querySelectorAll('.btnAction[data-slot]').forEach(btn => {
+        btn.addEventListener('click', () => openForm(btn.dataset.slot, btn.dataset.type));
+      });
+    }
+
+    // ── Open correct form for selected slot ──────────────────
+    function openForm(slotId, type) {
+      const slot        = slotData[slotId];
+      const formSection = document.getElementById('formSection');
+      const formTitle   = document.getElementById('formTitle');
+      const formSubtitle= document.getElementById('formSubtitle');
+      const slotChip    = document.getElementById('slotChip');
+      const dateGroup   = document.getElementById('dateGroup');
+      const bidLabel    = document.getElementById('bidLabel');
+      const bidInput    = document.getElementById('fieldBid');
+      const startInput  = document.getElementById('fieldStartDate');
+      const imageHint   = document.getElementById('imageSizeHint');
+
+      // Pre-fill hidden fields
+      document.getElementById('fieldSlotId').value   = slotId;
+      document.getElementById('fieldFormType').value = type;
+      slotChip.textContent = slot.slotName;
+
+      // Set today as min date for start date picker
+      const todayStr = new Date().toISOString().split('T')[0];
+      startInput.min = todayStr;
+      startInput.value = todayStr;
+
+      imageHint.textContent = `Required dimensions: ${slot.dimensions}. JPG, PNG or WebP. Max 5MB. We will compress automatically.`;
+
+      if (type === 'direct') {
+        formTitle.textContent   = 'Book This Slot';
+        formSubtitle.textContent = `You are booking: ${slot.slotName} at the base price of RM ${slot.basePrice} for 14 days. Choose your preferred start date below.`;
+        dateGroup.style.display = 'block';
+        startInput.required     = true;
+        bidLabel.textContent    = `Amount (RM ${slot.basePrice} fixed) *`;
+        bidInput.value          = slot.basePrice;
+        bidInput.readOnly       = true;
+        bidInput.min            = slot.basePrice;
+      } else {
+        const minBid = slot.highestBid > 0 ? slot.highestBid + 1 : slot.basePrice;
+        formTitle.textContent   = 'Place Your Bid';
+        formSubtitle.textContent = slot.highestBid > 0
+          ? `This slot is full. You are bidding for the next rotation. Current highest bid: RM ${slot.highestBid}. Your bid must be higher. The highest bidder is automatically selected 24 hours before a slot opens.`
+          : `This slot is full. You are bidding for the next rotation. No bids yet — minimum bid is RM ${slot.basePrice}. The highest bidder is automatically selected 24 hours before a slot opens.`;
+        dateGroup.style.display = 'none';
+        startInput.required     = false;
+        bidLabel.textContent    = `Your Bid (min RM ${minBid}) *`;
+        bidInput.value          = '';
+        bidInput.readOnly       = false;
+        bidInput.min            = minBid;
+      }
+
+      // Reset form state
+      document.getElementById('adBidForm').style.display = 'block';
+      document.getElementById('bidSuccess').style.display = 'none';
+
+      formSection.style.display = 'block';
+      formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ── Cancel buttons ────────────────────────────────────────
+    ['cancelFormBtn','cancelFormBtn2'].forEach(id => {
+      document.getElementById(id).addEventListener('click', () => {
+        document.getElementById('formSection').style.display = 'none';
+      });
+    });
+
+    // ── Compress image before upload ─────────────────────────
+    function compressImage(file, maxWidth, quality) {
+      return new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let w = img.width, h = img.height;
+            if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // ── Form submission ───────────────────────────────────────
+    document.getElementById('adBidForm').addEventListener('submit', async e => {
       e.preventDefault();
-      
-      const form = e.target;
-      const btn = document.getElementById('submitBidBtn');
+      const btn        = document.getElementById('submitBidBtn');
       const successMsg = document.getElementById('bidSuccess');
 
-      // Change button state
-      btn.textContent = 'Sending securely...';
-      btn.style.opacity = '0.7';
-      btn.disabled = true;
-
-      const formData = new FormData(form);
+      btn.textContent = 'Sending…';
+      btn.disabled    = true;
 
       try {
-        // Send to your new AD_BID_URL from CONFIG.js
-        const response = await fetch(CONFIG.API.AD_BID_URL, {
-          method: 'POST',
-          body: formData
-        });
-
-        if(response.ok) {
-          // 1. Show the success message
-          successMsg.style.display = 'block';
-          
-          // 2. Reset the form fields entirely
-          form.reset();
-          
-          // 3. Put the button back to normal
-          btn.textContent = 'Submit Enquiry / Bid';
-          btn.style.opacity = '1';
-          btn.disabled = false;
-
-          // 4. Hide the success message after 5 seconds (5000 milliseconds)
-          setTimeout(() => {
-            successMsg.style.display = 'none';
-          }, 5000);
-
-        } else {
-          throw new Error('Network response was not ok');
+        const imageFile = document.getElementById('fieldImage').files[0];
+        let imageBase64 = '';
+        if (imageFile) {
+          imageBase64 = await compressImage(imageFile, 1400, 0.85);
         }
-      } catch (error) {
-        console.error('Submission Error:', error);
-        alert('Sorry, there was an issue sending your bid. Please check your connection and try again.');
-        btn.textContent = 'Submit Enquiry / Bid';
-        btn.style.opacity = '1';
-        btn.disabled = false;
+
+        const formData = new FormData();
+        formData.append('slot_id',      document.getElementById('fieldSlotId').value);
+        formData.append('form_type',    document.getElementById('fieldFormType').value);
+        formData.append('name',         document.getElementById('fieldName').value);
+        formData.append('email',        document.getElementById('fieldEmail').value);
+        formData.append('whatsapp',     document.getElementById('fieldWhatsApp').value);
+        formData.append('bid_amount',   document.getElementById('fieldBid').value);
+        formData.append('ad_url',       document.getElementById('fieldAdUrl').value);
+        formData.append('alt_text',     document.getElementById('fieldAltText').value);
+        formData.append('image_base64', imageBase64);
+        if (document.getElementById('fieldFormType').value === 'direct') {
+          formData.append('start_date', document.getElementById('fieldStartDate').value);
+        }
+
+        const res = await fetch(CONFIG.API.AD_BID_URL, { method: 'POST', body: formData });
+
+        if (res.ok) {
+          document.getElementById('adBidForm').style.display = 'none';
+          successMsg.style.display = 'block';
+          setTimeout(() => {
+            document.getElementById('formSection').style.display = 'none';
+            successMsg.style.display = 'none';
+            document.getElementById('adBidForm').reset();
+            document.getElementById('adBidForm').style.display = 'block';
+          }, 6000);
+        } else {
+          throw new Error('Server error');
+        }
+      } catch (err) {
+        alert('Sorry — something went wrong. Please check your connection and try again.');
+      } finally {
+        btn.textContent = 'Submit';
+        btn.disabled    = false;
       }
     });
   </script>
