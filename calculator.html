@@ -1176,10 +1176,6 @@ function calculate() {
 
 document.addEventListener('DOMContentLoaded', () => {
   toggleStratified();
-  fetch('/data/calculator-ads.json')
-    .then(r => r.json())
-    .then(data => { if (data.ads && data.ads.length) { ads = data.ads; initAds(); } })
-    .catch(() => {});
 });
 
 </script>
