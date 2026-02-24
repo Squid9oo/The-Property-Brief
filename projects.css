@@ -10,7 +10,24 @@
     /* Desktop: 4:1 (1920×480px) */
     aspect-ratio: 4 / 1;
     overflow: hidden;
-    background: #000;
+    background: var(--yellow, #f9d100); /* yellow shows if container doesn't fill — not black */
+}
+
+/* Slider container must fill full hero height */
+#admin-slider-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+/* CTA banner stretches to fill container */
+#admin-slider-container > .ad-cta-banner {
+    flex: 1;
+    height: 100%;
+    border-radius: 0;
+    min-height: unset;
 }
 
 .hero-slide {

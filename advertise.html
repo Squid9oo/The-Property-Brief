@@ -320,48 +320,6 @@
       </section>
 
       <section style="margin-bottom:3rem;">
-        <h2>Image Specifications</h2>
-        <p class="muted">Prepare all three banner images before you submit — one per device size. All images must be JPEG. Keep logos and text within the centre 60% of each image to avoid cropping on edge screens.</p>
-        <div class="why-grid" style="margin-top:1.5rem;">
-          <div class="why-card">
-            <h3>🏠 Homepage Hero</h3>
-            <p>
-              <strong style="color:#f5c800;">Desktop</strong> — 1200×400px &nbsp;·&nbsp; 3:1 &nbsp;·&nbsp; max 500KB<br>
-              <strong style="color:#f5c800;">Tablet</strong> — 1000×400px &nbsp;·&nbsp; 2.5:1 &nbsp;·&nbsp; max 400KB<br>
-              <strong style="color:#f5c800;">Mobile</strong> — 720×400px &nbsp;·&nbsp; 1.8:1 &nbsp;·&nbsp; max 300KB
-            </p>
-          </div>
-          <div class="why-card">
-            <h3>🏗️ Listing Hero Slider</h3>
-            <p>
-              <strong style="color:#f5c800;">Desktop</strong> — 1920×480px &nbsp;·&nbsp; 4:1 &nbsp;·&nbsp; max 800KB<br>
-              <strong style="color:#f5c800;">Tablet</strong> — 1000×400px &nbsp;·&nbsp; 2.5:1 &nbsp;·&nbsp; max 400KB<br>
-              <strong style="color:#f5c800;">Mobile</strong> — 720×400px &nbsp;·&nbsp; 1.8:1 &nbsp;·&nbsp; max 300KB
-            </p>
-          </div>
-          <div class="why-card">
-            <h3>🧮 Calculator Top Banner</h3>
-            <p>
-              <strong style="color:#f5c800;">Desktop</strong> — 900×120px &nbsp;·&nbsp; 7.5:1 &nbsp;·&nbsp; max 200KB<br>
-              <strong style="color:#f5c800;">Tablet</strong> — 720×120px &nbsp;·&nbsp; 6:1 &nbsp;·&nbsp; max 150KB<br>
-              <strong style="color:#f5c800;">Mobile</strong> — 480×120px &nbsp;·&nbsp; 4:1 &nbsp;·&nbsp; max 100KB
-            </p>
-          </div>
-          <div class="why-card">
-            <h3>🧮 Calculator Mid Banner</h3>
-            <p>
-              <strong style="color:#f5c800;">Desktop</strong> — 900×120px &nbsp;·&nbsp; 7.5:1 &nbsp;·&nbsp; max 200KB<br>
-              <strong style="color:#f5c800;">Tablet</strong> — 720×120px &nbsp;·&nbsp; 6:1 &nbsp;·&nbsp; max 150KB<br>
-              <strong style="color:#f5c800;">Mobile</strong> — 480×120px &nbsp;·&nbsp; 4:1 &nbsp;·&nbsp; max 100KB
-            </p>
-          </div>
-        </div>
-        <p class="muted" style="margin-top:1rem;font-size:0.82rem;">
-          💡 <strong style="color:#888;">JPEG only</strong> — no PNG, WebP or transparent backgrounds. Images are automatically compressed on upload.
-        </p>
-      </section>
-
-      <section style="margin-bottom:3rem;">
         <h2>Ad Slot Inventory</h2>
         <p class="muted">All placements run for 14 days. Click <strong style="color:#81c784;">Book Now</strong> to buy at the base price, or <strong style="color:#ffa726;">Place Bid</strong> to join the queue for the next available slot.</p>
         
@@ -570,7 +528,7 @@
             <br><small style="color:#444;">${slot.activeCount}/5 filled</small>
           </td>
           <td style="color:#666;">${slot.location}</td>
-          <td style="color:#666;">${slot.dimensions}</td>
+          <td style="color:#666;font-size:0.82rem;line-height:1.8;">${(slot.dimensions||'').replace(/·/g,'<br><span style="color:#444;">·</span>')}</td>
           <td>${priceCell}</td>
           <td>${badge}</td>
           <td>${action}</td>`;

@@ -160,19 +160,6 @@
       .ad-banner { aspect-ratio: 4 / 1; }
     }
 
-    /* Ad spec hint — shown above each banner */
-    .ad-spec-hint {
-      font-size: 0.70rem;
-      color: #444;
-      line-height: 1.6;
-      margin-bottom: 5px;
-      padding: 6px 10px;
-      background: #111;
-      border: 1px solid #2a2a2a;
-      border-radius: 6px;
-    }
-    .ad-spec-hint strong { color: #666; }
-
     .container { max-width: 900px; margin: 32px auto 0; padding: 0 16px; }
     h1.calc-title { font-size: 1.7rem; color: #f5c800; font-weight: 700; margin-bottom: 6px; }
     .calc-subtitle { font-size: 0.9rem; color: #888; margin-bottom: 28px; }
@@ -393,6 +380,60 @@
       #results { display: block !important; }
       .badge-official, .badge-personal { border: 1px solid #ccc !important; color: #555 !important; background: #f0f0f0 !important; }
     }
+
+    /* ===== AD CTA BANNER (matches styles.css) ===== */
+    .ad-cta-banner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      height: 100%;
+      padding: 16px 24px;
+      border-radius: 0;
+      border: none;
+      background: rgba(249, 209, 0, 0.82);
+      backdrop-filter: blur(4px);
+      text-align: center;
+      text-decoration: none;
+      color: #0b0b0c;
+      transition: opacity 200ms ease;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+    .ad-cta-banner:hover { opacity: 0.92; }
+    .ad-cta-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: rgba(11,11,12,0.55);
+    }
+    .ad-cta-headline {
+      font-size: clamp(12px, 1.4vw, 15px);
+      font-weight: 800;
+      color: #0b0b0c;
+      max-width: 640px;
+      line-height: 1.35;
+    }
+    .ad-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 18px;
+      border-radius: 999px;
+      border: 2px solid rgba(11,11,12,0.25);
+      background: rgba(11,11,12,0.10);
+      color: #0b0b0c;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+    }
+    .ad-cta-banner:hover .ad-cta-btn {
+      background: rgba(11,11,12,0.18);
+      border-color: rgba(11,11,12,0.40);
+    }
   </style>
   <!-- Google Analytics GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-CR7KQDF1JX"></script>
@@ -434,10 +475,6 @@
 <div class="print-summary" id="printSummary"></div>
 
 <div class="ad-banner-wrap">
-  <div class="ad-spec-hint">
-    <strong>Ad Specs — Calculator Top Banner:</strong>
-    Desktop 900×120px (7.5:1) &nbsp;·&nbsp; Tablet 720×120px (6:1) &nbsp;·&nbsp; Mobile 480×120px (4:1) &nbsp;·&nbsp; JPEG only &nbsp;·&nbsp; Max 200KB / 150KB / 100KB &nbsp;·&nbsp; Keep text &amp; logos in centre 60%
-  </div>
   <div class="ad-label">Advertisement</div>
   <div class="ad-banner" id="adBannerTop" onclick="adClickTop()">
     <a class="ad-cta-banner" id="adPlaceholderTop" href="/advertise.html" target="_blank" rel="noopener">
@@ -648,10 +685,6 @@
   <div id="results">
 
     <div class="ad-banner-wrap" style="padding:0;margin-bottom:24px;">
-      <div class="ad-spec-hint">
-        <strong>Ad Specs — Calculator Mid Banner:</strong>
-        Desktop 900×120px (7.5:1) &nbsp;·&nbsp; Tablet 720×120px (6:1) &nbsp;·&nbsp; Mobile 480×120px (4:1) &nbsp;·&nbsp; JPEG only &nbsp;·&nbsp; Max 200KB / 150KB / 100KB &nbsp;·&nbsp; Keep text &amp; logos in centre 60%
-      </div>
       <div class="ad-label">Advertisement</div>
       <div class="ad-banner" id="adBannerMid" onclick="adClickMid()">
         <a class="ad-cta-banner" id="adPlaceholderMid" href="/advertise.html" target="_blank" rel="noopener">
