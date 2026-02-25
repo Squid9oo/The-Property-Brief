@@ -401,16 +401,16 @@
 
 /* INLINE HEADER: Status + Title + Price on same line */
 .modal-header {
-    padding: 20px 25px 15px;
-    border-bottom: 2px solid #f0f0f0;
+    padding: 16px 25px 14px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .modal-title-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
-    padding-right: 50px; /* Space for close button */
+    padding-right: 0; /* Close button now in sticky bar */
 }
 
 .modal-title-row .status-badge {
@@ -1022,11 +1022,42 @@
     top: 0;
     z-index: 20;
     display: flex;
-    justify-content: flex-end;
-    padding: 10px 15px;
-    background: #ffffff;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 15px;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(6px);
     border-bottom: 1px solid #f0f0f0;
     flex-shrink: 0;
+    min-height: 48px;
+}
+
+.modal-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid rgba(249,209,0,0.5);
+    border-radius: 8px;
+    color: #7a6000;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.modal-share-btn:hover {
+    background: rgba(249,209,0,0.12);
+    border-color: rgba(249,209,0,0.8);
+    transform: translateY(-1px);
 }
 
 .modal-inner-scroll {

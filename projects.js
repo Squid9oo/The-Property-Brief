@@ -573,11 +573,30 @@ window.clearFilters = clearFilters;
 // Format "YYYY-MM" → "Jun 2027" for display
 function formatCompletion(val) {
   if (!val) return '';
-  const parts = String(val).split('-');
-  if (parts.length !== 2) return val;
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const m = parseInt(parts[1]) - 1;
-  return (months[m] || '') + ' ' + parts[0];
+  const str = String(val).trim();
+
+  // Handle ISO timestamp from Google Sheets (e.g. "2029-03-31T16:00:00.000Z")
+  // Google Sheets stores YYYY-MM as a Date — the last day of that month
+  // So "2029-04" becomes "2029-03-31T..." → we read the month from the DATE, not the string
+  if (str.includes('T') || str.length > 7) {
+    const d = new Date(str);
+    if (!isNaN(d.getTime())) {
+      // Google Sheets saves end-of-month for the selected month
+      // e.g. April 2029 stored as 2029-03-31 UTC → we add 1 day to get the correct month
+      const adjusted = new Date(d.getTime() + 24 * 60 * 60 * 1000);
+      return months[adjusted.getUTCMonth()] + ' ' + adjusted.getUTCFullYear();
+    }
+  }
+
+  // Handle clean YYYY-MM format (direct string, not yet converted by Sheets)
+  const parts = str.split('-');
+  if (parts.length === 2 && parts[0].length === 4) {
+    const m = parseInt(parts[1]) - 1;
+    return (months[m] || '') + ' ' + parts[0];
+  }
+
+  return str; // fallback — return as-is
 }
 
 function setLoadingState(loading) {
@@ -820,6 +839,9 @@ function openPropertyModal(property, index) {
   modal.innerHTML = `
     <div class="modal-content">
       <div class="modal-close-bar">
+        <div class="modal-action-bar">
+          <button class="modal-share-btn" id="modalShareBtn">↗ Share</button>
+        </div>
         <button class="modal-close" id="closePropertyModal">✕</button>
       </div>
       <div class="modal-inner-scroll">
@@ -888,8 +910,8 @@ function openPropertyModal(property, index) {
           <div class="details-grid">
             ${psfVal                        ? `<div><strong>Price Per Sqft:</strong> RM ${psfVal.toLocaleString()}/sqft</div>` : ''}
             ${property.priceToRm            ? `<div><strong>Price Range:</strong> RM ${parseInt(property['Price(RM)']).toLocaleString()} – RM ${parseInt(property.priceToRm).toLocaleString()}</div>` : ''}
-            ${property.maintenanceFee       ? `<div><strong>Maintenance Fee:</strong> RM ${property.maintenanceFee}/sqft/mth</div>` : ''}
-            ${property.sinkingFund          ? `<div><strong>Sinking Fund:</strong> RM ${property.sinkingFund}/sqft/mth</div>` : ''}
+            ${property.maintenanceFee       ? `<div><strong>Maintenance Fee:</strong> RM ${property.maintenanceFee} psf</div>` : ''}
+            ${property.sinkingFund          ? `<div><strong>Sinking Fund:</strong> RM ${property.sinkingFund} psf</div>` : ''}
           </div>
         </div>`;
         })()}
@@ -951,9 +973,9 @@ function openPropertyModal(property, index) {
             ${property.facilitiesStandard.split(',').map(f => `<span class="facility-tag">${f.trim()}</span>`).join('')}
           </div>` : ''}
           ${property.facilitiesCustom ? `
-          <ul class="facilities-custom-list">
-            ${property.facilitiesCustom.split('\n').filter(f => f.trim()).map(f => `<li>${f.trim()}</li>`).join('')}
-          </ul>` : ''}
+          <div class="facilities-tags" style="margin-top:8px;">
+            ${property.facilitiesCustom.split('\n').filter(f => f.trim()).map(f => `<span class="facility-tag">${f.trim()}</span>`).join('')}
+          </div>` : ''}
         </div>` : ''}
 
         <div class="modal-section">
@@ -964,25 +986,6 @@ function openPropertyModal(property, index) {
         <div class="modal-section">
           <h3>📞 Contact</h3>
           ${generateContactHTML(property.Contact)}
-        </div>
-        <div class="modal-section" style="text-align: center; padding: 20px 0;">
-          <button id="sharePropertyBtn" class="share-property-btn" style="
-            background: linear-gradient(135deg, #f9d100 0%, #e6c200 100%);
-            color: #000;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(249, 209, 0, 0.3);
-          " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(249, 209, 0, 0.4)';" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 12px rgba(249, 209, 0, 0.3)';">
-            <span style="font-size: 20px;">↗</span> Share Listing
-          </button>
         </div>
       </div>
       </div>
@@ -1007,12 +1010,10 @@ function openPropertyModal(property, index) {
   modal.querySelector('.gallery-prev')?.addEventListener('click', () => showPhoto(currentPhotoIndex > 0 ? currentPhotoIndex - 1 : photos.length - 1));
   modal.querySelector('.gallery-next')?.addEventListener('click', () => showPhoto(currentPhotoIndex < photos.length - 1 ? currentPhotoIndex + 1 : 0));
   
-  // Share Button
-  const shareBtn = modal.querySelector('#sharePropertyBtn');
-  if (shareBtn) {
-    shareBtn.onclick = () => shareProperty(property, index);
-  }
-  
+  // Share Button (now in close bar)
+  const shareBtn = modal.querySelector('#modalShareBtn');
+  if (shareBtn) shareBtn.onclick = () => shareProperty(property, index);
+
   // Close Button
   const closeBtn = modal.querySelector('#closePropertyModal');
   if (closeBtn) closeBtn.onclick = () => modal.classList.remove('open');
