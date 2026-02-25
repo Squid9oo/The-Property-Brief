@@ -314,20 +314,8 @@
 
           <label>
             Expected Completion
-            <select name="expectedCompletion">
-              <option value="">Select</option>
-              <option value="Completed">Completed</option>
-              <optgroup label="2025"><option value="Q1 2025">Q1 2025 (Mar)</option><option value="Q2 2025">Q2 2025 (Jun)</option><option value="Q3 2025">Q3 2025 (Sep)</option><option value="Q4 2025">Q4 2025 (Dec)</option></optgroup>
-              <optgroup label="2026"><option value="Q1 2026">Q1 2026 (Mar)</option><option value="Q2 2026">Q2 2026 (Jun)</option><option value="Q3 2026">Q3 2026 (Sep)</option><option value="Q4 2026">Q4 2026 (Dec)</option></optgroup>
-              <optgroup label="2027"><option value="Q1 2027">Q1 2027 (Mar)</option><option value="Q2 2027">Q2 2027 (Jun)</option><option value="Q3 2027">Q3 2027 (Sep)</option><option value="Q4 2027">Q4 2027 (Dec)</option></optgroup>
-              <optgroup label="2028"><option value="Q1 2028">Q1 2028 (Mar)</option><option value="Q2 2028">Q2 2028 (Jun)</option><option value="Q3 2028">Q3 2028 (Sep)</option><option value="Q4 2028">Q4 2028 (Dec)</option></optgroup>
-              <optgroup label="2029"><option value="Q1 2029">Q1 2029 (Mar)</option><option value="Q2 2029">Q2 2029 (Jun)</option><option value="Q3 2029">Q3 2029 (Sep)</option><option value="Q4 2029">Q4 2029 (Dec)</option></optgroup>
-              <optgroup label="2030+">
-                <option value="Q1 2030">Q1 2030</option><option value="Q2 2030">Q2 2030</option><option value="Q3 2030">Q3 2030</option><option value="Q4 2030">Q4 2030</option>
-                <option value="Q1 2031">Q1 2031</option><option value="Q2 2031">Q2 2031</option><option value="Q3 2031">Q3 2031</option><option value="Q4 2031">Q4 2031</option>
-                <option value="Q1 2032">Q1 2032</option><option value="Q2 2032">Q2 2032</option><option value="Q3 2032">Q3 2032</option><option value="Q4 2032">Q4 2032</option>
-              </optgroup>
-            </select>
+            <input name="expectedCompletion" type="month" min="2025-01" max="2035-12" />
+            <small>Select the month and year the project is expected to complete</small>
           </label>
 
           <label>
