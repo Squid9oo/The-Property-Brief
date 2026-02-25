@@ -1423,6 +1423,20 @@ document.getElementById('confirm-location-btn').addEventListener('click', async 
   }
   document.getElementById('map-modal').style.display = 'none';
 });
+
+// ── EXPECTED COMPLETION — combine month + year into hidden field ──
+function updateExpectedCompletion() {
+  const month  = document.getElementById('completion-month').value;
+  const year   = document.getElementById('completion-year').value;
+  const hidden = document.getElementById('expectedCompletion-hidden');
+  if (month && year) {
+    hidden.value = year + '-' + month;
+  } else {
+    hidden.value = '';
+  }
+}
+document.getElementById('completion-month').addEventListener('change', updateExpectedCompletion);
+document.getElementById('completion-year').addEventListener('change', updateExpectedCompletion);
 </script>
 
   <style>
