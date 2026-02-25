@@ -57,9 +57,23 @@ function buildListingHTML(listing, slug) {
     .map(k => listing[k]).filter(Boolean);
 
   const ogImage   = photos[0] || 'https://thepropertybrief.org/og-image.jpg';
-  const metaDesc  = safeAttr(
-    `${title} — ${price} — ${locFull}. ${desc}`.slice(0, 155)
-  );
+  const lt        = listing['Listing Type'] || '';
+  const propType  = listing['Property Type'] || listing['Category'] || '';
+  const bedsStr   = listing['Bedrooms']
+    ? `${listing['Bedrooms']} bed`
+    : listing['bedroomsMin']
+      ? `${listing['bedroomsMin']}${listing['bedroomsMax'] ? '–' + listing['bedroomsMax'] : '+'} bed`
+      : '';
+  const sqftStr   = listing['Built Up (Sq.Ft.)']
+    ? `${parseInt(listing['Built Up (Sq.Ft.)']).toLocaleString()} sqft`
+    : '';
+  const tenureStr = listing['Tenure'] || '';
+  let metaRaw = `${title} — ${lt} ${propType} in ${locFull}. ${price}`;
+  if (bedsStr)   metaRaw += `, ${bedsStr}`;
+  if (sqftStr)   metaRaw += `, ${sqftStr}`;
+  if (tenureStr) metaRaw += `. ${tenureStr}`;
+  if (desc)      metaRaw += `. ${desc}`;
+  const metaDesc  = safeAttr(metaRaw.slice(0, 155));
   const safeTitle = safeAttr(title);
 
   // PSF — calculated on the fly
@@ -162,7 +176,7 @@ function buildListingHTML(listing, slug) {
   // Photo gallery
   const galleryHtml = photos.length ? `
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:1.5rem 0;">
-      ${photos.map((src, i) => `<img src="${safeAttr(src)}" alt="${safeTitle} photo ${i + 1}" style="width:100%;border-radius:8px;aspect-ratio:4/3;object-fit:cover;" loading="${i === 0 ? 'eager' : 'lazy'}" />`).join('\n      ')}
+      ${photos.map((src, i) => `<img src="${safeAttr(src)}" alt="${safeTitle} — ${safeAttr(listing['Property Type'] || listing['Category'] || '')} in ${safeAttr(locFull)} — Photo ${i + 1}" style="width:100%;border-radius:8px;aspect-ratio:4/3;object-fit:cover;" loading="${i === 0 ? 'eager' : 'lazy'}" />`).join('\n      ')}
     </div>` : '';
 
   // Details table
@@ -191,7 +205,14 @@ function buildListingHTML(listing, slug) {
     "@context": "https://schema.org",
     "@type": "RealEstateListing",
     "name": title,
-    "description": desc,
+    "description": desc || [
+      lt && propType ? `${lt} ${propType}` : (propType || lt),
+      locFull        ? `in ${locFull}`     : '',
+      price,
+      tenureStr,
+      bedsStr        ? `${bedsStr}rooms`   : '',
+      sqftStr
+    ].filter(Boolean).join('. '),
     "url": url,
     "image": photos.length ? photos : undefined,
     "offers": {
@@ -253,6 +274,18 @@ function buildListingHTML(listing, slug) {
 
     <script type="application/ld+json">
   ${jsonLd}
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepropertybrief.org" },
+      { "@type": "ListItem", "position": 2, "name": "Property Listings", "item": "https://thepropertybrief.org/projects.html" },
+      { "@type": "ListItem", "position": 3, "name": "${safeTitle}", "item": "${url}" }
+    ]
+  }
   </script>
 
   <!-- Google Analytics GA4 -->
@@ -365,7 +398,11 @@ async function run() {
   const listingUrls = [];
 
   listings.forEach(listing => {
-    let base = slugify(listing['Ad Title']) || 'listing';
+    const titlePart = slugify(listing['Ad Title'] || 'listing');
+    const areaPart  = slugify(listing['Area'] || listing['District'] || '');
+    const ltPart    = slugify(listing['Listing Type'] || '');
+    const rawBase   = [titlePart, areaPart, ltPart].filter(Boolean).join('-');
+    let base = rawBase.replace(/-{2,}/g, '-') || 'listing';
     let slug = base;
     if (usedSlugs[base]) {
       usedSlugs[base]++;
