@@ -84,10 +84,24 @@ function buildListingHTML(listing, slug) {
   // Format YYYY-MM → "Jun 2027"
   function fmtCompletion(val) {
     if (!val) return null;
-    const parts = String(val).split('-');
-    if (parts.length !== 2) return val;
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return (months[parseInt(parts[1]) - 1] || '') + ' ' + parts[0];
+    const str = String(val).trim();
+    // Handle ISO timestamp from Google Sheets e.g. "2028-03-31T16:00:00.000Z"
+    if (str.includes('T') || str.length > 7) {
+      const d = new Date(str);
+      if (!isNaN(d.getTime())) {
+        // Google Sheets saves end-of-month — add 1 day to get the correct month
+        const adjusted = new Date(d.getTime() + 24 * 60 * 60 * 1000);
+        return months[adjusted.getUTCMonth()] + ' ' + adjusted.getUTCFullYear();
+      }
+    }
+    // Handle clean YYYY-MM format
+    const parts = str.split('-');
+    if (parts.length === 2 && parts[0].length === 4) {
+      const m = parseInt(parts[1]) - 1;
+      return (months[m] || '') + ' ' + parts[0];
+    }
+    return str;
   }
 
   const isNL = listing['Listing Type'] === 'New Launch';
@@ -189,16 +203,50 @@ function buildListingHTML(listing, slug) {
       </tr>`).join('')}
     </table>`;
 
-  // WhatsApp CTA
-  const waNum = String(contact || '').replace(/\D/g, '').replace(/^0/, '');
+  // Contact + WhatsApp CTA
+  const contactTrimmed = String(contact || '').trim();
+  const waNum = contactTrimmed.replace(/\D/g, '').replace(/^0/, '');
   const waMsg = encodeURIComponent(`Hi, I'm interested in your listing: ${title} (${url})`);
-  const ctaHtml = waNum ? `
-    <a href="https://wa.me/60${waNum}?text=${waMsg}"
-       target="_blank" rel="noopener"
-       class="btnPrimary"
-       style="width:auto;display:inline-block;text-decoration:none;margin-top:1.5rem;">
-      💬 WhatsApp Agent
-    </a>` : '';
+
+  let ctaHtml = '';
+  if (contactTrimmed) {
+    // Email contact
+    if (contactTrimmed.includes('@')) {
+      ctaHtml = `
+        <div style="margin-top:1.5rem;">
+          <p style="margin-bottom:0.75rem;font-size:0.95rem;">${safeAttr(contactTrimmed)}</p>
+          <a href="mailto:${safeAttr(contactTrimmed)}"
+             class="btnPrimary"
+             style="width:auto;display:inline-block;text-decoration:none;">
+            ✉️ Email Agent
+          </a>
+        </div>`;
+    // Phone contact
+    } else if ((contactTrimmed.match(/\d/g) || []).length >= 6) {
+      const cleanNum  = contactTrimmed.replace(/[\s\-\(\)]/g, '');
+      const waFormatted = cleanNum.startsWith('0') ? '60' + cleanNum.substring(1) : cleanNum.replace(/^\+/, '');
+      ctaHtml = `
+        <div style="margin-top:1.5rem;">
+          <p style="margin-bottom:0.75rem;font-size:0.95rem;">${safeAttr(contactTrimmed)}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
+            <a href="https://wa.me/${waFormatted}?text=${waMsg}"
+               target="_blank" rel="noopener"
+               class="btnPrimary"
+               style="width:auto;display:inline-block;text-decoration:none;">
+              💬 WhatsApp Agent
+            </a>
+            <a href="tel:${safeAttr(cleanNum)}"
+               class="btnPrimary"
+               style="width:auto;display:inline-block;text-decoration:none;background:transparent;border:2px solid #f5c800;color:#f5c800;">
+              📞 Call Agent
+            </a>
+          </div>
+        </div>`;
+    // Fallback — plain text
+    } else {
+      ctaHtml = `<p style="margin-top:1.5rem;font-size:0.95rem;">${safeAttr(contactTrimmed)}</p>`;
+    }
+  }
 
   // JSON-LD — RealEstateListing schema
   const schemaObj = {
