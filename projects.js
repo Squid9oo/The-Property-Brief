@@ -102,7 +102,27 @@ async function handleFormSubmit(e) {
 
   try {
     const formData = new FormData(form);
-    
+
+    // Helper — reads a field from the currently visible category block
+    // Needed because bedrooms/bathrooms/etc exist in multiple category blocks
+    const cat = formData.get('category') || '';
+    const catBlockId =
+      cat === 'High Rise Residential' ? 'fields-high-rise-residential' :
+      cat === 'Landed Residential'    ? 'fields-landed-residential'    :
+      cat === 'Commercial'            ? 'fields-commercial'            :
+      cat === 'Land'                  ? 'fields-land'                  : null;
+    const catBlock = catBlockId ? document.getElementById(catBlockId) : null;
+    const fromCat  = (name) => catBlock?.querySelector(`[name="${name}"]`)?.value || '';
+
+    // Helper — reads a field from the currently visible listing-type block
+    const lt = formData.get('listingType') || '';
+    const ltBlockId =
+      lt === 'New Launch' ? 'block-new-launch' :
+      lt === 'For Sale'   ? 'block-for-sale'   :
+      lt === 'For Rent'   ? 'block-for-rent'   : null;
+    const ltBlock = ltBlockId ? document.getElementById(ltBlockId) : null;
+    const fromLt  = (name) => ltBlock?.querySelector(`[name="${name}"]`)?.value || '';
+
     // 1. Convert File Inputs to Base64
     const photoPromises = [];
     ['photo1', 'photo2', 'photo3', 'photo4', 'photo5'].forEach(fieldName => {
@@ -132,76 +152,71 @@ async function handleFormSubmit(e) {
       latitude: formData.get('latitude'),
       longitude: formData.get('longitude'),
       
-      // Details
+      // Details — read from visible category block to avoid duplicate field name confusion
       propertyType: formData.get('propertyType'),
-      tenure: formData.get('tenure'),
-      landTitle: formData.get('landTitle'),
-      bedrooms: formData.get('bedrooms'),
-      bathrooms: formData.get('bathrooms'),
-      builtUpSqft: formData.get('builtUpSqft'),
-      landSize: formData.get('landSize'),
-      parking: formData.get('parking'),
-      storeyCount: formData.get('storeyCount'),
-      description: formData.get('description'),
-      contact: formData.get('contact'),
+      tenure:       formData.get('tenure'),
+      landTitle:    fromCat('landTitle'),
+      bedrooms:     fromCat('bedrooms'),
+      bathrooms:    fromCat('bathrooms'),
+      builtUpSqft:  fromCat('builtUpSqft'),
+      landSize:     fromCat('landSize') || formData.get('landSize'),
+      parking:      fromCat('parking'),
+      storeyCount:  fromCat('storeyCount'),
+      description:  formData.get('description'),
+      contact:      formData.get('contact'),
       
       // Photos Array
       photos: photosBase64,
 
-      // ── New Launch ──────────────────────────────────────────
-      developerName:       formData.get('developerName'),
-      developerLicense:    formData.get('developerLicense'),
-      advertisingPermit:   formData.get('advertisingPermit'),
-      expectedCompletion:  formData.get('expectedCompletion'),
-      totalUnits:          formData.get('totalUnits'),
+      // ── New Launch — read from visible NL block ─────────────
+      developerName:       fromLt('developerName'),
+      developerLicense:    fromLt('developerLicense'),
+      advertisingPermit:   fromLt('advertisingPermit'),
+      expectedCompletion:  formData.get('expectedCompletion'), // hidden field
+      totalUnits:          fromLt('totalUnits'),
       priceToRm:           formData.get('priceToRm'),
-      builtUpMin:          formData.get('builtUpMin'),
-      builtUpMax:          formData.get('builtUpMax'),
-      bedroomsMin:         formData.get('bedroomsMin'),
-      bedroomsMax:         formData.get('bedroomsMax'),
-      bumiDiscount:        formData.get('bumiDiscount'),
+      builtUpMin:          fromLt('builtUpMin'),
+      builtUpMax:          fromLt('builtUpMax'),
+      bedroomsMin:         fromLt('bedroomsMin'),
+      bedroomsMax:         fromLt('bedroomsMax'),
+      bumiDiscount:        fromLt('bumiDiscount'),
 
       // ── For Sale ────────────────────────────────────────────
-      furnishing: (() => {
-        const fsBlock = document.getElementById('block-for-sale');
-        const frBlock = document.getElementById('block-for-rent');
-        const visibleBlock = (fsBlock && fsBlock.style.display !== 'none') ? fsBlock : frBlock;
-        return visibleBlock ? (visibleBlock.querySelector('[name="furnishing"]')?.value || '') : '';
-      })(),
-      renovationCondition: formData.get('renovationCondition'),
-      occupancyStatus:     formData.get('occupancyStatus'),
+      furnishing:          fromLt('furnishing'),
+      renovationCondition: fromLt('renovationCondition'),
+      occupancyStatus:     fromLt('occupancyStatus'),
 
       // ── For Rent ────────────────────────────────────────────
-      availableFrom:       formData.get('availableFrom'),
-      minTenancy:          formData.get('minTenancy'),
-      petsAllowed:         formData.get('petsAllowed'),
+      availableFrom:       fromLt('availableFrom'),
+      minTenancy:          fromLt('minTenancy'),
+      petsAllowed:         fromLt('petsAllowed'),
 
-      // ── All Residential ─────────────────────────────────────
-      gatedGuarded:        formData.get('gatedGuarded'),
-      maintenanceFee:      formData.get('maintenanceFee'),
-      sinkingFund:         formData.get('sinkingFund'),
-      facilitiesStandard:  formData.get('facilitiesStandard'),
-      facilitiesCustom:    formData.get('facilitiesCustom'),
-      floorLevel:          formData.get('floorLevel'),
+      // ── All Residential — read from visible category block ──
+      gatedGuarded:        fromCat('gatedGuarded'),
+      maintenanceFee:      fromCat('maintenanceFee'),
+      sinkingFund:         fromCat('sinkingFund'),
+      facilitiesStandard:  formData.get('facilitiesStandard'), // hidden field
+      facilitiesCustom:    fromCat('facilitiesCustom'),
+      floorLevel:          fromCat('floorLevel'),
 
       // ── Landed ──────────────────────────────────────────────
-      lotType:             formData.get('lotType'),
+      lotType:             fromCat('lotType'),
 
       // ── Commercial ──────────────────────────────────────────
-      cornerLot:           formData.get('cornerLot'),
-      loadingBay:          formData.get('loadingBay'),
-      electricalSupply:    formData.get('electricalSupply'),
-      currentZoning:       formData.get('currentZoning'),
-      grossFloorArea:      formData.get('grossFloorArea'),
+      cornerLot:           fromCat('cornerLot'),
+      loadingBay:          fromCat('loadingBay'),
+      electricalSupply:    fromCat('electricalSupply'),
+      currentZoning:       fromCat('currentZoning'),
+      grossFloorArea:      fromCat('grossFloorArea'),
 
       // ── Land ────────────────────────────────────────────────
-      landAreaValue:       formData.get('landAreaValue'),
-      landAreaUnit:        formData.get('landAreaUnit'),
-      roadFrontage:        formData.get('roadFrontage'),
-      topography:          formData.get('topography'),
-      approvedZoning:      formData.get('approvedZoning'),
-      waterSupply:         formData.get('waterSupply'),
-      electricSupply:      formData.get('electricSupply'),
+      landAreaValue:       fromCat('landAreaValue'),
+      landAreaUnit:        fromCat('landAreaUnit'),
+      roadFrontage:        fromCat('roadFrontage'),
+      topography:          fromCat('topography'),
+      approvedZoning:      fromCat('approvedZoning'),
+      waterSupply:         fromCat('waterSupply'),
+      electricSupply:      fromCat('electricSupply'),
 
       // ── Connectivity ────────────────────────────────────────
       nearestTransit:      formData.get('nearestTransit'),

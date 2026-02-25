@@ -1252,13 +1252,6 @@ form.addEventListener('submit', e => {
     document.getElementById('facilitiesStandard-hidden').value = checked.join(',');
   }
 
-  // Disable all fields in hidden category blocks (prevents duplicate field names being submitted)
-  ['high-rise-residential', 'landed-residential', 'commercial', 'land'].forEach(c => {
-    const container = document.getElementById('fields-' + c);
-    if (container && container.style.display === 'none') {
-      container.querySelectorAll('input, select, textarea').forEach(f => { f.disabled = true; });
-    }
-  });
 });
 
 // ── LOCATION DROPDOWNS (unchanged) ───────────────────────────
