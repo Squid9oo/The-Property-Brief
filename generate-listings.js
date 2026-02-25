@@ -231,22 +231,23 @@ function buildListingHTML(listing, slug) {
         </div>`;
     // Phone contact
     } else if ((contactTrimmed.match(/\d/g) || []).length >= 6) {
-      const cleanNum  = contactTrimmed.replace(/[\s\-\(\)]/g, '');
+      const cleanNum    = contactTrimmed.replace(/[\s\-\(\)]/g, '');
       const waFormatted = cleanNum.startsWith('0') ? '60' + cleanNum.substring(1) : cleanNum.replace(/^\+/, '');
       ctaHtml = `
-        <div style="margin-top:1.5rem;">
-          <p style="margin-bottom:0.75rem;font-size:0.95rem;">${safeAttr(contactTrimmed)}</p>
-          <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-top:1.5rem;padding:1rem 1.25rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
+          <span style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#888;white-space:nowrap;">📞 Contact</span>
+          <span style="font-size:0.95rem;font-weight:600;color:#fff;white-space:nowrap;">${safeAttr(contactTrimmed)}</span>
+          <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-left:auto;">
             <a href="https://wa.me/${waFormatted}?text=${waMsg}"
                target="_blank" rel="noopener"
                class="btnPrimary"
-               style="width:auto;display:inline-block;text-decoration:none;">
-              💬 WhatsApp Agent
+               style="width:auto;display:inline-block;text-decoration:none;margin:0;">
+              💬 WhatsApp
             </a>
             <a href="tel:${safeAttr(cleanNum)}"
                class="btnPrimary"
-               style="width:auto;display:inline-block;text-decoration:none;background:transparent;border:2px solid #f5c800;color:#f5c800;">
-              📞 Call Agent
+               style="width:auto;display:inline-block;text-decoration:none;margin:0;background:transparent;border:2px solid #f5c800;color:#f5c800;">
+              📞 Call
             </a>
           </div>
         </div>`;
