@@ -175,6 +175,9 @@
     <button class="hamburger" id="hamburger" type="button" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
+    <button class="shareIconBtn mobileShare" type="button" data-share="site" aria-label="Share">
+      <span aria-hidden="true">↗</span>
+    </button>
     <nav class="nav" id="mainNav">
       <a href="/">Home</a>
       <a href="/#latest">News</a>
@@ -228,9 +231,23 @@
         </div>
       </div>
     </nav>
+    <form class="headerSub" name="subscribe" method="POST" data-netlify="true" action="/thanks.html" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="subscribe" />
+      <p class="hp">
+        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+      </p>
+      <input class="headerInput" type="email" name="email" placeholder="Your email" required />
+      <button class="headerBtn" type="submit">Subscribe</button>
+      <div class="shareRow" aria-label="Share The Property Brief">
+        <button class="shareIconBtn" type="button" data-share="site" title="Share this site" aria-label="Share this site">
+          <span aria-hidden="true">↗</span>
+        </button>
+      </div>
+    </form>
   </header>
 
-  <main class="container" style="padding-top:2.5rem; padding-bottom:4rem;">
+  <main class="container" 
+    style="padding-top:2.5rem; padding-bottom:4rem;">
     <div class="maincol">
 
   <!-- BID UPDATE PANEL — visible only when ?bidToken= is in URL -->
