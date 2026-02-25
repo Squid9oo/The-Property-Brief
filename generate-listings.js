@@ -62,24 +62,101 @@ function buildListingHTML(listing, slug) {
   );
   const safeTitle = safeAttr(title);
 
-  // Details rows
+  // PSF — calculated on the fly
+  const psfVal = (listing['Price(RM)'] && listing['Built Up (Sq.Ft.)'] && parseInt(listing['Built Up (Sq.Ft.)']) > 0)
+    ? Math.round(parseInt(listing['Price(RM)']) / parseInt(listing['Built Up (Sq.Ft.)']))
+    : null;
+
+  // Format YYYY-MM → "Jun 2027"
+  function fmtCompletion(val) {
+    if (!val) return null;
+    const parts = String(val).split('-');
+    if (parts.length !== 2) return val;
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return (months[parseInt(parts[1]) - 1] || '') + ' ' + parts[0];
+  }
+
+  const isNL = listing['Listing Type'] === 'New Launch';
+
+  // Details rows — grouped by category, only non-empty values shown
   const details = [
-    ['Price',            price],
-    ['Listing Type',     listing['Listing Type']],
-    ['Category',         listing['Category']],
-    ['Property Type',    listing['Property Type']],
-    ['Tenure',           listing['Tenure']],
-    ['Land Title',       listing['Land Title']],
-    ['Bedrooms',         listing['Bedrooms']],
-    ['Bathrooms',        listing['Bathrooms']],
-    ['Built Up',         listing['Built Up (Sq.Ft.)'] ? `${listing['Built Up (Sq.Ft.)']} sq.ft.` : null],
-    ['Land Size',        listing['Land Size']],
-    ['Parking',          listing['Parking']],
-    ['Storey Count',     listing['Storey Count']],
-    ['State',            state],
-    ['District',         district],
-    ['Area',             area],
-    ['Seller Type',      listing['Seller Type']],
+    // ── Identity ──────────────────────────────────────────────
+    ['Listing Type',          listing['Listing Type']],
+    ['Category',              listing['Category']],
+    ['Property Type',         listing['Property Type']],
+    ['Tenure',                listing['Tenure']],
+    ['Land Title',            listing['Land Title']],
+    ['Seller Type',           listing['Seller Type']],
+
+    // ── New Launch ────────────────────────────────────────────
+    ['Developer',             listing['developerName']],
+    ['Expected Completion',   fmtCompletion(listing['expectedCompletion'])],
+    ['Total Units',           listing['totalUnits']],
+    ['Developer License',     listing['developerLicense']],
+    ['Advertising Permit',    listing['advertisingPermit']],
+    ['Bumi Discount',         listing['bumiDiscount'] ? listing['bumiDiscount'] + '%' : null],
+
+    // ── Pricing ───────────────────────────────────────────────
+    ['Price',                 price],
+    ['Price Range',           (isNL && listing['priceToRm'])
+                                ? `RM ${parseInt(listing['Price(RM)']).toLocaleString()} – RM ${parseInt(listing['priceToRm']).toLocaleString()}`
+                                : null],
+    ['Price Per Sqft (PSF)',  psfVal ? `RM ${psfVal.toLocaleString()} / sqft` : null],
+    ['Maintenance Fee',       listing['maintenanceFee'] ? `RM ${listing['maintenanceFee']} / sqft / mth` : null],
+    ['Sinking Fund',          listing['sinkingFund'] ? `RM ${listing['sinkingFund']} / sqft / mth` : null],
+
+    // ── Unit Specs ────────────────────────────────────────────
+    ['Bedrooms',              listing['Bedrooms']],
+    ['Bedroom Range',         listing['bedroomsMin']
+                                ? `${listing['bedroomsMin']}${listing['bedroomsMax'] ? '–'+listing['bedroomsMax'] : '+'}`
+                                : null],
+    ['Bathrooms',             listing['Bathrooms']],
+    ['Built Up',              listing['Built Up (Sq.Ft.)'] ? `${parseInt(listing['Built Up (Sq.Ft.)']).toLocaleString()} sqft` : null],
+    ['Built Up Range',        listing['builtUpMin']
+                                ? `${parseInt(listing['builtUpMin']).toLocaleString()}${listing['builtUpMax'] ? '–'+parseInt(listing['builtUpMax']).toLocaleString() : '+'} sqft`
+                                : null],
+    ['Land Area',             listing['landAreaValue']
+                                ? `${listing['landAreaValue']} ${listing['landAreaUnit'] || ''}`
+                                : listing['Land Size'] ? `${listing['Land Size']} sqft` : null],
+    ['Car Park',              listing['Parking'] ? `${listing['Parking']} bay(s)` : null],
+    ['Storeys',               listing['Storey Count']],
+    ['Floor Level',           listing['floorLevel']],
+    ['Lot Type',              listing['lotType']],
+    ['Gated & Guarded',       listing['gatedGuarded']],
+
+    // ── For Sale / Rent ───────────────────────────────────────
+    ['Furnishing',            listing['furnishing']],
+    ['Condition',             listing['renovationCondition']],
+    ['Occupancy',             listing['occupancyStatus']],
+    ['Available From',        listing['availableFrom']],
+    ['Min Tenancy',           listing['minTenancy']],
+    ['Pets Allowed',          listing['petsAllowed']],
+
+    // ── Commercial ───────────────────────────────────────────
+    ['Corner Lot',            listing['cornerLot']],
+    ['Loading Bay',           listing['loadingBay']],
+    ['Electrical Supply',     listing['electricalSupply']],
+    ['Zoning',                listing['currentZoning']],
+    ['Gross Floor Area',      listing['grossFloorArea'] ? `${parseInt(listing['grossFloorArea']).toLocaleString()} sqft` : null],
+
+    // ── Land ──────────────────────────────────────────────────
+    ['Topography',            listing['topography']],
+    ['Approved Zoning',       listing['approvedZoning']],
+    ['Road Frontage',         listing['roadFrontage'] ? `${listing['roadFrontage']}m` : null],
+    ['Water Supply',          listing['waterSupply']],
+    ['Electricity Supply',    listing['electricSupply']],
+
+    // ── Location ─────────────────────────────────────────────
+    ['State',                 state],
+    ['District',              district],
+    ['Area',                  area],
+
+    // ── Connectivity ─────────────────────────────────────────
+    ['MRT/LRT/BRT',           listing['nearestTransit']],
+    ['Highway',               listing['nearestHighway']],
+    ['Shopping Mall',         listing['nearestShoppingMall']],
+    ['School/University',     listing['nearestSchoolUni']],
+    ['Hospital/Clinic',       listing['nearestHospital']],
   ].filter(([, v]) => v);
 
   // Photo gallery
@@ -226,6 +303,17 @@ function buildListingHTML(listing, slug) {
         ${desc ? `
         <h2 style="margin-top:2rem;margin-bottom:1rem;">Description</h2>
         <p class="muted" style="line-height:1.8;white-space:pre-line;">${safeAttr(desc)}</p>` : ''}
+
+        ${(listing['facilitiesStandard'] || listing['facilitiesCustom']) ? `
+        <h2 style="margin-top:2rem;margin-bottom:1rem;">🏊 Facilities</h2>
+        ${listing['facilitiesStandard'] ? `
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem;">
+          ${listing['facilitiesStandard'].split(',').map(f => `<span style="padding:4px 12px;background:rgba(249,209,0,0.12);border:1px solid rgba(249,209,0,0.3);border-radius:20px;font-size:0.85rem;">${safeAttr(f.trim())}</span>`).join('')}
+        </div>` : ''}
+        ${listing['facilitiesCustom'] ? `
+        <ul style="margin:0;padding-left:1.2rem;line-height:2;">
+          ${listing['facilitiesCustom'].split('\n').filter(f => f.trim()).map(f => `<li>${safeAttr(f.trim())}</li>`).join('')}
+        </ul>` : ''}` : ''}
 
         ${ctaHtml}
       </article>

@@ -146,7 +146,64 @@ async function handleFormSubmit(e) {
       contact: formData.get('contact'),
       
       // Photos Array
-      photos: photosBase64
+      photos: photosBase64,
+
+      // ── New Launch ──────────────────────────────────────────
+      developerName:       formData.get('developerName'),
+      developerLicense:    formData.get('developerLicense'),
+      advertisingPermit:   formData.get('advertisingPermit'),
+      expectedCompletion:  formData.get('expectedCompletion'),
+      totalUnits:          formData.get('totalUnits'),
+      priceToRm:           formData.get('priceToRm'),
+      builtUpMin:          formData.get('builtUpMin'),
+      builtUpMax:          formData.get('builtUpMax'),
+      bedroomsMin:         formData.get('bedroomsMin'),
+      bedroomsMax:         formData.get('bedroomsMax'),
+      bumiDiscount:        formData.get('bumiDiscount'),
+
+      // ── For Sale ────────────────────────────────────────────
+      furnishing:          formData.get('furnishing'),
+      renovationCondition: formData.get('renovationCondition'),
+      occupancyStatus:     formData.get('occupancyStatus'),
+
+      // ── For Rent ────────────────────────────────────────────
+      availableFrom:       formData.get('availableFrom'),
+      minTenancy:          formData.get('minTenancy'),
+      petsAllowed:         formData.get('petsAllowed'),
+
+      // ── All Residential ─────────────────────────────────────
+      gatedGuarded:        formData.get('gatedGuarded'),
+      maintenanceFee:      formData.get('maintenanceFee'),
+      sinkingFund:         formData.get('sinkingFund'),
+      facilitiesStandard:  formData.get('facilitiesStandard'),
+      facilitiesCustom:    formData.get('facilitiesCustom'),
+      floorLevel:          formData.get('floorLevel'),
+
+      // ── Landed ──────────────────────────────────────────────
+      lotType:             formData.get('lotType'),
+
+      // ── Commercial ──────────────────────────────────────────
+      cornerLot:           formData.get('cornerLot'),
+      loadingBay:          formData.get('loadingBay'),
+      electricalSupply:    formData.get('electricalSupply'),
+      currentZoning:       formData.get('currentZoning'),
+      grossFloorArea:      formData.get('grossFloorArea'),
+
+      // ── Land ────────────────────────────────────────────────
+      landAreaValue:       formData.get('landAreaValue'),
+      landAreaUnit:        formData.get('landAreaUnit'),
+      roadFrontage:        formData.get('roadFrontage'),
+      topography:          formData.get('topography'),
+      approvedZoning:      formData.get('approvedZoning'),
+      waterSupply:         formData.get('waterSupply'),
+      electricSupply:      formData.get('electricSupply'),
+
+      // ── Connectivity ────────────────────────────────────────
+      nearestTransit:      formData.get('nearestTransit'),
+      nearestHighway:      formData.get('nearestHighway'),
+      nearestShoppingMall: formData.get('nearestShoppingMall'),
+      nearestSchoolUni:    formData.get('nearestSchoolUni'),
+      nearestHospital:     formData.get('nearestHospital')
     };
 
     // 3. Send to Google Script
@@ -492,6 +549,16 @@ function clearFilters() {
 window.applyFilters = applyFilters;
 window.clearFilters = clearFilters;
 
+// Format "YYYY-MM" → "Jun 2027" for display
+function formatCompletion(val) {
+  if (!val) return '';
+  const parts = String(val).split('-');
+  if (parts.length !== 2) return val;
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const m = parseInt(parts[1]) - 1;
+  return (months[m] || '') + ' ' + parts[0];
+}
+
 function setLoadingState(loading) {
   isLoading = loading;
   const container = document.getElementById('listings-container');
@@ -663,6 +730,23 @@ function renderCards(properties) {
     const price = item['Price(RM)'] ? parseInt(item['Price(RM)']).toLocaleString() : '0';
     const builtUp = item['Built Up (Sq.Ft.)'] ? parseInt(item['Built Up (Sq.Ft.)']).toLocaleString() : '';
 
+    // PSF — calculated on the fly
+    const psf = (item['Price(RM)'] && item['Built Up (Sq.Ft.)'] && parseInt(item['Built Up (Sq.Ft.)']) > 0)
+      ? Math.round(parseInt(item['Price(RM)']) / parseInt(item['Built Up (Sq.Ft.)']))
+      : null;
+
+    // New Launch range display
+    const isNL = item['Listing Type'] === 'New Launch';
+    const bedsDisplay = isNL && item.bedroomsMin
+      ? `${item.bedroomsMin}${item.bedroomsMax ? '–' + item.bedroomsMax : '+'} bd`
+      : item.Bedrooms ? `${item.Bedrooms} bd` : '';
+    const sqftDisplay = isNL && item.builtUpMin
+      ? `${parseInt(item.builtUpMin).toLocaleString()}${item.builtUpMax ? '–' + parseInt(item.builtUpMax).toLocaleString() : '+'} sqft`
+      : item['Built Up (Sq.Ft.)'] ? `${parseInt(item['Built Up (Sq.Ft.)']).toLocaleString()} sqft` : '';
+    const priceDisplay = isNL && item.priceToRm
+      ? `From RM ${parseInt(item['Price(RM)']).toLocaleString()}`
+      : `RM ${price}`;
+
     return `
     <div class="property-card" id="${cardId}" data-property-index="${index}">
       <div class="card-image-container">
@@ -671,15 +755,22 @@ function renderCards(properties) {
         ${photos.length > 1 ? `<div class="carousel-dots">${photos.map((_, i) => `<span class="carousel-dot ${i===0?'active':''}"></span>`).join('')}</div>` : ''}
       </div>
       <div class="card-content">
+        ${isNL && item.developerName ? `<p class="card-developer">${item.developerName}</p>` : ''}
         <h3>${item['Ad Title']}</h3>
         <div class="property-specs">
-          ${item.Bedrooms ? `<span class="spec">🛏️ ${item.Bedrooms}</span>` : ''}
+          ${bedsDisplay ? `<span class="spec">🛏️ ${bedsDisplay}</span>` : ''}
           ${item.Bathrooms ? `<span class="spec">🛁 ${item.Bathrooms}</span>` : ''}
-          ${builtUp ? `<span class="spec">📐 ${builtUp} sqft</span>` : ''}
+          ${sqftDisplay ? `<span class="spec">📐 ${sqftDisplay}</span>` : ''}
+          ${psf ? `<span class="spec">💰 RM${psf.toLocaleString()}/sqft</span>` : ''}
+          ${item.gatedGuarded === 'Yes' ? `<span class="spec">🔒 G&G</span>` : ''}
         </div>
-        <p class="price">RM ${price}</p>
+        <p class="price">${priceDisplay}</p>
         <p class="location">📍 ${item['Location Full'] || item.State}</p>
-        <span class="badge">${item.Category || 'Property'}</span>
+        <div class="card-footer-row">
+          <span class="badge">${item.Category || 'Property'}</span>
+          ${isNL && item.expectedCompletion ? `<span class="completion-badge">🏗️ ${formatCompletion(item.expectedCompletion)}</span>` : ''}
+          ${item.Tenure ? `<span class="tenure-badge">${item.Tenure}</span>` : ''}
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -719,26 +810,132 @@ function openPropertyModal(property, index) {
         ${photos.length > 1 ? `<div class="gallery-nav"><button class="gallery-prev">‹</button><button class="gallery-next">›</button></div><div class="gallery-dots">${dotsHTML}</div>` : ''}
       </div>
       <div class="modal-body">
+
+        ${(property['Listing Type'] === 'New Launch' && (property.developerName || property.expectedCompletion)) ? `
+        <div class="modal-section modal-section--highlight">
+          <h3>🏗️ New Launch Info</h3>
+          <div class="details-grid">
+            ${property.developerName       ? `<div><strong>Developer:</strong> ${property.developerName}</div>` : ''}
+            ${property.expectedCompletion  ? `<div><strong>Expected Completion:</strong> ${formatCompletion(property.expectedCompletion)}</div>` : ''}
+            ${property.totalUnits          ? `<div><strong>Total Units:</strong> ${parseInt(property.totalUnits).toLocaleString()}</div>` : ''}
+            ${property.bumiDiscount        ? `<div><strong>Bumi Discount:</strong> ${property.bumiDiscount}%</div>` : ''}
+            ${property.developerLicense    ? `<div><strong>Developer License:</strong> ${property.developerLicense}</div>` : ''}
+            ${property.advertisingPermit   ? `<div><strong>Advertising Permit:</strong> ${property.advertisingPermit}</div>` : ''}
+          </div>
+        </div>` : ''}
+
         <div class="modal-section">
           <h3>📍 Location</h3>
           <p>${property['Location Full'] || `${property.State}, ${property.District}`}</p>
           <div id="project-map" style="width:100%;height:300px;border-radius:8px;margin-top:12px;background:#eee;"></div>
         </div>
+
         <div class="modal-section">
-          <h3>🏠 Details</h3>
+          <h3>🏠 Property Details</h3>
           <div class="details-grid">
             <div><strong>Type:</strong> ${property['Property Type'] || property.Category}</div>
-            <div><strong>Tenure:</strong> ${property.Tenure || 'N/A'}</div>
-            <div><strong>Bedrooms:</strong> ${property.Bedrooms || 'N/A'}</div>
-            <div><strong>Bathrooms:</strong> ${property.Bathrooms || 'N/A'}</div>
-            <div><strong>Built Up:</strong> ${builtUp} sqft</div>
-            <div><strong>Land Size:</strong> ${property['Land Size'] || 'N/A'}</div>
+            <div><strong>Tenure:</strong> ${property.Tenure || '—'}</div>
+            <div><strong>Land Title:</strong> ${property['Land Title'] || '—'}</div>
+            ${property.Bedrooms            ? `<div><strong>Bedrooms:</strong> ${property.Bedrooms}</div>` : ''}
+            ${property.bedroomsMin         ? `<div><strong>Bedrooms:</strong> ${property.bedroomsMin}${property.bedroomsMax ? '–'+property.bedroomsMax : '+'}</div>` : ''}
+            ${property.Bathrooms           ? `<div><strong>Bathrooms:</strong> ${property.Bathrooms}</div>` : ''}
+            ${property['Built Up (Sq.Ft.)']? `<div><strong>Built Up:</strong> ${parseInt(property['Built Up (Sq.Ft.)']).toLocaleString()} sqft</div>` : ''}
+            ${property.builtUpMin          ? `<div><strong>Built Up:</strong> ${parseInt(property.builtUpMin).toLocaleString()}${property.builtUpMax ? '–'+parseInt(property.builtUpMax).toLocaleString() : '+'} sqft</div>` : ''}
+            ${property['Land Size']        ? `<div><strong>Land Area:</strong> ${property['Land Size']} sqft</div>` : ''}
+            ${property.landAreaValue       ? `<div><strong>Land Area:</strong> ${property.landAreaValue} ${property.landAreaUnit || ''}</div>` : ''}
+            ${property.Parking             ? `<div><strong>Car Park:</strong> ${property.Parking} bay(s)</div>` : ''}
+            ${property['Storey Count']     ? `<div><strong>Storeys:</strong> ${property['Storey Count']}</div>` : ''}
+            ${property.floorLevel          ? `<div><strong>Floor Level:</strong> ${property.floorLevel}</div>` : ''}
+            ${property.lotType             ? `<div><strong>Lot Type:</strong> ${property.lotType}</div>` : ''}
+            ${property.gatedGuarded        ? `<div><strong>Gated & Guarded:</strong> ${property.gatedGuarded}</div>` : ''}
           </div>
         </div>
+
+        ${(() => {
+          const psfVal = (property['Price(RM)'] && property['Built Up (Sq.Ft.)'] && parseInt(property['Built Up (Sq.Ft.)']) > 0)
+            ? Math.round(parseInt(property['Price(RM)']) / parseInt(property['Built Up (Sq.Ft.)']))
+            : null;
+          const hasFinance = psfVal || property.maintenanceFee || property.sinkingFund || property.bumiDiscount;
+          if (!hasFinance) return '';
+          return `
+        <div class="modal-section">
+          <h3>💰 Pricing & Costs</h3>
+          <div class="details-grid">
+            ${psfVal                        ? `<div><strong>Price Per Sqft:</strong> RM ${psfVal.toLocaleString()}/sqft</div>` : ''}
+            ${property.priceToRm            ? `<div><strong>Price Range:</strong> RM ${parseInt(property['Price(RM)']).toLocaleString()} – RM ${parseInt(property.priceToRm).toLocaleString()}</div>` : ''}
+            ${property.maintenanceFee       ? `<div><strong>Maintenance Fee:</strong> RM ${property.maintenanceFee}/sqft/mth</div>` : ''}
+            ${property.sinkingFund          ? `<div><strong>Sinking Fund:</strong> RM ${property.sinkingFund}/sqft/mth</div>` : ''}
+          </div>
+        </div>`;
+        })()}
+
+        ${(property.furnishing || property.renovationCondition || property.occupancyStatus || property.availableFrom || property.minTenancy || property.petsAllowed) ? `
+        <div class="modal-section">
+          <h3>${property['Listing Type'] === 'For Rent' ? '🔑 Rental Details' : '🏠 Sale Details'}</h3>
+          <div class="details-grid">
+            ${property.furnishing           ? `<div><strong>Furnishing:</strong> ${property.furnishing}</div>` : ''}
+            ${property.renovationCondition  ? `<div><strong>Condition:</strong> ${property.renovationCondition}</div>` : ''}
+            ${property.occupancyStatus      ? `<div><strong>Occupancy:</strong> ${property.occupancyStatus}</div>` : ''}
+            ${property.availableFrom        ? `<div><strong>Available From:</strong> ${property.availableFrom}</div>` : ''}
+            ${property.minTenancy           ? `<div><strong>Min Tenancy:</strong> ${property.minTenancy}</div>` : ''}
+            ${property.petsAllowed          ? `<div><strong>Pets Allowed:</strong> ${property.petsAllowed}</div>` : ''}
+          </div>
+        </div>` : ''}
+
+        ${(property.cornerLot || property.loadingBay || property.electricalSupply || property.currentZoning || property.grossFloorArea) ? `
+        <div class="modal-section">
+          <h3>🏪 Commercial Details</h3>
+          <div class="details-grid">
+            ${property.cornerLot            ? `<div><strong>Corner Lot:</strong> ${property.cornerLot}</div>` : ''}
+            ${property.loadingBay           ? `<div><strong>Loading Bay:</strong> ${property.loadingBay}</div>` : ''}
+            ${property.electricalSupply     ? `<div><strong>Electrical Supply:</strong> ${property.electricalSupply}</div>` : ''}
+            ${property.currentZoning        ? `<div><strong>Zoning:</strong> ${property.currentZoning}</div>` : ''}
+            ${property.grossFloorArea       ? `<div><strong>GFA:</strong> ${parseInt(property.grossFloorArea).toLocaleString()} sqft</div>` : ''}
+          </div>
+        </div>` : ''}
+
+        ${(property.topography || property.approvedZoning || property.roadFrontage || property.waterSupply || property.electricSupply) ? `
+        <div class="modal-section">
+          <h3>🌿 Land Details</h3>
+          <div class="details-grid">
+            ${property.topography           ? `<div><strong>Topography:</strong> ${property.topography}</div>` : ''}
+            ${property.approvedZoning       ? `<div><strong>Approved Zoning:</strong> ${property.approvedZoning}</div>` : ''}
+            ${property.roadFrontage         ? `<div><strong>Road Frontage:</strong> ${property.roadFrontage}m</div>` : ''}
+            ${property.waterSupply          ? `<div><strong>Water Supply:</strong> ${property.waterSupply}</div>` : ''}
+            ${property.electricSupply       ? `<div><strong>Electricity:</strong> ${property.electricSupply}</div>` : ''}
+          </div>
+        </div>` : ''}
+
+        ${(property.nearestTransit || property.nearestHighway || property.nearestShoppingMall || property.nearestSchoolUni || property.nearestHospital) ? `
+        <div class="modal-section">
+          <h3>🚇 Nearby Amenities</h3>
+          <div class="details-grid">
+            ${property.nearestTransit       ? `<div><strong>MRT/LRT/BRT:</strong> ${property.nearestTransit}</div>` : ''}
+            ${property.nearestHighway       ? `<div><strong>Highway:</strong> ${property.nearestHighway}</div>` : ''}
+            ${property.nearestShoppingMall  ? `<div><strong>Shopping Mall:</strong> ${property.nearestShoppingMall}</div>` : ''}
+            ${property.nearestSchoolUni     ? `<div><strong>School/University:</strong> ${property.nearestSchoolUni}</div>` : ''}
+            ${property.nearestHospital      ? `<div><strong>Hospital/Clinic:</strong> ${property.nearestHospital}</div>` : ''}
+          </div>
+        </div>` : ''}
+
+        ${(property.facilitiesStandard || property.facilitiesCustom) ? `
+        <div class="modal-section">
+          <h3>🏊 Facilities</h3>
+          ${property.facilitiesStandard ? `
+          <div class="facilities-tags">
+            ${property.facilitiesStandard.split(',').map(f => `<span class="facility-tag">${f.trim()}</span>`).join('')}
+          </div>` : ''}
+          ${property.facilitiesCustom ? `
+          <ul class="facilities-custom-list">
+            ${property.facilitiesCustom.split('\n').filter(f => f.trim()).map(f => `<li>${f.trim()}</li>`).join('')}
+          </ul>` : ''}
+        </div>` : ''}
+
         <div class="modal-section">
           <h3>📝 Description</h3>
           <p>${(property.Description || '').replace(/\n/g, '<br>')}</p>
         </div>
+
         <div class="modal-section">
           <h3>📞 Contact</h3>
           ${generateContactHTML(property.Contact)}
