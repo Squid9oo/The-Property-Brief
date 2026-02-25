@@ -190,7 +190,15 @@ function buildListingHTML(listing, slug) {
   // Photo gallery
   const galleryHtml = photos.length ? `
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:1.5rem 0;">
-      ${photos.map((src, i) => `<img src="${safeAttr(src)}" alt="${safeTitle} — ${safeAttr(listing['Property Type'] || listing['Category'] || '')} in ${safeAttr(locFull)} — Photo ${i + 1}" style="width:100%;border-radius:8px;aspect-ratio:4/3;object-fit:cover;" loading="${i === 0 ? 'eager' : 'lazy'}" />`).join('\n      ')}
+      ${photos.map((src, i) => `<img src="${safeAttr(src)}" alt="${safeTitle} — ${safeAttr(listing['Property Type'] || listing['Category'] || '')} in ${safeAttr(locFull)} — Photo ${i + 1}" style="width:100%;border-radius:8px;aspect-ratio:4/3;object-fit:cover;cursor:zoom-in;" loading="${i === 0 ? 'eager' : 'lazy'}" onclick="openLightbox(${i})" />`).join('\n      ')}
+    </div>
+    <!-- Lightbox -->
+    <div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:9999;align-items:center;justify-content:center;flex-direction:column;" onclick="closeLightbox(event)">
+      <button onclick="closeLightbox()" style="position:fixed;top:16px;right:20px;background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;z-index:10001;line-height:1;" aria-label="Close">✕</button>
+      <button onclick="shiftLightbox(-1);event.stopPropagation();" style="position:fixed;left:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.1);border:none;color:#fff;font-size:2rem;cursor:pointer;padding:12px 16px;border-radius:8px;z-index:10001;" aria-label="Previous">‹</button>
+      <button onclick="shiftLightbox(1);event.stopPropagation();" style="position:fixed;right:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.1);border:none;color:#fff;font-size:2rem;cursor:pointer;padding:12px 16px;border-radius:8px;z-index:10001;" aria-label="Next">›</button>
+      <img id="lightbox-img" src="" alt="" style="max-width:92vw;max-height:88vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.6);" onclick="event.stopPropagation()" />
+      <p id="lightbox-counter" style="color:#aaa;font-size:0.85rem;margin-top:12px;"></p>
     </div>` : '';
 
   // Details table
@@ -410,6 +418,51 @@ function buildListingHTML(listing, slug) {
   </footer>
   <script src="/CONFIG.js"></script>
   <script src="/menu.js"></script>
+  <script>
+    const _photos = ${JSON.stringify(photos)};
+    let _current  = 0;
+
+    function openLightbox(index) {
+      _current = index;
+      const lb = document.getElementById('lightbox');
+      lb.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      updateLightbox();
+    }
+
+    function closeLightbox(e) {
+      if (e && e.target !== document.getElementById('lightbox')) return;
+      document.getElementById('lightbox').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    function shiftLightbox(dir) {
+      _current = (_current + dir + _photos.length) % _photos.length;
+      updateLightbox();
+    }
+
+    function updateLightbox() {
+      const img = document.getElementById('lightbox-img');
+      const counter = document.getElementById('lightbox-counter');
+      img.src = _photos[_current];
+      counter.textContent = (_current + 1) + ' / ' + _photos.length;
+      // Hide nav arrows if only 1 photo
+      document.querySelectorAll('#lightbox button[aria-label="Previous"], #lightbox button[aria-label="Next"]')
+        .forEach(btn => btn.style.display = _photos.length <= 1 ? 'none' : 'block');
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      const lb = document.getElementById('lightbox');
+      if (!lb || lb.style.display === 'none') return;
+      if (e.key === 'ArrowLeft')  shiftLightbox(-1);
+      if (e.key === 'ArrowRight') shiftLightbox(1);
+      if (e.key === 'Escape') {
+        lb.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
 </body>
 </html>`;
 }
