@@ -501,20 +501,82 @@ function renderCards(items, sectionType) {
     loadAds();
   }
 
+  // ── Single-fetch ad container driver ──────────────────────
+  // Called once per container after a shared fetch (no duplicate API calls)
+  function driveAdContainer(ads, els) {
+    const { linkEl, imgEl, titleEl } = els;
+    if (!linkEl || !imgEl || !titleEl) return;
+
+    if (!ads.length) {
+      // No active ads — show branded CTA
+      titleEl.textContent = '';
+      imgEl.style.display = 'none';
+      linkEl.style.display = 'block';
+      linkEl.href = '/advertise.html';
+      linkEl.innerHTML = `
+        <div class="ad-cta-banner">
+          <span class="ad-cta-label">Advertisement</span>
+          <span class="ad-cta-headline">Advertise on The Property Brief — Reach property buyers, investors &amp; developers across Malaysia</span>
+          <span class="ad-cta-btn">Get Featured →</span>
+        </div>`;
+      return;
+    }
+
+    let index = 0;
+    imgEl.style.display = 'block';
+    titleEl.textContent = 'Sponsored';
+
+    const showCurrent = () => {
+      const ad = ads[index];
+      linkEl.href = ad.adUrl;
+      imgEl.src = getResponsiveImageUrl(ad);
+      imgEl.alt = ad.altText || 'Sponsored ad';
+    };
+
+    showCurrent();
+
+    if (ads.length > 1) {
+      setInterval(() => {
+        index = (index + 1) % ads.length;
+        showCurrent();
+      }, CONFIG.SPONSORED.ROTATION_INTERVAL_MS || 5000);
+    }
+
+    // Swap image on breakpoint change (e.g. device rotation)
+    window.matchMedia('(max-width: 1024px)').addEventListener('change', showCurrent);
+    window.matchMedia('(max-width: 600px)').addEventListener('change', showCurrent);
+  }
+
   function initHomepageHeroAds() {
-    // Both containers use hero-home slot
-    // Desktop container (visible ≥601px): getResponsiveImageUrl returns desktop or tablet image
-    // Mobile container (visible ≤600px): getResponsiveImageUrl returns mobile image
-    initSlotRotator('hero-home', {
-      linkEl: document.getElementById('sponsoredAdLinkDesktop'),
-      imgEl:  document.getElementById('sponsoredAdImgDesktop'),
+    const desktopEls = {
+      linkEl:  document.getElementById('sponsoredAdLinkDesktop'),
+      imgEl:   document.getElementById('sponsoredAdImgDesktop'),
       titleEl: document.getElementById('sponsoredAdTitleDesktop'),
-    });
-    initSlotRotator('hero-home', {
-      linkEl: document.getElementById('sponsoredAdLinkMobile'),
-      imgEl:  document.getElementById('sponsoredAdImgMobile'),
+    };
+    const mobileEls = {
+      linkEl:  document.getElementById('sponsoredAdLinkMobile'),
+      imgEl:   document.getElementById('sponsoredAdImgMobile'),
       titleEl: document.getElementById('sponsoredAdTitleMobile'),
-    });
+    };
+
+    if (!desktopEls.linkEl && !mobileEls.linkEl) return;
+
+    // ONE fetch — both containers share the same ad data
+    (async () => {
+      try {
+        const url = `${CONFIG.API.AD_BID_URL}?slotId=hero-home`;
+        const res = await fetch(url, CONFIG.CACHE.NO_STORE);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const ads = ((data['hero-home'] || {}).ads || [])
+          .filter(a => a && a.imageDesktop && a.adUrl);
+
+        driveAdContainer(ads, desktopEls);
+        driveAdContainer(ads, mobileEls);
+      } catch (err) {
+        console.error('Hero ad load error:', err);
+      }
+    })();
   }
 
   // ============ GALLERY ============

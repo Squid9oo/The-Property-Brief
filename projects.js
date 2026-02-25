@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============ INITIALIZATION ============
 
 async function init() {
-  await loadAdminHeroSlider();
-  await loadProperties();
+  // Run both fetches at the same time — saves ~3s on cold start
+  await Promise.all([loadAdminHeroSlider(), loadProperties()]);
 }
 
 /**
@@ -48,23 +48,37 @@ async function init() {
 async function loadProperties() {
   try {
     setLoadingState(true);
-    
-    // Use CONFIG.CACHE.DEFAULT to allow the browser to negotiate caching with Google
-    const res = await fetch(CONFIG.API.PROJECTS_JSON, CONFIG.CACHE.DEFAULT);
 
+    // Show cached listings immediately (same browser session = instant load)
+    const cached = sessionStorage.getItem('tpb_listings');
+    if (cached) {
+      try {
+        allProperties = JSON.parse(cached);
+        renderCards(allProperties);
+        setLoadingState(false); // Hide spinner — user sees data now
+      } catch (_) {
+        sessionStorage.removeItem('tpb_listings');
+      }
+    }
+
+    // Always fetch fresh data (silently if cache already shown)
+    const res = await fetch(CONFIG.API.PROJECTS_JSON, CONFIG.CACHE.DEFAULT);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const raw = await res.json();
-    // Google Script returns a flat array of objects. 
-    // We filter for objects that actually have an 'Ad Title' to avoid empty rows.
-    allProperties = (Array.isArray(raw) ? raw : [])
+    const fresh = (Array.isArray(raw) ? raw : [])
       .filter(p => p['Ad Title'] && p['Ad Title'] !== '');
-    
+
+    sessionStorage.setItem('tpb_listings', JSON.stringify(fresh));
+    allProperties = fresh;
     renderCards(allProperties);
+
   } catch (e) {
     console.error('Properties load error:', e);
-    allProperties = [];
-    showError('listings-container', 'Could not load properties. Please refresh the page.');
+    // Only show error if we have no cached data to fall back on
+    if (!allProperties.length) {
+      showError('listings-container', 'Could not load properties. Please refresh the page.');
+    }
   } finally {
     setLoadingState(false);
   }
@@ -491,11 +505,19 @@ function showError(containerId, message) {
   if (c) c.innerHTML = `<div style="padding:40px;text-align:center;color:var(--muted);"><p>⚠️ ${message}</p></div>`;
 }
 
-function getPropertyPhotos(item) {
+// size: 600 for cards (220px tall), 1200 for modal gallery
+function getPropertyPhotos(item, size = 600) {
   const photos = [];
   for (let i = 1; i <= 5; i++) {
     const photo = item[`Photo ${i}`];
-    if (photo && photo.trim() !== '') photos.push(photo);
+    if (photo && photo.trim() !== '') {
+      let url = photo.trim();
+      // Append Google size suffix to Drive URLs (=s600 = max 600px wide)
+      if (url.includes('lh3.googleusercontent.com') && !url.includes('=s')) {
+        url = url + '=s' + size;
+      }
+      photos.push(url);
+    }
   }
   return photos.length > 0 ? photos : ['https://via.placeholder.com/300x200?text=No+Image'];
 }
@@ -675,7 +697,7 @@ function openPropertyModal(property, index) {
   const modal = document.getElementById('propertyModal');
   if (!modal) return;
 
-  const photos = getPropertyPhotos(property);
+  const photos = getPropertyPhotos(property, 1200);
   const galleryHTML = photos.map((p, i) => `<div class="modal-photo ${i===0?'active':''}" data-photo-index="${i}"><img src="${p}"></div>`).join('');
   const dotsHTML = photos.map((_, i) => `<span class="gallery-dot ${i===0?'active':''}" data-dot="${i}"></span>`).join('');
   
