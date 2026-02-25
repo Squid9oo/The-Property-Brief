@@ -630,26 +630,40 @@ function getPropertyPhotos(item, size = 600) {
 }
 
 function generateContactHTML(contact) {
-  if (!contact) return '<p>Contact info not available</p>';
-  const contactStr = String(contact);
-  if (contactStr.trim() === '') return '<p>Contact info not available</p>';
-  const trimmed = contactStr.trim();
-  const phonePattern = /[\d\+\-\(\)\s]{7,}/;
-  
+  if (!contact) return '<p class="contact-info">Contact info not available</p>';
+  const trimmed = String(contact).trim();
+  if (trimmed === '') return '<p class="contact-info">Contact info not available</p>';
+
+  // Email
   if (trimmed.includes('@')) {
-    return `<div class="contact-row"><p>${trimmed}</p><a href="mailto:${trimmed}" class="contact-btn email">✉️ Email</a></div>`;
-  } else if (phonePattern.test(trimmed)) {
-    const clean = trimmed.replace(/[\s\-\(\)]/g, '');
     return `
       <div class="contact-row">
-        <p>${trimmed}</p>
+        <p class="contact-info">${trimmed}</p>
         <div class="contact-buttons">
-          <a href="https://wa.me/${clean}" target="_blank" class="contact-btn whatsapp">💬 WhatsApp</a>
+          <a href="mailto:${trimmed}" class="contact-btn email">✉️ Email</a>
+        </div>
+      </div>`;
+  }
+
+  // Phone — accept anything with 6+ digits (covers short test numbers + real MY numbers)
+  const digitCount = (trimmed.match(/\d/g) || []).length;
+  if (digitCount >= 6) {
+    // Strip formatting for links — keep + prefix if present
+    const clean = trimmed.replace(/[\s\-\(\)]/g, '');
+    // For WhatsApp: ensure country code — if starts with 0, swap to +60
+    const waNumber = clean.startsWith('0') ? '60' + clean.substring(1) : clean.replace(/^\+/, '');
+    return `
+      <div class="contact-row">
+        <p class="contact-info">${trimmed}</p>
+        <div class="contact-buttons">
+          <a href="https://wa.me/${waNumber}" target="_blank" rel="noopener" class="contact-btn whatsapp">💬 WhatsApp</a>
           <a href="tel:${clean}" class="contact-btn call">📞 Call</a>
         </div>
       </div>`;
   }
-  return `<p>${trimmed}</p>`;
+
+  // Fallback — plain text
+  return `<p class="contact-info">${trimmed}</p>`;
 }
 
 // ============ SHARE FUNCTIONALITY ============
@@ -808,7 +822,7 @@ function renderCards(properties) {
         <p class="location">📍 ${item['Location Full'] || item.State}</p>
         <div class="card-footer-row">
           <span class="badge">${item.Category || 'Property'}</span>
-          ${isNL && item.expectedCompletion ? `<span class="completion-badge">🏗️ ${formatCompletion(item.expectedCompletion)}</span>` : ''}
+          ${isNL && item.expectedCompletion ? `<span class="completion-badge">🏗️ Est. Completion: ${formatCompletion(item.expectedCompletion)}</span>` : ''}
           ${item.Tenure ? `<span class="tenure-badge">${item.Tenure}</span>` : ''}
         </div>
         <button class="card-share-btn" onclick="event.stopPropagation(); shareProperty(allProperties[${index}], ${index})" aria-label="Share this listing">↗ Share</button>
@@ -841,8 +855,8 @@ function openPropertyModal(property, index) {
       <div class="modal-close-bar">
         <div class="modal-action-bar">
           <button class="modal-share-btn" id="modalShareBtn">↗ Share</button>
+          <button class="modal-close" id="closePropertyModal">✕</button>
         </div>
-        <button class="modal-close" id="closePropertyModal">✕</button>
       </div>
       <div class="modal-inner-scroll">
       <div class="modal-header">

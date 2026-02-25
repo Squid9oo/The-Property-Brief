@@ -1022,14 +1022,14 @@
     top: 0;
     z-index: 20;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    padding: 8px 15px;
+    padding: 10px 15px;
     background: rgba(255,255,255,0.97);
     backdrop-filter: blur(6px);
     border-bottom: 1px solid #f0f0f0;
     flex-shrink: 0;
-    min-height: 48px;
+    min-height: 52px;
 }
 
 .modal-action-bar {
@@ -1038,26 +1038,53 @@
     gap: 8px;
 }
 
-.modal-share-btn {
+/* Share + Close — same height, same border-radius */
+.modal-share-btn,
+.modal-close {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 6px 14px;
-    background: transparent;
-    border: 1px solid rgba(249,209,0,0.5);
+    justify-content: center;
+    height: 36px;
     border-radius: 8px;
-    color: #7a6000;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
+    border: 1.5px solid;
     white-space: nowrap;
+}
+
+.modal-share-btn {
+    gap: 5px;
+    padding: 0 16px;
+    background: transparent;
+    border-color: rgba(249,209,0,0.55);
+    color: #7a6000;
 }
 
 .modal-share-btn:hover {
     background: rgba(249,209,0,0.12);
-    border-color: rgba(249,209,0,0.8);
+    border-color: rgba(249,209,0,0.9);
     transform: translateY(-1px);
+}
+
+/* Override the old absolute-positioned close button */
+.modal-close {
+    position: static;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: #f5f5f5;
+    border-color: #e0e0e0;
+    color: #444;
+    font-size: 18px;
+}
+
+.modal-close:hover {
+    background: #222;
+    border-color: #222;
+    color: #fff;
+    transform: rotate(90deg);
 }
 
 .modal-inner-scroll {
