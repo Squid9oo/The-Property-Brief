@@ -227,6 +227,7 @@ async function handleFormSubmit(e) {
     };
 
     // 3. Send to Google Script
+    console.log('🔍 PAYLOAD CHECK:', JSON.stringify(payload, null, 2));
     const response = await fetch(CONFIG.API.PROJECTS_JSON, {
       method: 'POST',
       body: JSON.stringify(payload)
