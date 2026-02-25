@@ -792,6 +792,7 @@ function renderCards(properties) {
           ${isNL && item.expectedCompletion ? `<span class="completion-badge">🏗️ ${formatCompletion(item.expectedCompletion)}</span>` : ''}
           ${item.Tenure ? `<span class="tenure-badge">${item.Tenure}</span>` : ''}
         </div>
+        <button class="card-share-btn" onclick="event.stopPropagation(); shareProperty(allProperties[${index}], ${index})" aria-label="Share this listing">↗ Share</button>
       </div>
     </div>`;
   }).join('');
@@ -818,7 +819,10 @@ function openPropertyModal(property, index) {
 
   modal.innerHTML = `
     <div class="modal-content">
-      <button class="modal-close" id="closePropertyModal">✕</button>
+      <div class="modal-close-bar">
+        <button class="modal-close" id="closePropertyModal">✕</button>
+      </div>
+      <div class="modal-inner-scroll">
       <div class="modal-header">
         <div class="modal-title-row">
           <div class="status-badge ${(property['Listing Type']||'').toLowerCase().replace(/\s+/g,'-')}">${property['Listing Type']}</div>
@@ -980,6 +984,7 @@ function openPropertyModal(property, index) {
             <span style="font-size: 20px;">↗</span> Share Listing
           </button>
         </div>
+      </div>
       </div>
     </div>`;
 

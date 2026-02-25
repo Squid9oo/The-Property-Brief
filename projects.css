@@ -367,9 +367,11 @@
     max-width: 850px;
     width: 100%;
     max-height: 88vh;
-    overflow-y: auto;
+    overflow: hidden;
     position: relative;
     box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
 }
 
 .modal-close {
@@ -871,24 +873,24 @@
 
 /* Smooth scrollbar for modal */
 .modalCard::-webkit-scrollbar,
-.modal-content::-webkit-scrollbar {
+.modal-inner-scroll::-webkit-scrollbar {
   width: 8px;
 }
 
 .modalCard::-webkit-scrollbar-track,
-.modal-content::-webkit-scrollbar-track {
+.modal-inner-scroll::-webkit-scrollbar-track {
   background: rgba(0,0,0,0.25);
   border-radius: 10px;
 }
 
 .modalCard::-webkit-scrollbar-thumb,
-.modal-content::-webkit-scrollbar-thumb {
+.modal-inner-scroll::-webkit-scrollbar-thumb {
   background: rgba(249,209,0,0.35);
   border-radius: 10px;
 }
 
 .modalCard::-webkit-scrollbar-thumb:hover,
-.modal-content::-webkit-scrollbar-thumb:hover {
+.modal-inner-scroll::-webkit-scrollbar-thumb:hover {
   background: rgba(249,209,0,0.55);
 }
 
@@ -1013,4 +1015,131 @@
     top: 0 !important;
     z-index: 100 !important;
   }
+}
+/* --- 8. STICKY MODAL CLOSE BAR --- */
+.modal-close-bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 15px;
+    background: #ffffff;
+    border-bottom: 1px solid #f0f0f0;
+    flex-shrink: 0;
+}
+
+.modal-inner-scroll {
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* --- 9. CARD — DEVELOPER NAME --- */
+.card-developer {
+    margin: 0 0 4px;
+    font-size: 0.78rem;
+    color: #888;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+/* --- 10. CARD — FOOTER ROW (badge + completion + tenure) --- */
+.card-footer-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.card-footer-row .badge {
+    margin: 0;
+}
+
+.completion-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(249, 209, 0, 0.12);
+    color: #7a6000;
+    border: 1px solid rgba(249, 209, 0, 0.4);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.tenure-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #f0f0f0;
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+/* --- 11. CARD — SHARE BUTTON --- */
+.card-share-btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 8px 0;
+    background: transparent;
+    border: 1px solid rgba(249, 209, 0, 0.45);
+    border-radius: 8px;
+    color: #7a6000;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.3px;
+}
+
+.card-share-btn:hover {
+    background: rgba(249, 209, 0, 0.12);
+    border-color: rgba(249, 209, 0, 0.75);
+    transform: translateY(-1px);
+}
+
+/* --- 12. MODAL — FACILITIES --- */
+.facilities-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.facility-tag {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(249, 209, 0, 0.08);
+    color: #555;
+    border: 1px solid rgba(249, 209, 0, 0.35);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.facilities-custom-list {
+    margin: 8px 0 0;
+    padding-left: 20px;
+    color: #555;
+    font-size: 0.88rem;
+    line-height: 1.8;
+}
+
+/* --- 13. MODAL — NEW LAUNCH HIGHLIGHT SECTION --- */
+.modal-section--highlight {
+    background: rgba(249, 209, 0, 0.05);
+    border: 1px solid rgba(249, 209, 0, 0.22);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.modal-section--highlight h3 {
+    color: #7a6000;
 }
