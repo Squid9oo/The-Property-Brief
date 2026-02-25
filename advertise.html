@@ -233,6 +233,65 @@
   <main class="container" style="padding-top:2.5rem; padding-bottom:4rem;">
     <div class="maincol">
 
+  <!-- BID UPDATE PANEL — visible only when ?bidToken= is in URL -->
+      <section id="bidUpdatePanel" style="display:none; margin-bottom:3rem;">
+        <div style="background:#111; border:1px solid rgba(245,200,0,0.35); border-radius:12px; padding:1.75rem 2rem;">
+          <h2 style="margin:0 0 0.5rem; color:#f5c800;">Update Your Bid</h2>
+          <p class="muted" id="bidUpdateSubtitle" style="margin:0 0 1.5rem;"></p>
+
+          <div id="bidUpdateForm">
+            <div class="stats-grid" style="margin-top:0; margin-bottom:1.5rem;">
+              <div>
+                <p class="form-label" style="margin-bottom:4px;">Your Name</p>
+                <p id="bidUpdateName" style="color:#fff; font-weight:700; margin:0; font-size:1rem;"></p>
+              </div>
+              <div>
+                <p class="form-label" style="margin-bottom:4px;">Slot</p>
+                <p id="bidUpdateSlot" style="color:#fff; font-weight:700; margin:0; font-size:1rem;"></p>
+              </div>
+              <div>
+                <p class="form-label" style="margin-bottom:4px;">Your Current Bid</p>
+                <p id="bidUpdateCurrent" style="color:#ffa726; font-weight:800; font-size:1.2rem; margin:0;"></p>
+              </div>
+            </div>
+
+            <!-- Deadline notice — prominent -->
+            <div id="bidDeadlineNotice" style="display:none; background:rgba(245,200,0,0.06); border:1px solid rgba(245,200,0,0.25); border-radius:8px; padding:12px 16px; margin-bottom:1.5rem;">
+              <p style="margin:0; font-size:0.88rem; color:#aaa; line-height:1.7;">
+                ⏰ <strong style="color:#f5c800;">Bidding closes:</strong>
+                <span id="bidDeadlineText" style="color:#fff; font-weight:700;"></span>
+                at 8:00 AM KL time.<br>
+                <span style="color:#666; font-size:0.82rem;">After this deadline, the highest bidder is automatically selected. Update your bid before then.</span>
+              </p>
+            </div>
+
+            <div class="form-group" style="max-width:320px;">
+              <label class="form-label" for="bidUpdateAmount">New Bid Amount (RM) *</label>
+              <input type="number" id="bidUpdateAmount" class="form-input"
+                     placeholder="Must be higher than current bid" min="1" />
+              <small class="image-hint" id="bidUpdateMinHint"></small>
+            </div>
+
+            <div style="display:flex; gap:12px; margin-top:1rem; flex-wrap:wrap;">
+              <button type="button" id="bidUpdateSubmitBtn"
+                style="background:#f5c800;color:#000;font-weight:800;border:none;border-radius:8px;padding:14px 32px;cursor:pointer;font-size:1rem;transition:opacity 0.2s;">
+                Update My Bid
+              </button>
+            </div>
+          </div>
+
+          <div id="bidUpdateSuccess" style="display:none; padding:16px 20px; background:#1a1a1a; border-left:4px solid #f5c800; border-radius:8px; margin-top:1rem;">
+            <strong style="color:#fff; display:block; margin-bottom:4px;">Bid Updated ✓</strong>
+            <span id="bidUpdateSuccessMsg" style="color:#aaa; font-size:0.9rem;"></span>
+          </div>
+
+          <div id="bidUpdateError" style="display:none; padding:16px 20px; background:#1a0000; border-left:4px solid #e53935; border-radius:8px; margin-top:1rem;">
+            <strong style="color:#e57373; display:block; margin-bottom:4px;">Could not update bid</strong>
+            <span id="bidUpdateErrorMsg" style="color:#aaa; font-size:0.9rem;"></span>
+          </div>
+        </div>
+      </section>    
+
       <section style="margin-bottom:3rem;">
         <p class="kicker">Transparent by Design</p>
         <h1 style="margin-bottom:1rem; color:#f5c800;">Reach Malaysia's Property Audience</h1>
@@ -690,5 +749,120 @@ const specs = SLOT_SPECS[slotId] || { desktop: '—', tablet: '—', mobile: '�
     });
   </script>
 
+<script>
+
+// ── Bid Token Handler ─────────────────────────────────────
+  (async function checkBidToken() {
+    const params = new URLSearchParams(window.location.search);
+    const token  = params.get('bidToken');
+    if (!token) return;
+
+    const panel = document.getElementById('bidUpdatePanel');
+    if (!panel) return;
+
+    panel.style.display = 'block';
+    // Scroll to panel after slot table loads (give page 800ms to settle)
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 800);
+
+    document.getElementById('bidUpdateSubtitle').textContent = 'Loading your bid details…';
+
+    try {
+      const res  = await fetch(CONFIG.API.AD_BID_URL + '?bidToken=' + encodeURIComponent(token));
+      const data = await res.json();
+
+      if (!data.found) {
+        document.getElementById('bidUpdateSubtitle').textContent =
+          'Bid not found. Your link may be incorrect — check the email we sent you.';
+        document.getElementById('bidUpdateForm').style.display = 'none';
+        return;
+      }
+
+      if (data.status !== 'Pending') {
+        document.getElementById('bidUpdateSubtitle').textContent =
+          'Your bid status is "' + data.status + '" — the auction has closed and your bid can no longer be updated. ' +
+          'Contact admin@thepropertybrief.org if you need help.';
+        document.getElementById('bidUpdateForm').style.display = 'none';
+        return;
+      }
+
+      // ── Populate fields ──────────────────────────────────
+      document.getElementById('bidUpdateSubtitle').textContent =
+        'You can increase your bid below. Your images, destination URL, and all other details stay exactly the same.';
+      document.getElementById('bidUpdateName').textContent    = data.name    || '—';
+      document.getElementById('bidUpdateSlot').textContent    = data.slotId  || '—';
+      document.getElementById('bidUpdateCurrent').textContent = 'RM ' + (data.currentBid || 0);
+
+      // Show deadline notice if we have one
+      if (data.deadline) {
+        document.getElementById('bidDeadlineText').textContent = data.deadline;
+        document.getElementById('bidDeadlineNotice').style.display = 'block';
+      }
+
+      const minBid = Number(data.currentBid || 0) + 1;
+      document.getElementById('bidUpdateAmount').min         = minBid;
+      document.getElementById('bidUpdateAmount').placeholder = 'Minimum RM ' + minBid;
+      document.getElementById('bidUpdateMinHint').textContent =
+        'Must be higher than your current bid of RM ' + data.currentBid +
+        (data.deadline ? '. Deadline: ' + data.deadline + ' at 8AM KL.' : '');
+
+      // ── Submit handler ───────────────────────────────────
+      document.getElementById('bidUpdateSubmitBtn').addEventListener('click', async () => {
+        const newBid  = parseFloat(document.getElementById('bidUpdateAmount').value);
+        const errEl   = document.getElementById('bidUpdateError');
+        const errMsg  = document.getElementById('bidUpdateErrorMsg');
+        const succEl  = document.getElementById('bidUpdateSuccess');
+        const succMsg = document.getElementById('bidUpdateSuccessMsg');
+        const btn     = document.getElementById('bidUpdateSubmitBtn');
+
+        errEl.style.display  = 'none';
+        succEl.style.display = 'none';
+
+        if (!newBid || newBid <= Number(data.currentBid)) {
+          errMsg.textContent  = 'Your new bid must be higher than your current bid of RM ' + data.currentBid + '.';
+          errEl.style.display = 'block';
+          return;
+        }
+
+        btn.textContent = 'Updating…';
+        btn.disabled    = true;
+
+        try {
+          const body = new FormData();
+          body.append('action',         'updateBid');
+          body.append('bidToken',       token);
+          body.append('new_bid_amount', newBid);
+
+          const updateRes  = await fetch(CONFIG.API.AD_BID_URL, { method: 'POST', body });
+          const updateData = await updateRes.json();
+
+          if (updateData.status === 'success') {
+            document.getElementById('bidUpdateForm').style.display = 'none';
+            succMsg.textContent =
+              'Your bid has been updated to RM ' + newBid + '. ' +
+              'A confirmation email is on its way to you.' +
+              (data.deadline ? ' Remember: bidding closes ' + data.deadline + ' at 8AM KL.' : '');
+            succEl.style.display = 'block';
+            loadSlotData(); // Refresh slot table so updated highest bid is visible
+          } else {
+            errMsg.textContent  = updateData.message || 'Something went wrong. Please try again.';
+            errEl.style.display = 'block';
+          }
+
+        } catch (err) {
+          errMsg.textContent  = 'Connection error. Please check your internet and try again.';
+          errEl.style.display = 'block';
+        } finally {
+          btn.textContent = 'Update My Bid';
+          btn.disabled    = false;
+        }
+      });
+
+    } catch (err) {
+      document.getElementById('bidUpdateSubtitle').textContent =
+        'Could not load bid details. Please refresh the page.';
+      document.getElementById('bidUpdateForm').style.display = 'none';
+    }
+  })();
+  </script>
 </body>
 </html>
