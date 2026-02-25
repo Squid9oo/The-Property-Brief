@@ -162,7 +162,12 @@ async function handleFormSubmit(e) {
       bumiDiscount:        formData.get('bumiDiscount'),
 
       // ── For Sale ────────────────────────────────────────────
-      furnishing:          formData.get('furnishing'),
+      furnishing: (() => {
+        const fsBlock = document.getElementById('block-for-sale');
+        const frBlock = document.getElementById('block-for-rent');
+        const visibleBlock = (fsBlock && fsBlock.style.display !== 'none') ? fsBlock : frBlock;
+        return visibleBlock ? (visibleBlock.querySelector('[name="furnishing"]')?.value || '') : '';
+      })(),
       renovationCondition: formData.get('renovationCondition'),
       occupancyStatus:     formData.get('occupancyStatus'),
 

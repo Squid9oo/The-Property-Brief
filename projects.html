@@ -1259,14 +1259,6 @@ form.addEventListener('submit', e => {
       container.querySelectorAll('input, select, textarea').forEach(f => { f.disabled = true; });
     }
   });
-
-  // Disable fields in hidden listing-type blocks
-  ['block-new-launch', 'block-for-sale', 'block-for-rent'].forEach(id => {
-    const container = document.getElementById(id);
-    if (container && container.style.display === 'none') {
-      container.querySelectorAll('input, select, textarea').forEach(f => { f.disabled = true; });
-    }
-  });
 });
 
 // ── LOCATION DROPDOWNS (unchanged) ───────────────────────────
