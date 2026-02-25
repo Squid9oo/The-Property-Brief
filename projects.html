@@ -149,7 +149,7 @@
           <select id="filter-listing-type" aria-label="Filter listing type">
             <option value="">All Listings</option>
             <option value="For Rent">For Rent</option>
-            <option value="Sub Sale">Sub Sale</option>
+            <option value="Sub Sale">For Sale</option>
             <option value="New Launch">New Launch</option>
           </select>
 
@@ -194,373 +194,861 @@
   <div class="modalOverlay" id="propertyModal" aria-hidden="true"></div>
 
   <!-- POST FREE AD MODAL -->
-  <div class="modalOverlay" id="adModal" aria-hidden="true">
-    <div class="modalCard" role="dialog" aria-modal="true" aria-label="Post Free Ad">
-      <div class="modalHeader">
-        <h2>Post Free Ad</h2>
-        <button class="modalClose" id="closeAdModalBtn" type="button" aria-label="Close">✕</button>
-      </div>
+<div class="modalOverlay" id="adModal" aria-hidden="true">
+  <div class="modalCard" role="dialog" aria-modal="true" aria-label="Post Free Ad">
+    <div class="modalHeader">
+      <h2>Post Free Ad</h2>
+      <button class="modalClose" id="closeAdModalBtn" type="button" aria-label="Close">✕</button>
+    </div>
 
-      <form
-        name="project-submit"
-        method="POST"
-        data-netlify="true"
-        action="/projects-thank-you.html"
-        enctype="multipart/form-data"
-      >
-        <input type="hidden" name="form-name" value="project-submit" />
-        <input type="hidden" name="propertyType" id="propertyType" />
-        <input type="hidden" name="editToken" id="editToken" />
+    <form name="project-submit" method="POST" data-netlify="true" action="/projects-thank-you.html" enctype="multipart/form-data">
+      <input type="hidden" name="form-name" value="project-submit" />
+      <input type="hidden" name="propertyType" id="propertyType" />
+      <input type="hidden" name="editToken" id="editToken" />
+      <input type="hidden" name="facilitiesStandard" id="facilitiesStandard-hidden" />
 
-        <!-- SECTION 1 -->
-        <div id="form-section-1">
-          <h3>Section 1 - Basic Info</h3>
+      <!-- SECTION 1 -->
+      <div id="form-section-1">
+        <h3>Section 1 — Basic Info</h3>
 
-          <label>
-            For
-            <select name="listingType" id="listingType" required>
-              <option value="">Select</option>
-              <option value="For Rent">For Rent</option>
-              <option value="Sub Sale">Sub Sale</option>
-              <option value="New Launch">New Launch</option>
-            </select>
-          </label>
+        <label>
+          Listing For
+          <select name="listingType" id="listingType" required>
+            <option value="">Select</option>
+            <option value="For Rent">For Rent</option>
+            <option value="For Sale">For Sale</option>
+            <option value="New Launch">New Launch</option>
+          </select>
+        </label>
 
-          <label>
-            Category
-            <select name="category" id="category" required>
-              <option value="">Select</option>
-              <option value="High Rise Residential">High Rise Residential</option>
-              <option value="Landed Residential">Landed Residential</option>
-              <option value="Commercial">Commercial</option>
-              <option value="Land">Land</option>
-            </select>
-          </label>
+        <label>
+          Category
+          <select name="category" id="category" required>
+            <option value="">Select</option>
+            <option value="High Rise Residential">High Rise Residential</option>
+            <option value="Landed Residential">Landed Residential</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Land">Land</option>
+          </select>
+        </label>
 
-          <label>
-            Seller Type
-            <select name="sellerType" id="sellerType" required>
-              <option value="">Select</option>
-              <option value="Private Seller">Private Seller</option>
-              <option value="Agent">Agent</option>
-            </select>
-          </label>
+        <label>
+          Seller Type
+          <select name="sellerType" id="sellerType" required>
+            <option value="">Select</option>
+            <option value="Private Seller">Private Seller</option>
+            <option value="Agent">Agent</option>
+            <option value="Developer">Developer</option>
+          </select>
+        </label>
 
-          <label>
+        <label>
           Your Email
           <input name="email" id="submitterEmail" type="email" placeholder="e.g., yourname@email.com" required />
-          <small style="opacity:0.6;font-size:0.8rem;">We'll send you a confirmation and edit link here.</small>
-          </label>
-          <button type="button" id="form-next-btn">Next</button>
+          <small style="opacity:0.6;font-size:0.8rem;">We'll send your confirmation and edit link here.</small>
+        </label>
+
+        <button type="button" id="form-next-btn">Next →</button>
+      </div>
+
+      <!-- SECTION 2 -->
+      <div id="form-section-2" style="display:none;">
+        <h3>Section 2 — Property Details</h3>
+
+        <!-- PHOTOS -->
+        <div style="margin-bottom:20px;">
+          <label style="margin-bottom:8px;">📷 Photos (up to 5 images)</label>
+          <div style="padding:12px;background:rgba(249,209,0,0.08);border:1px solid rgba(249,209,0,0.2);border-radius:8px;margin-bottom:12px;">
+            <p style="margin:0 0 6px;font-size:13px;color:#666;line-height:1.5;">
+              <strong>✨ Best Quality:</strong> 4:3 ratio (e.g., 1200×900px)<br>
+              <strong>💾 Max Size:</strong> 2 MB per image | <strong>📄 Format:</strong> JPEG/JPG recommended
+            </p>
+          </div>
+          <input name="photo1" type="file" accept="image/*" class="photo-input" data-photo-num="1" style="margin-bottom:8px;" />
+          <div id="photo1-info" class="photo-info"></div>
+          <input name="photo2" type="file" accept="image/*" class="photo-input" data-photo-num="2" style="margin-bottom:8px;" />
+          <div id="photo2-info" class="photo-info"></div>
+          <input name="photo3" type="file" accept="image/*" class="photo-input" data-photo-num="3" style="margin-bottom:8px;" />
+          <div id="photo3-info" class="photo-info"></div>
+          <input name="photo4" type="file" accept="image/*" class="photo-input" data-photo-num="4" style="margin-bottom:8px;" />
+          <div id="photo4-info" class="photo-info"></div>
+          <input name="photo5" type="file" accept="image/*" class="photo-input" data-photo-num="5" style="margin-bottom:8px;" />
+          <div id="photo5-info" class="photo-info"></div>
         </div>
 
-        <!-- SECTION 2 -->
-        <div id="form-section-2" style="display:none;">
-          <h3>Section 2 - Property Details</h3>
+        <!-- AD TITLE + TENURE -->
+        <label>
+          Project / Ad Title
+          <input name="adTitle" type="text" required placeholder="e.g., Aria Residences @ Mont Kiara" />
+        </label>
 
-          <div style="margin-bottom: 20px;">
-            <label style="margin-bottom: 8px;">
-              📷 Photos (up to 5 images)
-            </label>
-            <div style="padding: 12px; background: rgba(249,209,0,0.08); border: 1px solid rgba(249,209,0,0.2); border-radius: 8px; margin-bottom: 12px;">
-              <p style="margin: 0 0 6px; font-size: 13px; color: #666; line-height: 1.5;">
-                <strong>✨ Best Quality:</strong> 4:3 ratio (e.g., 1200×900px or 1600×1200px)<br>
-                <strong>💾 Max Size:</strong> 2 MB per image | <strong>📄 Format:</strong> JPEG/JPG recommended
-              </p>
-            </div>
-            <input name="photo1" type="file" accept="image/*" class="photo-input" data-photo-num="1" style="margin-bottom: 8px;" />
-            <div id="photo1-info" class="photo-info"></div>
-            <input name="photo2" type="file" accept="image/*" class="photo-input" data-photo-num="2" style="margin-bottom: 8px;" />
-            <div id="photo2-info" class="photo-info"></div>
-            <input name="photo3" type="file" accept="image/*" class="photo-input" data-photo-num="3" style="margin-bottom: 8px;" />
-            <div id="photo3-info" class="photo-info"></div>
-            <input name="photo4" type="file" accept="image/*" class="photo-input" data-photo-num="4" style="margin-bottom: 8px;" />
-            <div id="photo4-info" class="photo-info"></div>
-            <input name="photo5" type="file" accept="image/*" class="photo-input" data-photo-num="5" style="margin-bottom: 8px;" />
-            <div id="photo5-info" class="photo-info"></div>
-          </div>
+        <label>
+          Tenure
+          <select name="tenure" required>
+            <option value="">Select</option>
+            <option value="Freehold">Freehold</option>
+            <option value="Leasehold">Leasehold</option>
+          </select>
+        </label>
+
+        <!-- ══ NEW LAUNCH BLOCK ══════════════════════════════════ -->
+        <div id="block-new-launch" style="display:none;">
+          <div class="form-block-header">🏗️ New Launch Details</div>
 
           <label>
-            Ad Title
-            <input name="adTitle" type="text" required />
+            Developer Name
+            <input name="developerName" type="text" placeholder="e.g., Eco World Development Sdn Bhd" />
           </label>
 
           <label>
-            Tenure
-            <select name="tenure" required>
+            Developer License No. (DL)
+            <input name="developerLicense" type="text" placeholder="e.g., DL/3/4/1234" />
+            <small>Found on your HDPA Developer License certificate</small>
+          </label>
+
+          <label>
+            Advertising Permit No. (AP)
+            <input name="advertisingPermit" type="text" placeholder="e.g., AP/C(T)3-0123/2025" />
+            <small>Required by HDPA — found on your approved advertisement</small>
+          </label>
+
+          <label>
+            Expected Completion
+            <select name="expectedCompletion">
               <option value="">Select</option>
-              <option value="Freehold">Freehold</option>
-              <option value="Leasehold">Leasehold</option>
+              <option value="Completed">Completed</option>
+              <optgroup label="2025"><option value="Q1 2025">Q1 2025 (Mar)</option><option value="Q2 2025">Q2 2025 (Jun)</option><option value="Q3 2025">Q3 2025 (Sep)</option><option value="Q4 2025">Q4 2025 (Dec)</option></optgroup>
+              <optgroup label="2026"><option value="Q1 2026">Q1 2026 (Mar)</option><option value="Q2 2026">Q2 2026 (Jun)</option><option value="Q3 2026">Q3 2026 (Sep)</option><option value="Q4 2026">Q4 2026 (Dec)</option></optgroup>
+              <optgroup label="2027"><option value="Q1 2027">Q1 2027 (Mar)</option><option value="Q2 2027">Q2 2027 (Jun)</option><option value="Q3 2027">Q3 2027 (Sep)</option><option value="Q4 2027">Q4 2027 (Dec)</option></optgroup>
+              <optgroup label="2028"><option value="Q1 2028">Q1 2028 (Mar)</option><option value="Q2 2028">Q2 2028 (Jun)</option><option value="Q3 2028">Q3 2028 (Sep)</option><option value="Q4 2028">Q4 2028 (Dec)</option></optgroup>
+              <optgroup label="2029"><option value="Q1 2029">Q1 2029 (Mar)</option><option value="Q2 2029">Q2 2029 (Jun)</option><option value="Q3 2029">Q3 2029 (Sep)</option><option value="Q4 2029">Q4 2029 (Dec)</option></optgroup>
+              <optgroup label="2030+">
+                <option value="Q1 2030">Q1 2030</option><option value="Q2 2030">Q2 2030</option><option value="Q3 2030">Q3 2030</option><option value="Q4 2030">Q4 2030</option>
+                <option value="Q1 2031">Q1 2031</option><option value="Q2 2031">Q2 2031</option><option value="Q3 2031">Q3 2031</option><option value="Q4 2031">Q4 2031</option>
+                <option value="Q1 2032">Q1 2032</option><option value="Q2 2032">Q2 2032</option><option value="Q3 2032">Q3 2032</option><option value="Q4 2032">Q4 2032</option>
+              </optgroup>
             </select>
           </label>
 
-          <!-- HIGH RISE RESIDENTIAL -->
-          <div id="fields-high-rise-residential" style="display:none;">
-            <label>
-              Property Type
-              <select name="highRiseType">
-                <option value="">Select</option>
-                <option value="Apartment">Apartment</option>
-                <option value="Condominium">Condominium</option>
-              </select>
-            </label>
-            <label>
-              Title
-              <select name="landTitle">
-                <option value="">Select</option>
-                <option value="Bumi">Bumi</option>
-                <option value="Non-bumi">Non-bumi</option>
-              </select>
-            </label>
-            <label>
-              Bedrooms
-              <select name="bedrooms">
-                <option value="">Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </label>
-            <label>
-              Bathrooms
-              <select name="bathrooms">
-                <option value="">Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </label>
-            <label>
-              Built Up (sq.ft.)
-              <input name="builtUpSqft" type="number" placeholder="e.g., 1200" />
-            </label>
-            <label>
-              Parking Lot
-              <select name="parking">
-                <option value="">Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </label>
-            <label>
-              No. Of Storey
-              <input name="storeyCount" type="number" min="1" max="100" placeholder="e.g., 15" />
-            </label>
-          </div>
-
-          <!-- LANDED RESIDENTIAL -->
-          <div id="fields-landed-residential" style="display:none;">
-            <label>
-              Property Type
-              <select name="landedType">
-                <option value="">Select</option>
-                <option value="Bungalow">Bungalow</option>
-                <option value="Semi Detached">Semi Detached</option>
-                <option value="Cluster">Cluster</option>
-                <option value="Link House">Link House</option>
-                <option value="Townhouse">Townhouse</option>
-              </select>
-            </label>
-            <label>
-              Land Title
-              <select name="landTitle">
-                <option value="">Select</option>
-                <option value="Bumi">Bumi</option>
-                <option value="Non-bumi">Non-bumi</option>
-                <option value="Malay Reserved">Malay Reserved</option>
-              </select>
-            </label>
-            <label>
-              Bedrooms
-              <select name="bedrooms">
-                <option value="">Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
-            </label>
-            <label>
-              Bathrooms
-              <select name="bathrooms">
-                <option value="">Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
-            </label>
-            <label>
-              Built Up (sq.ft.)
-              <input name="builtUpSqft" type="number" placeholder="e.g., 2400" />
-            </label>
-            <label>
-              Parking Lot
-              <select name="parking">
-                <option value="">Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
-            </label>
-            <label>
-              No. Of Storey
-              <input name="storeyCount" type="number" min="1" max="10" placeholder="e.g., 2" />
-            </label>
-          </div>
-
-          <!-- COMMERCIAL -->
-          <div id="fields-commercial" style="display:none;">
-            <label>
-              Property Type
-              <select name="commercialType">
-                <option value="">Select</option>
-                <option value="Shop Lot">Shop Lot</option>
-                <option value="Office">Office</option>
-                <option value="Factory">Factory</option>
-              </select>
-            </label>
-            <label>
-              Land Title
-              <select name="landTitle">
-                <option value="">Select</option>
-                <option value="Bumi">Bumi</option>
-                <option value="Non-bumi">Non-bumi</option>
-                <option value="Malay Reserved">Malay Reserved</option>
-              </select>
-            </label>
-            <label>
-              Built Up (sq.ft.)
-              <input name="builtUpSqft" type="number" placeholder="e.g., 3000" />
-            </label>
-            <label>
-              No. Of Storey
-              <input name="storeyCount" type="number" min="1" max="50" placeholder="e.g., 3" />
-            </label>
-          </div>
-
-          <!-- LAND -->
-          <div id="fields-land" style="display:none;">
-            <label>
-              Property Type
-              <select name="landType">
-                <option value="">Select</option>
-                <option value="Residential">Residential</option>
-                <option value="Industrial">Industrial</option>
-                <option value="Agricultural">Agricultural</option>
-                <option value="Commercial">Commercial</option>
-                <option value="Mix-Development">Mix-Development</option>
-                <option value="Others">Others</option>
-              </select>
-            </label>
-            <label>
-              Land Title
-              <select name="landTitle">
-                <option value="">Select</option>
-                <option value="Bumi">Bumi</option>
-                <option value="Non-bumi">Non-bumi</option>
-                <option value="Malay Reserved">Malay Reserved</option>
-              </select>
-            </label>
-            <label>
-              Land Size (acres / sq.ft)
-              <input name="landSize" type="text" placeholder="e.g., 5 acres or 50000 sq.ft" />
-            </label>
-          </div>
-
           <label>
-            Description
-            <textarea name="description" rows="5" required></textarea>
+            Total Units in Development
+            <input name="totalUnits" type="number" placeholder="e.g., 350" min="1" />
           </label>
 
-          <!-- LOCATION SECTION -->
-          <div class="location-section">
-            <h4>📍 Property Location</h4>
-            
-            <button type="button" id="open-map-btn" class="map-btn">
-              🗺️ Pin Location on Map
-            </button>
-
-            <div id="selected-location-display" class="location-confirmed">
-              <p class="location-confirmed-label">✓ Location Pinned:</p>
-              <p id="location-text" class="location-confirmed-text"></p>
-            </div>
-
+          <!-- NL Residential ranges — shown only when category is High Rise or Landed -->
+          <div id="nl-residential-ranges" style="display:none;">
+            <label>Built-up Min (sqft)<input name="builtUpMin" type="number" placeholder="e.g., 800" /></label>
+            <label>Built-up Max (sqft)<input name="builtUpMax" type="number" placeholder="e.g., 1500" /></label>
             <label>
-              State
-              <select name="state" id="ad-state" required>
-                <option value="">Select state</option>
+              Bedrooms Min
+              <select name="bedroomsMin">
+                <option value="">Select</option>
+                <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                <option value="4">4</option><option value="5">5</option><option value="6+">6+</option>
               </select>
             </label>
-
             <label>
-              District
-              <select name="district" id="ad-district" required disabled>
-                <option value="">Select district</option>
+              Bedrooms Max
+              <select name="bedroomsMax">
+                <option value="">Select</option>
+                <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                <option value="4">4</option><option value="5">5</option><option value="6+">6+</option>
               </select>
             </label>
-
             <label>
-              Area / Township
-              <select name="area" id="ad-area" required disabled>
-                <option value="">Select area</option>
-              </select>
+              Bumi Discount (%)
+              <input name="bumiDiscount" type="number" placeholder="e.g., 7 — leave blank if none" min="0" max="100" />
             </label>
-
-            <label id="ad-area-custom-wrapper" style="display:none;">
-              Or type your location
-              <input type="text" name="areaCustom" id="ad-area-custom" placeholder="e.g., Taman Kinrara, Bandar Sunway" />
-            </label>
-          </div>
-
-          <input type="hidden" name="latitude" id="ad-latitude" />
-          <input type="hidden" name="longitude" id="ad-longitude" />
-          <input type="hidden" name="locationFull" id="ad-locationFull" />
-
-          <label>
-            Price (RM)
-            <input name="priceRm" type="number" placeholder="e.g., 450000" required />
-          </label>
-
-          <label>
-            Contact
-            <input name="contact" type="text" placeholder="e.g., +60123456789 or email" required />
-          </label>
-
-          <div class="form-buttons">
-            <button type="button" id="form-back-btn">Back</button>
-            <button type="submit" id="form-submit-btn">Submit</button>
           </div>
         </div>
-      </form>
-    </div>
+
+        <!-- ══ FOR SALE BLOCK ════════════════════════════════════ -->
+        <div id="block-for-sale" style="display:none;">
+          <div class="form-block-header">🏠 For Sale Details</div>
+          <label>
+            Furnishing Status
+            <select name="furnishing">
+              <option value="">Select</option>
+              <option value="Unfurnished">Unfurnished</option>
+              <option value="Partially Furnished">Partially Furnished</option>
+              <option value="Fully Furnished">Fully Furnished</option>
+            </select>
+          </label>
+          <label>
+            Renovation Condition
+            <select name="renovationCondition">
+              <option value="">Select</option>
+              <option value="Original">Original / Developer Handover Condition</option>
+              <option value="Renovated">Renovated</option>
+              <option value="Newly Renovated">Newly Renovated</option>
+            </select>
+          </label>
+          <label>
+            Occupancy Status
+            <select name="occupancyStatus">
+              <option value="">Select</option>
+              <option value="Owner Occupied">Owner Occupied</option>
+              <option value="Tenanted">Tenanted</option>
+              <option value="Vacant">Vacant</option>
+            </select>
+          </label>
+        </div>
+
+        <!-- ══ FOR RENT BLOCK ════════════════════════════════════ -->
+        <div id="block-for-rent" style="display:none;">
+          <div class="form-block-header">🔑 For Rent Details</div>
+          <label>
+            Furnishing Status
+            <select name="furnishing">
+              <option value="">Select</option>
+              <option value="Unfurnished">Unfurnished</option>
+              <option value="Partially Furnished">Partially Furnished</option>
+              <option value="Fully Furnished">Fully Furnished</option>
+            </select>
+          </label>
+          <label>
+            Available From
+            <select name="availableFrom">
+              <option value="">Select</option>
+              <option value="Immediate">Immediate</option>
+              <option value="1 Month">1 Month</option>
+              <option value="2 Months">2 Months</option>
+              <option value="3 Months">3 Months</option>
+              <option value="Negotiable">Negotiable</option>
+            </select>
+          </label>
+          <label>
+            Minimum Tenancy
+            <select name="minTenancy">
+              <option value="">Select</option>
+              <option value="6 months">6 months</option>
+              <option value="12 months">12 months</option>
+              <option value="24 months">24 months</option>
+              <option value="Flexible">Flexible</option>
+            </select>
+          </label>
+          <label>
+            Pets Allowed
+            <select name="petsAllowed">
+              <option value="">Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="Negotiable">Negotiable</option>
+            </select>
+          </label>
+        </div>
+
+        <!-- ══ HIGH RISE RESIDENTIAL ════════════════════════════ -->
+        <div id="fields-high-rise-residential" style="display:none;">
+          <div class="form-block-header">🏢 High Rise Details</div>
+
+          <label>
+            Property Type
+            <select name="highRiseType">
+              <option value="">Select</option>
+              <option value="Apartment">Apartment</option>
+              <option value="Condominium">Condominium</option>
+              <option value="Serviced Apartment">Serviced Apartment</option>
+              <option value="SOHO">SOHO</option>
+              <option value="Duplex">Duplex</option>
+              <option value="Penthouse">Penthouse</option>
+              <option value="Studio">Studio</option>
+            </select>
+          </label>
+
+          <label>
+            Land Title
+            <select name="landTitle">
+              <option value="">Select</option>
+              <option value="Bumi">Bumi</option>
+              <option value="Non-Bumi">Non-Bumi</option>
+            </select>
+          </label>
+
+          <!-- Hidden when Listing Type = New Launch (range fields used instead) -->
+          <div id="hr-single-unit-fields">
+            <label>
+              Bedrooms
+              <select name="bedrooms">
+                <option value="">Select</option>
+                <option value="Studio">Studio</option>
+                <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                <option value="4">4</option><option value="5">5</option><option value="6+">6+</option>
+              </select>
+            </label>
+            <label>
+              Bathrooms
+              <select name="bathrooms">
+                <option value="">Select</option>
+                <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                <option value="4">4</option><option value="5">5</option>
+              </select>
+            </label>
+            <label>Built-up (sqft)<input name="builtUpSqft" type="number" placeholder="e.g., 1200" /></label>
+          </div>
+
+          <label>
+            Car Park per Unit
+            <select name="parking">
+              <option value="">Select</option>
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+              <option value="4">4</option><option value="5+">5+</option>
+            </select>
+          </label>
+
+          <label>
+            Floor Level
+            <select name="floorLevel">
+              <option value="">Select</option>
+              <option value="Low (1-10)">Low (Floor 1–10)</option>
+              <option value="Mid (11-20)">Mid (Floor 11–20)</option>
+              <option value="High (21-30)">High (Floor 21–30)</option>
+              <option value="Sky (31+)">Sky (Floor 31+)</option>
+            </select>
+          </label>
+
+          <label>Total Storeys (Building)<input name="storeyCount" type="number" min="1" max="100" placeholder="e.g., 35" /></label>
+
+          <label>
+            Gated &amp; Guarded
+            <select name="gatedGuarded">
+              <option value="">Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </label>
+
+          <label>
+            Maintenance Fee (RM/sqft/month)
+            <input name="maintenanceFee" type="number" step="0.01" placeholder="e.g., 0.35" />
+            <small>e.g., 0.35 means RM0.35 per sqft per month</small>
+          </label>
+
+          <label>
+            Sinking Fund (RM/sqft/month)
+            <input name="sinkingFund" type="number" step="0.01" placeholder="e.g., 0.10" />
+          </label>
+
+          <!-- FACILITIES — HIGH RISE -->
+          <div class="facilities-section">
+            <div class="form-block-header">🏊 Facilities</div>
+            <p class="facilities-hint">Tick all that apply</p>
+
+            <div class="facilities-grid">
+              <label class="facility-check"><input type="checkbox" value="Swimming Pool" /> Swimming Pool</label>
+              <label class="facility-check"><input type="checkbox" value="Gymnasium" /> Gymnasium</label>
+              <label class="facility-check"><input type="checkbox" value="BBQ Area" /> BBQ Area</label>
+              <label class="facility-check"><input type="checkbox" value="Children's Playground" /> Children's Playground</label>
+              <label class="facility-check"><input type="checkbox" value="Jogging Track" /> Jogging Track</label>
+              <label class="facility-check"><input type="checkbox" value="Guardhouse (24hr)" /> Guardhouse (24hr)</label>
+              <label class="facility-check"><input type="checkbox" value="CCTV" /> CCTV</label>
+              <label class="facility-check"><input type="checkbox" value="Access Card Entry" /> Access Card Entry</label>
+              <label class="facility-check"><input type="checkbox" value="Visitor Parking" /> Visitor Parking</label>
+              <label class="facility-check"><input type="checkbox" value="EV Charging" /> EV Charging</label>
+              <label class="facility-check"><input type="checkbox" value="Badminton Court" /> Badminton Court</label>
+              <label class="facility-check"><input type="checkbox" value="Function Hall" /> Function Hall</label>
+              <label class="facility-check"><input type="checkbox" value="Co-working Space" /> Co-working Space</label>
+              <label class="facility-check"><input type="checkbox" value="Surau" /> Surau</label>
+              <label class="facility-check"><input type="checkbox" value="Covered Parking" /> Covered Parking</label>
+            </div>
+
+            <button type="button" class="show-more-btn" onclick="toggleMoreFacilities('hr')">＋ Show More Facilities</button>
+
+            <div id="facilities-more-hr" style="display:none;">
+              <div class="facilities-group"><strong>Aquatic</strong>
+                <div class="facilities-grid">
+                  <label class="facility-check"><input type="checkbox" value="Infinity Pool" /> Infinity Pool</label>
+                  <label class="facility-check"><input type="checkbox" value="Kids Wading Pool" /> Kids Wading Pool</label>
+                  <label class="facility-check"><input type="checkbox" value="Jacuzzi" /> Jacuzzi</label>
+                  <label class="facility-check"><input type="checkbox" value="Splash Pad" /> Splash Pad</label>
+                  <label class="facility-check"><input type="checkbox" value="Aqua Gym" /> Aqua Gym</label>
+                  <label class="facility-check"><input type="checkbox" value="Lap Pool (50m)" /> Lap Pool (50m)</label>
+                </div>
+              </div>
+              <div class="facilities-group"><strong>Fitness &amp; Sports</strong>
+                <div class="facilities-grid">
+                  <label class="facility-check"><input type="checkbox" value="Yoga Studio" /> Yoga Studio</label>
+                  <label class="facility-check"><input type="checkbox" value="Squash Court" /> Squash Court</label>
+                  <label class="facility-check"><input type="checkbox" value="Tennis Court" /> Tennis Court</label>
+                  <label class="facility-check"><input type="checkbox" value="Basketball Court" /> Basketball Court</label>
+                  <label class="facility-check"><input type="checkbox" value="Futsal Court" /> Futsal Court</label>
+                  <label class="facility-check"><input type="checkbox" value="Golf Putting Green" /> Golf Putting Green</label>
+                  <label class="facility-check"><input type="checkbox" value="Cycling Track" /> Cycling Track</label>
+                  <label class="facility-check"><input type="checkbox" value="Outdoor Fitness Station" /> Outdoor Fitness Station</label>
+                  <label class="facility-check"><input type="checkbox" value="Rock Climbing Wall" /> Rock Climbing Wall</label>
+                </div>
+              </div>
+              <div class="facilities-group"><strong>Recreation &amp; Social</strong>
+                <div class="facilities-grid">
+                  <label class="facility-check"><input type="checkbox" value="Sky Lounge" /> Sky Lounge</label>
+                  <label class="facility-check"><input type="checkbox" value="Rooftop Garden" /> Rooftop Garden</label>
+                  <label class="facility-check"><input type="checkbox" value="Cinema Room" /> Cinema Room</label>
+                  <label class="facility-check"><input type="checkbox" value="Library" /> Library</label>
+                  <label class="facility-check"><input type="checkbox" value="Karaoke Room" /> Karaoke Room</label>
+                  <label class="facility-check"><input type="checkbox" value="Games Room" /> Games Room</label>
+                  <label class="facility-check"><input type="checkbox" value="Residents Lounge" /> Residents Lounge</label>
+                  <label class="facility-check"><input type="checkbox" value="Private Dining Room" /> Private Dining Room</label>
+                  <label class="facility-check"><input type="checkbox" value="Amphitheatre" /> Amphitheatre</label>
+                  <label class="facility-check"><input type="checkbox" value="Observation Deck" /> Observation Deck</label>
+                  <label class="facility-check"><input type="checkbox" value="Podcast / Content Creator Room" /> Content Creator Room</label>
+                </div>
+              </div>
+              <div class="facilities-group"><strong>Family &amp; Children</strong>
+                <div class="facilities-grid">
+                  <label class="facility-check"><input type="checkbox" value="Indoor Kids Club" /> Indoor Kids Club</label>
+                  <label class="facility-check"><input type="checkbox" value="Nursery / Daycare" /> Nursery / Daycare</label>
+                  <label class="facility-check"><input type="checkbox" value="Teen Lounge" /> Teen Lounge</label>
+                  <label class="facility-check"><input type="checkbox" value="Sandpit Play Area" /> Sandpit Play Area</label>
+                  <label class="facility-check"><input type="checkbox" value="Treetop Walk" /> Treetop Walk</label>
+                </div>
+              </div>
+              <div class="facilities-group"><strong>Wellness &amp; Nature</strong>
+                <div class="facilities-grid">
+                  <label class="facility-check"><input type="checkbox" value="Spa &amp; Sauna" /> Spa &amp; Sauna</label>
+                  <label class="facility-check"><input type="checkbox" value="Steam Room" /> Steam Room</label>
+                  <label class="facility-check"><input type="checkbox" value="Meditation Pavilion" /> Meditation Pavilion</label>
+                  <label class="facility-check"><input type="checkbox" value="Herb Garden" /> Herb Garden</label>
+                  <label class="facility-check"><input type="checkbox" value="Reflexology Path" /> Reflexology Path</label>
+                  <label class="facility-check"><input type="checkbox" value="Pet Zone / Dog Run" /> Pet Zone / Dog Run</label>
+                  <label class="facility-check"><input type="checkbox" value="Hammock Lounge" /> Hammock Lounge</label>
+                  <label class="facility-check"><input type="checkbox" value="Zen Garden" /> Zen Garden</label>
+                </div>
+              </div>
+              <div class="facilities-group"><strong>Smart &amp; Security</strong>
+                <div class="facilities-grid">
+                  <label class="facility-check"><input type="checkbox" value="Biometric Entry" /> Biometric Entry</label>
+                  <label class="facility-check"><input type="checkbox" value="Smart Home System" /> Smart Home System</label>
+                  <label class="facility-check"><input type="checkbox" value="Smart Parcel Locker" /> Smart Parcel Locker</label>
+                  <label class="facility-check"><input type="checkbox" value="Number Plate Recognition (ANPR)" /> ANPR</label>
+                  <label class="facility-check"><input type="checkbox" value="Video Intercom" /> Video Intercom</label>
+                  <label class="facility-check"><input type="checkbox" value="Panic Button" /> Panic Button</label>
+                </div>
+              </div>
+              <div class="facilities-group"><strong>Parking &amp; Mobility</strong>
+                <div class="facilities-grid">
+                  <label class="facility-check"><input type="checkbox" value="Car Wash Bay" /> Car Wash Bay</label>
+                  <label class="facility-check"><input type="checkbox" value="Valet Parking" /> Valet Parking</label>
+                  <label class="facility-check"><input type="checkbox" value="Bicycle Storage" /> Bicycle Storage</label>
+                  <label class="facility-check"><input type="checkbox" value="Motorcycle Bay" /> Motorcycle Bay</label>
+                </div>
+              </div>
+              <div class="facilities-group"><strong>Convenience</strong>
+                <div class="facilities-grid">
+                  <label class="facility-check"><input type="checkbox" value="Convenience Store" /> Convenience Store</label>
+                  <label class="facility-check"><input type="checkbox" value="Café on Premises" /> Café on Premises</label>
+                  <label class="facility-check"><input type="checkbox" value="Laundromat" /> Laundromat</label>
+                  <label class="facility-check"><input type="checkbox" value="Concierge Service" /> Concierge Service</label>
+                  <label class="facility-check"><input type="checkbox" value="Clinic on Premises" /> Clinic on Premises</label>
+                  <label class="facility-check"><input type="checkbox" value="ATM / Banking" /> ATM / Banking</label>
+                </div>
+              </div>
+              <div class="facilities-group"><strong>Sustainability</strong>
+                <div class="facilities-grid">
+                  <label class="facility-check"><input type="checkbox" value="Solar Panels" /> Solar Panels</label>
+                  <label class="facility-check"><input type="checkbox" value="Rainwater Harvesting" /> Rainwater Harvesting</label>
+                  <label class="facility-check"><input type="checkbox" value="Recycling Centre" /> Recycling Centre</label>
+                  <label class="facility-check"><input type="checkbox" value="Green Building Certified" /> Green Building Certified</label>
+                  <label class="facility-check"><input type="checkbox" value="Community Garden" /> Community Garden</label>
+                  <label class="facility-check"><input type="checkbox" value="Living Wall / Green Roof" /> Living Wall / Green Roof</label>
+                </div>
+              </div>
+            </div>
+
+            <label style="margin-top:16px;">
+              Additional / Unique Facilities
+              <textarea name="facilitiesCustom" rows="4" placeholder="Type one facility per line, e.g.:&#10;Treehouse Play Zone&#10;Floating Yoga Deck&#10;AI-powered Concierge Robot"></textarea>
+              <small>One facility per line — for unique or branded facilities not listed above</small>
+            </label>
+          </div>
+        </div>
+
+        <!-- ══ LANDED RESIDENTIAL ═══════════════════════════════ -->
+        <div id="fields-landed-residential" style="display:none;">
+          <div class="form-block-header">🏡 Landed Property Details</div>
+
+          <label>
+            Property Type
+            <select name="landedType">
+              <option value="">Select</option>
+              <option value="Bungalow">Bungalow</option>
+              <option value="Semi Detached">Semi Detached</option>
+              <option value="Cluster">Cluster</option>
+              <option value="Link House">Link House</option>
+              <option value="Townhouse">Townhouse</option>
+            </select>
+          </label>
+
+          <label>
+            Land Title
+            <select name="landTitle">
+              <option value="">Select</option>
+              <option value="Bumi">Bumi</option>
+              <option value="Non-Bumi">Non-Bumi</option>
+              <option value="Malay Reserved">Malay Reserved</option>
+            </select>
+          </label>
+
+          <!-- Hidden when Listing Type = New Launch -->
+          <div id="landed-single-unit-fields">
+            <label>
+              Bedrooms
+              <select name="bedrooms">
+                <option value="">Select</option>
+                <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+                <option value="10+">10+</option>
+              </select>
+            </label>
+            <label>
+              Bathrooms
+              <select name="bathrooms">
+                <option value="">Select</option>
+                <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                <option value="7">7</option><option value="8+">8+</option>
+              </select>
+            </label>
+            <label>Built-up (sqft)<input name="builtUpSqft" type="number" placeholder="e.g., 2400" /></label>
+          </div>
+
+          <label>Land Area (sqft)<input name="landSize" type="number" placeholder="e.g., 3000" /></label>
+
+          <label>
+            Car Park
+            <select name="parking">
+              <option value="">Select</option>
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+              <option value="4">4</option><option value="5">5</option><option value="6+">6+</option>
+            </select>
+          </label>
+
+          <label>
+            Storeys
+            <select name="storeyCount">
+              <option value="">Select</option>
+              <option value="1">1</option><option value="1.5">1.5</option><option value="2">2</option>
+              <option value="2.5">2.5</option><option value="3">3</option><option value="3.5">3.5</option>
+              <option value="4+">4+</option>
+            </select>
+          </label>
+
+          <label>
+            Lot Type
+            <select name="lotType">
+              <option value="">Select</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Corner">Corner</option>
+              <option value="End Lot">End Lot</option>
+              <option value="Bungalow Lot">Bungalow Lot</option>
+            </select>
+          </label>
+
+          <label>
+            Gated &amp; Guarded
+            <select name="gatedGuarded">
+              <option value="">Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </label>
+
+          <label>
+            Maintenance Fee (RM/month)
+            <input name="maintenanceFee" type="number" placeholder="e.g., 150" />
+            <small>Monthly maintenance fee for the gated community</small>
+          </label>
+
+          <!-- FACILITIES — LANDED -->
+          <div class="facilities-section">
+            <div class="form-block-header">🌳 Facilities</div>
+            <p class="facilities-hint">Tick all that apply</p>
+
+            <div class="facilities-grid">
+              <label class="facility-check"><input type="checkbox" value="Guardhouse (24hr)" /> Guardhouse (24hr)</label>
+              <label class="facility-check"><input type="checkbox" value="CCTV" /> CCTV</label>
+              <label class="facility-check"><input type="checkbox" value="Perimeter Fencing" /> Perimeter Fencing</label>
+              <label class="facility-check"><input type="checkbox" value="Boom Barrier" /> Boom Barrier</label>
+              <label class="facility-check"><input type="checkbox" value="Clubhouse" /> Clubhouse</label>
+              <label class="facility-check"><input type="checkbox" value="Swimming Pool" /> Swimming Pool</label>
+              <label class="facility-check"><input type="checkbox" value="Children's Playground" /> Children's Playground</label>
+              <label class="facility-check"><input type="checkbox" value="Basketball Court" /> Basketball Court</label>
+              <label class="facility-check"><input type="checkbox" value="Badminton Court" /> Badminton Court</label>
+              <label class="facility-check"><input type="checkbox" value="Jogging Track" /> Jogging Track</label>
+              <label class="facility-check"><input type="checkbox" value="Landscaped Park" /> Landscaped Park</label>
+              <label class="facility-check"><input type="checkbox" value="EV Charging" /> EV Charging</label>
+              <label class="facility-check"><input type="checkbox" value="Visitor Parking" /> Visitor Parking</label>
+              <label class="facility-check"><input type="checkbox" value="Surau" /> Surau</label>
+              <label class="facility-check"><input type="checkbox" value="Electric Fence" /> Electric Fence</label>
+            </div>
+
+            <button type="button" class="show-more-btn" onclick="toggleMoreFacilities('landed')">＋ Show More Facilities</button>
+
+            <div id="facilities-more-landed" style="display:none;">
+              <div class="facilities-group"><strong>Sports &amp; Recreation</strong>
+                <div class="facilities-grid">
+                  <label class="facility-check"><input type="checkbox" value="Tennis Court" /> Tennis Court</label>
+                  <label class="facility-check"><input type="checkbox" value="Futsal Court" /> Futsal Court</label>
+                  <label class="facility-check"><input type="checkbox" value="Gymnasium" /> Gymnasium</label>
+                  <label class="facility-check"><input type="checkbox" value="Squash Court" /> Squash Court</label>
+                  <label class="facility-check"><input type="checkbox" value="BBQ Area" /> BBQ Area</label>
+                  <label class="facility-check"><input type="checkbox" value="Function Hall" /> Function Hall</label>
+                  <label class="facility-check"><input type="checkbox" value="Cycling Path" /> Cycling Path</label>
+                  <label class="facility-check"><input type="checkbox" value="Dog Park" /> Dog Park</label>
+                  <label class="facility-check"><input type="checkbox" value="Wading Pool" /> Wading Pool</label>
+                  <label class="facility-check"><input type="checkbox" value="Amphitheatre" /> Amphitheatre</label>
+                </div>
+              </div>
+              <div class="facilities-group"><strong>Infrastructure &amp; Sustainability</strong>
+                <div class="facilities-grid">
+                  <label class="facility-check"><input type="checkbox" value="Fibre Optic Ready" /> Fibre Optic Ready</label>
+                  <label class="facility-check"><input type="checkbox" value="Underground Utilities" /> Underground Utilities</label>
+                  <label class="facility-check"><input type="checkbox" value="Solar Street Lighting" /> Solar Street Lighting</label>
+                  <label class="facility-check"><input type="checkbox" value="Rainwater Harvesting" /> Rainwater Harvesting</label>
+                  <label class="facility-check"><input type="checkbox" value="Retention Pond" /> Retention Pond</label>
+                  <label class="facility-check"><input type="checkbox" value="Parcel Collection Point" /> Parcel Collection Point</label>
+                  <label class="facility-check"><input type="checkbox" value="ANPR Gate" /> ANPR Gate</label>
+                  <label class="facility-check"><input type="checkbox" value="Mobile Security Patrol" /> Mobile Security Patrol</label>
+                </div>
+              </div>
+            </div>
+
+            <label style="margin-top:16px;">
+              Additional / Unique Facilities
+              <textarea name="facilitiesCustom" rows="4" placeholder="Type one facility per line, e.g.:&#10;Private Rooftop Garden&#10;Smart Home Ready&#10;EV Bay per unit"></textarea>
+              <small>One facility per line</small>
+            </label>
+          </div>
+        </div>
+
+        <!-- ══ COMMERCIAL ════════════════════════════════════════ -->
+        <div id="fields-commercial" style="display:none;">
+          <div class="form-block-header">🏪 Commercial Details</div>
+
+          <label>
+            Property Type
+            <select name="commercialType">
+              <option value="">Select</option>
+              <option value="Shop Lot">Shop Lot</option>
+              <option value="Office Suite">Office Suite</option>
+              <option value="Retail Space">Retail Space</option>
+              <option value="SoFo">SoFo</option>
+              <option value="SoVo">SoVo</option>
+              <option value="Factory">Factory</option>
+              <option value="Warehouse">Warehouse</option>
+              <option value="Showroom">Showroom</option>
+              <option value="Medical Suite">Medical Suite</option>
+              <option value="Restaurant Lot">Restaurant Lot</option>
+              <option value="F&amp;B Space">F&amp;B Space</option>
+              <option value="Industrial Unit">Industrial Unit</option>
+            </select>
+          </label>
+
+          <label>
+            Land Title
+            <select name="landTitle">
+              <option value="">Select</option>
+              <option value="Bumi">Bumi</option>
+              <option value="Non-Bumi">Non-Bumi</option>
+              <option value="Malay Reserved">Malay Reserved</option>
+            </select>
+          </label>
+
+          <label>Built-up (sqft)<input name="builtUpSqft" type="number" placeholder="e.g., 1500" /></label>
+          <label>Land Area (sqft) <small style="font-weight:400;opacity:0.7;">if applicable</small><input name="landSize" type="number" placeholder="e.g., 3000" /></label>
+          <label>Gross Floor Area — GFA (sqft) <small style="font-weight:400;opacity:0.7;">total all floors</small><input name="grossFloorArea" type="number" placeholder="e.g., 4500" /></label>
+          <label>Storeys<input name="storeyCount" type="number" min="1" max="50" placeholder="e.g., 3" /></label>
+
+          <label>
+            Corner Lot
+            <select name="cornerLot">
+              <option value="">Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </label>
+
+          <label>
+            Loading Bay
+            <select name="loadingBay">
+              <option value="">Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </label>
+
+          <label>
+            Electrical Supply
+            <select name="electricalSupply">
+              <option value="">Select</option>
+              <option value="Single Phase (240V)">Single Phase (240V)</option>
+              <option value="Three Phase (415V)">Three Phase (415V)</option>
+            </select>
+          </label>
+
+          <label>
+            Current Use / Zoning
+            <select name="currentZoning">
+              <option value="">Select</option>
+              <option value="Retail">Retail</option>
+              <option value="F&B">F&amp;B</option>
+              <option value="Office">Office</option>
+              <option value="Medical">Medical</option>
+              <option value="Education">Education</option>
+              <option value="Warehouse">Warehouse</option>
+              <option value="Light Industrial">Light Industrial</option>
+              <option value="Mixed Use">Mixed Use</option>
+            </select>
+          </label>
+        </div>
+
+        <!-- ══ LAND ══════════════════════════════════════════════ -->
+        <div id="fields-land" style="display:none;">
+          <div class="form-block-header">🌿 Land Details</div>
+
+          <label>
+            Land Type
+            <select name="landType">
+              <option value="">Select</option>
+              <option value="Residential">Residential</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Industrial">Industrial</option>
+              <option value="Agricultural">Agricultural</option>
+              <option value="Mix-Development">Mix-Development</option>
+              <option value="TOD Zone">TOD Zone</option>
+              <option value="Institutional">Institutional</option>
+              <option value="Others">Others</option>
+            </select>
+          </label>
+
+          <label>
+            Land Title
+            <select name="landTitle">
+              <option value="">Select</option>
+              <option value="Bumi">Bumi</option>
+              <option value="Non-Bumi">Non-Bumi</option>
+              <option value="Malay Reserved">Malay Reserved</option>
+            </select>
+          </label>
+
+          <div style="display:flex;gap:12px;align-items:flex-end;">
+            <label style="flex:2;">Land Area<input name="landAreaValue" type="number" placeholder="e.g., 5" step="0.01" /></label>
+            <label style="flex:1;">Unit
+              <select name="landAreaUnit">
+                <option value="">Unit</option>
+                <option value="sq.ft">sq.ft</option>
+                <option value="acres">acres</option>
+                <option value="hectares">hectares</option>
+              </select>
+            </label>
+          </div>
+
+          <label>Road Frontage (meters)<input name="roadFrontage" type="number" placeholder="e.g., 30" step="0.1" /></label>
+
+          <label>
+            Topography
+            <select name="topography">
+              <option value="">Select</option>
+              <option value="Flat">Flat</option>
+              <option value="Gently Sloped">Gently Sloped</option>
+              <option value="Steeply Sloped">Steeply Sloped</option>
+              <option value="Hilly">Hilly</option>
+              <option value="Irregular Terrain">Irregular Terrain</option>
+            </select>
+          </label>
+
+          <label>
+            Approved Zoning / Use
+            <select name="approvedZoning">
+              <option value="">Select</option>
+              <option value="Residential">Residential</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Industrial">Industrial</option>
+              <option value="Agricultural">Agricultural</option>
+              <option value="Mixed Development">Mixed Development</option>
+              <option value="TOD Zone">TOD Zone</option>
+              <option value="Institutional">Institutional</option>
+            </select>
+          </label>
+
+          <label>
+            Water Supply Available
+            <select name="waterSupply">
+              <option value="">Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="Nearby">Nearby (connection required)</option>
+            </select>
+          </label>
+
+          <label>
+            Electricity Supply Available
+            <select name="electricSupply">
+              <option value="">Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="Nearby">Nearby (connection required)</option>
+            </select>
+          </label>
+        </div>
+
+        <!-- ══ LOCATION (unchanged) ══════════════════════════════ -->
+        <div class="location-section">
+          <h4>📍 Property Location</h4>
+          <button type="button" id="open-map-btn" class="map-btn">🗺️ Pin Location on Map</button>
+          <div id="selected-location-display" class="location-confirmed">
+            <p class="location-confirmed-label">✓ Location Pinned:</p>
+            <p id="location-text" class="location-confirmed-text"></p>
+          </div>
+          <label>State<select name="state" id="ad-state" required><option value="">Select state</option></select></label>
+          <label>District<select name="district" id="ad-district" required disabled><option value="">Select district</option></select></label>
+          <label>Area / Township<select name="area" id="ad-area" required disabled><option value="">Select area</option></select></label>
+          <label id="ad-area-custom-wrapper" style="display:none;">
+            Or type your location
+            <input type="text" name="areaCustom" id="ad-area-custom" placeholder="e.g., Taman Kinrara, Bandar Sunway" />
+          </label>
+        </div>
+
+        <input type="hidden" name="latitude" id="ad-latitude" />
+        <input type="hidden" name="longitude" id="ad-longitude" />
+        <input type="hidden" name="locationFull" id="ad-locationFull" />
+
+        <!-- ══ CONNECTIVITY BLOCK ════════════════════════════════ -->
+        <div class="form-block-section">
+          <div class="form-block-header">🚇 Nearby Amenities</div>
+          <label>Nearest MRT / LRT / BRT<input name="nearestTransit" type="text" placeholder="e.g., Taman Jaya LRT, 5 mins walk" /></label>
+          <label>Nearest Highway<input name="nearestHighway" type="text" placeholder="e.g., DUKE, 3 mins drive" /></label>
+          <label>Nearest Shopping Mall<input name="nearestShoppingMall" type="text" placeholder="e.g., 1 Utama, 10 mins drive" /></label>
+          <label>Nearest School / University<input name="nearestSchoolUni" type="text" placeholder="e.g., SMK Damansara Utama, 5 mins walk" /></label>
+          <label>Nearest Hospital / Clinic<input name="nearestHospital" type="text" placeholder="e.g., Subang Jaya Medical Centre, 8 mins drive" /></label>
+        </div>
+
+        <!-- ══ PRICE (dynamic label) ══════════════════════════════ -->
+        <div class="form-block-section">
+          <div class="form-block-header" id="price-section-header">💰 Pricing</div>
+          <label>
+            <span id="price-label-text">Price (RM)</span>
+            <input name="priceRm" type="number" placeholder="e.g., 650000" required />
+          </label>
+          <div id="price-to-wrapper" style="display:none;">
+            <label>Price To (RM) <small style="font-weight:400;opacity:0.7;">(upper range)</small>
+              <input name="priceToRm" type="number" placeholder="e.g., 1200000" />
+            </label>
+          </div>
+        </div>
+
+        <!-- ══ CONTACT + DESCRIPTION ══════════════════════════════ -->
+        <label>Contact<input name="contact" type="text" placeholder="e.g., +60123456789 or email" required /></label>
+        <label>Description<textarea name="description" rows="5" required placeholder="Describe the property — key highlights, nearby amenities, investment potential..."></textarea></label>
+
+        <div class="form-buttons">
+          <button type="button" id="form-back-btn">← Back</button>
+          <button type="submit" id="form-submit-btn">Submit Listing</button>
+        </div>
+      </div>
+    </form>
   </div>
+</div>
 
   <!-- MAP MODAL -->
   <div id="map-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; padding:20px;">
@@ -609,329 +1097,350 @@
   <script defer src="projects.js"></script>
 
   <script>
-  const MAX_FILE_SIZE_MB = 2;
-  const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+// ── PHOTO VALIDATION (unchanged) ─────────────────────────────
+const MAX_FILE_SIZE_MB    = 2;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
-  // Photo validation
-  document.querySelectorAll('.photo-input').forEach(input => {
-    input.addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      const photoNum = this.getAttribute('data-photo-num');
-      const infoDiv = document.getElementById(`photo${photoNum}-info`);
-      
-      if (!file) {
-        infoDiv.innerHTML = '';
-        return;
-      }
-
-      // Check file size
-      const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
-      const isTooBig = file.size > MAX_FILE_SIZE_BYTES;
-
-      if (isTooBig) {
-        infoDiv.innerHTML = `<div style="padding: 8px; background: #fee; border: 1px solid #fcc; border-radius: 6px; margin-top: 4px; font-size: 13px; color: #c33;">❌ <strong>File too large:</strong> ${sizeMB} MB (max ${MAX_FILE_SIZE_MB} MB). Please compress or choose a smaller image.</div>`;
-        this.value = '';
-        return;
-      }
-
-      // Read image dimensions
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const img = new Image();
-        img.onload = function() {
-          const width = img.width;
-          const height = img.height;
-          const ratio = (width / height).toFixed(2);
-          
-          // Check aspect ratio (4:3 = 1.33, 3:2 = 1.5)
-          const is4by3 = Math.abs(ratio - 1.33) < 0.1;
-          const is3by2 = Math.abs(ratio - 1.5) < 0.1;
-          const isGoodRatio = is4by3 || is3by2;
-
-          let ratioMsg = '';
-          if (!isGoodRatio) {
-            ratioMsg = `<div style="padding: 6px; background: #fffbea; border: 1px solid #ffd700; border-radius: 6px; margin-top: 4px; font-size: 12px; color: #996600;">⚠️ Aspect ratio ${ratio}:1 (${width}×${height}px). Recommended: 4:3 (1.33:1) or 3:2 (1.5:1) for best display.</div>`;
-          }
-
-          infoDiv.innerHTML = `<div style="padding: 8px; background: #e8f5e9; border: 1px solid #4caf50; border-radius: 6px; margin-top: 4px; font-size: 13px; color: #2e7d32;">✓ ${sizeMB} MB | ${width}×${height}px${isGoodRatio ? ' | Great ratio!' : ''}</div>${ratioMsg}`;
-        };
-        img.src = event.target.result;
+document.querySelectorAll('.photo-input').forEach(input => {
+  input.addEventListener('change', function(e) {
+    const file     = e.target.files[0];
+    const photoNum = this.getAttribute('data-photo-num');
+    const infoDiv  = document.getElementById('photo' + photoNum + '-info');
+    if (!file) { infoDiv.innerHTML = ''; return; }
+    const sizeMB  = (file.size / (1024 * 1024)).toFixed(2);
+    const isTooBig = file.size > MAX_FILE_SIZE_BYTES;
+    if (isTooBig) {
+      infoDiv.innerHTML = '<div style="padding:8px;background:#fee;border:1px solid #fcc;border-radius:6px;margin-top:4px;font-size:13px;color:#c33;">❌ <strong>File too large:</strong> ' + sizeMB + ' MB (max ' + MAX_FILE_SIZE_MB + ' MB). Please compress or choose a smaller image.</div>';
+      this.value = ''; return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const img = new Image();
+      img.onload = function() {
+        const ratio      = (img.width / img.height).toFixed(2);
+        const isGoodRatio = Math.abs(ratio - 1.33) < 0.1 || Math.abs(ratio - 1.5) < 0.1;
+        const ratioMsg   = !isGoodRatio ? '<div style="padding:6px;background:#fffbea;border:1px solid #ffd700;border-radius:6px;margin-top:4px;font-size:12px;color:#996600;">⚠️ Ratio ' + ratio + ':1 (' + img.width + '×' + img.height + 'px). Recommended: 4:3 for best display.</div>' : '';
+        infoDiv.innerHTML = '<div style="padding:8px;background:#e8f5e9;border:1px solid #4caf50;border-radius:6px;margin-top:4px;font-size:13px;color:#2e7d32;">✓ ' + sizeMB + ' MB | ' + img.width + '×' + img.height + 'px' + (isGoodRatio ? ' | Great ratio!' : '') + '</div>' + ratioMsg;
       };
-      reader.readAsDataURL(file);
-    });
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
   });
+});
 
-  // Form submission validation
-  const form = document.querySelector('form[name="project-submit"]');
-  form.addEventListener('submit', (e) => {
-    // Check if any oversized files
-    const photoInputs = document.querySelectorAll('.photo-input');
-    for (let input of photoInputs) {
-      if (input.files[0] && input.files[0].size > MAX_FILE_SIZE_BYTES) {
-        e.preventDefault();
-        alert('Please remove or compress images larger than 2 MB before submitting.');
-        return;
-      }
-    }
+// ── FORM SECTION NAV ──────────────────────────────────────────
+const nextBtn   = document.getElementById('form-next-btn');
+const backBtn   = document.getElementById('form-back-btn');
+const section1  = document.getElementById('form-section-1');
+const section2  = document.getElementById('form-section-2');
 
-    // Disable non-selected category fields
-    const sections = ['high-rise-residential', 'landed-residential', 'commercial', 'land'];
-    sections.forEach(cat => {
-      const container = document.getElementById(`fields-${cat}`);
-      if (container && container.style.display === 'none') {
-        container.querySelectorAll('input, select, textarea').forEach(field => {
-          field.disabled = true;
-        });
-      }
-    });
+nextBtn.addEventListener('click', () => {
+  section1.style.display = 'none';
+  section2.style.display = 'block';
+  loadStates();
+});
+backBtn.addEventListener('click', () => {
+  section2.style.display = 'none';
+  section1.style.display = 'block';
+});
+
+// ── DYNAMIC FORM — LISTING TYPE + CATEGORY ────────────────────
+const listingTypeSelect = document.getElementById('listingType');
+const categorySelect    = document.getElementById('category');
+
+function updateForm() {
+  const lt  = listingTypeSelect.value;
+  const cat = categorySelect.value;
+  const isNL = lt === 'New Launch';
+  const isResidential = cat === 'High Rise Residential' || cat === 'Landed Residential';
+
+  // Listing type blocks
+  document.getElementById('block-new-launch').style.display = isNL            ? 'block' : 'none';
+  document.getElementById('block-for-sale').style.display   = lt === 'For Sale' ? 'block' : 'none';
+  document.getElementById('block-for-rent').style.display   = lt === 'For Rent' ? 'block' : 'none';
+
+  // NL residential range fields
+  const nlRanges = document.getElementById('nl-residential-ranges');
+  if (nlRanges) nlRanges.style.display = (isNL && isResidential) ? 'block' : 'none';
+
+  // Single unit fields — hide for NL (use ranges instead)
+  const hrSingle     = document.getElementById('hr-single-unit-fields');
+  const landedSingle = document.getElementById('landed-single-unit-fields');
+  if (hrSingle)     hrSingle.style.display     = (isNL && cat === 'High Rise Residential') ? 'none' : 'block';
+  if (landedSingle) landedSingle.style.display = (isNL && cat === 'Landed Residential')    ? 'none' : 'block';
+
+  // Category blocks
+  document.getElementById('fields-high-rise-residential').style.display = cat === 'High Rise Residential' ? 'block' : 'none';
+  document.getElementById('fields-landed-residential').style.display    = cat === 'Landed Residential'    ? 'block' : 'none';
+  document.getElementById('fields-commercial').style.display            = cat === 'Commercial'            ? 'block' : 'none';
+  document.getElementById('fields-land').style.display                  = cat === 'Land'                  ? 'block' : 'none';
+
+  // Price label + price-to
+  const priceLabelText = document.getElementById('price-label-text');
+  const priceToWrapper = document.getElementById('price-to-wrapper');
+  if (lt === 'For Rent') {
+    priceLabelText.textContent = 'Monthly Rental (RM)';
+    priceToWrapper.style.display = 'none';
+  } else if (isNL) {
+    priceLabelText.textContent = 'Price From (RM)';
+    priceToWrapper.style.display = 'block';
+  } else {
+    priceLabelText.textContent = 'Price (RM)';
+    priceToWrapper.style.display = 'none';
+  }
+}
+
+listingTypeSelect.addEventListener('change', updateForm);
+categorySelect.addEventListener('change', updateForm);
+
+// ── PROPERTY TYPE HIDDEN FIELD ────────────────────────────────
+document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="commercialType"], [name="landType"]').forEach(sel => {
+  sel.addEventListener('change', e => {
+    document.getElementById('propertyType').value = e.target.value;
   });
+});
 
-  const nextBtn = document.getElementById('form-next-btn');
-  const backBtn = document.getElementById('form-back-btn');
-  const section1 = document.getElementById('form-section-1');
-  const section2 = document.getElementById('form-section-2');
-  const categorySelect = document.getElementById('category');
-  const stateSelect = document.getElementById('ad-state');
-  const districtSelect = document.getElementById('ad-district');
-  const areaSelect = document.getElementById('ad-area');
-  const customAreaWrapper = document.getElementById('ad-area-custom-wrapper');
+// ── FACILITIES TOGGLE ─────────────────────────────────────────
+function toggleMoreFacilities(type) {
+  const moreDiv = document.getElementById('facilities-more-' + type);
+  const btn     = moreDiv.previousElementSibling;
+  if (!moreDiv) return;
+  const isHidden = moreDiv.style.display === 'none';
+  moreDiv.style.display   = isHidden ? 'block' : 'none';
+  btn.textContent = isHidden ? '－ Show Less' : '＋ Show More Facilities';
+}
 
-  nextBtn.addEventListener('click', () => {
-    section1.style.display = 'none';
-    section2.style.display = 'block';
-    loadStates();
-  });
-
-  backBtn.addEventListener('click', () => {
-    section2.style.display = 'none';
-    section1.style.display = 'block';
-  });
-
-  categorySelect.addEventListener('change', (e) => {
-    const val = e.target.value;
-    document.getElementById('fields-high-rise-residential').style.display = 'none';
-    document.getElementById('fields-landed-residential').style.display = 'none';
-    document.getElementById('fields-commercial').style.display = 'none';
-    document.getElementById('fields-land').style.display = 'none';
-    
-    if (val === 'High Rise Residential') {
-      document.getElementById('fields-high-rise-residential').style.display = 'block';
-    } else if (val === 'Landed Residential') {
-      document.getElementById('fields-landed-residential').style.display = 'block';
-    } else if (val === 'Commercial') {
-      document.getElementById('fields-commercial').style.display = 'block';
-    } else if (val === 'Land') {
-      document.getElementById('fields-land').style.display = 'block';
-    }
-  });
-
-  document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="commercialType"], [name="landType"]').forEach(select => {
-    select.addEventListener('change', (e) => {
-      document.getElementById('propertyType').value = e.target.value;
-    });
-  });
-
-  async function loadStates() {
-    try {
-      const response = await fetch('/content/settings/locations/states.json');
-      const data = await response.json();
-      const states = data.states;
-      stateSelect.innerHTML = '<option value="">Select state</option>';
-      states.forEach(stateName => {
-        stateSelect.innerHTML += `<option value="${stateName}">${stateName}</option>`;
-      });
-    } catch (err) {
-      console.error('Error loading states:', err);
+// ── FORM SUBMIT ───────────────────────────────────────────────
+const form = document.querySelector('form[name="project-submit"]');
+form.addEventListener('submit', e => {
+  // Block if oversized photos
+  for (let input of document.querySelectorAll('.photo-input')) {
+    if (input.files[0] && input.files[0].size > MAX_FILE_SIZE_BYTES) {
+      e.preventDefault();
+      alert('Please remove or compress images larger than 2 MB before submitting.');
+      return;
     }
   }
 
-  stateSelect.addEventListener('change', async (e) => {
-    const stateName = e.target.value;
-    if (!stateName) {
-      districtSelect.disabled = true;
-      areaSelect.disabled = true;
-      return;
-    }
-    try {
-      districtSelect.disabled = false;
-      const response = await fetch('/content/settings/locations/districts.json');
-      const data = await response.json();
-      const districts = data.districtsByState[stateName];
-      districtSelect.innerHTML = '<option value="">Select district</option>';
-      districts.forEach(districtName => {
-        districtSelect.innerHTML += `<option value="${districtName}">${districtName}</option>`;
-      });
-      areaSelect.innerHTML = '<option value="">Select area</option>';
-      areaSelect.disabled = true;
-    } catch (err) {
-      console.error('Error loading districts:', err);
+  // Collect facilitiesStandard from checked checkboxes in visible category block
+  const cat = categorySelect.value;
+  const blockId = cat === 'High Rise Residential' ? 'fields-high-rise-residential'
+                : cat === 'Landed Residential'    ? 'fields-landed-residential'
+                : null;
+  if (blockId) {
+    const checked = [];
+    document.querySelectorAll('#' + blockId + ' .facility-check input[type="checkbox"]:checked').forEach(cb => {
+      checked.push(cb.value);
+    });
+    document.getElementById('facilitiesStandard-hidden').value = checked.join(',');
+  }
+
+  // Disable all fields in hidden category blocks (prevents duplicate field names being submitted)
+  ['high-rise-residential', 'landed-residential', 'commercial', 'land'].forEach(c => {
+    const container = document.getElementById('fields-' + c);
+    if (container && container.style.display === 'none') {
+      container.querySelectorAll('input, select, textarea').forEach(f => { f.disabled = true; });
     }
   });
 
-  districtSelect.addEventListener('change', async (e) => {
-    const districtName = e.target.value;
-    const stateName = stateSelect.value.toLowerCase().replace(/\s+/g, '-');
-    if (!districtName) {
-      areaSelect.disabled = true;
-      return;
+  // Disable fields in hidden listing-type blocks
+  ['block-new-launch', 'block-for-sale', 'block-for-rent'].forEach(id => {
+    const container = document.getElementById(id);
+    if (container && container.style.display === 'none') {
+      container.querySelectorAll('input, select, textarea').forEach(f => { f.disabled = true; });
     }
-    try {
-      areaSelect.disabled = false;
-      const response = await fetch(`/content/settings/locations/areas/${stateName}.json`);
-      const data = await response.json();
-      const districtObj = data.districts.find(d => d.name === districtName);
-      if (districtObj && districtObj.areas) {
-        areaSelect.innerHTML = '<option value="">Select area</option>';
-        districtObj.areas.forEach(areaObj => {
-          areaSelect.innerHTML += `<option value="${areaObj.name}">${areaObj.name}</option>`;
-        });
-        areaSelect.innerHTML += `<option value="others">Others (Type manually)</option>`;
-      } else {
-        customAreaWrapper.style.display = 'block';
-      }
-    } catch (err) {
-      console.error('Error loading areas:', err);
+  });
+});
+
+// ── LOCATION DROPDOWNS (unchanged) ───────────────────────────
+const stateSelect       = document.getElementById('ad-state');
+const districtSelect    = document.getElementById('ad-district');
+const areaSelect        = document.getElementById('ad-area');
+const customAreaWrapper = document.getElementById('ad-area-custom-wrapper');
+
+async function loadStates() {
+  try {
+    const response = await fetch('/content/settings/locations/states.json');
+    const data     = await response.json();
+    stateSelect.innerHTML = '<option value="">Select state</option>';
+    data.states.forEach(s => { stateSelect.innerHTML += '<option value="' + s + '">' + s + '</option>'; });
+  } catch (err) { console.error('Error loading states:', err); }
+}
+
+stateSelect.addEventListener('change', async e => {
+  const stateName = e.target.value;
+  if (!stateName) { districtSelect.disabled = true; areaSelect.disabled = true; return; }
+  try {
+    districtSelect.disabled = false;
+    const response = await fetch('/content/settings/locations/districts.json');
+    const data     = await response.json();
+    const districts = data.districtsByState[stateName];
+    districtSelect.innerHTML = '<option value="">Select district</option>';
+    districts.forEach(d => { districtSelect.innerHTML += '<option value="' + d + '">' + d + '</option>'; });
+    areaSelect.innerHTML = '<option value="">Select area</option>';
+    areaSelect.disabled  = true;
+  } catch (err) { console.error('Error loading districts:', err); }
+});
+
+districtSelect.addEventListener('change', async e => {
+  const districtName = e.target.value;
+  const stateName    = stateSelect.value.toLowerCase().replace(/\s+/g, '-');
+  if (!districtName) { areaSelect.disabled = true; return; }
+  try {
+    areaSelect.disabled = false;
+    const response  = await fetch('/content/settings/locations/areas/' + stateName + '.json');
+    const data      = await response.json();
+    const districtObj = data.districts.find(d => d.name === districtName);
+    if (districtObj && districtObj.areas) {
+      areaSelect.innerHTML = '<option value="">Select area</option>';
+      districtObj.areas.forEach(a => { areaSelect.innerHTML += '<option value="' + a.name + '">' + a.name + '</option>'; });
+      areaSelect.innerHTML += '<option value="others">Others (Type manually)</option>';
+    } else {
       customAreaWrapper.style.display = 'block';
     }
+  } catch (err) { console.error('Error loading areas:', err); customAreaWrapper.style.display = 'block'; }
+});
+
+areaSelect.addEventListener('change', e => {
+  customAreaWrapper.style.display = e.target.value === 'others' ? 'block' : 'none';
+});
+
+// ── MAP MODAL (unchanged) ─────────────────────────────────────
+let map, marker, selectedLocation, geocoder;
+
+document.getElementById('open-map-btn').addEventListener('click', () => {
+  document.getElementById('map-modal').style.display = 'block';
+  setTimeout(() => { if (!map) initMap(); }, 300);
+});
+document.getElementById('close-map-btn').addEventListener('click', () => {
+  document.getElementById('map-modal').style.display = 'none';
+});
+
+function initMap() {
+  const defaultCenter = { lat: 3.139, lng: 101.6869 };
+  map = new google.maps.Map(document.getElementById('google-map'), {
+    center: defaultCenter, zoom: 12, mapTypeControl: true, streetViewControl: false
   });
-
-  areaSelect.addEventListener('change', (e) => {
-    customAreaWrapper.style.display = (e.target.value === 'others') ? 'block' : 'none';
+  geocoder = new google.maps.Geocoder();
+  map.addListener('click', event => { placeMarker(event.latLng); });
+  document.getElementById('search-location-btn').addEventListener('click', searchLocation);
+  document.getElementById('map-search-box').addEventListener('keypress', e => {
+    if (e.key === 'Enter') { e.preventDefault(); searchLocation(); }
   });
+}
 
-  let map, marker, selectedLocation, geocoder;
-
-  document.getElementById('open-map-btn').addEventListener('click', () => {
-    document.getElementById('map-modal').style.display = 'block';
-    setTimeout(() => { if (!map) initMap(); }, 300);
+function searchLocation() {
+  const address = document.getElementById('map-search-box').value.trim();
+  if (!address) { alert('Please type an address!'); return; }
+  geocoder.geocode({ address, componentRestrictions: { country: 'MY' } }, (results, status) => {
+    if (status === 'OK' && results[0]) {
+      const location = results[0].geometry.location;
+      map.setCenter(location); map.setZoom(15); placeMarker(location);
+    } else {
+      alert('Location not found! Try: "Bandar Sunway, Selangor" or "KLCC, Kuala Lumpur"');
+    }
   });
+}
 
-  document.getElementById('close-map-btn').addEventListener('click', () => {
-    document.getElementById('map-modal').style.display = 'none';
+function placeMarker(location) {
+  if (marker) marker.setMap(null);
+  marker = new google.maps.Marker({ position: location, map, draggable: true, animation: google.maps.Animation.DROP });
+  selectedLocation = { lat: location.lat(), lng: location.lng() };
+  geocoder.geocode({ location }, (results, status) => { if (status === 'OK' && results[0]) parseAddress(results[0]); });
+  marker.addListener('dragend', () => {
+    const newPos = marker.getPosition();
+    selectedLocation = { lat: newPos.lat(), lng: newPos.lng() };
+    geocoder.geocode({ location: newPos }, (results, status) => { if (status === 'OK' && results[0]) parseAddress(results[0]); });
   });
+}
 
-  function initMap() {
-    const defaultCenter = { lat: 3.139, lng: 101.6869 };
-    map = new google.maps.Map(document.getElementById('google-map'), {
-      center: defaultCenter,
-      zoom: 12,
-      mapTypeControl: true,
-      streetViewControl: false,
-    });
-    geocoder = new google.maps.Geocoder();
-    map.addListener('click', (event) => { placeMarker(event.latLng); });
-    document.getElementById('search-location-btn').addEventListener('click', searchLocation);
-    document.getElementById('map-search-box').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') { e.preventDefault(); searchLocation(); }
-    });
-  }
+function parseAddress(result) {
+  const components = result.address_components;
+  let state = '', district = '', area = '';
+  components.forEach(comp => {
+    if (comp.types.includes('administrative_area_level_1')) state    = comp.long_name;
+    if (comp.types.includes('administrative_area_level_2')) district = comp.long_name;
+    if (comp.types.includes('locality') || comp.types.includes('sublocality') || comp.types.includes('sublocality_level_1')) area = comp.long_name;
+  });
+  Object.assign(selectedLocation, { state, district, area, fullAddress: result.formatted_address });
+}
 
-  function searchLocation() {
-    const searchBox = document.getElementById('map-search-box');
-    const address = searchBox.value.trim();
-    if (!address) { alert('Please type an address!'); return; }
-    geocoder.geocode({ address: address, componentRestrictions: { country: 'MY' } }, (results, status) => {
-      if (status === 'OK' && results[0]) {
-        const location = results[0].geometry.location;
-        map.setCenter(location);
-        map.setZoom(15);
-        placeMarker(location);
-      } else {
-        alert('Location not found! Try: "Bandar Sunway, Selangor" or "KLCC, Kuala Lumpur"');
-      }
-    });
-  }
+document.getElementById('confirm-location-btn').addEventListener('click', async () => {
+  if (!selectedLocation) { alert('Please pin a location on the map first!'); return; }
+  document.getElementById('ad-latitude').value    = selectedLocation.lat || '';
+  document.getElementById('ad-longitude').value   = selectedLocation.lng || '';
+  document.getElementById('ad-locationFull').value = selectedLocation.fullAddress || '';
+  document.getElementById('selected-location-display').style.display = 'block';
+  document.getElementById('location-text').textContent = selectedLocation.fullAddress;
 
-  function placeMarker(location) {
-    if (marker) marker.setMap(null);
-    marker = new google.maps.Marker({ position: location, map: map, draggable: true, animation: google.maps.Animation.DROP });
-    selectedLocation = { lat: location.lat(), lng: location.lng() };
-    geocoder.geocode({ location: location }, (results, status) => {
-      if (status === 'OK' && results[0]) parseAddress(results[0]);
-    });
-    marker.addListener('dragend', () => {
-      const newPos = marker.getPosition();
-      selectedLocation = { lat: newPos.lat(), lng: newPos.lng() };
-      geocoder.geocode({ location: newPos }, (results, status) => {
-        if (status === 'OK' && results[0]) parseAddress(results[0]);
-      });
-    });
-  }
-
-  function parseAddress(result) {
-    const components = result.address_components;
-    let state = '', district = '', area = '';
-    components.forEach(comp => {
-      if (comp.types.includes('administrative_area_level_1')) state = comp.long_name;
-      if (comp.types.includes('administrative_area_level_2')) district = comp.long_name;
-      if (comp.types.includes('locality') || comp.types.includes('sublocality') || comp.types.includes('sublocality_level_1')) area = comp.long_name;
-    });
-    selectedLocation.state = state;
-    selectedLocation.district = district;
-    selectedLocation.area = area;
-    selectedLocation.fullAddress = result.formatted_address;
-  }
-
-  document.getElementById('confirm-location-btn').addEventListener('click', async () => {
-    if (!selectedLocation) { alert('Please pin a location on the map first!'); return; }
-    document.getElementById('ad-latitude').value = selectedLocation.lat || '';
-    document.getElementById('ad-longitude').value = selectedLocation.lng || '';
-    document.getElementById('ad-locationFull').value = selectedLocation.fullAddress || '';
-    document.getElementById('selected-location-display').style.display = 'block';
-    document.getElementById('location-text').textContent = selectedLocation.fullAddress;
-    
-    if (selectedLocation.state) {
-      if (stateSelect.options.length <= 1) await loadStates();
-      for (let i = 0; i < stateSelect.options.length; i++) {
-        if (stateSelect.options[i].value === selectedLocation.state) {
-          stateSelect.selectedIndex = i;
-          stateSelect.dispatchEvent(new Event('change'));
-          break;
-        }
-      }
-      if (selectedLocation.district) {
-        setTimeout(() => {
-          for (let i = 0; i < districtSelect.options.length; i++) {
-            if (districtSelect.options[i].value === selectedLocation.district) {
-              districtSelect.selectedIndex = i;
-              districtSelect.dispatchEvent(new Event('change'));
-              break;
-            }
-          }
-          if (selectedLocation.area) {
-            setTimeout(() => {
-              let foundArea = false;
-              for (let i = 0; i < areaSelect.options.length; i++) {
-                if (areaSelect.options[i].value === selectedLocation.area) {
-                  areaSelect.selectedIndex = i;
-                  foundArea = true;
-                  break;
-                }
-              }
-              if (!foundArea) {
-                areaSelect.value = 'others';
-                areaSelect.dispatchEvent(new Event('change'));
-                document.getElementById('ad-area-custom').value = selectedLocation.area;
-              }
-            }, 500);
-          }
-        }, 500);
+  if (selectedLocation.state) {
+    if (stateSelect.options.length <= 1) await loadStates();
+    for (let i = 0; i < stateSelect.options.length; i++) {
+      if (stateSelect.options[i].value === selectedLocation.state) {
+        stateSelect.selectedIndex = i; stateSelect.dispatchEvent(new Event('change')); break;
       }
     }
-    document.getElementById('map-modal').style.display = 'none';
-  });
-  </script>
+    if (selectedLocation.district) {
+      setTimeout(() => {
+        for (let i = 0; i < districtSelect.options.length; i++) {
+          if (districtSelect.options[i].value === selectedLocation.district) {
+            districtSelect.selectedIndex = i; districtSelect.dispatchEvent(new Event('change')); break;
+          }
+        }
+        if (selectedLocation.area) {
+          setTimeout(() => {
+            let found = false;
+            for (let i = 0; i < areaSelect.options.length; i++) {
+              if (areaSelect.options[i].value === selectedLocation.area) {
+                areaSelect.selectedIndex = i; found = true; break;
+              }
+            }
+            if (!found) {
+              areaSelect.value = 'others'; areaSelect.dispatchEvent(new Event('change'));
+              document.getElementById('ad-area-custom').value = selectedLocation.area;
+            }
+          }, 500);
+        }
+      }, 500);
+    }
+  }
+  document.getElementById('map-modal').style.display = 'none';
+});
+</script>
 
   <style>
-  .location-section { padding: 20px; margin: 20px 0; border-radius: 12px; border: 1px solid rgba(249,209,0,0.20); background: rgba(249,209,0,0.04); }
-  .location-section h4 { margin: 0 0 16px 0; font-size: 16px; font-weight: 700; color: #f9d100; letter-spacing: 0.3px; }
-  .map-btn { width: 100%; padding: 12px; margin-bottom: 16px; background: rgba(249,209,0,0.15); border: 1px solid rgba(249,209,0,0.35); border-radius: 12px; color: #f9d100; font-size: 14px; font-weight: 800; cursor: pointer; transition: all 0.2s ease; }
-  .map-btn:hover { background: rgba(249,209,0,0.25); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(249,209,0,0.2); }
-  .location-confirmed { display: none; padding: 12px; margin-bottom: 16px; background: rgba(40, 167, 69, 0.15); border: 1px solid rgba(40, 167, 69, 0.35); border-radius: 8px; }
-  .location-confirmed-label { margin: 0; font-weight: 700; font-size: 13px; color: #4ade80; }
-  .location-confirmed-text { margin: 6px 0 0; font-size: 13px; color: #a1a1aa; line-height: 1.5; }
-  .photo-info { min-height: 20px; }
-  </style>
+/* Existing location styles */
+.location-section { padding: 20px; margin: 20px 0; border-radius: 12px; border: 1px solid rgba(249,209,0,0.20); background: rgba(249,209,0,0.04); }
+.location-section h4 { margin: 0 0 16px 0; font-size: 16px; font-weight: 700; color: #f9d100; }
+.map-btn { width: 100%; padding: 12px; margin-bottom: 16px; background: rgba(249,209,0,0.15); border: 1px solid rgba(249,209,0,0.35); border-radius: 12px; color: #f9d100; font-size: 14px; font-weight: 800; cursor: pointer; transition: all 0.2s ease; }
+.map-btn:hover { background: rgba(249,209,0,0.25); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(249,209,0,0.2); }
+.location-confirmed { display: none; padding: 12px; margin-bottom: 16px; background: rgba(40,167,69,0.15); border: 1px solid rgba(40,167,69,0.35); border-radius: 8px; }
+.location-confirmed-label { margin: 0; font-weight: 700; font-size: 13px; color: #4ade80; }
+.location-confirmed-text { margin: 6px 0 0; font-size: 13px; color: #a1a1aa; line-height: 1.5; }
+.photo-info { min-height: 20px; }
+
+/* Form block headers */
+.form-block-header { margin: 20px 0 12px; padding: 8px 12px; background: rgba(249,209,0,0.08); border-left: 3px solid #f9d100; border-radius: 4px; font-size: 13px; font-weight: 700; color: #f9d100; letter-spacing: 0.3px; }
+.form-block-section { padding: 16px; margin: 16px 0; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); }
+
+/* Facilities */
+.facilities-section { margin-top: 16px; padding: 16px; border-radius: 12px; border: 1px solid rgba(249,209,0,0.15); background: rgba(249,209,0,0.03); }
+.facilities-hint { font-size: 13px; color: #888; margin: 0 0 12px; }
+.facilities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 12px; }
+.facility-check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #ccc; cursor: pointer; padding: 6px 8px; border-radius: 6px; border: 1px solid transparent; transition: all 0.15s; }
+.facility-check:hover { background: rgba(249,209,0,0.06); border-color: rgba(249,209,0,0.2); }
+.facility-check input[type="checkbox"] { accent-color: #f9d100; width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; }
+.facility-check input[type="checkbox"]:checked + * { color: #f9d100; }
+.facilities-group { margin-bottom: 16px; }
+.facilities-group strong { display: block; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.show-more-btn { width: 100%; padding: 8px; margin: 8px 0 12px; background: transparent; border: 1px dashed rgba(249,209,0,0.3); border-radius: 8px; color: #f9d100; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+.show-more-btn:hover { background: rgba(249,209,0,0.06); }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .facilities-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
 
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtHBA74KW3ZS8WE8OKUr6tWy2MHFHxGw8&callback=initMap"></script>
 </body>
