@@ -668,22 +668,27 @@ function generateContactHTML(contact) {
 
 // ============ SHARE FUNCTIONALITY ============
 
-function generateListingSlug(title, index) {
-  // Create URL-friendly slug from title
-  const slug = title.toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .substring(0, 50);
-  return `${slug}-${index}`;
+function slugifyForListing(str) {
+  return (str || '')
+    .toLowerCase()
+    .replace(/[\u2018\u2019\u201C\u201D''""]/g, '')
+    .replace(/[\u2014\u2013\u2014\u2013]/g, '-')
+    .replace(/[^a-z0-9-]/g, '-')
+    .replace(/-{2,}/g, '-')
+    .replace(/^-|-$/g, '');
 }
 
-function generateListingURL(property, index) {
-  const slug = generateListingSlug(property['Ad Title'], index);
-  return `${window.location.origin}/projects.html?listing=${slug}`;
+function generateListingURL(property) {
+  const titlePart = slugifyForListing(property['Ad Title'] || 'listing');
+  const areaPart  = slugifyForListing(property['Area'] || property['District'] || '');
+  const ltPart    = slugifyForListing(property['Listing Type'] || '');
+  const slug      = [titlePart, areaPart, ltPart]
+    .filter(Boolean).join('-').replace(/-{2,}/g, '-') || 'listing';
+  return `${window.location.origin}/listings/${slug}`;
 }
 
 async function shareProperty(property, index) {
-  const url = generateListingURL(property, index);
+  const url = generateListingURL(property);
   const title = property['Ad Title'];
   const text = `Check out this property: ${title} - RM ${parseInt(property['Price(RM)']).toLocaleString()}`;
 
