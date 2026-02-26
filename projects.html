@@ -32,6 +32,8 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="projects.css" />
 
@@ -1203,8 +1205,6 @@
   <!-- Scripts -->
   <script src="CONFIG.js"></script>
   <script defer src="menu.js"></script>
-  <script defer src="https://cdn.auth0.com/js/auth0-spa-js/2.5/auth0-spa-js.production.js"></script>
-  <script defer src="auth.js"></script>
   <script defer src="projects.js"></script>
 
   <script>
@@ -1406,7 +1406,7 @@ let map, marker, selectedLocation, geocoder;
 
 document.getElementById('open-map-btn').addEventListener('click', () => {
   document.getElementById('map-modal').style.display = 'block';
-  setTimeout(() => { if (!map) initMap(); }, 300);
+  setTimeout(() => { if (!map) loadGoogleMaps().then(() => initMap()); }, 300);
 });
 document.getElementById('close-map-btn').addEventListener('click', () => {
   document.getElementById('map-modal').style.display = 'none';
@@ -1516,6 +1516,10 @@ function updateExpectedCompletion() {
 }
 document.getElementById('completion-month').addEventListener('change', updateExpectedCompletion);
 document.getElementById('completion-year').addEventListener('change', updateExpectedCompletion);
+// Handle Auth0 redirect callback (fires when user returns from login)
+if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
+  loadAuth0();
+}
 </script>
 
   <style>
@@ -1552,6 +1556,5 @@ document.getElementById('completion-year').addEventListener('change', updateExpe
 }
 </style>
 
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtHBA74KW3ZS8WE8OKUr6tWy2MHFHxGw8&callback=initMap"></script>
 </body>
 </html>

@@ -12,7 +12,6 @@ let currentSlideIndex = 0;
 let sliderTimer = null;
 let adminSlides = [];
 let isLoading = false;
-let cardCarouselTimers = {};
 let compareList = [];           // stores up to 3 property objects for comparison
 let currentRenderedProperties = []; // tracks currently filtered/rendered properties
 
@@ -20,7 +19,6 @@ let currentRenderedProperties = []; // tracks currently filtered/rendered proper
 
 window.addEventListener('beforeunload', () => {
   if (sliderTimer) clearInterval(sliderTimer);
-  Object.values(cardCarouselTimers).forEach(timer => clearInterval(timer));
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -848,6 +846,54 @@ async function shareProperty(property, index) {
   }
 }
 
+// ── LAZY LOADERS ─────────────────────────────────────────────
+
+function loadGoogleMaps() {
+  return new Promise((resolve) => {
+    if (window.google && window.google.maps) { resolve(); return; }
+    if (document.getElementById('google-maps-script')) {
+      window._mapsCallbacks = window._mapsCallbacks || [];
+      window._mapsCallbacks.push(resolve);
+      return;
+    }
+    window._googleMapsLoaded = () => {
+      resolve();
+      (window._mapsCallbacks || []).forEach(cb => cb());
+      window._mapsCallbacks = [];
+    };
+    const script = document.createElement('script');
+    script.id = 'google-maps-script';
+    script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCtHBA74KW3ZS8WE8OKUr6tWy2MHFHxGw8&callback=_googleMapsLoaded';
+    script.async = true;
+    document.head.appendChild(script);
+  });
+}
+
+function loadAuth0() {
+  return new Promise((resolve) => {
+    if (window.auth0 && window.Auth) { resolve(); return; }
+    if (document.getElementById('auth0-script')) {
+      window._auth0Callbacks = window._auth0Callbacks || [];
+      window._auth0Callbacks.push(resolve);
+      return;
+    }
+    const sdk = document.createElement('script');
+    sdk.id = 'auth0-script';
+    sdk.src = 'https://cdn.auth0.com/js/auth0-spa-js/2.5/auth0-spa-js.production.js';
+    sdk.onload = () => {
+      const authScript = document.createElement('script');
+      authScript.src = '/auth.js';
+      authScript.onload = () => {
+        resolve();
+        (window._auth0Callbacks || []).forEach(cb => cb());
+        window._auth0Callbacks = [];
+      };
+      document.head.appendChild(authScript);
+    };
+    document.head.appendChild(sdk);
+  });
+}
+
 function showToast(message) {
   const toast = document.createElement('div');
   toast.textContent = message;
@@ -883,38 +929,11 @@ if (!document.getElementById('toast-styles')) {
   document.head.appendChild(style);
 }
 
-function initCardCarousel(cardId, photos) {
-  if (photos.length <= 1) return;
-  if (cardCarouselTimers[cardId]) clearInterval(cardCarouselTimers[cardId]);
-  
-  let currentIndex = 0;
-
-  // Random delay per card (0–4s) so no two cards flip at the same time
-  const randomDelay = Math.floor(Math.random() * 4000);
-
-  setTimeout(() => {
-    cardCarouselTimers[cardId] = setInterval(() => {
-      currentIndex = (currentIndex + 1) % photos.length;
-      const img = document.querySelector(`#${cardId} .card-carousel-img`);
-      const dots = document.querySelectorAll(`#${cardId} .carousel-dot`);
-      
-      if (img) {
-        img.style.opacity = '0';
-        setTimeout(() => { img.src = photos[currentIndex]; img.style.opacity = '1'; }, 200);
-      }
-      if (dots) dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
-    }, 5000);
-  }, randomDelay);
-}
-
 function renderCards(properties) {
   currentRenderedProperties = properties;
   const container = document.getElementById('listings-container');
   const count = document.getElementById('property-count');
   if (!container) return;
-
-  Object.values(cardCarouselTimers).forEach(t => clearInterval(t));
-  cardCarouselTimers = {};
 
   if (count) count.innerText = `Showing ${properties.length} property listing${properties.length === 1 ? '' : 's'}`;
 
@@ -978,8 +997,6 @@ function renderCards(properties) {
       </div>
     </div>`;
   }).join('');
-
-  properties.forEach((item, index) => initCardCarousel(`card-${index}`, getPropertyPhotos(item)));
   
   container.querySelectorAll('.property-card').forEach(card => {
     card.addEventListener('click', () => {
@@ -1164,11 +1181,11 @@ function openPropertyModal(property, index) {
 
   modal.classList.add('open');
 
-  // Map
-  setTimeout(() => {
-    const lat = property['Location Full']?.lat || property.Latitude; 
+  // Map — lazy load Maps SDK only when modal is opened
+  loadGoogleMaps().then(() => {
+    const lat = property['Location Full']?.lat || property.Latitude;
     initProjectMap(property['Location Full'], lat, property.Longitude);
-  }, 300);
+  });
 
   // Gallery Logic
   let currentPhotoIndex = 0;
@@ -1226,14 +1243,12 @@ const closeBtn = document.getElementById('closeAdModalBtn');
 
 if (openBtn) {
   openBtn.onclick = async () => {
+    await loadAuth0();
     if (window.Auth && typeof window.Auth.requireLogin === 'function') {
       const isLoggedIn = await window.Auth.requireLogin();
       if (isLoggedIn && adModal) {
         adModal.classList.add('open');
       }
-    } else {
-      console.warn('Auth not ready yet');
-      setTimeout(() => openBtn.click(), 500);
     }
   };
 }
