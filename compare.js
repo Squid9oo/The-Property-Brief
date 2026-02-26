@@ -402,11 +402,13 @@ function renderTable() {
 
     // Section divider row — spans all columns
     if (row.type === 'divider') {
-      const totalCols = 1 + compareData.length + 1;
+    const totalCols = 1 + compareData.length + 1;
+    const emptyCells = Array(totalCols).fill('<td class="compare-divider-empty"></td>').join('');
       return `<tr class="compare-divider-row">
-        <td colspan="${totalCols}" class="compare-divider-cell">${row.label}</td>
-      </tr>`;
-    }
+      <td class="compare-divider-cell">${row.label}</td>
+      ${emptyCells}
+  </tr>`;
+}
 
     // Auto-skip row if every user listing returns null for this field
     const isFacilities = row.label === 'Facilities';
