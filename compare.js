@@ -278,7 +278,7 @@ const ROWS = [
     }
   },
 
-  { type: 'divider', label: '📞 Contact & Actions' },
+  { type: 'divider', label: '📞 Contact' },
   {
     label: 'Contact',
     render: p => {

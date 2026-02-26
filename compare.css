@@ -473,7 +473,11 @@
 /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 820px) {
   .compare-section { padding-bottom: 40px; }
-
+  /* Unfreeze first column on mobile — let the table scroll freely */
+  .compare-table th.row-label,
+  .compare-table td.row-label {
+    position: static;
+  }
   .compare-table th,
   .compare-table td {
     padding: 10px 10px;
@@ -539,6 +543,9 @@
   color: #f9d100;
   text-transform: uppercase;
   letter-spacing: 0.6px;
+  display: inline-block;
+  position: sticky;
+  left: 14px;
 }
 
 /* --- Description cell --- */
