@@ -8,6 +8,12 @@
 let compareData   = [];  // user-selected listings (2–3)
 let columnVisible = [];  // true/false per column index
 
+// ── Listing-type helpers for shouldShow ──────────────────────
+const anyNL    = d => d.some(p => p['Listing Type'] === 'New Launch');
+const anyNotNL = d => d.some(p => p['Listing Type'] !== 'New Launch');
+const anyRent  = d => d.some(p => p['Listing Type'] === 'For Rent');
+const anySale  = d => d.some(p => p['Listing Type'] === 'For Sale' || p['Listing Type'] === 'Sub Sale');
+
 // ============ ROW DEFINITIONS ============
 // render(property) → inner HTML string, or null (shows "—")
 // When property is null → sponsored column
@@ -127,25 +133,29 @@ const ROWS = [
     }
   },
 
-  { type: 'divider', label: '🏗️ Developer Info' },
+    { type: 'divider', label: '🏗️ Developer Info', shouldShow: anyNL },
   {
     label: 'Developer',
     render: p => (!p ? null : p.developerName || null)
   },
   {
     label: 'Dev. License',
+    shouldShow: anyNL,
     render: p => (!p ? null : p.developerLicense || null)
   },
   {
     label: 'Advert. Permit',
+    shouldShow: anyNL,
     render: p => (!p ? null : p.advertisingPermit || null)
   },
   {
     label: 'Est. Completion',
+    shouldShow: anyNL,
     render: p => (!p ? null : p.expectedCompletion ? formatCompletion(p.expectedCompletion) : null)
   },
   {
     label: 'Total Units',
+    shouldShow: anyNL,
     render: p => (!p ? null : p.totalUnits ? parseInt(p.totalUnits).toLocaleString() : null)
   },
   {
@@ -153,29 +163,35 @@ const ROWS = [
     render: p => (!p ? null : p.sellerType || null)
   },
 
-  { type: 'divider', label: '🔑 Sale / Rental Details' },
+  { type: 'divider', label: '🔑 Sale / Rental Details', shouldShow: anyNotNL },
   {
     label: 'Furnishing',
+    shouldShow: anyNotNL,
     render: p => (!p ? null : p.furnishing || null)
   },
   {
     label: 'Condition',
+    shouldShow: anySale,
     render: p => (!p ? null : p.renovationCondition || null)
   },
   {
     label: 'Occupancy',
+    shouldShow: anySale,
     render: p => (!p ? null : p.occupancyStatus || null)
   },
   {
     label: 'Available From',
+    shouldShow: anyRent,
     render: p => (!p ? null : p.availableFrom || null)
   },
   {
     label: 'Min Tenancy',
+    shouldShow: anyRent,
     render: p => (!p ? null : p.minTenancy || null)
   },
   {
     label: 'Pets Allowed',
+    shouldShow: anyRent,
     render: p => {
       if (!p || !p.petsAllowed) return null;
       return p.petsAllowed === 'Yes'
@@ -266,27 +282,17 @@ const ROWS = [
   {
     label: 'Contact',
     render: p => {
-      if (!p || !p.Contact) return null;
-      const c     = String(p.Contact).trim();
-      const digits = (c.match(/\d/g) || []).length;
-      if (digits >= 6) {
-        const clean    = c.replace(/[\s\-\(\)]/g, '');
-        const waNumber = clean.startsWith('0') ? '60' + clean.substring(1) : clean.replace(/^\+/, '');
-        return `<div style="display:flex;flex-direction:column;gap:6px;">
-          <span style="font-size:0.82rem;font-weight:600;">${c}</span>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <a href="https://wa.me/${waNumber}" target="_blank" rel="noopener"
-               style="padding:5px 10px;background:#25D366;color:#fff;border-radius:6px;font-size:0.72rem;font-weight:700;text-decoration:none;">💬 WhatsApp</a>
-            <a href="tel:${clean}"
-               style="padding:5px 10px;background:#3498db;color:#fff;border-radius:6px;font-size:0.72rem;font-weight:700;text-decoration:none;">📞 Call</a>
-          </div>
-        </div>`;
-      }
-      if (c.includes('@')) {
-        return `<a href="mailto:${c}"
-          style="padding:5px 10px;background:#e74c3c;color:#fff;border-radius:6px;font-size:0.72rem;font-weight:700;text-decoration:none;">✉️ ${c}</a>`;
-      }
-      return c;
+      if (!p) return null;
+      const parts = [];
+      if (p.sellerType) parts.push(
+        `<span style="font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.3px;">${p.sellerType}</span>`
+      );
+      if (p.Contact) parts.push(
+        `<span style="font-size:0.82rem;font-weight:600;color:var(--text);">${String(p.Contact).trim()}</span>`
+      );
+      return parts.length
+        ? `<div style="display:flex;flex-direction:column;gap:4px;">${parts.join('')}</div>`
+        : null;
     }
   },
   {
@@ -400,15 +406,25 @@ function renderTable() {
   // Body rows
   tbody.innerHTML = ROWS.map(row => {
 
+    // Respect shouldShow — skip entire row/divider if condition not met
+    if (row.shouldShow && !row.shouldShow(compareData)) return '';
+
     // Section divider row — spans all columns
     if (row.type === 'divider') {
-      const totalCols = 1 + compareData.length + 1; // label + sponsored + listings
+      const totalCols = 1 + compareData.length + 1;
       return `<tr class="compare-divider-row">
         <td colspan="${totalCols}" class="compare-divider-cell">${row.label}</td>
       </tr>`;
     }
 
+    // Auto-skip row if every user listing returns null for this field
     const isFacilities = row.label === 'Facilities';
+    const allNull = compareData.every(p => {
+      const v = isFacilities ? row.render(p, 1) : row.render(p);
+      return v === null || v === undefined || v === '';
+    });
+    if (allNull) return '';
+
     const cells = [
       buildCell(isFacilities ? row.render(null, 0) : row.render(null), 0),
       ...compareData.map((p, i) =>
