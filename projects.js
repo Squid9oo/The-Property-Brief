@@ -13,6 +13,8 @@ let sliderTimer = null;
 let adminSlides = [];
 let isLoading = false;
 let cardCarouselTimers = {};
+let compareList = [];           // stores up to 3 property objects for comparison
+let currentRenderedProperties = []; // tracks currently filtered/rendered properties
 
 // ============ LIFECYCLE ============
 
@@ -380,6 +382,137 @@ function resetTimer() {
 
 window.changeSlide = changeSlide;
 window.goToSlide = goToSlide;
+// ============ COMPARE FEATURE ============
+
+function toggleCompare(index) {
+  const property = currentRenderedProperties[index];
+  if (!property) return;
+
+  // Already selected → deselect
+  const existingIdx = compareList.findIndex(p =>
+    (p.Token && p.Token === property.Token) || p['Ad Title'] === property['Ad Title']
+  );
+  if (existingIdx !== -1) {
+    compareList.splice(existingIdx, 1);
+    updateCompareUI();
+    return;
+  }
+
+  // Max 3 reached
+  if (compareList.length >= 3) {
+    showToast('Maximum 3 properties — remove one first');
+    return;
+  }
+
+  // Same Listing Type + Category lock
+  if (compareList.length > 0) {
+    const ref = compareList[0];
+    const sameType = property['Listing Type'] === ref['Listing Type'];
+    const sameCat  = property['Category'] === ref['Category'];
+    if (!sameType || !sameCat) {
+      showToast(`Can only compare: ${ref['Listing Type']} · ${ref['Category']}`);
+      return;
+    }
+  }
+
+  compareList.push(property);
+  updateCompareUI();
+}
+
+function updateCompareUI() {
+  updateCompareButtons();
+  updateCompareTray();
+}
+
+function updateCompareButtons() {
+  document.querySelectorAll('.property-card').forEach(card => {
+    const btn = card.querySelector('.card-compare-btn');
+    if (!btn) return;
+    const propIdx  = parseInt(card.getAttribute('data-property-index'));
+    const property = currentRenderedProperties[propIdx];
+    if (!property) return;
+
+    const isSelected = compareList.some(p =>
+      (p.Token && p.Token === property.Token) || p['Ad Title'] === property['Ad Title']
+    );
+    const isLocked = compareList.length > 0 && !isSelected && (
+      property['Listing Type'] !== compareList[0]['Listing Type'] ||
+      property['Category']     !== compareList[0]['Category']
+    );
+    const isFull = compareList.length >= 3 && !isSelected;
+
+    btn.classList.toggle('selected', isSelected);
+    btn.classList.toggle('locked',   isLocked || isFull);
+    btn.disabled    = (isLocked || isFull);
+    btn.textContent = isSelected ? '✓ Added' : '⊕ Compare';
+  });
+}
+
+function updateCompareTray() {
+  const tray = document.getElementById('compare-tray');
+  if (!tray) return;
+
+  if (compareList.length === 0) {
+    tray.classList.remove('visible');
+    return;
+  }
+
+  tray.classList.add('visible');
+
+  tray.querySelector('.compare-tray-slots').innerHTML = compareList.map((p, i) => `
+    <div class="compare-slot">
+      <span class="compare-slot-name">${p['Ad Title'] || 'Property'}</span>
+      <button class="compare-slot-remove" onclick="removeFromCompare(${i})" aria-label="Remove">✕</button>
+    </div>
+  `).join('');
+
+  const btn = tray.querySelector('.compare-now-btn');
+  btn.disabled    = compareList.length < 2;
+  btn.textContent = `Compare Now (${compareList.length})`;
+}
+
+function removeFromCompare(i) {
+  compareList.splice(i, 1);
+  updateCompareUI();
+}
+
+function clearCompare() {
+  compareList = [];
+  updateCompareUI();
+}
+
+function goToCompare() {
+  if (compareList.length < 2) return;
+  sessionStorage.setItem('tpb_compare', JSON.stringify(compareList));
+  window.location.href = '/compare.html';
+}
+
+// Inject compare tray into page
+(function injectCompareTray() {
+  const tray = document.createElement('div');
+  tray.id        = 'compare-tray';
+  tray.className = 'compare-tray';
+  tray.setAttribute('role', 'region');
+  tray.setAttribute('aria-label', 'Property comparison tray');
+  tray.innerHTML = `
+    <div class="compare-tray-inner">
+      <div class="compare-tray-label">Compare:</div>
+      <div class="compare-tray-slots"></div>
+      <div class="compare-tray-actions">
+        <button class="compare-now-btn" onclick="goToCompare()" disabled>Compare Now (0)</button>
+        <button class="compare-clear-btn" onclick="clearCompare()">Clear All</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(tray);
+})();
+
+// Expose to global scope (used by onclick in HTML)
+window.toggleCompare     = toggleCompare;
+window.removeFromCompare = removeFromCompare;
+window.clearCompare      = clearCompare;
+window.goToCompare       = goToCompare;
+
 // ── TOKEN PRE-FILL (edit listing via ?token=) ─────────────────
 async function checkEditToken() {
   const params = new URLSearchParams(window.location.search);
@@ -775,6 +908,7 @@ function initCardCarousel(cardId, photos) {
 }
 
 function renderCards(properties) {
+  currentRenderedProperties = properties;
   const container = document.getElementById('listings-container');
   const count = document.getElementById('property-count');
   if (!container) return;
@@ -836,8 +970,9 @@ function renderCards(properties) {
           ${isNL && item.expectedCompletion ? `<span class="completion-badge">🏗️ Est. Completion: ${formatCompletion(item.expectedCompletion)}</span>` : ''}
           ${item.Tenure ? `<span class="tenure-badge">${item.Tenure}</span>` : ''}
         </div>
-<div class="card-meta-row">
+        <div class="card-meta-row">
           <button class="card-share-btn" onclick="event.stopPropagation(); shareProperty(allProperties[${index}], ${index})" aria-label="Share this listing">↗ Share</button>
+          <button class="card-compare-btn" id="compare-btn-${index}" onclick="event.stopPropagation(); toggleCompare(${index})" aria-label="Add to comparison">⊕ Compare</button>
           ${item['View Count'] ? `<span class="card-view-count">👁 ${parseInt(item['View Count']).toLocaleString()} view${parseInt(item['View Count']) === 1 ? '' : 's'}</span>` : ''}
         </div>
       </div>
