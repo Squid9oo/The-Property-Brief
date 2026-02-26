@@ -523,3 +523,28 @@
 
   .col-vis-btn { font-size: 0.70rem; padding: 4px 9px; }
 }
+/* --- Section divider rows --- */
+.compare-divider-row td {
+  background: rgba(249,209,0,0.06) !important;
+  border-top: 1px solid rgba(249,209,0,0.18) !important;
+  border-bottom: 1px solid rgba(249,209,0,0.10) !important;
+  padding: 9px 14px !important;
+  position: sticky;
+  left: 0;
+}
+
+.compare-divider-cell {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #f9d100;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* --- Description cell --- */
+.description-cell {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 260px;
+}

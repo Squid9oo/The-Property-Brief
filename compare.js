@@ -12,6 +12,11 @@ let columnVisible = [];  // true/false per column index
 // render(property) → inner HTML string, or null (shows "—")
 // When property is null → sponsored column
 const ROWS = [
+
+  // ── SECTION DIVIDERS ─────────────────────────────────────────
+  // Each object with type:'divider' renders a full-width section header row
+
+  { type: 'divider', label: '💰 Pricing' },
   {
     label: 'Price',
     render: p => {
@@ -37,6 +42,32 @@ const ROWS = [
     }
   },
   {
+    label: 'Maint. Fee',
+    render: p => (!p ? null : p.maintenanceFee ? `RM ${p.maintenanceFee} psf/mo` : null)
+  },
+  {
+    label: 'Sinking Fund',
+    render: p => (!p ? null : p.sinkingFund ? `RM ${p.sinkingFund} psf/mo` : null)
+  },
+  {
+    label: 'Bumi Discount',
+    render: p => (!p ? null : p.bumiDiscount ? `${p.bumiDiscount}%` : null)
+  },
+
+  { type: 'divider', label: '🏠 Property Details' },
+  {
+    label: 'Property Type',
+    render: p => (!p ? null : p['Property Type'] || p.Category || null)
+  },
+  {
+    label: 'Tenure',
+    render: p => (!p ? null : p.Tenure || null)
+  },
+  {
+    label: 'Land Title',
+    render: p => (!p ? null : p['Land Title'] || null)
+  },
+  {
     label: 'Built-up',
     render: p => {
       if (!p) return null;
@@ -48,6 +79,15 @@ const ROWS = [
       return p['Built Up (Sq.Ft.)']
         ? `${parseInt(p['Built Up (Sq.Ft.)']).toLocaleString()} sqft`
         : null;
+    }
+  },
+  {
+    label: 'Land Area',
+    render: p => {
+      if (!p) return null;
+      if (p.landAreaValue) return `${p.landAreaValue} ${p.landAreaUnit || ''}`.trim();
+      if (p['Land Size'])  return `${parseInt(p['Land Size']).toLocaleString()} sqft`;
+      return null;
     }
   },
   {
@@ -66,20 +106,16 @@ const ROWS = [
     render: p => (!p ? null : p.Bathrooms || null)
   },
   {
-    label: 'Tenure',
-    render: p => (!p ? null : p.Tenure || null)
+    label: 'Car Park',
+    render: p => (!p ? null : p.Parking ? `${p.Parking} bay(s)` : null)
   },
   {
-    label: 'Developer',
-    render: p => (!p ? null : p.developerName || null)
+    label: 'Floor Level',
+    render: p => (!p ? null : p.floorLevel || null)
   },
   {
-    label: 'Completion',
-    render: p => (!p ? null : p.expectedCompletion ? formatCompletion(p.expectedCompletion) : null)
-  },
-  {
-    label: 'Maint. Fee',
-    render: p => (!p ? null : p.maintenanceFee ? `RM ${p.maintenanceFee} psf/mo` : null)
+    label: 'Storeys',
+    render: p => (!p ? null : p['Storey Count'] || p.storeyCount || null)
   },
   {
     label: 'G&G',
@@ -90,6 +126,67 @@ const ROWS = [
         : `<span class="cell-no">✗ No</span>`;
     }
   },
+
+  { type: 'divider', label: '🏗️ Developer Info' },
+  {
+    label: 'Developer',
+    render: p => (!p ? null : p.developerName || null)
+  },
+  {
+    label: 'Dev. License',
+    render: p => (!p ? null : p.developerLicense || null)
+  },
+  {
+    label: 'Advert. Permit',
+    render: p => (!p ? null : p.advertisingPermit || null)
+  },
+  {
+    label: 'Est. Completion',
+    render: p => (!p ? null : p.expectedCompletion ? formatCompletion(p.expectedCompletion) : null)
+  },
+  {
+    label: 'Total Units',
+    render: p => (!p ? null : p.totalUnits ? parseInt(p.totalUnits).toLocaleString() : null)
+  },
+  {
+    label: 'Seller Type',
+    render: p => (!p ? null : p.sellerType || null)
+  },
+
+  { type: 'divider', label: '🔑 Sale / Rental Details' },
+  {
+    label: 'Furnishing',
+    render: p => (!p ? null : p.furnishing || null)
+  },
+  {
+    label: 'Condition',
+    render: p => (!p ? null : p.renovationCondition || null)
+  },
+  {
+    label: 'Occupancy',
+    render: p => (!p ? null : p.occupancyStatus || null)
+  },
+  {
+    label: 'Available From',
+    render: p => (!p ? null : p.availableFrom || null)
+  },
+  {
+    label: 'Min Tenancy',
+    render: p => (!p ? null : p.minTenancy || null)
+  },
+  {
+    label: 'Pets Allowed',
+    render: p => {
+      if (!p || !p.petsAllowed) return null;
+      return p.petsAllowed === 'Yes'
+        ? `<span class="cell-yes">✅ Yes</span>`
+        : p.petsAllowed === 'No'
+        ? `<span class="cell-no">✗ No</span>`
+        : p.petsAllowed;
+    }
+  },
+
+  { type: 'divider', label: '🚇 Connectivity' },
   {
     label: 'Nearest MRT',
     render: p => (!p ? null : p.nearestTransit || null)
@@ -102,6 +199,16 @@ const ROWS = [
     label: 'Nearest Mall',
     render: p => (!p ? null : p.nearestShoppingMall || null)
   },
+  {
+    label: 'School / Uni',
+    render: p => (!p ? null : p.nearestSchoolUni || null)
+  },
+  {
+    label: 'Hospital',
+    render: p => (!p ? null : p.nearestHospital || null)
+  },
+
+  { type: 'divider', label: '🏊 Facilities' },
   {
     label: 'Facilities',
     render: (p, colIdx) => {
@@ -117,6 +224,8 @@ const ROWS = [
         <div class="facilities-pill-list" id="${id}">${pills}</div>`;
     }
   },
+
+  { type: 'divider', label: '📍 Location' },
   {
     label: 'Location',
     render: p => {
@@ -128,10 +237,62 @@ const ROWS = [
     }
   },
   {
-    label: 'Finance',
+    label: 'State',
+    render: p => (!p ? null : p.State || null)
+  },
+  {
+    label: 'District',
+    render: p => (!p ? null : p.District || null)
+  },
+
+  { type: 'divider', label: '📝 Description' },
+  {
+    label: 'Description',
+    render: p => {
+      if (!p || !p.Description) return null;
+      const text = p.Description.replace(/\n/g, '<br>');
+      const id   = `desc-${Math.random().toString(36).substr(2,6)}`;
+      return `<div class="description-cell">
+        <div class="desc-preview" id="${id}-preview">${text.substring(0, 200)}${text.length > 200 ? '…' : ''}</div>
+        ${text.length > 200
+          ? `<div class="desc-full" id="${id}-full" style="display:none;">${text}</div>
+             <button class="facilities-expand-btn" onclick="toggleDesc('${id}')">▼ Read full description</button>`
+          : ''}
+      </div>`;
+    }
+  },
+
+  { type: 'divider', label: '📞 Contact & Actions' },
+  {
+    label: 'Contact',
+    render: p => {
+      if (!p || !p.Contact) return null;
+      const c     = String(p.Contact).trim();
+      const digits = (c.match(/\d/g) || []).length;
+      if (digits >= 6) {
+        const clean    = c.replace(/[\s\-\(\)]/g, '');
+        const waNumber = clean.startsWith('0') ? '60' + clean.substring(1) : clean.replace(/^\+/, '');
+        return `<div style="display:flex;flex-direction:column;gap:6px;">
+          <span style="font-size:0.82rem;font-weight:600;">${c}</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <a href="https://wa.me/${waNumber}" target="_blank" rel="noopener"
+               style="padding:5px 10px;background:#25D366;color:#fff;border-radius:6px;font-size:0.72rem;font-weight:700;text-decoration:none;">💬 WhatsApp</a>
+            <a href="tel:${clean}"
+               style="padding:5px 10px;background:#3498db;color:#fff;border-radius:6px;font-size:0.72rem;font-weight:700;text-decoration:none;">📞 Call</a>
+          </div>
+        </div>`;
+      }
+      if (c.includes('@')) {
+        return `<a href="mailto:${c}"
+          style="padding:5px 10px;background:#e74c3c;color:#fff;border-radius:6px;font-size:0.72rem;font-weight:700;text-decoration:none;">✉️ ${c}</a>`;
+      }
+      return c;
+    }
+  },
+  {
+    label: 'Finance Calc',
     render: p => {
       if (!p) {
-        // Sponsored column — show advertise CTA
         return `<a href="/advertise.html" class="col-action-btn col-action-advertise" target="_blank" rel="noopener">📣 Advertise Here</a>`;
       }
       return `<a href="/calculator.html" class="col-action-btn" target="_blank" rel="noopener">🧮 Calculate Finance</a>`;
@@ -238,11 +399,18 @@ function renderTable() {
 
   // Body rows
   tbody.innerHTML = ROWS.map(row => {
+
+    // Section divider row — spans all columns
+    if (row.type === 'divider') {
+      const totalCols = 1 + compareData.length + 1; // label + sponsored + listings
+      return `<tr class="compare-divider-row">
+        <td colspan="${totalCols}" class="compare-divider-cell">${row.label}</td>
+      </tr>`;
+    }
+
     const isFacilities = row.label === 'Facilities';
     const cells = [
-      // Col 0: Sponsored
       buildCell(isFacilities ? row.render(null, 0) : row.render(null), 0),
-      // Col 1–3: User listings
       ...compareData.map((p, i) =>
         buildCell(isFacilities ? row.render(p, i + 1) : row.render(p), i + 1)
       )
@@ -315,6 +483,17 @@ function renderVisibilityBar() {
 }
 
 // ============ FACILITIES TOGGLE ============
+function toggleDesc(id) {
+  const preview = document.getElementById(id + '-preview');
+  const full    = document.getElementById(id + '-full');
+  const btn     = full ? full.nextElementSibling : null;
+  if (!full) return;
+  const expanded = full.style.display === 'block';
+  full.style.display    = expanded ? 'none'  : 'block';
+  if (preview) preview.style.display = expanded ? 'block' : 'none';
+  if (btn)     btn.textContent       = expanded ? '▼ Read full description' : '▲ Show less';
+}
+window.toggleDesc = toggleDesc;
 
 function toggleFacilities(id) {
   const el  = document.getElementById(id);
