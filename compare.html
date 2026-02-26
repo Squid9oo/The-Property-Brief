@@ -187,7 +187,19 @@
         <!-- Column show/hide toggles -->
         <div class="col-visibility-bar" id="col-visibility-bar" aria-label="Show or hide columns"></div>
 
-        <!-- The table -->
+        <!-- Static content for Google crawl — hidden when JS table renders -->
+        <div id="compare-static-seo" class="compare-seo-block">
+          <h2>How to Compare Properties on The Property Brief</h2>
+          <p>The Property Brief's free property comparison tool lets you compare up to 3 Malaysian property projects side by side. To use it, go to the <a href="/projects.html">Listings page</a>, click the <strong>Compare</strong> button on any 2 or 3 property cards of the same type and category, then click <strong>Compare Now</strong> to open this comparison table.</p>
+          <h3>What the comparison table shows</h3>
+          <p>The side-by-side comparison table covers every important factor in a property decision: asking price and price range, price per square foot (PSF), built-up area, number of bedrooms and bathrooms, tenure (freehold or leasehold), land title, developer name, developer license, advertising permit number, expected completion date, total units in the development, maintenance fee, sinking fund, gated and guarded status, nearest MRT or LRT station, nearest highway, nearest shopping mall, nearest school or university, nearest hospital, full facilities list, and property description.</p>
+          <h3>Which properties can be compared together?</h3>
+          <p>You can only compare properties of the same listing type and category — for example, 3 New Launch high-rise projects, or 3 For Sale landed properties. This ensures the comparison is meaningful. Once you select your first property, all incompatible listings are automatically greyed out on the listings page.</p>
+          <h3>What is the sponsored column?</h3>
+          <p>Every comparison table on The Property Brief includes a 4th sponsored column — a property developer's project placed alongside whichever 3 projects you selected. This is a paid advertising slot available to Malaysian property developers. <a href="/advertise.html">Learn more about advertising on The Property Brief.</a></p>
+        </div>
+
+        <!-- The table — rendered by compare.js from sessionStorage -->
         <div class="compare-table-wrap">
           <table class="compare-table" id="compare-table" role="table" aria-label="Property comparison table">
             <thead id="compare-thead"></thead>

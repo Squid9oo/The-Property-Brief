@@ -548,3 +548,33 @@
   line-height: 1.65;
   max-width: 260px;
 }
+/* SEO static block — visible to crawlers, hidden after JS renders */
+.compare-seo-block {
+  padding: 24px 0 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 24px;
+}
+
+.compare-seo-block h2 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+
+.compare-seo-block h3 {
+  font-size: 0.95rem;
+  margin: 20px 0 8px;
+  color: var(--muted);
+}
+
+.compare-seo-block p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.compare-seo-block a {
+  color: #f9d100;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

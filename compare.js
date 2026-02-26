@@ -548,6 +548,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updatePageMeta();
     renderTable();
+    const seoBlock = document.getElementById('compare-static-seo');
+    if (seoBlock) seoBlock.style.display = 'none';
 
   } catch (e) {
     console.error('Compare init error:', e);
