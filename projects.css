@@ -1201,3 +1201,23 @@
 .modal-section--highlight h3 {
     color: #7a6000;
 }
+/* --- 14. CARD — VIEW COUNT + META ROW --- */
+.card-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.card-meta-row .card-share-btn {
+    margin-top: 0;
+    flex: 1;
+}
+
+.card-view-count {
+    font-size: 0.75rem;
+    color: #999;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}

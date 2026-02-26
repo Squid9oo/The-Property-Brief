@@ -830,7 +830,10 @@ function renderCards(properties) {
           ${isNL && item.expectedCompletion ? `<span class="completion-badge">🏗️ Est. Completion: ${formatCompletion(item.expectedCompletion)}</span>` : ''}
           ${item.Tenure ? `<span class="tenure-badge">${item.Tenure}</span>` : ''}
         </div>
-        <button class="card-share-btn" onclick="event.stopPropagation(); shareProperty(allProperties[${index}], ${index})" aria-label="Share this listing">↗ Share</button>
+<div class="card-meta-row">
+          ${item['View Count'] ? `<span class="card-view-count">👁 ${parseInt(item['View Count']).toLocaleString()} view${parseInt(item['View Count']) === 1 ? '' : 's'}</span>` : ''}
+          <button class="card-share-btn" onclick="event.stopPropagation(); shareProperty(allProperties[${index}], ${index})" aria-label="Share this listing">↗ Share</button>
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -847,6 +850,14 @@ function renderCards(properties) {
 function openPropertyModal(property, index) {
   const modal = document.getElementById('propertyModal');
   if (!modal) return;
+
+  // Fire-and-forget view increment — does not block modal opening
+  if (property.Token) {
+    fetch(CONFIG.API.PROJECTS_JSON, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'incrementView', token: property.Token })
+    }).catch(() => {}); // silent fail — never block the UI
+  }
 
   const photos = getPropertyPhotos(property, 1200);
   const galleryHTML = photos.map((p, i) => `<div class="modal-photo ${i===0?'active':''}" data-photo-index="${i}"><img src="${p}"></div>`).join('');
