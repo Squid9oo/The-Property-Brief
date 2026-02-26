@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compare Properties | The Property Brief</title>
+  <meta name="description" content="Compare Malaysian property projects side by side — price, PSF, built-up, tenure, facilities, connectivity and more." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://thepropertybrief.org/compare.html" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="compare.css" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CR7KQDF1JX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CR7KQDF1JX');
+  </script>
+</head>
+<body>
+
+  <!-- HEADER — exact copy from projects.html -->
+  <header class="topbar">
+    <div class="brand">
+      <a href="/" aria-label="The Property Brief — Home">
+        <img src="/assets/Logo TPB White.png" alt="The Property Brief" class="logo" />
+      </a>
+    </div>
+    <button class="hamburger" id="hamburger" type="button" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav" id="mainNav" aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/#latest">News</a>
+      <a href="/#strategies">Strategies</a>
+      <a href="/#search">Search</a>
+      <a href="/projects.html">Listings</a>
+      <div class="toolsDropdown">
+        <button class="toolsBtn" type="button" aria-expanded="false" aria-haspopup="true">
+          About <span class="toolsArrow" aria-hidden="true">▾</span>
+        </button>
+        <div class="toolsPanel" role="menu">
+          <a href="/about.html" class="toolsItem" role="menuitem">
+            <span class="toolsText"><strong>About Us</strong><span>Who we are &amp; standards</span></span>
+          </a>
+          <a href="/advertise.html" class="toolsItem" role="menuitem">
+            <span class="toolsText"><strong style="color:#f9d100;">Advertise</strong><span>Media kit &amp; ad slots</span></span>
+          </a>
+        </div>
+      </div>
+      <div class="toolsDropdown">
+        <button class="toolsBtn" type="button" aria-expanded="false" aria-haspopup="true">
+          Tools <span class="toolsArrow" aria-hidden="true">▾</span>
+        </button>
+        <div class="toolsPanel" role="menu">
+          <a href="/calculator.html" class="toolsItem" role="menuitem">
+            <span class="toolsIcon">🧮</span>
+            <span class="toolsText"><strong>Mortgage Calculator</strong><span>Full finance &amp; DSR tool</span></span>
+          </a>
+          <a href="/projects.html" class="toolsItem" role="menuitem">
+            <span class="toolsIcon">🔀</span>
+            <span class="toolsText"><strong>Compare Properties</strong><span>Side-by-side comparison</span></span>
+          </a>
+          <div class="toolsItem toolsComingSoon" aria-disabled="true">
+            <span class="toolsIcon">🖼️</span>
+            <span class="toolsText"><strong>Image Resizer</strong><span>Coming soon</span></span>
+          </div>
+          <div class="toolsItem toolsComingSoon" aria-disabled="true">
+            <span class="toolsIcon">📄</span>
+            <span class="toolsText"><strong>PDF Creator</strong><span>Coming soon</span></span>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="headerActions">
+      <a href="/projects.html" class="headerBtn compare-back-header-btn">← Back to Listings</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- PAGE HERO -->
+    <section class="compare-hero">
+      <div class="container">
+        <p class="kicker">Property Comparison Tool</p>
+        <h1 id="compare-page-title">Compare Properties</h1>
+        <p class="sub" id="compare-page-sub">Side-by-side comparison — plus one sponsored project worth considering.</p>
+      </div>
+    </section>
+
+    <!-- COMPARE TABLE SECTION -->
+    <section class="compare-section">
+      <div class="container">
+
+        <!-- Column show/hide toggles -->
+        <div class="col-visibility-bar" id="col-visibility-bar" aria-label="Show or hide columns"></div>
+
+        <!-- The table -->
+        <div class="compare-table-wrap">
+          <table class="compare-table" id="compare-table" role="table" aria-label="Property comparison table">
+            <thead id="compare-thead"></thead>
+            <tbody id="compare-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- Bottom actions -->
+        <div class="compare-bottom-bar">
+          <a href="/projects.html" class="compare-browse-btn">← Browse More Listings</a>
+          <a href="/advertise.html" class="compare-advertise-link" target="_blank" rel="noopener">📣 Advertise in the Sponsored Slot</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p class="muted" style="font-size:13px;">© 2025 The Property Brief ·
+      <a href="/about.html" style="color:var(--muted);">About</a> ·
+      <a href="/advertise.html" style="color:var(--muted);">Advertise</a>
+    </p>
+  </footer>
+
+  <script src="CONFIG.js"></script>
+  <script defer src="menu.js"></script>
+  <script defer src="compare.js"></script>
+
+</body>
+</html>
