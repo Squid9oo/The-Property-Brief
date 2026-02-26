@@ -295,15 +295,6 @@ const ROWS = [
         : null;
     }
   },
-  {
-    label: 'Finance Calc',
-    render: p => {
-      if (!p) {
-        return `<a href="/advertise.html" class="col-action-btn col-action-advertise" target="_blank" rel="noopener">📣 Advertise Here</a>`;
-      }
-      return `<a href="/calculator.html" class="col-action-btn" target="_blank" rel="noopener">🧮 Calculate Finance</a>`;
-    }
-  }
 ];
 
 // ============ CELL BUILDER ============
@@ -529,8 +520,10 @@ function updatePageMeta() {
   const sub = document.getElementById('compare-page-sub');
   if (h1) h1.textContent = `Compare Properties (${compareData.length} selected)`;
   if (sub) {
-    const short = names.map(n => n.length > 28 ? n.substring(0, 26) + '…' : n);
-    sub.textContent = `${short.join(' vs ')} — plus a sponsored project worth considering.`;
+    const count = compareData.length;
+    const listingType = compareData[0]['Listing Type'] || 'Property';
+    const area = compareData[0]['District'] || compareData[0]['State'] || 'Malaysia';
+    sub.textContent = `Comparing ${count} ${listingType} project${count > 1 ? 's' : ''} in ${area}. Price, PSF, facilities, connectivity and more — side by side.`;
   }
 }
 
