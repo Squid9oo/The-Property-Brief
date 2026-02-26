@@ -755,17 +755,23 @@ function initCardCarousel(cardId, photos) {
   if (cardCarouselTimers[cardId]) clearInterval(cardCarouselTimers[cardId]);
   
   let currentIndex = 0;
-  cardCarouselTimers[cardId] = setInterval(() => {
-    currentIndex = (currentIndex + 1) % photos.length;
-    const img = document.querySelector(`#${cardId} .card-carousel-img`);
-    const dots = document.querySelectorAll(`#${cardId} .carousel-dot`);
-    
-    if (img) {
-      img.style.opacity = '0';
-      setTimeout(() => { img.src = photos[currentIndex]; img.style.opacity = '1'; }, 200);
-    }
-    if (dots) dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
-  }, 3000);
+
+  // Random delay per card (0–4s) so no two cards flip at the same time
+  const randomDelay = Math.floor(Math.random() * 4000);
+
+  setTimeout(() => {
+    cardCarouselTimers[cardId] = setInterval(() => {
+      currentIndex = (currentIndex + 1) % photos.length;
+      const img = document.querySelector(`#${cardId} .card-carousel-img`);
+      const dots = document.querySelectorAll(`#${cardId} .carousel-dot`);
+      
+      if (img) {
+        img.style.opacity = '0';
+        setTimeout(() => { img.src = photos[currentIndex]; img.style.opacity = '1'; }, 200);
+      }
+      if (dots) dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+    }, 3000);
+  }, randomDelay);
 }
 
 function renderCards(properties) {
@@ -831,8 +837,8 @@ function renderCards(properties) {
           ${item.Tenure ? `<span class="tenure-badge">${item.Tenure}</span>` : ''}
         </div>
 <div class="card-meta-row">
-          ${item['View Count'] ? `<span class="card-view-count">👁 ${parseInt(item['View Count']).toLocaleString()} view${parseInt(item['View Count']) === 1 ? '' : 's'}</span>` : ''}
           <button class="card-share-btn" onclick="event.stopPropagation(); shareProperty(allProperties[${index}], ${index})" aria-label="Share this listing">↗ Share</button>
+          ${item['View Count'] ? `<span class="card-view-count">👁 ${parseInt(item['View Count']).toLocaleString()} view${parseInt(item['View Count']) === 1 ? '' : 's'}</span>` : ''}
         </div>
       </div>
     </div>`;

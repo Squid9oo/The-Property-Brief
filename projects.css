@@ -1202,16 +1202,34 @@
     color: #7a6000;
 }
 /* --- 14. CARD — VIEW COUNT + META ROW --- */
+
+/* Make card a flex column so meta row always pins to bottom */
+.property-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 .card-meta-row {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    margin-top: 12px;
+    margin-top: auto;
+    padding-top: 12px;
 }
 
+/* Share button — smaller, auto width */
 .card-meta-row .card-share-btn {
     margin-top: 0;
-    flex: 1;
+    width: auto;
+    padding: 6px 18px;
+    font-size: 0.75rem;
 }
 
 .card-view-count {
