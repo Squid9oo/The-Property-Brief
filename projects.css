@@ -1444,3 +1444,22 @@
     font-size: 0.73rem;
   }
 }
+/* --- Mobile: Property modal fullscreen --- */
+@media (max-width: 768px) {
+  #propertyModal {
+    padding: 0;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
+  #propertyModal .modal-content {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    border-radius: 0;
+    overflow: hidden;
+  }
+}

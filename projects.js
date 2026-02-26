@@ -1009,6 +1009,8 @@ function openPropertyModal(property, index) {
   const modal = document.getElementById('propertyModal');
   if (!modal) return;
 
+  const savedScrollY = window.scrollY;
+
   // Fire-and-forget view increment — does not block modal opening
   if (property.Token) {
     fetch(CONFIG.API.PROJECTS_JSON, {
@@ -1204,7 +1206,17 @@ function openPropertyModal(property, index) {
 
   // Close Button
   const closeBtn = modal.querySelector('#closePropertyModal');
-  if (closeBtn) closeBtn.onclick = () => modal.classList.remove('open');
+  if (closeBtn) closeBtn.onclick = () => {
+    modal.classList.remove('open');
+    window.scrollTo({ top: savedScrollY, behavior: 'instant' });
+  };
+
+  modal.onclick = (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('open');
+      window.scrollTo({ top: savedScrollY, behavior: 'instant' });
+    }
+  };
 }
 
 // ============ MAPS ============

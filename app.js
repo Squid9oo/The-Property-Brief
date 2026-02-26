@@ -860,6 +860,7 @@ ${slides}${controls}
    * @param {string} postId - Post ID
    */
   function openModal(title, html, postId) {
+    const savedScrollY = window.scrollY;
     const shareBtnHtml = postId
       ? `<button class="btnGhost sharePostBtn" type="button" data-share="post" data-post-id="${escapeHtml(postId)}">Share</button>`
       : '';
@@ -905,6 +906,7 @@ ${slides}${controls}
       }
       modal.remove();
       document.removeEventListener('keydown', escHandler);
+      window.scrollTo({ top: savedScrollY, behavior: 'instant' });
     };
 
     modal.addEventListener('click', (e) => {
