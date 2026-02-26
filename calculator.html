@@ -453,7 +453,11 @@
     </div>
     <div class="site-header-center">
       <a href="https://thepropertybrief.org" class="brand" aria-label="The Property Brief — back to homepage">
-        <img src="assets/Logo%20TPB%20White.png" alt="The Property Brief" class="header-logo"
+        <picture>
+          <source srcset="assets/Logo TPB White.webp" type="image/webp">
+          <img src="assets/Logo%20TPB%20White.png" alt="The Property Brief" class="header-logo"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" />
+        </picture>
              onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" />
         <span style="display:none;font-size:1.3rem;font-weight:700;color:#f5c800;letter-spacing:0.03em;">THE PROPERTY BRIEF</span>
       </a>
