@@ -770,7 +770,7 @@ function initCardCarousel(cardId, photos) {
         setTimeout(() => { img.src = photos[currentIndex]; img.style.opacity = '1'; }, 200);
       }
       if (dots) dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
-    }, 3000);
+    }, 5000);
   }, randomDelay);
 }
 
