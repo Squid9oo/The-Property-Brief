@@ -532,11 +532,23 @@ function updatePageMeta() {
 document.addEventListener('DOMContentLoaded', () => {
   try {
     const raw = sessionStorage.getItem('tpb_compare');
-    if (!raw) { window.location.href = '/projects.html'; return; }
+
+    // No data — show static SEO content, don't redirect
+    // (redirect would cause Google to treat this as a soft 404)
+    if (!raw) {
+      document.getElementById('col-visibility-bar').style.display = 'none';
+      document.querySelector('.compare-table-wrap').style.display = 'none';
+      document.querySelector('.compare-bottom-bar').style.display = 'none';
+      return;
+    }
 
     compareData = JSON.parse(raw);
+
+    // Too few selections — same: show static content, don't redirect
     if (!Array.isArray(compareData) || compareData.length < 2) {
-      window.location.href = '/projects.html';
+      document.getElementById('col-visibility-bar').style.display = 'none';
+      document.querySelector('.compare-table-wrap').style.display = 'none';
+      document.querySelector('.compare-bottom-bar').style.display = 'none';
       return;
     }
 
