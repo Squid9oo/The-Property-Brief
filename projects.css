@@ -175,7 +175,7 @@
 
 #btn-reset {
     background: rgba(255,255,255,0.08);
-    color: #f3f4f6;
+    color: #333333;
     border: 1px solid rgba(255,255,255,0.14);
     cursor: pointer;
     font-weight: 700;
@@ -321,7 +321,7 @@
 
 .price { 
     margin: 8px 0; 
-    color: #27ae60; 
+    color: #1a8a4a; 
     font-weight: 800; 
     font-size: 1.3rem; 
 }
@@ -329,7 +329,7 @@
 .location { 
     margin: 8px 0; 
     font-size: 0.85rem; 
-    color: #777; 
+    color: #595959; 
 }
 
 /* Category Badge - FIXED with visible text */
@@ -1096,7 +1096,7 @@
 .card-developer {
     margin: 0 0 4px;
     font-size: 0.78rem;
-    color: #888;
+    color: #666666;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.4px;
@@ -1234,7 +1234,7 @@
 
 .card-view-count {
     font-size: 0.75rem;
-    color: #999;
+    color: #767676;
     font-weight: 600;
     white-space: nowrap;
     flex-shrink: 0;
@@ -1253,7 +1253,7 @@
   background: transparent;
   border: 1px solid rgba(74, 158, 255, 0.40);
   border-radius: 8px;
-  color: #4a9eff;
+  color: #0066cc;
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
