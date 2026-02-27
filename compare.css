@@ -528,13 +528,25 @@
 }
 
 @media (max-width: 600px) {
+  .compare-table {
+    table-layout: fixed; /* Forces the browser to obey our widths exactly */
+  }
+
   .compare-table th.row-label,
   .compare-table td.row-label {
-    width: 55px;
-    min-width: 55px;
-    max-width: 55px;
+    width: 75px; /* Slightly wider so text doesn't break awkwardly */
+    min-width: 75px;
+    max-width: 75px;
     font-size: 0.62rem;
     padding: 8px 5px;
+    word-wrap: break-word; /* Forces long words to wrap to the next line */
+  }
+
+  .compare-table th:not(.row-label),
+  .compare-table td:not(.row-label) {
+    width: 42vw; /* Each property column takes up exactly 42% of the screen width */
+    min-width: 42vw;
+    max-width: 42vw;
   }
 
   .col-vis-btn { font-size: 0.70rem; padding: 4px 9px; }
