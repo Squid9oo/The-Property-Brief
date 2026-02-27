@@ -519,9 +519,9 @@
 @media (max-width: 600px) {
   .compare-table th.row-label,
   .compare-table td.row-label {
-    width: 82px;
-    min-width: 82px;
-    max-width: 82px;
+    width: 72px;
+    min-width: 72px;
+    max-width: 72px;
     font-size: 0.62rem;
     padding: 8px 6px;
   }
