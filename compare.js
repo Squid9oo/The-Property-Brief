@@ -434,6 +434,18 @@ function renderTable() {
   const tbody = document.getElementById('compare-tbody');
   if (!thead || !tbody) return;
 
+  // Inject colgroup — forces equal width distribution with table-layout:fixed
+  const table = document.getElementById('compare-table');
+  const totalDataCols = 1 + compareData.length;
+  let colgroup = document.getElementById('compare-colgroup');
+  if (!colgroup) {
+    colgroup = document.createElement('colgroup');
+    colgroup.id = 'compare-colgroup';
+    table.insertBefore(colgroup, table.firstChild);
+  }
+  colgroup.innerHTML = `<col style="width:140px">` +
+    Array(totalDataCols).fill('<col>').join('');
+
   // Header
   thead.innerHTML = `<tr>
     <th class="row-label" data-col="label"></th>
@@ -602,7 +614,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Mobile default: sponsored + col 1 only — all others hidden and scrollable via show/hide
-    const isMobile = window.innerWidth <= 820;
+    const isMobile = window.innerWidth <= 1024;
     columnVisible = new Array(1 + compareData.length).fill(true);
     if (isMobile) {
     for (let i = 2; i < 1 + compareData.length; i++) {

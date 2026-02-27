@@ -111,7 +111,7 @@
   width: 100%;
   min-width: 620px;
   border-collapse: collapse;
-  table-layout: auto;
+  table-layout: fixed;
 }
 
 /* --- Cell Base --- */
@@ -470,7 +470,7 @@
 }
 
 /* --- MOBILE RESPONSIVE --- */
-@media (max-width: 820px) {
+@media (max-width: 1024px) {
   .compare-section { padding-bottom: 40px; }
   /* Unfreeze first column on mobile — let the table scroll freely */
   .compare-table th.row-label,
@@ -516,7 +516,7 @@
   .compare-hero { padding: 20px 0 4px; }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .compare-table th.row-label,
   .compare-table td.row-label {
     width: 82px;
