@@ -415,6 +415,12 @@
 .compare-table th.col-hidden,
 .compare-table td.col-hidden {
   display: none;
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  overflow: hidden !important;
 }
 
 /* --- BOTTOM BAR --- */
