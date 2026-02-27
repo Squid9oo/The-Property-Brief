@@ -12,8 +12,12 @@ let currentSlideIndex = 0;
 let sliderTimer = null;
 let adminSlides = [];
 let isLoading = false;
-let compareList = [];           // stores up to 3 property objects for comparison
-let currentRenderedProperties = []; // tracks currently filtered/rendered properties
+let compareList = [];
+let currentRenderedProperties = [];
+let currentFilteredProperties = [];
+let currentDisplayedCount = 0;
+const LISTINGS_INITIAL    = 9;
+const LISTINGS_INCREMENT  = 6;
 
 // ============ LIFECYCLE ============
 
@@ -505,6 +509,33 @@ function goToCompare() {
   document.body.appendChild(tray);
 })();
 
+function loadMoreListings() {
+  currentDisplayedCount = Math.min(
+    currentDisplayedCount + LISTINGS_INCREMENT,
+    currentFilteredProperties.length
+  );
+  renderVisibleCards();
+}
+window.loadMoreListings = loadMoreListings;
+
+// ── Go to Top button (mobile/tablet only) ─────────────────────
+(function injectGoToTop() {
+  const btn = document.createElement('button');
+  btn.id        = 'go-to-top-btn';
+  btn.className = 'go-to-top-btn';
+  btn.setAttribute('aria-label', 'Go to top');
+  btn.innerHTML = '↑';
+  document.body.appendChild(btn);
+
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
 // Expose to global scope (used by onclick in HTML)
 window.toggleCompare     = toggleCompare;
 window.removeFromCompare = removeFromCompare;
@@ -930,38 +961,43 @@ if (!document.getElementById('toast-styles')) {
 }
 
 function renderCards(properties) {
-  currentRenderedProperties = properties;
+  currentFilteredProperties = properties;
+  currentDisplayedCount     = Math.min(LISTINGS_INITIAL, properties.length);
+  renderVisibleCards();
+}
+
+function renderVisibleCards() {
+  const visible   = currentFilteredProperties.slice(0, currentDisplayedCount);
+  currentRenderedProperties = currentFilteredProperties; // keep full list for compare
+
   const container = document.getElementById('listings-container');
-  const count = document.getElementById('property-count');
+  const count     = document.getElementById('property-count');
   if (!container) return;
 
-  if (count) count.innerText = `Showing ${properties.length} property listing${properties.length === 1 ? '' : 's'}`;
+  const total = currentFilteredProperties.length;
+  if (count) count.innerText = `Showing ${Math.min(currentDisplayedCount, total)} of ${total} property listing${total === 1 ? '' : 's'}`;
 
-  if (properties.length === 0) {
+  if (total === 0) {
     container.innerHTML = `<div style="padding:40px;text-align:center;"><p>No properties found.</p></div>`;
+    updateLoadMoreBtn();
     return;
   }
 
-  container.innerHTML = properties.map((item, index) => {
+  container.innerHTML = visible.map((item, index) => {
     const photos = getPropertyPhotos(item);
     const cardId = `card-${index}`;
-    const price = item['Price(RM)'] ? parseInt(item['Price(RM)']).toLocaleString() : '0';
-    const builtUp = item['Built Up (Sq.Ft.)'] ? parseInt(item['Built Up (Sq.Ft.)']).toLocaleString() : '';
-
-    // PSF — calculated on the fly
-    const psf = (item['Price(RM)'] && item['Built Up (Sq.Ft.)'] && parseInt(item['Built Up (Sq.Ft.)']) > 0)
+    const price  = item['Price(RM)'] ? parseInt(item['Price(RM)']).toLocaleString() : '0';
+    const psf    = (item['Price(RM)'] && item['Built Up (Sq.Ft.)'] && parseInt(item['Built Up (Sq.Ft.)']) > 0)
       ? Math.round(parseInt(item['Price(RM)']) / parseInt(item['Built Up (Sq.Ft.)']))
       : null;
-
-    // New Launch range display
-    const isNL = item['Listing Type'] === 'New Launch';
-    const bedsDisplay = isNL && item.bedroomsMin
+    const isNL           = item['Listing Type'] === 'New Launch';
+    const bedsDisplay    = isNL && item.bedroomsMin
       ? `${item.bedroomsMin}${item.bedroomsMax ? '–' + item.bedroomsMax : '+'} bd`
       : item.Bedrooms ? `${item.Bedrooms} bd` : '';
-    const sqftDisplay = isNL && item.builtUpMin
+    const sqftDisplay    = isNL && item.builtUpMin
       ? `${parseInt(item.builtUpMin).toLocaleString()}${item.builtUpMax ? '–' + parseInt(item.builtUpMax).toLocaleString() : '+'} sqft`
       : item['Built Up (Sq.Ft.)'] ? `${parseInt(item['Built Up (Sq.Ft.)']).toLocaleString()} sqft` : '';
-    const priceDisplay = isNL && item.priceToRm
+    const priceDisplay   = isNL && item.priceToRm
       ? `From RM ${parseInt(item['Price(RM)']).toLocaleString()}`
       : `RM ${price}`;
 
@@ -976,10 +1012,10 @@ function renderCards(properties) {
         ${isNL && item.developerName ? `<p class="card-developer">${item.developerName}</p>` : ''}
         <h3>${item['Ad Title']}</h3>
         <div class="property-specs">
-          ${bedsDisplay ? `<span class="spec">🛏️ ${bedsDisplay}</span>` : ''}
+          ${bedsDisplay   ? `<span class="spec">🛏️ ${bedsDisplay}</span>`  : ''}
           ${item.Bathrooms ? `<span class="spec">🛁 ${item.Bathrooms}</span>` : ''}
-          ${sqftDisplay ? `<span class="spec">📐 ${sqftDisplay}</span>` : ''}
-          ${psf ? `<span class="spec">💰 RM${psf.toLocaleString()}/sqft</span>` : ''}
+          ${sqftDisplay   ? `<span class="spec">📐 ${sqftDisplay}</span>`  : ''}
+          ${psf           ? `<span class="spec">💰 RM${psf.toLocaleString()}/sqft</span>` : ''}
           ${item.gatedGuarded === 'Yes' ? `<span class="spec">🔒 G&G</span>` : ''}
         </div>
         <p class="price">${priceDisplay}</p>
@@ -990,19 +1026,36 @@ function renderCards(properties) {
           ${item.Tenure ? `<span class="tenure-badge">${item.Tenure}</span>` : ''}
         </div>
         <div class="card-meta-row">
-          <button class="card-share-btn" onclick="event.stopPropagation(); shareProperty(allProperties[${index}], ${index})" aria-label="Share this listing">↗ Share</button>
+          <button class="card-share-btn" onclick="event.stopPropagation(); shareProperty(currentFilteredProperties[${index}], ${index})" aria-label="Share this listing">↗ Share</button>
           <button class="card-compare-btn" id="compare-btn-${index}" onclick="event.stopPropagation(); toggleCompare(${index})" aria-label="Add to comparison">⊕ Compare</button>
           ${item['View Count'] ? `<span class="card-view-count">👁 ${parseInt(item['View Count']).toLocaleString()} view${parseInt(item['View Count']) === 1 ? '' : 's'}</span>` : ''}
         </div>
       </div>
     </div>`;
   }).join('');
-  
+
   container.querySelectorAll('.property-card').forEach(card => {
     card.addEventListener('click', () => {
-      openPropertyModal(properties[parseInt(card.getAttribute('data-property-index'))], parseInt(card.getAttribute('data-property-index')));
+      const idx = parseInt(card.getAttribute('data-property-index'));
+      openPropertyModal(currentFilteredProperties[idx], idx);
     });
   });
+
+  updateLoadMoreBtn();
+}
+
+function updateLoadMoreBtn() {
+  let wrap = document.getElementById('listings-load-more-wrap');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.id = 'listings-load-more-wrap';
+    const container = document.getElementById('listings-container');
+    if (container) container.after(wrap);
+  }
+  const hasMore = currentDisplayedCount < currentFilteredProperties.length;
+  wrap.innerHTML = hasMore
+    ? `<button class="listings-load-more-btn" onclick="loadMoreListings()">Load More</button>`
+    : '';
 }
 
 function openPropertyModal(property, index) {

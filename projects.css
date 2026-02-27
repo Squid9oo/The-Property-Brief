@@ -1463,3 +1463,60 @@
     overflow: hidden;
   }
 }
+/* --- Load More button --- */
+.listings-load-more-btn {
+  display: block;
+  margin: 24px auto 8px;
+  padding: 12px 32px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+  color: #f3f4f6;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.listings-load-more-btn:hover {
+  background: rgba(249,209,0,0.10);
+  border-color: rgba(249,209,0,0.35);
+  color: #f9d100;
+}
+
+/* --- Go to Top button (mobile/tablet only) --- */
+.go-to-top-btn {
+  display: none;
+}
+
+@media (max-width: 820px) {
+  .go-to-top-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 80px; /* sits above compare tray if visible */
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(249,209,0,0.40);
+    background: rgba(11,11,12,0.92);
+    color: #f9d100;
+    font-size: 1.2rem;
+    font-weight: 800;
+    cursor: pointer;
+    z-index: 9997;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.45);
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .go-to-top-btn.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
