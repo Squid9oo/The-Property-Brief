@@ -1521,10 +1521,7 @@ function updateExpectedCompletion() {
 }
 document.getElementById('completion-month').addEventListener('change', updateExpectedCompletion);
 document.getElementById('completion-year').addEventListener('change', updateExpectedCompletion);
-// Handle Auth0 redirect callback (fires when user returns from login)
-if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
-  loadAuth0();
-}
+
 </script>
 
   <style>

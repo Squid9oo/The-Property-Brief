@@ -28,7 +28,7 @@ window.addEventListener('beforeunload', () => {
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Initialize Helpers
   initDropdowns();
-  
+
   // 2. Initialize Data
   init();
 
@@ -37,6 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (form) {
     form.addEventListener('submit', handleFormSubmit);
   }
+
+  // 4. Load Auth0 on page load so Login/Logout buttons appear correctly
+  //    Also handles the redirect callback when returning from Auth0 login
+  loadAuth0().then(() => {
+    if (window.Auth && typeof window.Auth.initAuth === 'function') {
+      window.Auth.initAuth();
+    }
+  }).catch(err => console.warn('Auth0 load error:', err));
 });
 
 // ============ INITIALIZATION ============
