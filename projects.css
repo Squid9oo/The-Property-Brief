@@ -744,6 +744,7 @@
 .modalCard input[type="text"],
 .modalCard input[type="number"],
 .modalCard input[type="email"],
+.modalCard input[type="url"],
 .modalCard input[type="file"],
 .modalCard select,
 .modalCard textarea {
