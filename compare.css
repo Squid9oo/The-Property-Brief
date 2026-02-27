@@ -111,13 +111,7 @@
   width: 100%;
   min-width: 620px;
   border-collapse: collapse;
-  table-layout: fixed;
-}
-
-/* Distribute data columns evenly — fills full table width */
-.compare-table th:not(.row-label),
-.compare-table td:not(.row-label) {
-  width: auto;
+  table-layout: auto;
 }
 
 /* --- Cell Base --- */
