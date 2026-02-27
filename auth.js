@@ -11,18 +11,24 @@ const auth0Config = {
 async function initAuth() {
   auth0Client = await auth0.createAuth0Client(auth0Config);
 
-  // Handle OAuth callback
+  // Handle OAuth callback — wrapped in try/catch so stale state never crashes auth flow
   if (window.location.search.includes("code=") && window.location.search.includes("state=")) {
-    await auth0Client.handleRedirectCallback();
-    window.history.replaceState({}, document.title, window.location.pathname);
+    try {
+      await auth0Client.handleRedirectCallback();
+      window.history.replaceState({}, document.title, window.location.pathname);
 
-    // Auto-open form after login
-    if (sessionStorage.getItem("openAdAfterLogin") === "1") {
-      sessionStorage.removeItem("openAdAfterLogin");
-      setTimeout(() => {
-        const adModal = document.getElementById('adModal');
-        if (adModal) adModal.classList.add('open');
-      }, 500);
+      // Auto-open form after login
+      if (sessionStorage.getItem("openAdAfterLogin") === "1") {
+        sessionStorage.removeItem("openAdAfterLogin");
+        setTimeout(() => {
+          const adModal = document.getElementById('adModal');
+          if (adModal) adModal.classList.add('open');
+        }, 500);
+      }
+    } catch (err) {
+      // Stale or replayed state token — clean the URL and continue silently
+      console.warn('Auth0 callback ignored (stale state):', err.message);
+      window.history.replaceState({}, document.title, window.location.pathname);
     }
   }
 

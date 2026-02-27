@@ -39,12 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 4. Load Auth0 on page load so Login/Logout buttons appear correctly
-  //    Also handles the redirect callback when returning from Auth0 login
-  loadAuth0().then(() => {
-    if (window.Auth && typeof window.Auth.initAuth === 'function') {
-      window.Auth.initAuth();
-    }
-  }).catch(err => console.warn('Auth0 load error:', err));
+  //    auth.js calls initAuth() itself on load — we just trigger the lazy load here
+  loadAuth0().catch(err => console.warn('Auth0 load error:', err));
 });
 
 // ============ INITIALIZATION ============
