@@ -479,6 +479,10 @@
 @media (max-width: 1024px) {
   .compare-section { padding-bottom: 40px; }
   .compare-table { table-layout: auto; }
+  .compare-table th:not(.row-label),
+  .compare-table td:not(.row-label) {
+    min-width: 150px;
+  }
   /* Unfreeze first column on mobile — let the table scroll freely */
   .compare-table th.row-label,
   .compare-table td.row-label {
@@ -492,14 +496,14 @@
 
   .compare-table th.row-label,
   .compare-table td.row-label {
-  width: 80px;
-  min-width: 80px;
-  max-width: 80px;
-  font-size: 0.68rem;
-  padding: 10px 8px;
-  white-space: normal;
-  line-height: 1.4;
-}
+    width: 70px;
+    min-width: 70px;
+    max-width: 70px;
+    font-size: 0.68rem;
+    padding: 10px 6px;
+    white-space: normal;
+    line-height: 1.4;
+  }
 
   .col-header-inner {
     padding: 12px 8px 10px;
@@ -526,12 +530,12 @@
 @media (max-width: 600px) {
   .compare-table th.row-label,
   .compare-table td.row-label {
-  width: 60px;
-  min-width: 60px;
-  max-width: 60px;
-  font-size: 0.62rem;
-  padding: 8px 6px;
-}
+    width: 55px;
+    min-width: 55px;
+    max-width: 55px;
+    font-size: 0.62rem;
+    padding: 8px 5px;
+  }
 
   .col-vis-btn { font-size: 0.70rem; padding: 4px 9px; }
 }
