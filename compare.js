@@ -3,6 +3,12 @@
    Property comparison page logic
    Session 18
 ======================================== */
+function toBullets(text) {
+  if (!text || !text.trim()) return null;
+  return text.split('\n')
+    .map(l => l.trim()).filter(Boolean)
+    .map(l => `• ${l}`).join('<br>');
+}
 
 // ============ STATE ============
 let compareData   = [];  // user-selected listings (2–3)
@@ -285,20 +291,37 @@ const ROWS = [
     render: p => (!p ? null : p.District || null)
   },
 
-  { type: 'divider', label: '📝 Description' },
+  { type: 'divider', label: '📝 About This Property' },
   {
-    label: 'Description',
+    label: 'Highlights',
     render: p => {
-      if (!p || !p.Description) return null;
-      const text = p.Description.replace(/\n/g, '<br>');
-      const id   = `desc-${Math.random().toString(36).substr(2,6)}`;
+      if (!p) return null;
+      const raw = p.Highlights || p.Description;
+      const text = toBullets(raw);
+      if (!text) return null;
+      const id = `desc-${Math.random().toString(36).substr(2,6)}`;
+      const isLong = (raw || '').split('\n').filter(Boolean).length > 4;
       return `<div class="description-cell">
-        <div class="desc-preview" id="${id}-preview">${text.substring(0, 200)}${text.length > 200 ? '…' : ''}</div>
-        ${text.length > 200
-          ? `<div class="desc-full" id="${id}-full" style="display:none;">${text}</div>
-             <button class="facilities-expand-btn" onclick="toggleDesc('${id}')">▼ Read full description</button>`
+        <div class="desc-preview" id="${id}-preview" style="line-height:2;">${text}</div>
+        ${isLong
+          ? `<div class="desc-full" id="${id}-full" style="display:none;line-height:2;">${text}</div>
+             <button class="facilities-expand-btn" onclick="toggleDesc('${id}')">▼ Read more</button>`
           : ''}
       </div>`;
+    }
+  },
+  {
+    label: 'Specifications',
+    render: p => {
+      if (!p || !p.Specifications) return null;
+      return `<p style="line-height:2;margin:0;">${toBullets(p.Specifications)}</p>`;
+    }
+  },
+  {
+    label: 'Furnishing',
+    render: p => {
+      if (!p || !p.Furnishing) return null;
+      return `<p style="line-height:2;margin:0;">${toBullets(p.Furnishing)}</p>`;
     }
   },
 

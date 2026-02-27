@@ -170,7 +170,9 @@ async function handleFormSubmit(e) {
       landSize:     fromCat('landSize') || formData.get('landSize'),
       parking:      fromCat('parking'),
       storeyCount:  fromCat('storeyCount'),
-      description:  formData.get('description'),
+      highlights:     formData.get('highlights'),
+      specifications: formData.get('specifications'),
+      furnishing:     formData.get('furnishing'),
       contact:      formData.get('contact'),
       
       // Photos Array
@@ -264,6 +266,12 @@ async function handleFormSubmit(e) {
 /**
  * Helper: Read file as Base64 object for Google Script
  */
+function toBullets(text) {
+  if (!text || !text.trim()) return null;
+  return text.split('\n')
+    .map(l => l.trim()).filter(Boolean)
+    .map(l => `• ${l}`).join('<br>');
+}
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -1228,10 +1236,23 @@ function openPropertyModal(property, index) {
           </div>` : ''}
         </div>` : ''}
 
+        ${(property.Highlights || property.Description) ? `
         <div class="modal-section">
-          <h3>📝 Description</h3>
-          <p>${(property.Description || '').replace(/\n/g, '<br>')}</p>
-        </div>
+          <h3>📌 Highlights</h3>
+          <p style="line-height:2;">${toBullets(property.Highlights || property.Description)}</p>
+        </div>` : ''}
+
+        ${property.Specifications ? `
+        <div class="modal-section">
+          <h3>🔧 Specifications</h3>
+          <p style="line-height:2;">${toBullets(property.Specifications)}</p>
+        </div>` : ''}
+
+        ${property.Furnishing ? `
+        <div class="modal-section">
+          <h3>🛋️ Furnishing</h3>
+          <p style="line-height:2;">${toBullets(property.Furnishing)}</p>
+        </div>` : ''}
 
         <div class="modal-section">
           <h3>📞 Contact</h3>

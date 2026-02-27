@@ -49,7 +49,7 @@ function buildListingHTML(listing, slug) {
   const district  = listing['District'] || '';
   const area      = listing['Area']     || '';
   const locFull   = listing['Location Full'] || [area, district, state].filter(Boolean).join(', ');
-  const desc      = listing['Description'] || '';
+  const desc      = listing['Highlights'] || listing['Description'] || '';
   const contact   = listing['Contact'] || '';
   const url       = `https://thepropertybrief.org/listings/${slug}`;
 
@@ -391,8 +391,22 @@ function buildListingHTML(listing, slug) {
         ${tableHtml}
 
         ${desc ? `
-        <h2 style="margin-top:2rem;margin-bottom:1rem;">Description</h2>
-        <p class="muted" style="line-height:1.8;white-space:pre-line;">${safeAttr(desc)}</p>` : ''}
+        <h2 style="margin-top:2rem;margin-bottom:1rem;">📌 Highlights</h2>
+        <ul style="margin:0;padding-left:1.2rem;line-height:2.2;color:var(--muted,#555);">
+          ${desc.split('\n').filter(l => l.trim()).map(l => `<li>${safeAttr(l.trim())}</li>`).join('')}
+        </ul>` : ''}
+
+        ${listing['Specifications'] ? `
+        <h2 style="margin-top:2rem;margin-bottom:1rem;">🔧 Specifications</h2>
+        <ul style="margin:0;padding-left:1.2rem;line-height:2.2;color:var(--muted,#555);">
+          ${listing['Specifications'].split('\n').filter(l => l.trim()).map(l => `<li>${safeAttr(l.trim())}</li>`).join('')}
+        </ul>` : ''}
+
+        ${listing['Furnishing'] ? `
+        <h2 style="margin-top:2rem;margin-bottom:1rem;">🛋️ Furnishing</h2>
+        <ul style="margin:0;padding-left:1.2rem;line-height:2.2;color:var(--muted,#555);">
+          ${listing['Furnishing'].split('\n').filter(l => l.trim()).map(l => `<li>${safeAttr(l.trim())}</li>`).join('')}
+        </ul>` : ''}
 
         ${(listing['facilitiesStandard'] || listing['facilitiesCustom']) ? `
         <h2 style="margin-top:2rem;margin-bottom:1rem;">🏊 Facilities</h2>
