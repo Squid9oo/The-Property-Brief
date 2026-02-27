@@ -49,7 +49,11 @@ const ROWS = [
   },
   {
     label: 'Maint. Fee',
-    render: p => (!p ? null : p.maintenanceFee ? `RM ${p.maintenanceFee} psf/mo` : null)
+    render: p => {
+      if (!p || !p.maintenanceFee) return null;
+      const isLanded = p.Category === 'Landed Residential';
+      return `RM ${p.maintenanceFee}${isLanded ? '/mo' : ' psf/mo'}`;
+    }
   },
   {
     label: 'Sinking Fund',
@@ -70,8 +74,12 @@ const ROWS = [
     render: p => (!p ? null : p.Tenure || null)
   },
   {
-    label: 'Land Title',
+    label: 'Land Category',
     render: p => (!p ? null : p['Land Title'] || null)
+  },
+  {
+    label: 'Bumi Lot',
+    render: p => (!p ? null : p.bumiLot || null)
   },
   {
     label: 'Built-up',
@@ -157,6 +165,22 @@ const ROWS = [
     label: 'Total Units',
     shouldShow: anyNL,
     render: p => (!p ? null : p.totalUnits ? parseInt(p.totalUnits).toLocaleString() : null)
+  },
+  {
+    label: 'Website',
+    shouldShow: anyNL,
+    render: p => {
+      if (!p || !p.projectWebsite) return null;
+      return `<a href="${p.projectWebsite}" target="_blank" rel="noopener" style="color:#f9d100;text-decoration:underline;font-size:0.82rem;">Visit Project Site →</a>`;
+    }
+  },
+  {
+    label: 'Virtual Tour',
+    shouldShow: anyNL,
+    render: p => {
+      if (!p || !p.virtualTourUrl) return null;
+      return `<a href="${p.virtualTourUrl}" target="_blank" rel="noopener" style="color:#f9d100;text-decoration:underline;font-size:0.82rem;">View 360° Tour →</a>`;
+    }
   },
   {
     label: 'Seller Type',

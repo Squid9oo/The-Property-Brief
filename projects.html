@@ -284,7 +284,6 @@
       <input type="hidden" name="form-name" value="project-submit" />
       <input type="hidden" name="propertyType" id="propertyType" />
       <input type="hidden" name="editToken" id="editToken" />
-      <input type="hidden" name="facilitiesStandard" id="facilitiesStandard-hidden" />
 
       <!-- SECTION 1 -->
       <div id="form-section-1">
@@ -320,6 +319,14 @@
             <option value="Developer">Developer</option>
           </select>
         </label>
+
+        <div id="ren-number-wrapper" style="display:none;">
+          <label>
+            REN / REA License Number
+            <input name="renNumber" type="text" placeholder="e.g., REN 12345 or E(1)1234" />
+            <small style="opacity:0.6;font-size:0.8rem;">Mandatory disclosure for licensed negotiators (REN) and estate agents (REA). Find your number at LPPEH / BOVAEA.</small>
+          </label>
+        </div>
 
         <label>
           Your Email
@@ -429,6 +436,11 @@
     <option value="2033">2033</option>
     <option value="2034">2034</option>
     <option value="2035">2035</option>
+    <option value="2036">2036</option>
+    <option value="2037">2037</option>
+    <option value="2038">2038</option>
+    <option value="2039">2039</option>
+    <option value="2040">2040</option>
   </select>
   <input type="hidden" name="expectedCompletion" id="expectedCompletion-hidden" />
 </div>
@@ -437,6 +449,18 @@
           <label>
             Total Units in Development
             <input name="totalUnits" type="number" placeholder="e.g., 350" min="1" />
+          </label>
+
+          <label>
+            Project Website URL <small style="font-weight:400;opacity:0.7;">optional</small>
+            <input name="projectWebsite" type="url" placeholder="e.g., https://www.ecoworld.com/maple-residences" />
+            <small style="opacity:0.6;font-size:0.8rem;">Links your listing to your official project page — helps Google and AI engines cite your development directly.</small>
+          </label>
+
+          <label>
+            Virtual Tour URL <small style="font-weight:400;opacity:0.7;">optional</small>
+            <input name="virtualTourUrl" type="url" placeholder="e.g., https://my.matterport.com/show/?m=abc123" />
+            <small style="opacity:0.6;font-size:0.8rem;">360° tour or walkthrough video link</small>
           </label>
 
           <!-- NL Residential ranges — shown only when category is High Rise or Landed -->
@@ -561,11 +585,24 @@
           </label>
 
           <label>
-            Land Title
+            Land Category
             <select name="landTitle">
               <option value="">Select</option>
-              <option value="Bumi">Bumi</option>
+              <option value="Residential">Residential</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Industrial">Industrial</option>
+              <option value="Agricultural">Agricultural</option>
+              <option value="Mixed Development">Mixed Development</option>
+              <option value="Others">Others</option>
+            </select>
+          </label>
+          <label>
+            Bumiputera Lot
+            <select name="bumiLot">
+              <option value="">Select (if applicable)</option>
+              <option value="Bumi Lot">Bumi Lot</option>
               <option value="Non-Bumi">Non-Bumi</option>
+              <option value="Malay Reserved">Malay Reserved Land</option>
             </select>
           </label>
 
@@ -636,132 +673,14 @@
           <!-- FACILITIES — HIGH RISE -->
           <div class="facilities-section">
             <div class="form-block-header">🏊 Facilities</div>
-            <p class="facilities-hint">Tick all that apply</p>
-
-            <div class="facilities-grid">
-              <label class="facility-check"><input type="checkbox" value="Swimming Pool" /> Swimming Pool</label>
-              <label class="facility-check"><input type="checkbox" value="Gymnasium" /> Gymnasium</label>
-              <label class="facility-check"><input type="checkbox" value="BBQ Area" /> BBQ Area</label>
-              <label class="facility-check"><input type="checkbox" value="Children's Playground" /> Children's Playground</label>
-              <label class="facility-check"><input type="checkbox" value="Jogging Track" /> Jogging Track</label>
-              <label class="facility-check"><input type="checkbox" value="Guardhouse (24hr)" /> Guardhouse (24hr)</label>
-              <label class="facility-check"><input type="checkbox" value="CCTV" /> CCTV</label>
-              <label class="facility-check"><input type="checkbox" value="Access Card Entry" /> Access Card Entry</label>
-              <label class="facility-check"><input type="checkbox" value="Visitor Parking" /> Visitor Parking</label>
-              <label class="facility-check"><input type="checkbox" value="EV Charging" /> EV Charging</label>
-              <label class="facility-check"><input type="checkbox" value="Badminton Court" /> Badminton Court</label>
-              <label class="facility-check"><input type="checkbox" value="Function Hall" /> Function Hall</label>
-              <label class="facility-check"><input type="checkbox" value="Co-working Space" /> Co-working Space</label>
-              <label class="facility-check"><input type="checkbox" value="Surau" /> Surau</label>
-              <label class="facility-check"><input type="checkbox" value="Covered Parking" /> Covered Parking</label>
-            </div>
-
-            <button type="button" class="show-more-btn" onclick="toggleMoreFacilities('hr')">＋ Show More Facilities</button>
-
-            <div id="facilities-more-hr" style="display:none;">
-              <div class="facilities-group"><strong>Aquatic</strong>
-                <div class="facilities-grid">
-                  <label class="facility-check"><input type="checkbox" value="Infinity Pool" /> Infinity Pool</label>
-                  <label class="facility-check"><input type="checkbox" value="Kids Wading Pool" /> Kids Wading Pool</label>
-                  <label class="facility-check"><input type="checkbox" value="Jacuzzi" /> Jacuzzi</label>
-                  <label class="facility-check"><input type="checkbox" value="Splash Pad" /> Splash Pad</label>
-                  <label class="facility-check"><input type="checkbox" value="Aqua Gym" /> Aqua Gym</label>
-                  <label class="facility-check"><input type="checkbox" value="Lap Pool (50m)" /> Lap Pool (50m)</label>
-                </div>
-              </div>
-              <div class="facilities-group"><strong>Fitness &amp; Sports</strong>
-                <div class="facilities-grid">
-                  <label class="facility-check"><input type="checkbox" value="Yoga Studio" /> Yoga Studio</label>
-                  <label class="facility-check"><input type="checkbox" value="Squash Court" /> Squash Court</label>
-                  <label class="facility-check"><input type="checkbox" value="Tennis Court" /> Tennis Court</label>
-                  <label class="facility-check"><input type="checkbox" value="Basketball Court" /> Basketball Court</label>
-                  <label class="facility-check"><input type="checkbox" value="Futsal Court" /> Futsal Court</label>
-                  <label class="facility-check"><input type="checkbox" value="Golf Putting Green" /> Golf Putting Green</label>
-                  <label class="facility-check"><input type="checkbox" value="Cycling Track" /> Cycling Track</label>
-                  <label class="facility-check"><input type="checkbox" value="Outdoor Fitness Station" /> Outdoor Fitness Station</label>
-                  <label class="facility-check"><input type="checkbox" value="Rock Climbing Wall" /> Rock Climbing Wall</label>
-                </div>
-              </div>
-              <div class="facilities-group"><strong>Recreation &amp; Social</strong>
-                <div class="facilities-grid">
-                  <label class="facility-check"><input type="checkbox" value="Sky Lounge" /> Sky Lounge</label>
-                  <label class="facility-check"><input type="checkbox" value="Rooftop Garden" /> Rooftop Garden</label>
-                  <label class="facility-check"><input type="checkbox" value="Cinema Room" /> Cinema Room</label>
-                  <label class="facility-check"><input type="checkbox" value="Library" /> Library</label>
-                  <label class="facility-check"><input type="checkbox" value="Karaoke Room" /> Karaoke Room</label>
-                  <label class="facility-check"><input type="checkbox" value="Games Room" /> Games Room</label>
-                  <label class="facility-check"><input type="checkbox" value="Residents Lounge" /> Residents Lounge</label>
-                  <label class="facility-check"><input type="checkbox" value="Private Dining Room" /> Private Dining Room</label>
-                  <label class="facility-check"><input type="checkbox" value="Amphitheatre" /> Amphitheatre</label>
-                  <label class="facility-check"><input type="checkbox" value="Observation Deck" /> Observation Deck</label>
-                  <label class="facility-check"><input type="checkbox" value="Podcast / Content Creator Room" /> Content Creator Room</label>
-                </div>
-              </div>
-              <div class="facilities-group"><strong>Family &amp; Children</strong>
-                <div class="facilities-grid">
-                  <label class="facility-check"><input type="checkbox" value="Indoor Kids Club" /> Indoor Kids Club</label>
-                  <label class="facility-check"><input type="checkbox" value="Nursery / Daycare" /> Nursery / Daycare</label>
-                  <label class="facility-check"><input type="checkbox" value="Teen Lounge" /> Teen Lounge</label>
-                  <label class="facility-check"><input type="checkbox" value="Sandpit Play Area" /> Sandpit Play Area</label>
-                  <label class="facility-check"><input type="checkbox" value="Treetop Walk" /> Treetop Walk</label>
-                </div>
-              </div>
-              <div class="facilities-group"><strong>Wellness &amp; Nature</strong>
-                <div class="facilities-grid">
-                  <label class="facility-check"><input type="checkbox" value="Spa &amp; Sauna" /> Spa &amp; Sauna</label>
-                  <label class="facility-check"><input type="checkbox" value="Steam Room" /> Steam Room</label>
-                  <label class="facility-check"><input type="checkbox" value="Meditation Pavilion" /> Meditation Pavilion</label>
-                  <label class="facility-check"><input type="checkbox" value="Herb Garden" /> Herb Garden</label>
-                  <label class="facility-check"><input type="checkbox" value="Reflexology Path" /> Reflexology Path</label>
-                  <label class="facility-check"><input type="checkbox" value="Pet Zone / Dog Run" /> Pet Zone / Dog Run</label>
-                  <label class="facility-check"><input type="checkbox" value="Hammock Lounge" /> Hammock Lounge</label>
-                  <label class="facility-check"><input type="checkbox" value="Zen Garden" /> Zen Garden</label>
-                </div>
-              </div>
-              <div class="facilities-group"><strong>Smart &amp; Security</strong>
-                <div class="facilities-grid">
-                  <label class="facility-check"><input type="checkbox" value="Biometric Entry" /> Biometric Entry</label>
-                  <label class="facility-check"><input type="checkbox" value="Smart Home System" /> Smart Home System</label>
-                  <label class="facility-check"><input type="checkbox" value="Smart Parcel Locker" /> Smart Parcel Locker</label>
-                  <label class="facility-check"><input type="checkbox" value="Number Plate Recognition (ANPR)" /> ANPR</label>
-                  <label class="facility-check"><input type="checkbox" value="Video Intercom" /> Video Intercom</label>
-                  <label class="facility-check"><input type="checkbox" value="Panic Button" /> Panic Button</label>
-                </div>
-              </div>
-              <div class="facilities-group"><strong>Parking &amp; Mobility</strong>
-                <div class="facilities-grid">
-                  <label class="facility-check"><input type="checkbox" value="Car Wash Bay" /> Car Wash Bay</label>
-                  <label class="facility-check"><input type="checkbox" value="Valet Parking" /> Valet Parking</label>
-                  <label class="facility-check"><input type="checkbox" value="Bicycle Storage" /> Bicycle Storage</label>
-                  <label class="facility-check"><input type="checkbox" value="Motorcycle Bay" /> Motorcycle Bay</label>
-                </div>
-              </div>
-              <div class="facilities-group"><strong>Convenience</strong>
-                <div class="facilities-grid">
-                  <label class="facility-check"><input type="checkbox" value="Convenience Store" /> Convenience Store</label>
-                  <label class="facility-check"><input type="checkbox" value="Café on Premises" /> Café on Premises</label>
-                  <label class="facility-check"><input type="checkbox" value="Laundromat" /> Laundromat</label>
-                  <label class="facility-check"><input type="checkbox" value="Concierge Service" /> Concierge Service</label>
-                  <label class="facility-check"><input type="checkbox" value="Clinic on Premises" /> Clinic on Premises</label>
-                  <label class="facility-check"><input type="checkbox" value="ATM / Banking" /> ATM / Banking</label>
-                </div>
-              </div>
-              <div class="facilities-group"><strong>Sustainability</strong>
-                <div class="facilities-grid">
-                  <label class="facility-check"><input type="checkbox" value="Solar Panels" /> Solar Panels</label>
-                  <label class="facility-check"><input type="checkbox" value="Rainwater Harvesting" /> Rainwater Harvesting</label>
-                  <label class="facility-check"><input type="checkbox" value="Recycling Centre" /> Recycling Centre</label>
-                  <label class="facility-check"><input type="checkbox" value="Green Building Certified" /> Green Building Certified</label>
-                  <label class="facility-check"><input type="checkbox" value="Community Garden" /> Community Garden</label>
-                  <label class="facility-check"><input type="checkbox" value="Living Wall / Green Roof" /> Living Wall / Green Roof</label>
-                </div>
-              </div>
-            </div>
-
-            <label style="margin-top:16px;">
-              Additional / Unique Facilities
-              <textarea name="facilitiesCustom" rows="4" placeholder="Type one facility per line, e.g.:&#10;Treehouse Play Zone&#10;Floating Yoga Deck&#10;AI-powered Concierge Robot"></textarea>
-              <small>One facility per line — for unique or branded facilities not listed above</small>
+            <label>
+              List All Facilities
+              <textarea name="facilitiesCustom" rows="8" placeholder="Type one facility per line, e.g.:&#10;Swimming Pool (Olympic Size, Level 5)&#10;Sky Gymnasium with Panoramic City View&#10;EV Charging Bays — allocated per unit&#10;Co-working Lounge by Pool Deck&#10;24hr Guardhouse with CCTV &amp; Boom Barrier&#10;Smart Home System (app-controlled)&#10;Rooftop Sky Lounge on Level 38&#10;Indoor Kids Club"></textarea>
+              <small style="display:block;margin-top:6px;padding:10px 12px;background:rgba(249,209,0,0.06);border:1px solid rgba(249,209,0,0.2);border-radius:8px;font-size:0.78rem;line-height:1.7;color:#aaa;">
+                ✍️ <strong style="color:#f9d100;">One facility per line. Use your project's real names — they rank better.</strong><br>
+                ✅ Good: <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;color:#aaa;">Sky Pool on Level 32</code> &nbsp;·&nbsp; <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;color:#aaa;">EV Bays (all units)</code><br>
+                ❌ Avoid: <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;color:#666;">Pool</code> &nbsp;·&nbsp; <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;color:#666;">Gym</code> — generic names are not indexed or cited by AI engines.
+              </small>
             </label>
           </div>
         </div>
@@ -783,12 +702,24 @@
           </label>
 
           <label>
-            Land Title
+            Land Category
             <select name="landTitle">
               <option value="">Select</option>
-              <option value="Bumi">Bumi</option>
+              <option value="Residential">Residential</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Industrial">Industrial</option>
+              <option value="Agricultural">Agricultural</option>
+              <option value="Mixed Development">Mixed Development</option>
+              <option value="Others">Others</option>
+            </select>
+          </label>
+          <label>
+            Bumiputera Lot
+            <select name="bumiLot">
+              <option value="">Select (if applicable)</option>
+              <option value="Bumi Lot">Bumi Lot</option>
               <option value="Non-Bumi">Non-Bumi</option>
-              <option value="Malay Reserved">Malay Reserved</option>
+              <option value="Malay Reserved">Malay Reserved Land</option>
             </select>
           </label>
 
@@ -866,61 +797,14 @@
           <!-- FACILITIES — LANDED -->
           <div class="facilities-section">
             <div class="form-block-header">🌳 Facilities</div>
-            <p class="facilities-hint">Tick all that apply</p>
-
-            <div class="facilities-grid">
-              <label class="facility-check"><input type="checkbox" value="Guardhouse (24hr)" /> Guardhouse (24hr)</label>
-              <label class="facility-check"><input type="checkbox" value="CCTV" /> CCTV</label>
-              <label class="facility-check"><input type="checkbox" value="Perimeter Fencing" /> Perimeter Fencing</label>
-              <label class="facility-check"><input type="checkbox" value="Boom Barrier" /> Boom Barrier</label>
-              <label class="facility-check"><input type="checkbox" value="Clubhouse" /> Clubhouse</label>
-              <label class="facility-check"><input type="checkbox" value="Swimming Pool" /> Swimming Pool</label>
-              <label class="facility-check"><input type="checkbox" value="Children's Playground" /> Children's Playground</label>
-              <label class="facility-check"><input type="checkbox" value="Basketball Court" /> Basketball Court</label>
-              <label class="facility-check"><input type="checkbox" value="Badminton Court" /> Badminton Court</label>
-              <label class="facility-check"><input type="checkbox" value="Jogging Track" /> Jogging Track</label>
-              <label class="facility-check"><input type="checkbox" value="Landscaped Park" /> Landscaped Park</label>
-              <label class="facility-check"><input type="checkbox" value="EV Charging" /> EV Charging</label>
-              <label class="facility-check"><input type="checkbox" value="Visitor Parking" /> Visitor Parking</label>
-              <label class="facility-check"><input type="checkbox" value="Surau" /> Surau</label>
-              <label class="facility-check"><input type="checkbox" value="Electric Fence" /> Electric Fence</label>
-            </div>
-
-            <button type="button" class="show-more-btn" onclick="toggleMoreFacilities('landed')">＋ Show More Facilities</button>
-
-            <div id="facilities-more-landed" style="display:none;">
-              <div class="facilities-group"><strong>Sports &amp; Recreation</strong>
-                <div class="facilities-grid">
-                  <label class="facility-check"><input type="checkbox" value="Tennis Court" /> Tennis Court</label>
-                  <label class="facility-check"><input type="checkbox" value="Futsal Court" /> Futsal Court</label>
-                  <label class="facility-check"><input type="checkbox" value="Gymnasium" /> Gymnasium</label>
-                  <label class="facility-check"><input type="checkbox" value="Squash Court" /> Squash Court</label>
-                  <label class="facility-check"><input type="checkbox" value="BBQ Area" /> BBQ Area</label>
-                  <label class="facility-check"><input type="checkbox" value="Function Hall" /> Function Hall</label>
-                  <label class="facility-check"><input type="checkbox" value="Cycling Path" /> Cycling Path</label>
-                  <label class="facility-check"><input type="checkbox" value="Dog Park" /> Dog Park</label>
-                  <label class="facility-check"><input type="checkbox" value="Wading Pool" /> Wading Pool</label>
-                  <label class="facility-check"><input type="checkbox" value="Amphitheatre" /> Amphitheatre</label>
-                </div>
-              </div>
-              <div class="facilities-group"><strong>Infrastructure &amp; Sustainability</strong>
-                <div class="facilities-grid">
-                  <label class="facility-check"><input type="checkbox" value="Fibre Optic Ready" /> Fibre Optic Ready</label>
-                  <label class="facility-check"><input type="checkbox" value="Underground Utilities" /> Underground Utilities</label>
-                  <label class="facility-check"><input type="checkbox" value="Solar Street Lighting" /> Solar Street Lighting</label>
-                  <label class="facility-check"><input type="checkbox" value="Rainwater Harvesting" /> Rainwater Harvesting</label>
-                  <label class="facility-check"><input type="checkbox" value="Retention Pond" /> Retention Pond</label>
-                  <label class="facility-check"><input type="checkbox" value="Parcel Collection Point" /> Parcel Collection Point</label>
-                  <label class="facility-check"><input type="checkbox" value="ANPR Gate" /> ANPR Gate</label>
-                  <label class="facility-check"><input type="checkbox" value="Mobile Security Patrol" /> Mobile Security Patrol</label>
-                </div>
-              </div>
-            </div>
-
-            <label style="margin-top:16px;">
-              Additional / Unique Facilities
-              <textarea name="facilitiesCustom" rows="4" placeholder="Type one facility per line, e.g.:&#10;Private Rooftop Garden&#10;Smart Home Ready&#10;EV Bay per unit"></textarea>
-              <small>One facility per line</small>
+            <label>
+              List All Facilities
+              <textarea name="facilitiesCustom" rows="8" placeholder="Type one facility per line, e.g.:&#10;Guardhouse with 24hr Security Patrol&#10;Gated &amp; Guarded with Boom Barrier&#10;ANPR Gate (automatic number plate recognition)&#10;Clubhouse with Function Hall&#10;Landscaped Jogging Track (1.2km loop)&#10;Children's Playground&#10;EV Charging Bay per unit&#10;Dog Park with Agility Course"></textarea>
+              <small style="display:block;margin-top:6px;padding:10px 12px;background:rgba(249,209,0,0.06);border:1px solid rgba(249,209,0,0.2);border-radius:8px;font-size:0.78rem;line-height:1.7;color:#aaa;">
+                ✍️ <strong style="color:#f9d100;">One facility per line. Use your project's real names — they rank better.</strong><br>
+                ✅ Good: <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;color:#aaa;">ANPR Boom Barrier Entry</code> &nbsp;·&nbsp; <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;color:#aaa;">Dog Park with Agility Course</code><br>
+                ❌ Avoid: <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;color:#666;">Security</code> &nbsp;·&nbsp; <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;color:#666;">Park</code>
+              </small>
             </label>
           </div>
         </div>
@@ -949,12 +833,24 @@
           </label>
 
           <label>
-            Land Title
+            Land Category
             <select name="landTitle">
               <option value="">Select</option>
-              <option value="Bumi">Bumi</option>
+              <option value="Residential">Residential</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Industrial">Industrial</option>
+              <option value="Agricultural">Agricultural</option>
+              <option value="Mixed Development">Mixed Development</option>
+              <option value="Others">Others</option>
+            </select>
+          </label>
+          <label>
+            Bumiputera Lot
+            <select name="bumiLot">
+              <option value="">Select (if applicable)</option>
+              <option value="Bumi Lot">Bumi Lot</option>
               <option value="Non-Bumi">Non-Bumi</option>
-              <option value="Malay Reserved">Malay Reserved</option>
+              <option value="Malay Reserved">Malay Reserved Land</option>
             </select>
           </label>
 
@@ -1026,12 +922,24 @@
           </label>
 
           <label>
-            Land Title
+            Land Category
             <select name="landTitle">
               <option value="">Select</option>
-              <option value="Bumi">Bumi</option>
+              <option value="Residential">Residential</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Industrial">Industrial</option>
+              <option value="Agricultural">Agricultural</option>
+              <option value="Mixed Development">Mixed Development</option>
+              <option value="Others">Others</option>
+            </select>
+          </label>
+          <label>
+            Bumiputera Lot
+            <select name="bumiLot">
+              <option value="">Select (if applicable)</option>
+              <option value="Bumi Lot">Bumi Lot</option>
               <option value="Non-Bumi">Non-Bumi</option>
-              <option value="Malay Reserved">Malay Reserved</option>
+              <option value="Malay Reserved">Malay Reserved Land</option>
             </select>
           </label>
 
@@ -1309,22 +1217,18 @@ function updateForm() {
 listingTypeSelect.addEventListener('change', updateForm);
 categorySelect.addEventListener('change', updateForm);
 
+// ── SELLER TYPE — show REN field for Agents ───────────────────
+document.getElementById('sellerType').addEventListener('change', function() {
+  const wrapper = document.getElementById('ren-number-wrapper');
+  if (wrapper) wrapper.style.display = this.value === 'Agent' ? 'block' : 'none';
+});
+
 // ── PROPERTY TYPE HIDDEN FIELD ────────────────────────────────
 document.querySelectorAll('[name="highRiseType"], [name="landedType"], [name="commercialType"], [name="landType"]').forEach(sel => {
   sel.addEventListener('change', e => {
     document.getElementById('propertyType').value = e.target.value;
   });
 });
-
-// ── FACILITIES TOGGLE ─────────────────────────────────────────
-function toggleMoreFacilities(type) {
-  const moreDiv = document.getElementById('facilities-more-' + type);
-  const btn     = moreDiv.previousElementSibling;
-  if (!moreDiv) return;
-  const isHidden = moreDiv.style.display === 'none';
-  moreDiv.style.display   = isHidden ? 'block' : 'none';
-  btn.textContent = isHidden ? '－ Show Less' : '＋ Show More Facilities';
-}
 
 // ── FORM SUBMIT ───────────────────────────────────────────────
 const form = document.querySelector('form[name="project-submit"]');
@@ -1336,19 +1240,6 @@ form.addEventListener('submit', e => {
       alert('Please remove or compress images larger than 2 MB before submitting.');
       return;
     }
-  }
-
-  // Collect facilitiesStandard from checked checkboxes in visible category block
-  const cat = categorySelect.value;
-  const blockId = cat === 'High Rise Residential' ? 'fields-high-rise-residential'
-                : cat === 'Landed Residential'    ? 'fields-landed-residential'
-                : null;
-  if (blockId) {
-    const checked = [];
-    document.querySelectorAll('#' + blockId + ' .facility-check input[type="checkbox"]:checked').forEach(cb => {
-      checked.push(cb.value);
-    });
-    document.getElementById('facilitiesStandard-hidden').value = checked.join(',');
   }
 
 });
@@ -1541,21 +1432,7 @@ document.getElementById('completion-year').addEventListener('change', updateExpe
 
 /* Facilities */
 .facilities-section { margin-top: 16px; padding: 16px; border-radius: 12px; border: 1px solid rgba(249,209,0,0.15); background: rgba(249,209,0,0.03); }
-.facilities-hint { font-size: 13px; color: #888; margin: 0 0 12px; }
-.facilities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 12px; }
-.facility-check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #ccc; cursor: pointer; padding: 6px 8px; border-radius: 6px; border: 1px solid transparent; transition: all 0.15s; }
-.facility-check:hover { background: rgba(249,209,0,0.06); border-color: rgba(249,209,0,0.2); }
-.facility-check input[type="checkbox"] { accent-color: #f9d100; width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; }
-.facility-check input[type="checkbox"]:checked + * { color: #f9d100; }
-.facilities-group { margin-bottom: 16px; }
-.facilities-group strong { display: block; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-.show-more-btn { width: 100%; padding: 8px; margin: 8px 0 12px; background: transparent; border: 1px dashed rgba(249,209,0,0.3); border-radius: 8px; color: #f9d100; font-size: 13px; cursor: pointer; transition: all 0.2s; }
-.show-more-btn:hover { background: rgba(249,209,0,0.06); }
 
-/* Responsive */
-@media (max-width: 480px) {
-  .facilities-grid { grid-template-columns: 1fr 1fr; }
-}
 </style>
 
 </body>

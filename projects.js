@@ -182,7 +182,10 @@ async function handleFormSubmit(e) {
       advertisingPermit:   fromLt('advertisingPermit'),
       expectedCompletion:  formData.get('expectedCompletion'), // hidden field
       totalUnits:          fromLt('totalUnits'),
+      projectWebsite:      fromLt('projectWebsite'),
+      virtualTourUrl:      fromLt('virtualTourUrl'),
       priceToRm:           formData.get('priceToRm'),
+      renNumber:           formData.get('renNumber'),
       builtUpMin:          fromLt('builtUpMin'),
       builtUpMax:          fromLt('builtUpMax'),
       bedroomsMin:         fromLt('bedroomsMin'),
@@ -203,9 +206,9 @@ async function handleFormSubmit(e) {
       gatedGuarded:        fromCat('gatedGuarded'),
       maintenanceFee:      fromCat('maintenanceFee'),
       sinkingFund:         fromCat('sinkingFund'),
-      facilitiesStandard:  formData.get('facilitiesStandard'), // hidden field
       facilitiesCustom:    fromCat('facilitiesCustom'),
       floorLevel:          fromCat('floorLevel'),
+      bumiLot:             fromCat('bumiLot'),
 
       // ── Landed ──────────────────────────────────────────────
       lotType:             fromCat('lotType'),
@@ -1157,7 +1160,7 @@ function openPropertyModal(property, index) {
           <div class="details-grid">
             ${psfVal                        ? `<div><strong>Price Per Sqft:</strong> RM ${psfVal.toLocaleString()}/sqft</div>` : ''}
             ${property.priceToRm            ? `<div><strong>Price Range:</strong> RM ${parseInt(property['Price(RM)']).toLocaleString()} – RM ${parseInt(property.priceToRm).toLocaleString()}</div>` : ''}
-            ${property.maintenanceFee       ? `<div><strong>Maintenance Fee:</strong> RM ${property.maintenanceFee} psf</div>` : ''}
+            ${property.maintenanceFee       ? `<div><strong>Maintenance Fee:</strong> RM ${property.maintenanceFee}${property.Category === 'Landed Residential' ? '/mo' : ' psf/mo'}</div>` : ''}
             ${property.sinkingFund          ? `<div><strong>Sinking Fund:</strong> RM ${property.sinkingFund} psf</div>` : ''}
           </div>
         </div>`;
