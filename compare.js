@@ -519,10 +519,33 @@ function applyColumnVisibility() {
   const cols = colgroup ? Array.from(colgroup.querySelectorAll('col')) : [];
   for (let i = 0; i < total; i++) {
     const show = columnVisible[i] !== false;
+    // Apply inline styles directly — CSS classes alone don't force
+    // Safari iOS to collapse columns in table-layout:fixed
     document.querySelectorAll(`[data-col="${i}"]`).forEach(cell => {
       cell.classList.toggle('col-hidden', !show);
+      if (!show) {
+        cell.style.display    = 'none';
+        cell.style.width      = '0px';
+        cell.style.maxWidth   = '0px';
+        cell.style.padding    = '0';
+        cell.style.border     = 'none';
+        cell.style.overflow   = 'hidden';
+      } else {
+        cell.style.display    = '';
+        cell.style.width      = '';
+        cell.style.maxWidth   = '';
+        cell.style.padding    = '';
+        cell.style.border     = '';
+        cell.style.overflow   = '';
+      }
     });
-    if (cols[i + 1]) cols[i + 1].style.width = show ? '' : '0px';
+    // Also collapse the <col> element width
+    if (cols[i + 1]) {
+      cols[i + 1].style.width      = show ? '' : '0px';
+      cols[i + 1].style.minWidth   = show ? '' : '0px';
+      cols[i + 1].style.maxWidth   = show ? '' : '0px';
+      cols[i + 1].style.overflow   = show ? '' : 'hidden';
+    }
   }
   renderVisibilityBar();
 }
