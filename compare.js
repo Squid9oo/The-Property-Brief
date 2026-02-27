@@ -461,13 +461,15 @@ function renderTable() {
 
     // Section divider row — spans all columns
     if (row.type === 'divider') {
-    const totalCols = 1 + compareData.length + 1;
-    const emptyCells = Array(totalCols).fill('<td class="compare-divider-empty"></td>').join('');
+      const totalCols = 1 + compareData.length;
+      const emptyCells = Array.from({length: totalCols}, (_, i) =>
+        `<td class="compare-divider-empty" data-col="${i}"></td>`
+      ).join('');
       return `<tr class="compare-divider-row">
-      <td class="compare-divider-cell">${row.label}</td>
-      ${emptyCells}
-  </tr>`;
-}
+        <td class="compare-divider-cell">${row.label}</td>
+        ${emptyCells}
+      </tr>`;
+    }
 
     // Auto-skip row if every user listing returns null for this field
     const isFacilities = row.label === 'Facilities';
@@ -513,11 +515,14 @@ function highlightBestPSF() {
 
 function applyColumnVisibility() {
   const total = 1 + compareData.length;
+  const colgroup = document.getElementById('compare-colgroup');
+  const cols = colgroup ? Array.from(colgroup.querySelectorAll('col')) : [];
   for (let i = 0; i < total; i++) {
     const show = columnVisible[i] !== false;
     document.querySelectorAll(`[data-col="${i}"]`).forEach(cell => {
       cell.classList.toggle('col-hidden', !show);
     });
+    if (cols[i + 1]) cols[i + 1].style.width = show ? '' : '0px';
   }
   renderVisibilityBar();
 }
