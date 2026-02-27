@@ -491,14 +491,14 @@
 
   .compare-table th.row-label,
   .compare-table td.row-label {
-    width: 105px;
-    min-width: 105px;
-    max-width: 105px;
-    font-size: 0.68rem;
-    padding: 10px 8px;
-    white-space: normal;
-    line-height: 1.4;
-  }
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+  font-size: 0.68rem;
+  padding: 10px 8px;
+  white-space: normal;
+  line-height: 1.4;
+}
 
   .col-header-inner {
     padding: 12px 8px 10px;
@@ -525,12 +525,12 @@
 @media (max-width: 600px) {
   .compare-table th.row-label,
   .compare-table td.row-label {
-    width: 72px;
-    min-width: 72px;
-    max-width: 72px;
-    font-size: 0.62rem;
-    padding: 8px 6px;
-  }
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  font-size: 0.62rem;
+  padding: 8px 6px;
+}
 
   .col-vis-btn { font-size: 0.70rem; padding: 4px 9px; }
 }
