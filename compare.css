@@ -478,6 +478,7 @@
 /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 1024px) {
   .compare-section { padding-bottom: 40px; }
+  .compare-table { table-layout: auto; }
   /* Unfreeze first column on mobile — let the table scroll freely */
   .compare-table th.row-label,
   .compare-table td.row-label {
