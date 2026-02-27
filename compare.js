@@ -619,7 +619,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Mobile default: sponsored + col 1 only — all others hidden and scrollable via show/hide
-    const isMobile = window.innerWidth <= 1024;
+    const isMobile = window.innerWidth <= 1024 || window.screen.width <= 1024;
     columnVisible = new Array(1 + compareData.length).fill(true);
     if (isMobile) {
     for (let i = 2; i < 1 + compareData.length; i++) {
