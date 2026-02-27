@@ -601,11 +601,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Mobile default: sponsored + col 1 visible, cols 2 & 3 hidden
+    // Mobile default: sponsored + col 1 only — all others hidden and scrollable via show/hide
     const isMobile = window.innerWidth <= 820;
     columnVisible = new Array(1 + compareData.length).fill(true);
-    if (isMobile && compareData.length >= 2) columnVisible[2] = false;
-    if (isMobile && compareData.length >= 3) columnVisible[3] = false;
+    if (isMobile) {
+    for (let i = 2; i < 1 + compareData.length; i++) {
+    columnVisible[i] = false;
+  }
+}
 
     updatePageMeta();
     renderTable();
