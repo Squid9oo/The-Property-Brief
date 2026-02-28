@@ -294,6 +294,7 @@ const ROWS = [
   { type: 'divider', label: '📝 About This Property' },
   {
     label: 'Highlights',
+    collapsible: true,
     render: p => {
       if (!p) return null;
       const raw = p.Highlights || p.Description;
@@ -312,6 +313,7 @@ const ROWS = [
   },
   {
     label: 'Specifications',
+    collapsible: true,
     render: p => {
       if (!p || !p.Specifications) return null;
       return `<p style="line-height:2;margin:0;">${toBullets(p.Specifications)}</p>`;
@@ -319,6 +321,7 @@ const ROWS = [
   },
   {
     label: 'Furnishing',
+    collapsible: true,
     render: p => {
       if (!p || !p.Furnishing) return null;
       return `<p style="line-height:2;margin:0;">${toBullets(p.Furnishing)}</p>`;
@@ -486,8 +489,14 @@ function renderTable() {
       )
     ].join('');
 
+    const labelCell = row.collapsible
+      ? `<td class="row-label row-label-collapsible" data-col="label" onclick="toggleRow(this)">
+           <span class="row-toggle-arrow">▼</span>${row.label}
+         </td>`
+      : `<td class="row-label" data-col="label">${row.label}</td>`;
+
     return `<tr>
-      <td class="row-label" data-col="label">${row.label}</td>
+      ${labelCell}
       ${cells}
     </tr>`;
   }).join('');
@@ -638,6 +647,16 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = '/projects.html';
   }
 });
+
+// ============ COLLAPSIBLE ROWS ============
+function toggleRow(labelCell) {
+  const tr = labelCell.closest('tr');
+  if (!tr) return;
+  const isCollapsed = tr.classList.toggle('row-collapsed');
+  const arrow = labelCell.querySelector('.row-toggle-arrow');
+  if (arrow) arrow.textContent = isCollapsed ? '▶' : '▼';
+}
+window.toggleRow = toggleRow;
 
 // Expose to global (used in onclick attributes)
 window.toggleColumn     = toggleColumn;

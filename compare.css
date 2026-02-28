@@ -615,3 +615,32 @@
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+/* --- Collapsible row labels --- */
+.row-label-collapsible {
+  cursor: pointer;
+  user-select: none;
+}
+
+.row-label-collapsible:hover {
+  color: var(--text) !important;
+  background: rgba(249,209,0,0.04) !important;
+}
+
+.row-toggle-arrow {
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 0.58rem;
+  color: rgba(249,209,0,0.70);
+}
+
+/* When collapsed: hide all data cells, keep label visible */
+.compare-table tr.row-collapsed td:not(.row-label) {
+  display: none;
+}
+
+.compare-table tr.row-collapsed .row-label {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  color: rgba(161,161,170,0.45);
+}
