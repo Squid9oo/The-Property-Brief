@@ -300,6 +300,35 @@ h1,h2,h3{
   line-height: 1.7;
 }
 
+.heroTagline {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 600;
+  color: var(--accent, #f9d100);
+  margin: 0.25rem 0 1rem;
+  line-height: 1.3;
+}
+
+.heroCtaBtn {
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding: 0.75rem 1.5rem;
+  background: #f9d100;
+  color: #111;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.heroCtaBtn:hover,
+.heroCtaBtn:focus {
+  background: #e6c200;
+  outline: 3px solid #111;
+  outline-offset: 2px;
+}
+
 /* Hero ad container — aspect-ratio locks size, image fills with cover */
 .hero-ad {
   margin-bottom: 12px;
